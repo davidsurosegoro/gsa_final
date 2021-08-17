@@ -1,0 +1,1 @@
+<?php /**PATH C:\xampp\htdocs\sigis_next\resources\views/pages/analisa/ajax/res_categorized.blade.php ENDPATH**/ ?>
