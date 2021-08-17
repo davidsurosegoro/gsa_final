@@ -48,7 +48,7 @@ Route::prefix('master')->group(function(){
 
 
 Route::prefix('awb')->group(function(){
-
+	return 'sss';
 });
 
 
