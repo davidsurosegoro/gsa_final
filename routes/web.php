@@ -47,7 +47,9 @@ Route::prefix('master')->group(function(){
 });
 
 
+Route::prefix('awb')->group(function(){
 
+});
 
 
 Route::prefix('ajax')->group(function(){
