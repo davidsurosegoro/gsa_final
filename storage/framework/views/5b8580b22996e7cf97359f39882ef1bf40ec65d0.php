@@ -10,17 +10,17 @@
     <!-- Favicon -->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/login/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/login/css/bootstrap.min.css')); ?>">
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/login/css/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/login/css/fontawesome-all.min.css')); ?>">
     <!-- Vegas CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/login/css/vegas.min.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/login/css/vegas.min.css')); ?>">
     <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/login/font/flaticon.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/login/font/flaticon.css')); ?>">
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/login/style.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/login/style.css')); ?>">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
     <section class="fxt-template-animation fxt-template-layout29">
         <div class="container-fluid">
             <div class="row">
-                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "{{ asset('assets/login/img/figure/bg-tugu.jpg') }}"},{"src": "{{ asset('assets/login/img/figure/bg-tp.jpg') }}"},{"src": "{{ asset('assets/login/img/figure/bg-2020.jpg') }}"}, {"src": "{{ asset('assets/login/img/figure/bg-2020-.jpg') }}"}, {"src": "{{ asset('assets/login/img/figure/bg-fix.jpg') }}"},{"src": "{{ asset('assets/login/img/figure/bg-mayjend.jpg') }}"},{"src": "{{ asset('assets/login/img/figure/bg-cito.jpg') }}"}]}'>
+                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "<?php echo e(asset('assets/login/img/figure/bg-tugu.jpg')); ?>"},{"src": "<?php echo e(asset('assets/login/img/figure/bg-tp.jpg')); ?>"},{"src": "<?php echo e(asset('assets/login/img/figure/bg-2020.jpg')); ?>"}, {"src": "<?php echo e(asset('assets/login/img/figure/bg-2020-.jpg')); ?>"}, {"src": "<?php echo e(asset('assets/login/img/figure/bg-fix.jpg')); ?>"},{"src": "<?php echo e(asset('assets/login/img/figure/bg-mayjend.jpg')); ?>"},{"src": "<?php echo e(asset('assets/login/img/figure/bg-cito.jpg')); ?>"}]}'>
                     <div class="fxt-page-switcher">
                         <a href="login-29.html" class="switcher-text1 active">Login</a>
                     </div>
@@ -38,7 +38,7 @@
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">
                         <div class="fxt-header">
-                            {{-- <a style="margin-bottom: 50px" href="login-29.html" class="fxt-logo"><img src="{{ asset('assets/img/sigis.png') }}" alt="Logo"></a> --}}
+                            
                         </div>
                         <div class="fxt-form">
                             <div class="fxt-transformY-50 fxt-transition-delay-1">
@@ -47,14 +47,15 @@
                             <div class="fxt-transformY-50 fxt-transition-delay-2">
                                 <p>GSA</p>
                             </div>
-                            <form method="POST" action="{{ url('login') }}" >
-                                    {{ csrf_field() }}
-                                                @if(count($errors) > 0)
+                            <form method="POST" action="<?php echo e(url('login')); ?>" >
+                                    <?php echo e(csrf_field()); ?>
+
+                                                <?php if(count($errors) > 0): ?>
 
                                                     <div class="alert alert-danger alert-dismissable">
                                                         <i class="zmdi zmdi-block pr-15 pull-left"></i><p class="pull-left"> <strong> X </strong> Login Gagal! Password atau username salah.</p>
                                                     </div>
-                                                @endif
+                                                <?php endif; ?>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-4">
                                         <input type="text" class="form-control" name="username" placeholder="Username" required="required">
@@ -82,20 +83,20 @@
         </div>
     </section>
     <!-- jquery-->
-    <script src="{{ asset('assets/login/js/jquery-3.5.0.min.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/jquery-3.5.0.min.js')); ?>"></script>
     <!-- Popper js -->
-    <script src="{{ asset('assets/login/js/popper.min.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/popper.min.js')); ?>"></script>
     <!-- Bootstrap js -->
-    <script src="{{ asset('assets/login/js/bootstrap.min.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/bootstrap.min.js')); ?>"></script>
     <!-- Imagesloaded js -->
-    <script src="{{ asset('assets/login/js/imagesloaded.pkgd.min.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/imagesloaded.pkgd.min.js')); ?>"></script>
     <!-- Vegas js -->
-    <script src="{{ asset('assets/login/js/vegas.min.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/vegas.min.js')); ?>"></script>
     <!-- Validator js -->
-    <script src="{{ asset('assets/login/js/validator.min.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/validator.min.js')); ?>"></script>
     <!-- Custom Js -->
-    <script src="{{ asset('assets/login/js/main.js')}}"></script>
+    <script src="<?php echo e(asset('assets/login/js/main.js')); ?>"></script>
 
 </body>
 
-</html>
+</html><?php /**PATH C:\xampp\htdocs\GSA\gsa_clone\resources\views/auth/login.blade.php ENDPATH**/ ?>
