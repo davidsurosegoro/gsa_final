@@ -23,6 +23,7 @@
               <th>Nomor Rekening</th>
               <th>Atas Nama (a/n)</th>
               <th>Bank</th>
+              <th>Akses Satuan</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -39,35 +40,35 @@
     return `<table style="width:50%;" class="table">
         <tr>
           <th><strong> Harga Koli Kecil </strong> </th>
-          <td> : `+d.harga_koli_k+`</td>  
+          <td> : `+(d.harga_koli_k/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
           <th><strong> Harga Koli Sedang </strong> </th>
-          <td> : `+d.harga_koli_s+`</td>  
+          <td> : `+(d.harga_koli_s/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
           <th><strong> Harga Besar </strong> </th>
-          <td> : `+d.harga_koli_b+`</td>  
+          <td> : `+(d.harga_koli_b/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
           <th><strong> Harga Besar Banget </strong> </th>
-          <td> : `+d.harga_koli_bb+`</td>  
+          <td> : `+(d.harga_koli_bb/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
           <th><strong> Harga Per Kg </strong> </th>
-          <td> : `+d.harga_kg+`</td>  
+          <td> : `+(d.harga_kg/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
-          <th><strong> Harga Doc </strong> </th>
-          <td> : `+d.harga_doc+`</td>  
+          <th><strong> Harga Per Dokumen </strong> </th>
+          <td> : `+(d.harga_doc/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
-          <th><strong> Harga oa </strong> </th>
-          <td> : `+d.harga_oa+`</td>  
+          <th><strong> Harga Out Area (`+d.jenis_out_area+`) </strong> </th>
+          <td> : `+(d.harga_oa/1000).toFixed(3)+`</td>  
         </tr>
         <tr>
-          <th><strong> Harga oa_ship </strong> </th>
-          <td> : `+d.harga_oa_ship+`</td>  
+          <th><strong> Harga Out Area Shipment </strong> </th>
+          <td> : `+(d.harga_oa_ship/1000).toFixed(3)+`</td>  
         </tr>
       </table>`;
 }
@@ -90,6 +91,7 @@
 	     {data: 'rekening', name:'rekening'},
 	     {data: 'rekeningatasnama', name:'rekeningatasnama'},
 	     {data: 'bank', name:'bank'},
+	     {data: 'akses_satuan', name:'akses_satuan'},
 	     {data: 'aksi', name:'aksi'},
 	 ],
 	  "order": [[ 1, "asc" ]],
@@ -131,23 +133,24 @@
     {
          Swal.fire({   
                       title: "Anda Yakin?",   
-                      text: "Data Agen akan terhapus dari sistem",   
+                      text: "Data Customer akan terhapus dari sistem",   
                       icon: "warning",   
                       showCancelButton: true,   
                       confirmButtonColor: "#e6b034",   
-                      confirmButtonText: "Ya, Hapus Agen" 
+                      confirmButtonText: "Ya, Hapus Customer" 
                        
                   }).then((result) => {
             if (result.value) {
                 $.ajax({
                             method:'POST',
-                            url:base_url+'master/agen/delete',
+                            url:base_url+'master/customer/delete',
                             data:{
                               id:id,
                               '_token': $('input[name=_token]').val()
                             },
                             success:function(data){
-                                Swal.fire({title:"Terhapus!", text:"Agen "+data.agen.nama+" berhasil terhapus dari sistem", icon:"success"}
+                              console.log(data)
+                                Swal.fire({title:"Terhapus!", text:"Customer "+data.customer.nama+" berhasil terhapus dari sistem", icon:"success"}
                                 ).then((result) => {
                                     location.reload()
                                 })

@@ -25,17 +25,19 @@ class AgenController extends Controller
     }
 
     public function save(Request $request){
-        $username = strtolower(preg_replace('/\s+/', '_', $request->nama));
-        $user = User::create([
-            "username" => $username,
-            "password" => '$2y$10$s.aYGxhPXfTPN3/Hf8i1t.UDIWZUFIOdxhUl6c56YcrF7kI0Y3g3W',
-            "level" => 2
-        ]);
         $agen = Agen::create([
             'nama' => $request->nama,
-            'idkota' => $request->kota,
             'kode'  => $request->kode,
-            'user_id' => $user->id
+            'idkota1' => $request->idkota1,
+            'idkota2' => $request->idkota2,
+            'idkota3' => $request->idkota3,
+            'idkota4' => $request->idkota4,
+            'idkota5' => $request->idkota5,
+            'idkota6' => $request->idkota6,
+            'idkota7' => $request->idkota7,
+            'idkota8' => $request->idkota8,
+            'idkota9' => $request->idkota9,
+            'idkota10' => $request->idkota10,
         ]);
 
         return redirect('master/agen')->with('message','created');
@@ -43,9 +45,18 @@ class AgenController extends Controller
 
     public function update(Request $request){
         $agen = Agen::find($request->id)->update([
-            'nama' => mysql_escape_string($request->nama),
-            'idkota' => $request->kota,
+            'nama' => $request->nama,
             'kode'  => $request->kode,
+            'idkota1' => $request->idkota1,
+            'idkota2' => $request->idkota2,
+            'idkota3' => $request->idkota3,
+            'idkota4' => $request->idkota4,
+            'idkota5' => $request->idkota5,
+            'idkota6' => $request->idkota6,
+            'idkota7' => $request->idkota7,
+            'idkota8' => $request->idkota8,
+            'idkota9' => $request->idkota9,
+            'idkota10' => $request->idkota10,
         ]);
         return redirect('master/agen')->with('message','updated');
     }
@@ -59,21 +70,25 @@ class AgenController extends Controller
         $agen = Agen::find($request->id);
         $user = User::where('id',$agen->user_id)->first();
         Agen::find($request->id)->delete();
-        User::where('id',$agen->user_id)->delete();
-        activity()->withProperties(['username yang terhapus' => $user->username], "deleted_users")->log('deleted_users');
         return response()->json(array('agen' => $agen));
     }
 
     public function datatables(){
-        $agen = DB::SELECT('SELECT a.*,k.nama as nama_kota, u.username FROM agen a INNER JOIN kota k ON a.idkota = k.id INNER JOIN users u ON a.user_id = u.id WHERE a.deleted_at IS NULL');
+        $agen = DB::SELECT('SELECT a.*,u.username FROM agen a INNER JOIN users u ON a.user_id = u.id WHERE a.deleted_at IS NULL');
         $agens = new Collection;
+        $strings = "";
         foreach ($agen as $a):
+            
+            $kota = DB::SELECT("SELECT * FROM view_agen_kota WHERE agen_id = ".$a->id);
+            foreach($kota as $k):
+                $strings .= '<span class="label label-lg label-dark label-inline mr-2">'.$k->nama.'</span>';
+            endforeach;
             $agens->push([
                 'id'  => $a->id,
                 'kode'  => $a->kode,
                 'nama_agen'  => $a->nama,
-                'kota'  => $a->nama_kota,
                 'username' => $a->username,
+                'coverage' => $strings
             ]);
         endforeach;
         return Datatables::of($agens)
@@ -85,7 +100,7 @@ class AgenController extends Controller
                 <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAgen(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>
                 </div>';
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['coverage','aksi'])
             ->make(true);
     }
 }

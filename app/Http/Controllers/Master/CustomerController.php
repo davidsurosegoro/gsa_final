@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\User;
+use App\Kota;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -25,17 +26,21 @@ class CustomerController extends Controller
 
     public function create()
     {
-        return view('pages.master.customer.create');
+        $kota = Kota::all();
+        return view('pages.master.customer.create',compact('kota'));
     }
 
     public function edit($id)
     {
+        $kota = Kota::all();
         $customer = Customer::find($id);
-        return view('pages.master.customer.edit',compact('customer'));
+        return view('pages.master.customer.edit',compact('customer','kota'));
     }
 
     public function delete(Request $request){
-        $customer = Customer::find($request->id)->delete();
+        $customer = Customer::find($request->id);
+        Customer::find($request->id)->delete();
+        return response()->json(array('customer' => $customer));
     }
 
     public function save(Request $request){
@@ -43,12 +48,6 @@ class CustomerController extends Controller
         if($request->access == "on"){
             $access = TRUE; 
         }
-        $username = strtolower(preg_replace('/\s+/', '_', $request->nama));
-        $user = User::create([
-            "username" => $username,
-            "password" => '$2y$10$s.aYGxhPXfTPN3/Hf8i1t.UDIWZUFIOdxhUl6c56YcrF7kI0Y3g3W',
-            "level" => 3
-        ]);
         $customer = Customer::create([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
@@ -64,16 +63,53 @@ class CustomerController extends Controller
             'harga_kg' => substr(preg_replace('/[.,]/', '', $request->harga_kg), 0, -2),
             'harga_doc' => substr(preg_replace('/[.,]/', '', $request->harga_doc), 0, -2),
             'harga_oa_ship' => substr(preg_replace('/[.,]/', '', $request->harga_oa_ship), 0, -2),
-            'user_id' => $user->id,
-            'can_access_satuan' => $access
+            'can_access_satuan' => $access,
+            'kode' => $request->kode,
+            'idkota' => $request->idkota,
+            'jenis_out_area' => $request->jenis_out_area,
         ]);
         return redirect('master/customer')->with('message','created');
+    }
+
+    public function update(Request $request){
+        $access = FALSE;
+        if($request->access == "on"){
+            $access = TRUE; 
+        }
+        $customer  = Customer::find($request->id)->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'notelp' => $request->notelp,
+            'rekening' => $request->rekening,
+            'bank' => $request->bank,
+            'rekeningatasnama' => $request->rekeningatasnama,
+            'harga_oa' => substr(preg_replace('/[.,]/', '', $request->harga_oa), 0, -2),
+            'harga_koli_k' => substr(preg_replace('/[.,]/', '', $request->harga_koli_k), 0, -2),
+            'harga_koli_s' => substr(preg_replace('/[.,]/', '', $request->harga_koli_s), 0, -2),
+            'harga_koli_b' => substr(preg_replace('/[.,]/', '', $request->harga_koli_b), 0, -2),
+            'harga_koli_bb' => substr(preg_replace('/[.,]/', '', $request->harga_koli_bb), 0, -2),
+            'harga_kg' => substr(preg_replace('/[.,]/', '', $request->harga_kg), 0, -2),
+            'harga_doc' => substr(preg_replace('/[.,]/', '', $request->harga_doc), 0, -2),
+            'harga_oa_ship' => substr(preg_replace('/[.,]/', '', $request->harga_oa_ship), 0, -2),
+            'can_access_satuan' => $access,
+            'kode' => $request->kode,
+            'idkota' => $request->idkota,
+            'jenis_out_area' => $request->jenis_out_area,
+        ]);
+        return redirect('master/customer')->with('message','updated');
     }
 
     public function datatables()
     {
         $customer = Customer::all();
         return Datatables::of($customer)
+        ->addColumn('akses_satuan', function($a){
+            if($a->can_access_satuan):
+                return '<span class="label label-lg label-success label-inline mr-2">Diberikan Hak Akses</span>';
+            else:
+                return '<span class="label label-lg label-danger label-inline mr-2">Tidak Diberikan</span>';
+            endif;
+        })
         ->addColumn('aksi', function ($a) {
             return '<div class="btn-group" role="group" aria-label="Basic example">
                 <a href="'.url('master/customer/edit/'.$a['id']).'" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
@@ -85,7 +121,7 @@ class CustomerController extends Controller
         ->addColumn('details_url', function($a) {
             return url('master/customer/data-harga/' . $a->id);
         })
-        ->rawColumns(['aksi'])
+        ->rawColumns(['aksi','akses_satuan'])
         ->make(true);
     }
 }

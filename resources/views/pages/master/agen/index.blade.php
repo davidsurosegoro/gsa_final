@@ -18,7 +18,7 @@
             <tr>
               <th>Kode</th>
               <th>Nama Agen</th>
-              <th>Kota</th>
+              <th>Coverage Kota Agen</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -27,107 +27,9 @@
   </div>
 </div>
 
-<div class="modal fade" id="modal-create" tabindex="-1" role="dialog"  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        
-    <form method="POST" action="{{ url('master/agen/save') }}" id="frm-save">
-      {{ csrf_field() }}
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">FORM TAMBAH DATA AGEN</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i aria-hidden="true" class="ki ki-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          
-          <div class="form-group">
-            <label>Nama Agen:</label>
-            <input type="text" name="nama" class="form-control form-control-solid" placeholder="Inpur Nama Agen" required>
-            <span class="form-text text-muted">Silahkan masukan nama agen</span>
-          </div>
+@include('pages.master.agen.modal_create')
+@include('pages.master.agen.modal_edit')
 
-          <div class="form-group">
-            <label>Kota Agen:</label>
-            <div class="row">
-              <select name="kota" style="width: 100%" class="select2 form-control col-md-12" id="kota" data-live-search="true" required>
-                <option value="">--Pilih Kota-- </option>
-                @foreach($kota as $u)
-                  <option value="{{ $u->id }}">{{ $u->nama }} </option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          
-          <div class="form-group">
-            <label>Kode Agen:</label>
-            <input type="text" name="kode" class="form-control form-control-solid" placeholder="Inpur Kode Agen" required>
-            <span class="form-text text-muted">Silahkan masukan kode agen</span>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary font-weight-bold">SIMPAN</button>
-        </div>
-        
-    </form>
-      </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="modal-edit-agen" role="dialog"  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        
-    <form method="POST" action="{{ url('master/agen/update') }}">
-      <input type="hidden" name="id" id="idagen" value="">
-      {{ csrf_field() }}
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">FORM EDIT DATA AGEN</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i aria-hidden="true" class="ki ki-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          
-          <div class="form-group">
-            <label>Nama Agen:</label>
-            <input type="text" name="nama" id="nama" class="form-control form-control-solid" placeholder="Inpur Nama Agen" required>
-            <span class="form-text text-muted">Silahkan masukan nama agen</span>
-          </div>
-
-          <div class="form-group">
-            <label>Kota Agen:</label>
-            <div class="row">
-              <select name="kota" id="idkota" style="width: 100%" class="select2 form-control col-md-12" data-live-search="true" required>
-                <option value="">--Pilih Kota-- </option>
-                @foreach($kota as $u)
-                  <option value="{{ $u->id }}">{{ $u->nama }} </option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          
-          <div class="form-group">
-            <label>Kode Agen:</label>
-            <input type="text" id="kode" name="kode" class="form-control form-control-solid" placeholder="Inpur Kode Agen" required>
-            <span class="form-text text-muted">Silahkan masukan kode agen</span>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary font-weight-bold">SIMPAN</button>
-        </div>
-        
-    </form>
-      </div>
-  </div>
-</div>
 @endsection
 @section('script')
 <script>
@@ -139,7 +41,7 @@
 	    columns: [
 	    {data: 'kode', name:'kode'},
 	    {data: 'nama_agen', name:'nama_agen'},
-	    {data: 'kota', name:'kota'},
+	    {data: 'coverage', name:'coverage'},
 	    {data: 'aksi', name:'aksi'},
 	],
 	 "order": [[ 1, "asc" ]],
@@ -187,7 +89,26 @@
                               console.log(data);
                               $('#idagen').val(data.agen.id)
                               $('#nama').val(data.agen.nama)
-                              $('#idkota').val(data.agen.idkota)
+                              $('#idkota1').val(data.agen.idkota1)
+                              $("#idkota1").val(data.agen.idkota1).trigger('change')
+                              $('#idkota2').val(data.agen.idkota2)
+                              $("#idkota2").val(data.agen.idkota2).trigger('change')
+                              $('#idkota3').val(data.agen.idkota3)
+                              $("#idkota3").val(data.agen.idkota3).trigger('change')
+                              $('#idkota4').val(data.agen.idkota4)
+                              $("#idkota4").val(data.agen.idkota4).trigger('change')
+                              $('#idkota5').val(data.agen.idkota5)
+                              $("#idkota5").val(data.agen.idkota5).trigger('change')
+                              $('#idkota6').val(data.agen.idkota6)
+                              $("#idkota6").val(data.agen.idkota6).trigger('change')
+                              $('#idkota7').val(data.agen.idkota7)
+                              $("#idkota7").val(data.agen.idkota7).trigger('change')
+                              $('#idkota8').val(data.agen.idkota8)
+                              $("#idkota8").val(data.agen.idkota8).trigger('change')
+                              $('#idkota9').val(data.agen.idkota9)
+                              $("#idkota9").val(data.agen.idkota9).trigger('change')
+                              $('#idkota10').val(data.agen.idkota10)
+                              $("#idkota10").val(data.agen.idkota10).trigger('change')
                               $('#kode').val(data.agen.kode)
                             }
                           }) 

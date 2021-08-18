@@ -13,9 +13,9 @@ class Customer extends Model
 
     protected $table = 'customer';
 
-    protected static $logAttributes = ['nama','notelp','alamat', 'user_id','harga_koli_k','harga_koli_s','harga_koli_b','harga_koli_bb','harga_kg','harga_doc','harga_oa','harga_oa_ship','rekening','bank','rekeningatasnama','can_access_satuan'];
+    protected static $logAttributes = ['nama','notelp','alamat','harga_koli_k','harga_koli_s','harga_koli_b','harga_koli_bb','harga_kg','harga_doc','harga_oa','harga_oa_ship','rekening','bank','rekeningatasnama','can_access_satuan','jenis_out_area','kode','idkota'];
 
     protected $fillable = [
-        'nama','notelp','alamat', 'user_id','harga_koli_k','harga_koli_s','harga_koli_b','harga_koli_bb','harga_kg','harga_doc','harga_oa','harga_oa_ship','rekening','bank','rekeningatasnama','can_access_satuan'
+        'nama','notelp','alamat','harga_koli_k','harga_koli_s','harga_koli_b','harga_koli_bb','harga_kg','harga_doc','harga_oa','harga_oa_ship','rekening','bank','rekeningatasnama','can_access_satuan','jenis_out_area','kode','idkota'
     ];
 }

@@ -30,7 +30,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/','Master\CustomerController@index');
 			Route::get('/create','Master\CustomerController@create');
 			Route::get('/edit/{id}','Master\CustomerController@edit');
-			Route::get('/update','Master\CustomerController@update');
+			Route::post('/update','Master\CustomerController@update');
 			Route::post('/save','Master\CustomerController@save');
 			Route::post('/delete','Master\CustomerController@delete');
 			Route::get('/datatables','Master\CustomerController@datatables');
@@ -48,8 +48,9 @@ Route::prefix('master')->group(function(){
 
 
 Route::prefix('awb')->group(function(){
-	return 'sss';
+
 });
+
 
 
 Route::prefix('ajax')->group(function(){

@@ -255,6 +255,7 @@ tr.details td.details-control {
             $('.rupiah').autoNumeric({allowDecimalPadding: false,
     createLocalList: false,
     decimalCharacterAlternative: ""})
+    
         </script>
         @yield('script')
         <!--end::Page Scripts-->
