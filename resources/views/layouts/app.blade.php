@@ -111,7 +111,7 @@ tr.details td.details-control {
                                         <!--begin::Dropdown-->
                                         <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-xl dropdown-menu-anim-up">
                                                 <!--begin::Header-->
-                                                <div class="d-flex align-items-center py-10 px-8 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url(assets/media/misc/bg-1.jpg)">
+                                                <div class="d-flex align-items-center py-10 px-8 bgi-size-cover bgi-no-repeat rounded-top" style="background-image: url({{asset('assets/media/misc/bg-1.jpg')}})">
                                                     <span class="btn btn-md btn-icon bg-white-o-15 mr-4">
                                                         <i class="flaticon-user text-success"></i>
                                                     </span>
@@ -125,6 +125,9 @@ tr.details td.details-control {
                                                    <div class="p-8">
                                                     <div class="d-flex align-items-center justify-content-between mb-7">
                                                         <a href="{{ url('/log') }}" class="text-right"> Logs Aktivitas</a>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between mb-7">
+                                                        <a href="#" class="text-right" data-toggle="modal" data-target="#myModal"> Ganti Password</a>
                                                     </div>
                                                     <div class="d-flex align-items-center justify-content-between mb-7">
                                                         <a href="{{ url('/logout') }}" class="text-right" onclick="event.preventDefault();
@@ -196,6 +199,44 @@ tr.details td.details-control {
         <!--begin::Chat Panel-->
         <!--end::Chat Panel-->
         <!--begin::Scrolltop-->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+          
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title text-left">Ganti Password</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="POST" action="{{url('master/users/gantipassword')}}">  
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label>Username:</label>
+                            <input type="text" required readonly class="form-control" style="background-color:#e4e4e4;" name="username" value="{{ Auth::user()->username }}" />        
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" required  class="form-control" name="password" id="password" value="" />        
+                        </div>
+                        <div class="form-group">
+                            <label>Ketik Password Ulang:</label>
+                            <input type="password" required  class="form-control" name="repassword" id="repassword" value="" />        
+                        </div>
+                        <button type='submit' id='changepassword' class="btn btn-primary mr-2">Ganti Password</button>
+                    </form>
+                    <br>
+                    <div class="col-md-12 col-xs-12 g-margin-t-10--xs alert alert-danger d-none" role="alert" id="passwordalert">
+                        Password doesn't match
+                    </div>
+                    <div class="col-md-12 col-xs-12 g-margin-t-10--xs alert alert-danger d-none" role="alert" id="passwordlength">
+                        Password length minimum 8 characters
+                    </div> 
+                </div> 
+              </div>
+          
+            </div>
+          </div>
         <div id="kt_scrolltop" class="scrolltop">
             <span class="svg-icon">
                 <!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Up-2.svg-->
@@ -232,6 +273,39 @@ tr.details td.details-control {
         <script src={{ asset('assets/js/pages/autoNumeric.js') }}></script>
         <script src="{{ asset('assets/js/pages/widgets.js')}}"></script>
         <script type="text/javascript">
+            function checkpassword() {  
+                var password    = $('#password'  ).val();
+                var repassword  = $('#repassword').val();
+                // if(old_password!=''){
+                console.log(password)
+                console.log(repassword)
+                if($('#password').val().length>0 && $('#password').val().length<8){
+                    $('#passwordlength' ).removeClass('d-none')
+                    $('#passwordalert'  ).addClass('d-none')
+                    $("#changepassword" ).prop('disabled', true);
+                }
+                else{
+                    console.log('masuk')
+                    $('#passwordlength').addClass('d-none')
+                    if(password!=repassword){
+                        console.log('masuk if')
+                        $('#passwordalert'  ).removeClass('d-none') 
+                    }
+                    else if(password==repassword){
+                        console.log('masuk else')
+                        $('#passwordalert'  ).addClass('d-none') 
+                        $("#changepassword" ).prop('disabled', false);
+                    }
+                }                   
+            }
+            $('#password').keyup(function(){
+                checkpassword()
+            })
+
+            $('#repassword').keyup(function(){
+                checkpassword()
+            })
+            var timertyping = null; 
             toastr.options = {
               "closeButton": true,
               "debug": false,
@@ -260,5 +334,11 @@ tr.details td.details-control {
         @yield('script')
         <!--end::Page Scripts-->
     </body>
+    
+@if(Session::get('message') == "Password Updated")
+<script type="text/javascript">
+    toastr.success("Password berhasil dirubah!");
+</script>
+@endif 
     <!--end::Body-->
 </html>
