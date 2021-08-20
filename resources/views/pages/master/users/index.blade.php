@@ -18,10 +18,12 @@
             <tr> 
               <th>Nama</th>
               <th>Username</th>
+              <th>Jenis</th>
               <th>Alamat</th>
               <th>No Telp</th>
               <th>Email</th>
-              <th>Aksi</th>
+              <th width='5%'>Status</th> 
+              <th width='5%'>Aksi</th>
             </tr>
           </thead>
         </table>
@@ -42,14 +44,16 @@
 	     columns    : [
          
       
-	     {data: 'nama',     name:'nama'},
-	     {data: 'username', name:'username'},
-	     {data: 'alamat',   name:'alamat'},
-	     {data: 'notelp',   name:'notelp'},
-	     {data: 'email',    name:'email'},
-	     {data: 'aksi',     name:'aksi'},
-	 ],
-	  "order": [[ 1, "asc" ]],
+          {data: 'nama',          name:'nama'},
+          {data: 'username',      name:'username'},
+          {data: 'jenis',         name:'jenis'},
+          {data: 'alamat',        name:'alamat'},
+          {data: 'notelp',        name:'notelp'},
+          {data: 'email',         name:'email'},
+          {data: 'aktifnonaktif', name:'Status'},
+          {data: 'aksi',          name:'aksi'},
+      ],
+	   "order": [[ 1, "asc" ]],
     });
 
     var detailRows = [];
@@ -60,33 +64,33 @@
             $('#'+id+' td.details-control').trigger( 'click' );
         } );
     } );
-
-   function deleteCustomer(id,nama)
+    function deleteCustomer(status,id,nama)
     {
          Swal.fire({   
                       title               : "Anda Yakin?",   
-                      text                : "Data Users akan terhapus dari sistem",   
+                      text                : "Data user akan di-"+status+"-kan dari sistem",   
                       icon                : "warning",   
                       showCancelButton    : true,   
                       confirmButtonColor  : "#e6b034",   
-                      confirmButtonText   : "Ya, Hapus Users" 
+                      confirmButtonText   : "Ya,   "+status+"-kan user" 
                        
                   }).then((result) => {
             if (result.value) {
-                $.ajax({
-                            method  :'POST',
-                            url     :'{{ url('master/users/delete') }}',
-                            data    :{
-                              id:id,
-                              '_token': $('input[name=_token]').val()
-                            },
-                            success:function(data){
-                                Swal.fire({title:"Terhapus!", text:"Users "+nama+" berhasil terhapus dari sistem", icon:"success"}
-                                ).then((result) => {
-                                    location.reload()
-                                })
-                            }
-                          }) 
+              $.ajax({
+                method  :'POST',
+                url     :'{{ url('master/users/delete') }}',
+                data    :{
+                  id:id,
+                  status:status,
+                  '_token': $('input[name=_token]').val()
+                },
+                success:function(data){
+                    Swal.fire({title:"Rubah status berhasil!", text:"user "+nama+" berhasil di-"+status+"-kan ", icon:"success"}
+                    ).then((result) => {
+                        location.reload()
+                    })
+                }
+              }) 
             } 
          });
     }

@@ -102,7 +102,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
         checkhidden(0)
-    
         function checkhidden(resetval){
             if(resetval==1){
                 console.log('masuk  ')
@@ -159,7 +158,6 @@
             @endif
         });
     })
-    
     
 </script>
 @endsection

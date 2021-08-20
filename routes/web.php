@@ -24,8 +24,29 @@ Route::prefix('log')->group(function(){
 
 	Route::get('/','LogController@index');
 });
+Route::get('qr-code-g', function () {
+    QrCode::size(500)->format('png')->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
+    return view('qrCode');    
+});
+Route::prefix('printout')->group(function(){ 
+	Route::get('/invoice/{id}'  ,'PrintoutController@invoice');
+	Route::get('/manifest/{id}' ,'PrintoutController@manifest');
+	Route::get('/awb/{id}'  	,'PrintoutController@awb');
+});
 
 Route::prefix('master')->group(function(){ 
+		Route::prefix('kota')->group(function(){
+			Route::get('/' 				,'Master\KotaController@index');
+			Route::get('/create' 		,'Master\KotaController@create');
+			Route::get('/edit/{id}'		,'Master\KotaController@edit');
+			Route::post('/update'		,'Master\KotaController@update');
+			Route::post('/save'			,'Master\KotaController@save');
+			Route::post('/delete' 		,'Master\KotaController@delete');
+			Route::get('/datatables' 	,'Master\KotaController@datatables');
+			Route::post('/gantipassword','Master\KotaController@gantipassword');
+			Route::get('/checkusername'	,'Master\KotaController@checkusername');
+
+		});
 		Route::prefix('users')->group(function(){
 			Route::get('/' 				,'Master\UsersController@index');
 			Route::get('/create' 		,'Master\UsersController@create');

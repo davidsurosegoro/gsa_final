@@ -30,17 +30,29 @@ class UsersController extends Controller
         $users = User::where('id' ,'>', '0');
         return Datatables::of($users)
         ->addColumn('aksi', function ($a) {
-            return '<div class="btn-group" role="group" aria-label="Basic example">
+            $status='nonaktif';
+            if($a['status']=='nonaktif'){$status='aktif';}
+            return '
+            <div class="btn-group" role="group" aria-label="Basic example">
                 <a href="'.url('master/users/edit/'.$a['id']).'" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
                     <i class="flaticon-edit-1"></i>
                 </a>
-                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Customer" onClick="deleteCustomer(' . $a['id'] . ',\'' . $a['username'] . '\')"> <i class="flaticon-delete"></i> </button>
-                </div>';
+                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Customer" onClick="deleteCustomer(\''.$status.'\',' . $a['id'] . ',\'' . $a['nama'] . '\')"> <i class="flaticon-delete"></i> </button>
+            </div>';
         })
-        ->addColumn('details_url', function($a) {
-            return url('master/users/data-harga/' . $a->id);
+        ->addColumn('jenis', function ($a) {
+            $jenis='<p><i class="fa fa-user-circle-o" aria-hidden="true"></i>&nbsp;admin</p>';
+            if($a['level']==2){$jenis='<p><i class="fa fa-address-card" aria-hidden="true"></i>&nbsp;Customer</p>';}
+            if($a['level']==3){$jenis='<p><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Kantor Agen</p>';}
+            if($a['level']==4){$jenis='<p><i class="fa fa-motorcycle" aria-hidden="true"></i>&nbsp;Delivery Kurir</p>';}
+            return $jenis;
+        })       
+        ->addColumn('aktifnonaktif', function ($a) {
+            $aktifnonaktif='<div class="text-center alert alert-success m-0 p-1" role="alert">AKTIF</div>';
+            if($a['status']=='nonaktif'){$aktifnonaktif='<div class="alert alert-danger m-0 p-1 text-center" role="alert">NONAKTIF</div>';}
+            return $aktifnonaktif;
         })
-        ->rawColumns(['aksi'])
+        ->rawColumns(['aksi','jenis','aktifnonaktif'])
         ->make(true);
     }
     public function checkusername(Request $request)
@@ -157,7 +169,9 @@ class UsersController extends Controller
     }
 
     public function delete(Request $request){ 
-        $user = User::find($request->id)->delete();
+        $user = User::where('id',$request['id'])->first(); 
+        $user->status = $request['status']; 
+        $user->save();
         // User::find($request->id)->delete();
         // activity()->withProperties(['username yang terhapus' => $user2->username], "deleted_users")->log('deleted_users');
         return response()->json(array('user' => $user));

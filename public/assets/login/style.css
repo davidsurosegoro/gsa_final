@@ -11243,6 +11243,9 @@ ul {
   .fxt-template-layout29 .fxt-bg-color {
     min-height: 100%;
   }
+  .fxt-template-layout29 .fxt-bg-img {
+    height: 30vh !important;
+    min-height: 10vh !important;}
 }
 @media only screen and (max-width: 575px) {
   .fxt-template-layout29 .fxt-bg-color {
