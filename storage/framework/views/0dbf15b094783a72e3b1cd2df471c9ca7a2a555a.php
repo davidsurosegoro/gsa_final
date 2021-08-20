@@ -97,7 +97,18 @@
       <label>Jenis Out Area</label>
       <div class="radio-inline">
         <label class="radio">
-        <?php if( $customer->jenis_out_area == "resi" ): ?>
+          <?php if( $customer->jenis_out_area == "shipment" ): ?>
+          <input type="radio" name="jenis_out_area" value="shipment" checked="checked" required>
+          <span></span>Per Shipment</label>
+          <label class="radio">
+          <input type="radio" name="jenis_out_area" value="resi" required>
+          <span></span>Per Resi</label>
+          <label class="radio">
+          <input type="radio" name="jenis_out_area" value="koli" required>
+          <span></span>Per Koli</label>
+        <?php elseif( $customer->jenis_out_area == "resi" ): ?>
+          <input type="radio" name="jenis_out_area" value="shipment" required>
+          <span></span>Per Shipment</label>
           <label class="radio">
           <input type="radio" name="jenis_out_area" value="resi" checked="checked" required>
           <span></span>Per Resi</label>

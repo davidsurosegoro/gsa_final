@@ -90,6 +90,9 @@
       <label>Jenis Out Area</label>
       <div class="radio-inline">
         <label class="radio">
+        <input type="radio" name="jenis_out_area" value="shipment" required>
+        <span></span>Per Shipment</label>
+        <label class="radio">
         <input type="radio" name="jenis_out_area" value="resi" required>
         <span></span>Per Resi</label>
         <label class="radio">
