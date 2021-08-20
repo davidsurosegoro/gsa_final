@@ -25,25 +25,6 @@ Route::prefix('log')->group(function () {
 
 	Route::get('/', 'LogController@index');
 });
-Route::prefix('master')->group(function () {
-	Route::prefix('customer')->group(function () {
-		Route::get('/', 'Master\CustomerController@index');
-		Route::get('/create', 'Master\CustomerController@create');
-		Route::get('/edit/{id}', 'Master\CustomerController@edit');
-		Route::post('/update', 'Master\CustomerController@update');
-		Route::post('/save', 'Master\CustomerController@save');
-		Route::post('/delete', 'Master\CustomerController@delete');
-		Route::get('/datatables', 'Master\CustomerController@datatables');
-	});
-
-	Route::prefix('agen')->group(function () {
-		Route::get('/', 'Master\AgenController@index');
-		Route::get('/datatables', 'Master\AgenController@datatables');
-		Route::post('/save', 'Master\AgenController@save');
-		Route::post('/edit', 'Master\AgenController@edit');
-		Route::post('/update', 'Master\AgenController@update');
-		Route::post('/delete', 'Master\AgenController@delete');
-	});
 Route::prefix('master')->group(function(){ 
 		Route::prefix('users')->group(function(){
 			Route::get('/' 				,'Master\UsersController@index');
