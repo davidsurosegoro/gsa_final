@@ -61,7 +61,7 @@
             if (result.value) {
                 $.ajax({
                             method:'POST',
-                            url:base_url+'master/agen/delete',
+                            url:'{{ url("master/agen/delete") }}',
                             data:{
                               id:id,
                               '_token': $('input[name=_token]').val()
@@ -80,7 +80,7 @@
     function editAgen(id){
       $.ajax({
                             method:'POST',
-                            url:base_url+'master/agen/edit',
+                            url:'{{ url("master/agen/edit") }}',
                             data:{
                               id:id,
                               '_token': $('input[name=_token]').val()

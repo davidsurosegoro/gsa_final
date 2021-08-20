@@ -63,7 +63,7 @@
                                                     </span>
                                                     </a>
                                                     <br>
-                                                    <a href="<?php echo e(url('master/user')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Users</a>
+                                                    <a href="<?php echo e(url('master/users')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Users</a>
                                             </div>
                                         </div> 
                                     </div>

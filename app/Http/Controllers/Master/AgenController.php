@@ -74,7 +74,7 @@ class AgenController extends Controller
     }
 
     public function datatables(){
-        $agen = DB::SELECT('SELECT a.*,u.username FROM agen a INNER JOIN users u ON a.user_id = u.id WHERE a.deleted_at IS NULL');
+        $agen = DB::SELECT('SELECT a.* FROM agen a WHERE a.deleted_at IS NULL');
         $agens = new Collection;
         $strings = "";
         foreach ($agen as $a):
@@ -87,9 +87,9 @@ class AgenController extends Controller
                 'id'  => $a->id,
                 'kode'  => $a->kode,
                 'nama_agen'  => $a->nama,
-                'username' => $a->username,
                 'coverage' => $strings
             ]);
+            $strings = '';
         endforeach;
         return Datatables::of($agens)
             ->addColumn('aksi', function ($a) {

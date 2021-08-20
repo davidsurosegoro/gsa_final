@@ -97,18 +97,7 @@
       <label>Jenis Out Area</label>
       <div class="radio-inline">
         <label class="radio">
-          <?php if( $customer->jenis_out_area == "shipment" ): ?>
-          <input type="radio" name="jenis_out_area" value="shipment" checked="checked" required>
-          <span></span>Per Shipment</label>
-          <label class="radio">
-          <input type="radio" name="jenis_out_area" value="resi" required>
-          <span></span>Per Resi</label>
-          <label class="radio">
-          <input type="radio" name="jenis_out_area" value="koli" required>
-          <span></span>Per Koli</label>
-        <?php elseif( $customer->jenis_out_area == "resi" ): ?>
-          <input type="radio" name="jenis_out_area" value="shipment" required>
-          <span></span>Per Shipment</label>
+        <?php if( $customer->jenis_out_area == "resi" ): ?>
           <label class="radio">
           <input type="radio" name="jenis_out_area" value="resi" checked="checked" required>
           <span></span>Per Resi</label>
@@ -132,11 +121,6 @@
     <div class="form-group">
       <label>Harga Out Area:</label>
        <input type="text" class="form-control rupiah"  value="<?php echo e($customer->harga_oa); ?>" name="harga_oa" placeholder="Input Harga Out Area. . ."/>
-     </div>
-     
-     <div class="form-group">
-      <label>Harga Out Area Shipment:</label>
-       <input type="text" class="form-control rupiah" value="<?php echo e($customer->harga_oa_ship); ?>" name="harga_oa_ship" placeholder="Inpu tHarga Out Area Shipment. . ."/>
      </div>
 
     <div class="form-group">

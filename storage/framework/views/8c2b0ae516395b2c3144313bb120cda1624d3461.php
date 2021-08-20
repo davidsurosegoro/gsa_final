@@ -1,11 +1,12 @@
-@extends('layouts.app')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="card card-custom gutter-b example example-compact">
   <div class="card-header">
     <h3 class="card-title">FORM TAMBAH DATA CUSTOMER </h3>
   </div>
-<form class="form" method="POST" action="{{ url('master/customer/save')}}">
-  {{ csrf_field() }}
+<form class="form" method="POST" action="<?php echo e(url('master/customer/save')); ?>">
+  <?php echo e(csrf_field()); ?>
+
   <div class="card-body">
    <div class="row">
     <div class="col-lg-6">
@@ -16,13 +17,13 @@
       <div class="form-group">
        <label>Kota:</label>
        <select type="text" class="form-control select2" name="idkota" >
-         @foreach($kota as $k)
-          @if($k->id == "3578")
-            <option value="{{ $k->id }}" selected>{{ $k->nama }} </option>
-            @else
-            <option value="{{ $k->id }}">{{ $k->nama }} </option>
-            @endif
-         @endforeach
+         <?php $__currentLoopData = $kota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php if($k->id == "3578"): ?>
+            <option value="<?php echo e($k->id); ?>" selected><?php echo e($k->nama); ?> </option>
+            <?php else: ?>
+            <option value="<?php echo e($k->id); ?>"><?php echo e($k->nama); ?> </option>
+            <?php endif; ?>
+         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
        </select>
      </div>
     <div class="form-group">
@@ -126,9 +127,10 @@
   </div>
  </form>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script>
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\GSA\gsa_final\resources\views/pages/master/customer/create.blade.php ENDPATH**/ ?>

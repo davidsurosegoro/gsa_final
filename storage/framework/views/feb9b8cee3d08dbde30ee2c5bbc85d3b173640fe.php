@@ -44,14 +44,14 @@
 	     columns    : [
          
       
-          {data: 'nama',     name:'nama'},
-          {data: 'username', name:'username'},
-          {data: 'jenis',    name:'jenis'},
-          {data: 'alamat',   name:'alamat'},
-          {data: 'notelp',   name:'notelp'},
-          {data: 'email',    name:'email'},
-          {data: 'aktifnonaktif',name:'Status'},
-          {data: 'aksi',     name:'aksi'},
+          {data: 'nama',          name:'nama'},
+          {data: 'username',      name:'username'},
+          {data: 'jenis',         name:'jenis'},
+          {data: 'alamat',        name:'alamat'},
+          {data: 'notelp',        name:'notelp'},
+          {data: 'email',         name:'email'},
+          {data: 'aktifnonaktif', name:'Status'},
+          {data: 'aksi',          name:'aksi'},
       ],
 	   "order": [[ 1, "asc" ]],
     });
@@ -76,21 +76,21 @@
                        
                   }).then((result) => {
             if (result.value) {
-                $.ajax({
-                            method  :'POST',
-                            url     :'<?php echo e(url('master/users/delete')); ?>',
-                            data    :{
-                              id:id,
-                              status:status,
-                              '_token': $('input[name=_token]').val()
-                            },
-                            success:function(data){
-                                Swal.fire({title:"Rubah status berhasil!", text:"user "+nama+" berhasil di-"+status+"-kan ", icon:"success"}
-                                ).then((result) => {
-                                    location.reload()
-                                })
-                            }
-                          }) 
+              $.ajax({
+                method  :'POST',
+                url     :'<?php echo e(url('master/users/delete')); ?>',
+                data    :{
+                  id:id,
+                  status:status,
+                  '_token': $('input[name=_token]').val()
+                },
+                success:function(data){
+                    Swal.fire({title:"Rubah status berhasil!", text:"user "+nama+" berhasil di-"+status+"-kan ", icon:"success"}
+                    ).then((result) => {
+                        location.reload()
+                    })
+                }
+              }) 
             } 
          });
     }

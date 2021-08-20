@@ -18,6 +18,7 @@
             <tr>
               <th></th>
               <th>Nama Customer</th>
+              <th>Kode</th>
               <th>Alamat</th>
               <th>No Telp</th>
               <th>Nomor Rekening</th>
@@ -86,6 +87,7 @@
                 "defaultContent": ""
             },
 	     {data: 'nama', name:'nama'},
+	     {data: 'kode', name:'kode'},
 	     {data: 'alamat', name:'alamat'},
 	     {data: 'notelp', name:'notelp'},
 	     {data: 'rekening', name:'rekening'},
@@ -143,7 +145,7 @@
             if (result.value) {
                 $.ajax({
                             method:'POST',
-                            url:base_url+'master/customer/delete',
+                            url:'{{url("master/customer/delete")}}',
                             data:{
                               id:id,
                               '_token': $('input[name=_token]').val()
