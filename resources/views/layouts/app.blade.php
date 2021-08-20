@@ -35,6 +35,9 @@ tr.details td.details-control {
     background: url('{{ asset("assets/img/icon/details_close.png") }}') no-repeat center center;
 }
             
+.exs{
+              background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23505050D1' stroke-width='4' stroke-dasharray='14%2c 23%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            }
         </style>
     </head>
     <!--end::Head-->
@@ -337,7 +340,12 @@ tr.details td.details-control {
             $('.rupiah').autoNumeric({allowDecimalPadding: false,
     createLocalList: false,
     decimalCharacterAlternative: ""})
-    
+            
+    $('.datepicker').datepicker({
+               rtl: KTUtil.isRTL(),
+               todayHighlight: true,
+               orientation: "bottom left",
+              });
         </script>
         @yield('script')
         <!--end::Page Scripts-->

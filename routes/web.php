@@ -12,17 +12,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Auth::routes();
 
-Route::prefix('popup')->group(function(){
-	});
+Route::prefix('popup')->group(function () {
+});
 
 
 Route::get('/', 'HomeController@index');
 
-Route::prefix('log')->group(function(){
+Route::prefix('log')->group(function () {
 
-	Route::get('/','LogController@index');
+	Route::get('/', 'LogController@index');
 });
 Route::get('qr-code-g', function () {
     QrCode::size(500)->format('png')->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
@@ -81,20 +82,25 @@ Route::prefix('master')->group(function(){
 });
 
 
-Route::prefix('awb')->group(function(){
-
+Route::prefix('awb')->group(function () {
+	Route::get('/', 'AwbController@index');
+	Route::get('/create', 'AwbController@create');
+	Route::get('/edit/{id}', 'AwbController@edit');
+	Route::post('/save', 'AwbController@save');
+	Route::post('/filter-kota-agen', 'AwbController@filter_kota_agen');
+	Route::get('/datatables','AwbController@datatables');
 });
 
 
 
-Route::prefix('ajax')->group(function(){
+Route::prefix('ajax')->group(function () {
 });
-Route::prefix('cron')->group(function(){
+Route::prefix('cron')->group(function () {
 });
-Route::prefix('api')->group(function(){
-	});
+Route::prefix('api')->group(function () {
+});
 
 
-Route::get('/download',function(){
+Route::get('/download', function () {
 	return view('download');
 });
