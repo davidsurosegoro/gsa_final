@@ -54,5 +54,18 @@
                                         <!--begin::Code example-->
                                         <!--end::Code example-->
                                     </div>
+                                    <div class="col-lg-4 col-xl-4 mb-5"> 
+                                        <div class="card card-custom wave wave-animate-fast wave-primary">
+                                            <div class="card-body text-center">
+                                                <a href="{{ url('master/user') }}">
+                                                    <span class="svg-icon svg-icon-primary svg-icon-6x">
+                                                        <i class="icon-6x flaticon-truck text-info"> </i>
+                                                    </span>
+                                                    </a>
+                                                    <br>
+                                                    <a href="{{ url('master/user') }}" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Users</a>
+                                            </div>
+                                        </div> 
+                                    </div>
     </div>
 @endsection
