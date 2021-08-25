@@ -19,8 +19,8 @@
                 }
                 html,
                 body {
-                    width: 210mm;
-                    height: 297mm;
+                    width: 98mm;
+                    height: 150mm;
                 }
                 .page {
                     margin: 0px !important;
@@ -70,7 +70,7 @@
             }
             .page {
                 width: 100mm;
-                max-height: 100mm;
+                max-height: 150mm;
                 height: 150mm;
                 padding: 1mm;
                 margin: 10mm auto;
@@ -86,16 +86,14 @@
     </head>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
             <div class="card page">
-                <div class="card-header  container" style="padding:0px !important; display: flex;">  
-                    <div class="col-3 text-center" style="margin-bottom:0.5cm;padding:1px;">
-                        <img src='{{asset('assets/gsa/logo.jpg')}}' style="width:1.3cm;" class="col-">
+                <div class="card-header  " style="padding:0px !important; display: flex;">  
+                    <div class="col-7 text-center" style=" padding:1px;">
+                        <img src='{{asset('assets/gsa/logo.jpg')}}' style="width:1.5cm;" class="col-">
                         <p class="col-12 font-weight-bold" style="font-size:0.2cm;padding:0px; margin:0px;">GLOBAL SERVICE ASIA</p>
-                        <p class="col-12" style="font-size:0.15cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
-                    </div> 
-                    <div class="col-sm-5" style="padding:0px;">
-                        <table  class=" col-12 table-bordered"  style="font-size:0.2cm; margin-top:0.2cm; border-right:0px !important;">
+                        <p class="col-12" style="font-size:0.2cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
+                        <table  class=" col-12 table-bordered"  style="font-size:0.27cm; border-right:0px !important;">
                             <tr>
-                                <td style="font-size:0.4cm;" colspan='2'><b>No. </b>030123</td> 
+                                <td style="font-size:0.5cm;" colspan='2'><b>No. </b>0000030123</td> 
                             </tr>
                             <tr>
                                 <td style="width:2.4cm;"><b>PICKUP BY </b></td>
@@ -106,16 +104,42 @@
                                 <td>30-SEPTEMBER-2021</td>
                             </tr> 
                         </table>
-                        <table  class=" col-12 table-bordered"  style="font-size:0.23cm; margin-top:0.1cm; border-right:0px !important;">
+                    </div> 
+                    {{-- <div class="col-sm-5" style="padding:0px;">
+                        <table  class=" col-12 table-bordered"  style="font-size:0.2cm; margin-top:0.2cm; border-right:0px !important;">
                             <tr>
-                                <th colspan='5'>Quantity:</th>
+                                <td style="font-size:0.5cm;" colspan='2'><b>No. </b>030123</td> 
+                            </tr>
+                            <tr>
+                                <td style="width:2.4cm;"><b>PICKUP BY </b></td>
+                                <td style="width:2.4cm;"><b>TANGGAL</b></td> 
+                            </tr>
+                            <tr>
+                                <td>Anton Driver</td>
+                                <td>30-SEPTEMBER-2021</td>
+                            </tr> 
+                        </table>
+                    </div>  --}}
+                    <div class="col-sm-5" style="padding:5px; padding-top:0.3cm;">
+                        {!! QrCode::size(142)->generate('ItSolutionStuff.com'); !!} 
+                    </div>
+                </div>
+                <div class="card " > 
+                    <div class="table-responsive-sm row" style="position: relative; margin:0px;">
+                        <div class=" text-right" style="padding:0px;position:absolute; bottom:0px; right:0px;font-size:0.7cm;">
+                            6/10
+                        </div>
+                        <table  class=" col-12 table-bordered"  style="font-size:0.35cm; margin-top:0.1cm;border-right:0px !important;">
+                            <tr>
+                                {{-- <th colspan='5'>Quantity:</th> --}}
                             </tr>
                             <tr class="text-center">
-                                <th width='20%'>K</th> 
-                                <th width='20%'>S</th> 
-                                <th width='20%'>B</th> 
-                                <th width='20%'>BB</th> 
-                                <th width='20%'>Kg</th> 
+                                <th width='16.6%'>K</th> 
+                                <th width='16.6%'>S</th> 
+                                <th width='16.6%'>B</th> 
+                                <th width='16.6%'>BB</th> 
+                                <th width='16.6%'>Kg</th> 
+                                <th width='16.6%'>Doc</th> 
                             </tr> 
                             <tr class="text-center">
                                 <td>2</td> 
@@ -123,24 +147,18 @@
                                 <td>4</td> 
                                 <td>0</td> 
                                 <td>0</td> 
+                                <td>1</td> 
                             </tr> 
                         </table>
-                    </div> 
-                    <div class="col-sm-4" style="padding:5px; padding-top:0.2cm;">
-                        {!! QrCode::size(105)->generate('ItSolutionStuff.com'); !!} 
-                    </div>
-                </div>
-                <div class="card"> 
-                    <div class="table-responsive-sm">
                         <table class=" table-bordered" style="font-size:0.3cm; width:100%;margin-bottom:0.1cm;margin-top:0.1cm;">
                             <tr>
-                                <td style="width:25%">
-                                    <span class="font-weight-bold">KOTA ASAL</span><br>
-                                    SURABAYA<br>
+                                <td style="width:25%; font-size:1cm;line-height:1cm;position:relative;">
+                                    <span class="font-weight-bold" style="position:absolute; top:-12px;right:5px;font-size:0.22cm;">KOTA ASAL</span>
+                                    SUB<br>
                                 </td> 
-                                <td style="width:25%">
-                                    <span class="font-weight-bold">KOTA TUJUAN</span><br>
-                                    SITUBONDO<br>
+                                <td style="width:25%; font-size:1cm;line-height:1cm;position:relative;">
+                                    <span class="font-weight-bold" style="position:absolute; top:-12px;right:5px;font-size:0.22cm;">KOTA TUJUAN</span>
+                                    MLG<br>
                                 </td>  
                             </tr>
                         </table>
@@ -152,34 +170,34 @@
                                 </tr>
                                 <tr style="height: 3cm; font-size:0.25cm;">
                                     <td style="width:50%;">
-                                        <span class="font-weight-bold">NAMA PENGIRIM:</span><br>
-                                            David surosegoro<br>
-                                        <span class="font-weight-bold">ALAMAT:</span><br>
-                                            Jl. gayungkebonsari manunggal c10<br>
-                                        <span class="font-weight-bold">KODEPOS:</span><br>
-                                            60226<br>
-                                        <span class="font-weight-bold">NO HP:</span><br>
-                                            08151651564 
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">NAMA PENGIRIM:</span><br>
+                                            <span style="font-size:0.35cm;">David surosegoro<br><span>
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">ALAMAT:</span><br>
+                                            <span style="font-size:0.35cm;">Jl. gayungkebonsari manunggal c10<br><span>
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">KODEPOS:</span><br>
+                                            <span style="font-size:0.35cm;">60226<br><span>
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">NO HP:</span><br>
+                                            <span style="font-size:0.35cm;">08151651564 <span>
                                             
                                         
                                     </td>   
                                     <td style="width:50%;">
-                                        <span class="font-weight-bold">NAMA PENERIMA:</span><br>
-                                            Indra Prasetya<br>
-                                        <span class="font-weight-bold">ALAMAT:</span><br>
-                                            Jl. gayungkebonsari manunggal c10<br>
-                                        <span class="font-weight-bold">KODEPOS:</span><br>
-                                            60226<br>
-                                        <span class="font-weight-bold">NO HP:</span><br>
-                                            08151651564 
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">NAMA PENERIMA:</span><br>
+                                            <span style="font-size:0.35cm;">Indra Prasetya<br><span>
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">ALAMAT:</span><br>
+                                            <span style="font-size:0.35cm;">Jl. gayungkebonsari manunggal c10<br><span>
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">KODEPOS:</span><br>
+                                            <span style="font-size:0.35cm;">60226<br><span>
+                                        <span class="font-weight-bold" style="font-size:0.22cm;">NO HP:</span><br>
+                                            <span style="font-size:0.35cm;">08151651564 <span>
                                     </td>    
                                 </tr>
                             </thead> 
                         </table> 
-                        <table class="table-striped table-bordered" style='margin-top:0.1cm;'>
+                        <table class="table-striped table-bordered col-10" style='margin-top:0.1cm;'>
                             <thead>
                                 <tr> 
-                                    <td class='text-left' style="font-size:0.22cm;">
+                                    <td class='text-left' style="font-size:0.24cm;">
                                         <span style="font-weight:bold;">Keterangan</span><br>
                                         In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.
                                     </td>

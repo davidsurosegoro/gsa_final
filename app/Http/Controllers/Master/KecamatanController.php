@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\User;
+use App\Kecamatan;
 use Illuminate\Support\Facades\Hash;
 use App\Agen;
+use App\Kota;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
 
-class PrintoutController extends Controller
+class KecamatanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,42 +25,6 @@ class PrintoutController extends Controller
     public function index()
     {
         //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function invoice($id)
-    {
-        $data=[];
-        return view("pages.printout.invoice",$data);
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function manifest($id)
-    {
-        $data=[];
-        return view("pages.printout.manifest",$data);
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function awb($id)
-    {
-        $data=[];
-        return view("pages.printout.awb",$data);
-    }
-    public function awbtri($id)
-    {
-        $data=[];
-        return view("pages.printout.awbtri",$data);
     }
 
     /**
@@ -100,10 +66,27 @@ class PrintoutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    { 
+         $data['kecamatan']      = Kecamatan::find($id);
+         return view("pages.master.kota.edit",$data);
     }
-
+    public function datatables(Request $request)
+    {
+        $kecamatan = Kecamatan::where('idkota', $request->id)->orderBy('id','desc')->get();
+        return response()->json(array('data' => $kecamatan));
+    }
+    public function save(Request $request)
+    {   if($request->idkec && $request->idkec > 0){
+            $kota = Kecamatan::where('id',$request['idkec'])->first(); 
+        }else{
+            $kota = new Kecamatan(); 
+        }
+        $kota->nama          = ($request->nama)        ? $request->nama        : ''; 
+        $kota->idkota        = ($request->idkota)      ? $request->idkota      : ''; 
+        $kota->oa            = ($request->oa)          ? $request->oa          : 0;  
+        $kota->save();
+        return response()->json(array('success' => 'success'));
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -114,6 +97,12 @@ class PrintoutController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function delete(Request $request){
+        $kecamatan = Kecamatan::find($request->id);
+        Kecamatan::find($request->id)->delete();
+        return response()->json(array('customer' => $kecamatan));
     }
 
     /**

@@ -46,7 +46,11 @@ class KotaController extends Controller
             if($a['status']=='nonaktif'){$aktifnonaktif='<div class="alert alert-danger m-0 p-1 text-center" role="alert">NONAKTIF</div>';}
             return $aktifnonaktif;
         })
-        ->rawColumns(['aksi' ,'aktifnonaktif'])
+        ->addColumn('tambahkecamatan', function ($a) {
+            $addkecamatan='<button type="button" onclick="openkec('.$a['id'].',`'.$a['nama'].'`)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="la la-plus"></i> Kecamatan</button>'; 
+            return $addkecamatan;
+        })
+        ->rawColumns(['aksi' ,'aktifnonaktif','tambahkecamatan'])
         ->make(true);
     }
     /**

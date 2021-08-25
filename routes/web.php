@@ -33,9 +33,34 @@ Route::prefix('printout')->group(function(){
 	Route::get('/invoice/{id}'  ,'PrintoutController@invoice');
 	Route::get('/manifest/{id}' ,'PrintoutController@manifest');
 	Route::get('/awb/{id}'  	,'PrintoutController@awb');
+	Route::get('/awbtri/{id}'  	,'PrintoutController@awbtri');
 });
 
 Route::prefix('master')->group(function(){ 
+		Route::prefix('alamat')->group(function(){
+			Route::get('/' 				,'Master\AlamatController@index');
+			Route::get('/create' 		,'Master\AlamatController@create');
+			Route::get('/edit/{id}'		,'Master\AlamatController@edit');
+			Route::post('/update'		,'Master\AlamatController@update');
+			Route::post('/save'			,'Master\AlamatController@save');
+			Route::post('/delete' 		,'Master\AlamatController@delete');
+			Route::get('/datatables' 	,'Master\AlamatController@datatables');
+			Route::post('/gantipassword','Master\AlamatController@gantipassword');
+			Route::get('/checkusername'	,'Master\AlamatController@checkusername');
+
+		});
+		Route::prefix('kecamatan')->group(function(){
+			Route::get('/' 				,'Master\KecamatanController@index');
+			Route::get('/create' 		,'Master\KecamatanController@create');
+			Route::get('/edit/{id}'		,'Master\KecamatanController@edit');
+			Route::post('/update'		,'Master\KecamatanController@update');
+			Route::post('/save'			,'Master\KecamatanController@save');
+			Route::post('/delete' 		,'Master\KecamatanController@delete');
+			Route::get('/datatables' 	,'Master\KecamatanController@datatables');
+			Route::post('/gantipassword','Master\KecamatanController@gantipassword');
+			Route::get('/checkusername'	,'Master\KecamatanController@checkusername');
+
+		});
 		Route::prefix('kota')->group(function(){
 			Route::get('/' 				,'Master\KotaController@index');
 			Route::get('/create' 		,'Master\KotaController@create');

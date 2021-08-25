@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row justify-content-center">
-        <div class="col-6 col-lg-4 col-xl-4 mb-5">
+        <div class="col-6 col-lg-3 col-xl-3 mb-5">
                                         <!--begin::Iconbox-->
                                         <div class="card card-custom wave wave-animate-fast wave-primary">
                                             <div class="card-body text-center">
@@ -19,7 +19,7 @@
                                         <!--begin::Code example-->
                                         <!--end::Code example-->
                                     </div>
-                                    <div class="col-6 col-lg-4 col-xl-4 mb-5">
+                                    <div class="col-6 col-lg-3 col-xl-3 mb-5">
                                         <!--begin::Iconbox-->
                                         <div class="card card-custom wave wave-animate-fast wave-primary">
                                             <div class="card-body text-center">
@@ -37,7 +37,7 @@
                                         <!--end::Code example-->
                                     </div>
                                     
-                                    <div class="col-6 col-lg-4 col-xl-4 mb-5">
+                                    <div class="col-6 col-lg-3 col-xl-3 mb-5">
                                         <!--begin::Iconbox-->
                                         <div class="card card-custom wave wave-animate-fast wave-primary">
                                             <div class="card-body text-center">
@@ -54,7 +54,7 @@
                                         <!--begin::Code example-->
                                         <!--end::Code example-->
                                     </div>
-                                    <div class="col-6 col-lg-4 col-xl-4 mb-5"> 
+                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
                                         <div class="card card-custom wave wave-animate-fast wave-primary">
                                             <div class="card-body text-center">
                                                 <a href="{{ url('master/users') }}">
@@ -68,7 +68,7 @@
                                         </div> 
                                     </div>
                                     
-                                    <div class="col-6 col-lg-4 col-xl-4 mb-5"> 
+                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
                                         <div class="card card-custom wave wave-animate-fast wave-primary">
                                             <div class="card-body text-center">
                                                 <a href="{{ url('master/kota') }}">
@@ -79,6 +79,20 @@
                                                     </a>
                                                     <br>
                                                     <a href="{{ url('master/kota') }}" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Kota</a>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
+                                        <div class="card card-custom wave wave-animate-fast wave-primary">
+                                            <div class="card-body text-center">
+                                                <a href="{{ url('master/alamat') }}">
+                                                    <span class="svg-icon svg-icon-primary svg-icon-6x">
+                                                        {{-- <i class="icon-6x flaticon-truck "> </i> --}}
+                                                        <i class="icon-6x text-info mb-10 mt-10 fa fa-home" aria-hidden="true"></i>
+                                                    </span>
+                                                    </a>
+                                                    <br>
+                                                    <a href="{{ url('master/alamat') }}" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Alamat</a>
                                             </div>
                                         </div> 
                                     </div>
