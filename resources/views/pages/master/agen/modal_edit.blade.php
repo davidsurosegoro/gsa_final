@@ -24,6 +24,15 @@
                 <label>Kode Agen:</label>
                 <input type="text" id="kode" name="kode" class="form-control form-control-solid" placeholder="Inpur Kode Agen" required>
               </div>
+              
+              <div class="form-group">
+                <label>Alamat :</label>
+                <input type="text" name="alamat" id="alamat" class="form-control form-control-solid" placeholder="Inpur Alamat Agen" required>
+              </div>
+              <div class="form-group">
+                <label>No Telp :</label>
+                <input type="text" name="no_telp" id="no_telp" class="form-control form-control-solid" placeholder="Inpur Nomor Telpon Agen" required>
+              </div>
             </div>
           </div>
           

@@ -18,6 +18,8 @@
             <tr>
               <th>Kode</th>
               <th>Nama Agen</th>
+              <th>Alamat</th>
+              <th>Nomor Telpon</th>
               <th>Coverage Kota Agen</th>
               <th>Aksi</th>
             </tr>
@@ -41,6 +43,8 @@
 	    columns: [
 	    {data: 'kode', name:'kode'},
 	    {data: 'nama_agen', name:'nama_agen'},
+	    {data: 'alamat_agen', name:'alamat_agen'},
+	    {data: 'no_telp', name:'no_telp'},
 	    {data: 'coverage', name:'coverage'},
 	    {data: 'aksi', name:'aksi'},
 	],
@@ -110,6 +114,8 @@
                               $('#idkota10').val(data.agen.idkota10)
                               $("#idkota10").val(data.agen.idkota10).trigger('change')
                               $('#kode').val(data.agen.kode)
+                              $('#alamat').val(data.agen.alamat)
+                              $('#no_telp').val(data.agen.no_telp)
                             }
                           }) 
     }

@@ -84,7 +84,6 @@ Route::prefix('master')->group(function(){
 
 Route::prefix('awb')->group(function () {
 	Route::get('/', 'AwbController@index');
-	Route::get('/create', 'AwbController@create');
 	Route::get('/edit/{id}', 'AwbController@edit');
 	Route::post('/save', 'AwbController@save');
 	Route::post('/filter-kota-agen', 'AwbController@filter_kota_agen');
