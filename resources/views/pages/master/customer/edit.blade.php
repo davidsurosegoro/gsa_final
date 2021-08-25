@@ -12,7 +12,7 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label>Nama Customer:</label>
-        <input type="text" class="form-control"  value="{{ $customer->nama }}" name="nama" placeholder="Input nama customer. . . "/>
+        <input type="text" class="form-control"  value="{{ $customer->nama }}" name="nama" placeholder="Input nama customer. . . " required/>
       </div>
       
       <div class="form-group">
@@ -29,16 +29,16 @@
       </div>
     <div class="form-group">
      <label>Alamat Customer:</label>
-     <input type="text" class="form-control"  value="{{ $customer->alamat }}" name="alamat" placeholder="Input alamat customer. . ."/>
+     <input type="text" class="form-control"  value="{{ $customer->alamat }}" name="alamat" placeholder="Input alamat customer. . ." required/>
    </div>
    <div class="form-group">
      <label>Nomor Telepon Customer:</label>
-      <input type="text" class="form-control"  value="{{ $customer->notelp }}" name="notelp" placeholder="Input nomor telepon customer. . ."/>
+      <input type="text" class="form-control"  value="{{ $customer->notelp }}" name="notelp" placeholder="Input nomor telepon customer. . ." required/>
     </div>
     
     <div class="form-group">
       <label>Kode Customer:</label>
-       <input type="text" class="form-control" value="{{ $customer->kode }}" name="kode" placeholder="Input kode customer. . ."/>
+       <input type="text" class="form-control" value="{{ $customer->kode }}" name="kode" placeholder="Input kode customer. . ." required/>
      </div>
 
      <div class="form-group">
@@ -130,17 +130,17 @@
 
     <div class="form-group">
       <label>Harga Out Area:</label>
-       <input type="text" class="form-control rupiah"  value="{{ $customer->harga_oa }}" name="harga_oa" placeholder="Input Harga Out Area. . ."/>
+       <input type="text" class="form-control rupiah"  value="{{ $customer->harga_oa }}" name="harga_oa" placeholder="Input Harga Out Area. . ." required/>
      </div>
 
     <div class="form-group">
       <label>Harga per Kg:</label>
-       <input type="text" class="form-control rupiah"  value="{{ $customer->harga_kg }}" name="harga_kg" placeholder="Input harga per Kg. . ."/>
+       <input type="text" class="form-control rupiah"  value="{{ $customer->harga_kg }}" name="harga_kg" placeholder="Input harga per Kg. . ." required/>
      </div>
 
     <div class="form-group">
       <label>harga_doc:</label>
-       <input type="text" class="form-control rupiah"  value="{{ $customer->harga_doc }}" name="harga_doc" placeholder="Input harga_doc. . ."/>
+       <input type="text" class="form-control rupiah"  value="{{ $customer->harga_doc }}" name="harga_doc" placeholder="Input harga_doc. . ." required/>
      </div>
 
    </div>

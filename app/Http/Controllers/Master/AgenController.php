@@ -28,6 +28,8 @@ class AgenController extends Controller
         $agen = Agen::create([
             'nama' => $request->nama,
             'kode'  => $request->kode,
+            'alamat' => $request->alamat,
+            'no_telp'  => $request->no_telp,
             'idkota1' => $request->idkota1,
             'idkota2' => $request->idkota2,
             'idkota3' => $request->idkota3,
@@ -47,6 +49,8 @@ class AgenController extends Controller
         $agen = Agen::find($request->id)->update([
             'nama' => $request->nama,
             'kode'  => $request->kode,
+            'alamat' => $request->alamat,
+            'no_telp'  => $request->no_telp,
             'idkota1' => $request->idkota1,
             'idkota2' => $request->idkota2,
             'idkota3' => $request->idkota3,
@@ -87,6 +91,8 @@ class AgenController extends Controller
                 'id'  => $a->id,
                 'kode'  => $a->kode,
                 'nama_agen'  => $a->nama,
+                'alamat_agen'  => $a->alamat,
+                'no_telp'  => $a->no_telp,
                 'coverage' => $strings
             ]);
             $strings = '';

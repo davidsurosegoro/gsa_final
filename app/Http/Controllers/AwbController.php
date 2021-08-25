@@ -28,32 +28,21 @@ class AwbController extends Controller
         return view('pages.awb.index');
     }
 
-    public function create()
-    {
-        $customer;
-        $kota = Kota::all();
-        if (Auth::user()->level == 3) :
-            $customer = Customer::where('id', Auth::user()->id_customer)->first();
-        elseif (Auth::user()->level == 1) :
-            $customer = Customer::all();
-        endif;
-        return view('pages.awb.create', compact('kota', 'customer'));
-    }
-
     public function edit($id){
         
         $customer;
         $customer;
-        $kota = Kota::all();
+        $kota = Kota::where('id','>',0)->get();
         if (Auth::user()->level == 3) :
             $customer = Customer::where('id', Auth::user()->id_customer)->first();
         elseif (Auth::user()->level == 1) :
             $customer = Customer::all();
         endif;
         $awb = Awb::find($id);
+        $id = $id;
         $agen_asal = Agen::find($awb->id_agen_asal);
-        $agen_tujuan = Agen::find($awb->id_agen_tujuan);
-        return view('pages.awb.edit',compact('kota', 'customer','awb','agen_asal','agen_tujuan'));
+        $agen_tujuan = Agen::find($awb->id_agen_penerima);
+        return view('pages.awb.create',compact('kota', 'customer','awb','agen_asal','agen_tujuan','id'));
     }
 
     public function save(Request $request)
@@ -67,6 +56,7 @@ class AwbController extends Controller
         $qty = ($request->qty == null) ? 0 : $request->qty;
         if (Auth::user()->level == 1) :
             $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $request->charge_oa);
+            $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
         endif;
         if(Auth::user()->level == 3 && $customer->can_access_satuan == 1):
             $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
@@ -107,9 +97,9 @@ class AwbController extends Controller
 
     public function datatables()
     {
-        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id)");
+        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0");
         if (Auth::user()->level !== 1) :
-            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id)");
+            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id WHERE a.id > 0)");
         endif;
         $awbs = new Collection;
         foreach ($awb as $a) :

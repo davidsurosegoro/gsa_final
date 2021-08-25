@@ -13,9 +13,9 @@ class Agen extends Model
     protected $table = 'agen';
 
     
-    protected static $logAttributes = ['nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode'];
+    protected static $logAttributes = ['nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode','alamat','no_telp'];
 
     protected $fillable = [
-        'nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode'
+        'nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode','alamat','no_telp'
     ];
 }
