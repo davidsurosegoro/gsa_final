@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,20 @@ Route::prefix('printout')->group(function(){
 });
 
 Route::prefix('master')->group(function(){ 
+		Route::prefix('manifest')->group(function(){
+			Route::get('/' 				,'Master\ManifestController@index');
+			Route::get('/create' 		,'Master\ManifestController@create');
+			Route::get('/grouping'  	,'Master\ManifestController@grouping');
+			Route::post('/update'		,'Master\ManifestController@update');
+			Route::post('/save'			,'Master\ManifestController@save');
+			Route::post('/delete' 		,'Master\ManifestController@delete');
+			Route::get('/datatables' 	,'Master\ManifestController@datatables');
+			Route::post('/updatestatus'	,'Master\ManifestController@updatestatus');
+			Route::post('/gantipassword','Master\ManifestController@gantipassword');
+			Route::get('/checkusername'	,'Master\ManifestController@checkusername');
+			Route::get('/edit/{kotaasal}/{kotatujuan}','Master\ManifestController@edit');
+
+		});
 		Route::prefix('alamat')->group(function(){
 			Route::get('/' 				,'Master\AlamatController@index');
 			Route::get('/create' 		,'Master\AlamatController@create');

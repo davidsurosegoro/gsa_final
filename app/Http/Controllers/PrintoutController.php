@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Agen;
+use App\Manifest;
+use App\Awb;
+use Carbon\Carbon;
+use App\Kota;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -42,7 +47,32 @@ class PrintoutController extends Controller
      */
     public function manifest($id)
     {
-        $data=[];
+        $data['manifest']   = Manifest::select(
+                                DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y') as tanggal_manifest"),
+                                "manifest.*" , 
+                                "kotaasal.kode as kodekotaasal",
+                                "kotatujuan.kode as kodekotatujuan" ,
+                                "kotaasal.nama as namakotaasal",
+                                "kotatujuan.nama as namakotatujuan" ,
+                                "users.nama as namauser",
+                                "agen.nama as namaagen")
+                            ->join('kota as kotaasal',      'kotaasal.id',     '=', 'manifest.id_kota_asal') 
+                            ->join('kota as kotatujuan',    'kotatujuan.id',   '=', 'manifest.id_kota_tujuan') 
+                            ->join("users",                 'users.id',        '=', 'manifest.dibuat_oleh')
+                            ->join("users as agen",         'agen.id',         '=', 'manifest.dicek_oleh')
+                            ->where('manifest.id',$id)
+                            ->first(); 
+
+        $data['awb'] =  Awb::select(
+                                'awb.*',
+                                'customer.nama as namacust',
+                                'kotatujuan.nama as kotatujuan', 
+                                DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli')
+                            )
+                        ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
+                        ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
+                        ->where ("awb.id_manifest",     '=' , $id)  
+                        ->get(); 
         return view("pages.printout.manifest",$data);
     }
     /**
