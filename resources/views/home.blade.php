@@ -41,13 +41,13 @@
                                         <!--begin::Iconbox-->
                                         <div class="card card-custom wave wave-animate-fast wave-primary">
                                             <div class="card-body text-center">
-                                                <a href="{{ url('master/customer') }}">
+                                                <a href="{{ url('awb') }}">
                                                         <span class="svg-icon svg-icon-primary svg-icon-6x">
                                                             <i class="icon-6x text-info mb-10 mt-10 fa fa-truck" aria-hidden="true"></i>
                                                         </span>
                                                         </a>
                                                         <br>
-                                                        <a href="{{ url('master/customer') }}" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">AWB</a>
+                                                        <a href="{{ url('awb') }}" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">AWB</a>
                                             </div>
                                         </div>
                                         <!--end::Iconbox-->

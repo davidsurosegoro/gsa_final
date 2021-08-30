@@ -18,6 +18,7 @@
             <tr>
               <th></th>
               <th>Nama Customer</th>
+              <th>Kode</th>
               <th>Alamat</th>
               <th>No Telp</th>
               <th>Nomor Rekening</th>
