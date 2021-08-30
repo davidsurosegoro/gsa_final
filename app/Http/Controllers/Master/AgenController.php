@@ -30,6 +30,7 @@ class AgenController extends Controller
             'kode'  => $request->kode,
             'alamat' => $request->alamat,
             'no_telp'  => $request->no_telp,
+            'presentase'  => $request->presentase,
             'idkota1' => $request->idkota1,
             'idkota2' => $request->idkota2,
             'idkota3' => $request->idkota3,
@@ -51,6 +52,7 @@ class AgenController extends Controller
             'kode'  => $request->kode,
             'alamat' => $request->alamat,
             'no_telp'  => $request->no_telp,
+            'presentase'  => $request->presentase,
             'idkota1' => $request->idkota1,
             'idkota2' => $request->idkota2,
             'idkota3' => $request->idkota3,
@@ -93,11 +95,15 @@ class AgenController extends Controller
                 'nama_agen'  => $a->nama,
                 'alamat_agen'  => $a->alamat,
                 'no_telp'  => $a->no_telp,
+                'presentase'  => $a->presentase,
                 'coverage' => $strings
             ]);
             $strings = '';
         endforeach;
         return Datatables::of($agens)
+            ->editColumn('presentase',function($a){
+                return $a['presentase']." % ";
+            })
             ->addColumn('aksi', function ($a) {
                 return '<div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Agen">
@@ -106,7 +112,7 @@ class AgenController extends Controller
                 <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAgen(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>
                 </div>';
             })
-            ->rawColumns(['coverage','aksi'])
+            ->rawColumns(['coverage','aksi','presentase'])
             ->make(true);
     }
 }

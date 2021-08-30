@@ -111,8 +111,12 @@ Route::prefix('awb')->group(function () {
 	Route::get('/', 'AwbController@index');
 	Route::get('/edit/{id}', 'AwbController@edit');
 	Route::post('/save', 'AwbController@save');
+	Route::post('/delete', 'AwbController@delete');
+	Route::post('/manifest', 'AwbController@manifest');
 	Route::post('/filter-kota-agen', 'AwbController@filter_kota_agen');
 	Route::get('/datatables','AwbController@datatables');
+	Route::post('/filter-customer','AwbController@filter_customer');
+	Route::post('/filter-alamat','AwbController@filter_alamat');
 });
 
 

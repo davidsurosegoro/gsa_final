@@ -49,11 +49,76 @@
 	],
 	 "order": [[ 1, "asc" ]],
    });
+
+   function deleteAwb(id,noawb)
+    {
+         Swal.fire({   
+                      title: "Anda Yakin?",   
+                      text: "Data AWB Nomor "+noawb+" akan terhapus",   
+                      icon: "warning",   
+                      showCancelButton: true,   
+                      confirmButtonColor: "#e6b034",   
+                      confirmButtonText: "Ya, Hapus AWB" 
+                       
+                  }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                            method:'POST',
+                            url:'{{ url("awb/delete") }}',
+                            data:{
+                              id:id,
+                              '_token': $('input[name=_token]').val()
+                            },
+                            success:function(data){
+                                Swal.fire({title:"Terhapus!", text:"Awb "+data.awb.noawb+" berhasil terhapus dari sistem", icon:"success"}
+                                ).then((result) => {
+                                    location.reload()
+                                })
+                            }
+                          }) 
+            } 
+         });
+    }
+
+    function updateManifest(id,noawb)
+    {
+         Swal.fire({   
+                      title: "Anda Yakin?",   
+                      text: "Data AWB Nomor "+noawb+" akan diupdate menjadi Manifested",   
+                      icon: "warning",   
+                      showCancelButton: true,   
+                      confirmButtonColor: "#e6b034",   
+                      confirmButtonText: "Ya, Manifested AWB" 
+                       
+                  }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                            method:'POST',
+                            url:'{{ url("awb/manifest") }}',
+                            data:{
+                              id:id,
+                              '_token': $('input[name=_token]').val()
+                            },
+                            success:function(data){
+                                Swal.fire({title:"Updated!", text:"Awb Nomor "+data.awb.noawb+" sudah berada di manifest", icon:"success"}
+                                ).then((result) => {
+                                    location.reload()
+                                })
+                            }
+                          }) 
+            } 
+         });
+    }
 </script>
 
 @if(Session::get('message') == "created")
     <script type="text/javascript">
         toastr.success("AWB Baru Berhasil ditambahkan!");
+    </script>
+@endif
+@if(Session::get('message') == "updated")
+    <script type="text/javascript">
+        toastr.success("Data AWB Berhasil diubah!");
     </script>
 @endif
 @endsection

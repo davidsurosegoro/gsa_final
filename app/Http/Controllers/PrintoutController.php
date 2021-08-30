@@ -52,8 +52,16 @@ class PrintoutController extends Controller
      */
     public function awb($id)
     {
-        $data=[];
-        return view("pages.printout.awb",$data);
+        $awb = DB::SELECT("SELECT
+                            a.*,
+                            k1.kode AS kota_tujuan_kode,
+                            k2.kode AS kota_asal_kode
+                            FROM
+                                awb a
+                            LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
+                            LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
+                            WHERE a.id = ".$id." ");
+        return view("pages.printout.awb",compact('awb'));
     }
     public function awbtri($id)
     {

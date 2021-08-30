@@ -40,6 +40,11 @@
      </div>
 
      <div class="form-group">
+      <label>Kode Pos Customer:</label>
+      <input type="text" class="form-control" name="kodepos" placeholder="Input kodepos customer. . ." />
+    </div>
+
+     <div class="form-group">
       <label>Rekening:</label>
        <input type="text" class="form-control" name="rekening" placeholder="Input Nomor Rekening. . ."/>
      </div>
@@ -54,15 +59,6 @@
        <input type="text" name="rekeningatasnama" class="form-control" placeholder="Input Nomor Atas Nama Rekening. . ."/>
      </div>
      
-     <div class="form-group">
-      <label>Hak Akses Mengubah Satuan</label>
-      <div class="checkbox-inline">
-        <label class="checkbox checkbox-lg">
-        <input name="access" type="checkbox">
-        <span></span>Berikan hak akses</label>
-      </div>
-      <span class="form-text text-muted">Centang untuk memberikan hak akses untuk mengubah satuan</span>
-    </div>
 
    </div>
    <div class="col-lg-6">
@@ -116,7 +112,26 @@
       <label>Harga Per Dokumen:</label>
        <input type="text" class="form-control rupiah" name="harga_doc" placeholder="Input harga per dokumen. . ." required/>
      </div>
+     
+     <div class="form-group">
+      <label>Hak Akses Mengubah Satuan</label>
+      <div class="checkbox-inline">
+        <label class="checkbox checkbox-lg">
+        <input name="access" type="checkbox">
+        <span></span>Berikan hak akses</label>
+      </div>
+      <span class="form-text text-muted">Centang untuk memberikan hak akses untuk mengubah satuan</span>
+    </div>
 
+     <div class="form-group">
+      <label>Customer ini adalah agen</label>
+      <div class="checkbox-inline">
+        <label class="checkbox checkbox-lg">
+        <input name="is_agen" type="checkbox">
+        <span></span>Ya</label>
+      </div>
+      <span class="form-text text-muted">Centang untuk menandai customer ini sebagai agen</span>
+    </div>
    </div>
   </div>
   <div class="card-footer">

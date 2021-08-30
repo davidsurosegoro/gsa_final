@@ -26,13 +26,13 @@ class CustomerController extends Controller
 
     public function create()
     {
-        $kota = Kota::all();
+        $kota = Kota::where('id','>',0)->get();
         return view('pages.master.customer.create',compact('kota'));
     }
 
     public function edit($id)
     {
-        $kota = Kota::all();
+        $kota = Kota::where('id','>',0)->get();
         $customer = Customer::find($id);
         return view('pages.master.customer.edit',compact('customer','kota'));
     }
@@ -47,6 +47,10 @@ class CustomerController extends Controller
         $access = FALSE;
         if($request->access == "on"){
             $access = TRUE; 
+        }
+        $is_agen = FALSE;
+        if($request->is_agen == "on"){
+            $is_agen = TRUE; 
         }
         $customer = Customer::create([
             'nama' => $request->nama,
@@ -66,6 +70,8 @@ class CustomerController extends Controller
             'kode' => $request->kode,
             'idkota' => $request->idkota,
             'jenis_out_area' => $request->jenis_out_area,
+            'kodepos' => $request->kodepos,
+            'is_agen' => $is_agen,
         ]);
         return redirect('master/customer')->with('message','created');
     }
@@ -74,6 +80,10 @@ class CustomerController extends Controller
         $access = FALSE;
         if($request->access == "on"){
             $access = TRUE; 
+        }
+        $is_agen = FALSE;
+        if($request->is_agen == "on"){
+            $is_agen = TRUE; 
         }
         $customer  = Customer::find($request->id)->update([
             'nama' => $request->nama,
@@ -93,6 +103,8 @@ class CustomerController extends Controller
             'kode' => $request->kode,
             'idkota' => $request->idkota,
             'jenis_out_area' => $request->jenis_out_area,
+            'kodepos' => $request->kodepos,
+            'is_agen' => $is_agen,
         ]);
         return redirect('master/customer')->with('message','updated');
     }
