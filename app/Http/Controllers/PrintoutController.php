@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Agen;
 use App\Manifest;
 use App\Awb;
+use App\Invoice;
 use Carbon\Carbon;
 use App\Kota;
 use Illuminate\Support\Collection;
@@ -37,7 +38,33 @@ class PrintoutController extends Controller
      */
     public function invoice($id)
     {
-        $data=[];
+        $data['invoice']   = Invoice::select(
+                    DB::raw("DATE_FORMAT(invoice.created_at,'%d-%M-%Y') as tanggal_invoice"),
+                    "invoice.*" ,  
+                    "customer.nama as namacustomer" ,  
+                    "customer.kode as kodecustomer" ,  
+                    "customer.alamat as alamatcustomer" ,  
+                    "customer.notelp as notelpcustomer" ,  
+                    "users.nama as namauser" ) 
+                ->join("users",                 'users.id',        '=', 'invoice.mengetahui_oleh')
+                ->join("customer",              'customer.id',     '=', 'invoice.id_customer')
+                ->where('invoice.id',$id)
+                ->first(); 
+
+        $data['awb'] =  Awb::select(
+                    'awb.*',
+                    'customer.nama as namacust',
+                    'manifest.kode as kodemanifest',
+                    'kotatujuan.nama as kotatujuan', 
+                    'kotaasal.nama as kotaasal', 
+                    DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli')
+                )
+            ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
+            ->join  ("manifest",            'manifest.id',      '=', 'awb.id_manifest')
+            ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
+            ->join  ("kota as kotaasal",    'kotaasal.id',      '=', 'awb.id_kota_asal') 
+            ->where ("awb.id_invoice",     '=' , $id)  
+            ->get(); 
         return view("pages.printout.invoice",$data);
     }
     /**

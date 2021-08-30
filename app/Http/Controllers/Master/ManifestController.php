@@ -45,7 +45,7 @@ class ManifestController extends Controller
             return '
             <div class="btn-group" role="group" aria-label="Basic example">
                 <a href="'.url('printout/manifest/'.$a['id']).'" target="blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
-                    <i class="fa fa-print" aria-hidden="true"></i>
+                    <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
                 <button 
                     type            = "button" 
@@ -174,7 +174,7 @@ class ManifestController extends Controller
                         ]
                     );
         }
-        return redirect('master/manifest')->with('message','Manifest created');
+        return redirect('master/manifest')->with('message','created');
     }
 
     public function edit($kotaasal,$kotatujuan)

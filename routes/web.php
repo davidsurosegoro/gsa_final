@@ -38,6 +38,20 @@ Route::prefix('printout')->group(function(){
 });
 
 Route::prefix('master')->group(function(){ 
+		Route::prefix('invoice')->group(function(){
+			Route::get('/' 				,'Master\InvoiceController@index');
+			Route::get('/create' 		,'Master\InvoiceController@create');
+			Route::get('/grouping'  	,'Master\InvoiceController@grouping');
+			Route::post('/update'		,'Master\InvoiceController@update');
+			Route::post('/save'			,'Master\InvoiceController@save');
+			Route::post('/delete' 		,'Master\InvoiceController@delete');
+			Route::get('/datatables' 	,'Master\InvoiceController@datatables');
+			Route::post('/updatestatus'	,'Master\InvoiceController@updatestatus');
+			Route::post('/gantipassword','Master\InvoiceController@gantipassword');
+			Route::get('/checkusername'	,'Master\InvoiceController@checkusername');
+			Route::get('/edit/{idcust} ','Master\InvoiceController@edit');
+
+		});
 		Route::prefix('manifest')->group(function(){
 			Route::get('/' 				,'Master\ManifestController@index');
 			Route::get('/create' 		,'Master\ManifestController@create');
