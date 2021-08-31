@@ -47,7 +47,7 @@
         </div> 
     </div>  
 </div>
-<div class="modal fade" id="modalpenerima" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal  " id="modalpenerima"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -66,7 +66,7 @@
         </div>
     </div>
 </div> 
-<div class="modal " id="modalkodemanual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal " id="modalkodemanual" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -121,10 +121,12 @@
                 if(data.statuswarning)  {
                     $('#modalkodemanual').modal('hide');
                     toastr.warning( data.statuswarning)
+                    $('.modal-backdrop').remove();
                 }
                 if(data.statussuccess)  {
                     toastr.success( data.statussuccess)
                     $('#modalkodemanual').modal('hide');
+                    $('.modal-backdrop').remove();
                 }                  
                 if(data.openmodal == 'open'){
                     $('#modalpenerima').modal('show');
