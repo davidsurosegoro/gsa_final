@@ -373,7 +373,7 @@ class AwbController extends Controller
             $harga_kg = $customer->harga_kg * $qty_kg; 
         endif;
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb)  + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
-        if ($charge_oa == "1") :
+        if ($charge_oa == 1) :
             if ($customer->jenis_out_area == "shipment") :
                 $harga_oa = 0;
             elseif ($customer->jenis_out_area == "resi") :
