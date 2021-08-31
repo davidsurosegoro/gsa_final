@@ -13,6 +13,7 @@ use App\Agen;
 use App\Alamat;
 use App\ViewAgenKota;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
@@ -192,6 +193,33 @@ class AwbController extends Controller
               ->where('id', $request->id)
               ->update(['deleted_at' => date( "Y-m-d H:i:s", strtotime( date( "Y-M-d H:i:s") ) + 7 * 3600 )]);
         return response()->json(array('awb' => $awb));
+    }
+
+    public function updateawb(Request $request){
+        $kode                   = $request->kode;
+        $status                 =  Crypt::decrypt($request->status);
+        $returnmessage          = '';
+        $typereturn             = ' ';
+        //check apakah status sudah seperti yang direquest untuk diganti
+        
+        $awb                    =  Awb::where('noawb', $request->kode)->first();
+        if(!$awb){
+            $returnmessage = 'Kode AWB '.$kode.' tidak ditemukan!';
+            $typereturn    = 'statuserror';
+        }else if($awb->id){
+            if($awb->status_tracking == $status){
+                $returnmessage = 'Kode AWB '.$kode.' Sudah berstatus '.$status.'!';
+                $typereturn    = 'statuswarning';
+            }else{
+                $awb->status_tracking   = $status;
+                $awb->save();
+        
+                $data['success']        =$awb->wasChanged('status_tracking');
+                $returnmessage = 'Update Kode AWB '.$kode.' ke '.$status.', sukses di update!';
+                $typereturn    = 'statussuccess';
+            }
+        } 
+        return response()->json(array($typereturn => $returnmessage));
     }
 
     public function manifest(Request $request){

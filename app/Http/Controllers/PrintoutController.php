@@ -64,6 +64,8 @@ class PrintoutController extends Controller
             ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
             ->join  ("kota as kotaasal",    'kotaasal.id',      '=', 'awb.id_kota_asal') 
             ->where ("awb.id_invoice",     '=' , $id)  
+            ->orderBy("id_manifest", "desc")
+            ->orderBy("charge_oa", "desc")
             ->get(); 
         return view("pages.printout.invoice",$data);
     }
@@ -119,12 +121,12 @@ class PrintoutController extends Controller
                             LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
                             WHERE a.id = ".$id." ");
         // dd(strlen($awb[0]->noawb));
-        $noawb = "";
-        for($i = 0; $i < 10 - strlen($awb[0]->noawb) ; $i++ ){
-            $noawb .= "0";
-        }
-        $noawb .= $awb[0]->noawb;
-        return view("pages.printout.awb",compact('awb','noawb'));
+        // $noawb = "";
+        // for($i = 0; $i < 10 - strlen($awb[0]->noawb) ; $i++ ){
+        //     $noawb .= "0";
+        // }
+        // $noawb .= $awb[0]->noawb;
+        return view("pages.printout.awb",compact('awb' ));
     }
     public function awbtri($id)
     {

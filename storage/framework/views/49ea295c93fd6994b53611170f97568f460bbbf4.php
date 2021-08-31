@@ -67,10 +67,6 @@
           <th><strong> Harga Out Area (`+d.jenis_out_area+`) </strong> </th>
           <td> : `+(d.harga_oa/1000).toFixed(3)+`</td>  
         </tr>
-        <tr>
-          <th><strong> Harga Out Area Shipment </strong> </th>
-          <td> : `+(d.harga_oa_ship/1000).toFixed(3)+`</td>  
-        </tr>
       </table>`;
 }
     var dt = $('#datatables').DataTable({

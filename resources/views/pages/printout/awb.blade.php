@@ -115,7 +115,7 @@
                         <p class="col-12" style="font-size:0.2cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
                         <table  class=" col-12 table-bordered"  style="font-size:0.4cm; border-right:0px !important;">
                             <tr>
-                                <td class="couture" style="font-size:0.55cm;" colspan='2'><b>No. </b>{{ $noawb }}</td> 
+                                <td class="couture" style="font-size:0.55cm;" colspan='2'><b>No. </b>{{ $awb[0]->noawb }}</td> 
                             </tr> 
                             <tr>
                                 <td>Driver</td>
@@ -124,7 +124,7 @@
                         </table>
                     </div>  
                     <div class="col-sm-5" style="padding:5px; padding-top:0.3cm;">
-                        {!! QrCode::size(142)->generate('ItSolutionStuff.com'); !!} 
+                        {!! QrCode::size(142)->generate($awb[0]->noawb); !!} 
                     </div>
                 </div>
                 <div class="card " > 

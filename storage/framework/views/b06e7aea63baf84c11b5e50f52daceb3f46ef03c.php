@@ -113,15 +113,15 @@
                            <table  style="font-size:0.35cm;">
                                <tr>
                                    <td><b>Customer </b></td>
-                                   <td>:&nbsp;David Suro</td>
+                                   <td>:&nbsp;<?php echo e($invoice->namacustomer); ?></td>
                                </tr>
                                <tr>
                                    <td><b>Alamat </b></td>
-                                   <td>:&nbsp;Jl gayung kebonsari manunggal C10</td>
+                                   <td>:&nbsp;<?php echo e($invoice->alamatcustomer); ?></td>
                                </tr>
                                <tr>
                                    <td><b>Telp/fax </b></td>
-                                   <td>:&nbsp;0813548643</td>
+                                   <td>:&nbsp;<?php echo e($invoice->notelpcustomer); ?></td>
                                </tr>
                            </table>
                         </div>
@@ -129,11 +129,11 @@
                             <table  style="font-size:0.35cm;">
                                 <tr>
                                     <td><b>No Invoice </b></td>
-                                    <td>:&nbsp;18/INV/GSA/06/2021</td>
+                                    <td>:&nbsp;<?php echo e($invoice->kode); ?></td>
                                 </tr>
                                 <tr>
                                     <td><b>Date </b></td>
-                                    <td>:&nbsp;19 August 2021</td>
+                                    <td>:&nbsp;<?php echo e($invoice->tanggal_invoice); ?></td>
                                 </tr>
                             </table>
                         </div>
@@ -142,67 +142,66 @@
                         <table class="table table-striped table-bordered" style="font-size:0.25cm;">
                             <thead>
                                 <tr>
-                                    <th style="width:1cm;">NO</th>
-                                    <th style="width:4cm;">TANGGAL</th>
-                                    <th style="width:1.8cm;">No. AWB</th>
-                                    <th style="width:2.4cm;">No. MANIFEST</th>
-                                    <th style="width:2.8cm;">TUJUAN</th>
-                                    <th style="width:2.8cm;">JENIS <br>BARANG</th>
-                                    <th style="width:1.2cm;">KOLI</th>
-                                    <th style="width:2cm;">BERAT<br>(KG)</th>
-                                    <th style="width:2.8cm;">HARGA<br>(Rp./KG)</th>
-                                    <th style="width:2cm;">BIAYA OA</th>
-                                    <th style="width:3cm;">TOTAL BAYAR</th>
+                                    <th class='text-center' style="padding:5px;width:10px;">NO</th> 
+                                    <th style="padding:5px;width:10%;">TANGGAL</th>  
+                                    <th style="padding:5px;width:7%;">AWB</th>  
+                                    <th style="padding:5px;width:10%;">No.Manifest</th>  
+                                    <th style="padding:5px;width:10%;">ASAL</th>  
+                                    <th style="padding:5px;width:10%;">Tujuan</th>  
+                                    <th style="padding:5px;width:10%;">Koli</th>  
+                                    <th style="padding:5px;width:5%;">Kg</th>  
+                                    <th style="padding:5px;width:5%;">Doc</th>   
+                                    <th style="padding:5px;width:10%;">KET</th> 
+                                    <th style="padding:5px;width:8%;">Biaya OA</th>  
+                                    <th style="padding:5px;width:10%;">Total Bayar</th>  
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td> 
-                                    <td>12-agustus-2020</td> 
-                                    <td class='text-center'>AWB0003</td> 
-                                    <td class='text-center'>3124</td> 
-                                    <td>Malang</td> 
-                                    <td>Kosmetik</td> 
-                                    <td class='text-center'>3</td> 
-                                    <td class='text-center'>B</td> 
-                                    <td>40.000</td> 
-                                    <td>0</td> 
-                                    <td>120.000</td> 
-                                </tr>  
-                                <tr>
-                                    <td>1</td> 
-                                    <td>12-agustus-2020</td> 
-                                    <td class='text-center'>AWB0003</td> 
-                                    <td class='text-center'>3124</td> 
-                                    <td>Malang</td> 
-                                    <td>Kosmetik</td> 
-                                    <td class='text-center'>3</td> 
-                                    <td class='text-center'>B</td> 
-                                    <td>40.000</td> 
-                                    <td>0</td> 
-                                    <td>120.000</td> 
-                                </tr>  
-                                <tr>
-                                    <td>1</td> 
-                                    <td>12-agustus-2020</td> 
-                                    <td class='text-center'>AWB0003</td> 
-                                    <td class='text-center'>3124</td> 
-                                    <td>Malang</td> 
-                                    <td>Kosmetik</td> 
-                                    <td class='text-center'>3</td> 
-                                    <td class='text-center'>B</td> 
-                                    <td>40.000</td> 
-                                    <td>0</td> 
-                                    <td>120.000</td> 
+                                <?php $__currentLoopData = $awb; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr style="padding:0px;">
+                                    <td class='text-center' style="padding:5px;"><?php echo e($loop->index+1); ?></td>   
+                                    <td style="padding:5px;"><?php echo e($item->tanggal_awb); ?></td>  
+                                    <td style="padding:5px;"><?php echo e($item->noawb); ?></td>  
+                                    <td style="padding:5px;"><?php echo e($item->kodemanifest); ?></td>  
+                                    <td style="padding:5px;"><?php echo e($item->kotaasal); ?></td>   
+                                    <td style="padding:5px;"><?php echo e($item->kotatujuan); ?></td> 
+                                    <td style="padding:5px;">
+                                        <?php if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0) && $item->qty>0): ?>
+                                        <?php echo e($item->qty); ?>
+
+                                        <?php else: ?>
+                                        <table style="table" style="background-color:white;">
+                                            <tr style="background-color:white;">
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">K</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">S</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">B</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">BB</td>
+                                            </tr>                                    
+                                            <tr style="background-color:white;">
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;"><?php echo e($item->qty_kecil); ?></td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;"><?php echo e($item->qty_sedang); ?></td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;"><?php echo e($item->qty_besar); ?></td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;"><?php echo e($item->qty_besarbanget); ?></td>
+                                            </tr>    
+                                        </table>    
+                                        <?php endif; ?>
+                                    </td> 
+                                    <td style="padding:5px;"><?php echo e($item->qty_kg); ?></td> 
+                                    <td style="padding:5px;"><?php echo e($item->qty_doc); ?></td> 
+                                    <td style="padding:5px;"><?php echo e($item->keterangan); ?></td> 
+                                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($item->idr_oa)); ?></td> 
+                                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($item->total_harga, 0)); ?></td> 
                                 </tr>   
-                                <tr>
-                                    <td colspan='6' class="text-right font-weight-bold" style="font-size:0.35cm;">TOTAL BAYAR</td> 
-                                    <td>9</td> 
-                                    <td></td> 
-                                    <td></td> 
-                                    <td>0</td> 
-                                    <td>360.000</td> 
-                                </tr> 
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
+                                <tr style="padding:0px; background-color:#a1ffbc;"> 
+                                    <td style="padding:5px;" colspan='6' class="text-right">Total Bayar</td>   
+                                    <td style="padding:5px;font-weight:bold !important;"><?php echo e($invoice->total_koli); ?></td>   
+                                    <td style="padding:5px;font-weight:bold !important;"><?php echo e($invoice->total_kg); ?></td>   
+                                    <td style="padding:5px;font-weight:bold !important;"><?php echo e($invoice->total_doc); ?></td>   
+                                    <td style="padding:5px;font-weight:bold !important;"></td>   
+                                    <td style="padding:5px;font-weight:bold !important; text-align:right;"><?php echo e(number_format($invoice->total_oa, 0)); ?></td> 
+                                    <td style="padding:5px;font-weight:bold !important; text-align:right;"><?php echo e(number_format($invoice->total_harga, 0)); ?></td> 
+                                </tr>     
                             </tbody>
                         </table>
                         <table class="table table-striped table-bordered" >
@@ -216,13 +215,11 @@
                     <div class="row font-weight-bold" style="font-size:0.35cm;">
                         <div class="col-6 text-center">
                             DIKERJAKAN OLEH    <br><br><br><br><br>
-                            David Surosegoro<br>
-                            Programmer
+                            <?php echo e($invoice->namauser); ?><br> 
                         </div> 
                         <div class="col-6 text-center">
                             MENGETAHUI    <br><br><br><br><br>
-                            INDRA PRASETYA<br>
-                            Programmer
+                            <?php echo e($invoice->namauser); ?><br> 
                         </div> 
                     </div>
                 </div>

@@ -144,9 +144,7 @@ class ManifestController extends Controller
                                     $query  ->where('awb.created_at', '<=', Carbon::now()->hour(15)->minute(0)->second(0))
                                             ->where('awb.created_at', '>',  Carbon::yesterday()->hour(15)->minute(0)->second(0));
                                 })
-                    ->get();
-        echo $manifest['id_kota_tujuan'].'tujuan<br>asal';
-        echo $manifest['id_kota_asal'];
+                    ->get(); 
         foreach ($data['awb'] as $item){  
             $item['id_manifest']     = $manifest['id'];
             $item['status_tracking'] = 'at-manifest';            
@@ -160,6 +158,7 @@ class ManifestController extends Controller
                     ->where ("customer.jenis_out_area",     '=' , 'shipment')  
                     ->where ("awb.id_kota_tujuan",          '=' , $manifest['id_kota_tujuan']) 
                     ->where ("awb.id_kota_asal",            '=' , $manifest['id_kota_asal']) 
+                    ->where ("awb.charge_oa",               '=' , 1) 
                     ->orderBy('id_customer','desc')
                     ->groupBY('customer.id','customer.harga_oa')
                     ->get();
@@ -168,6 +167,7 @@ class ManifestController extends Controller
             DB::table('awb')
               ->where('id_manifest', $manifest['id'])
               ->where('id_customer', $item['idcust'])
+              ->where('charge_oa'  , 1)
               ->update(
                         [   'idr_oa'      =>  $item['dividedoa'],
                             'total_harga' => DB::raw('awb.total_harga+'.$item['dividedoa']),
@@ -201,6 +201,7 @@ class ManifestController extends Controller
                                         $query  ->where('awb.created_at', '<=', Carbon::now()->hour(15)->minute(0)->second(0))
                                                 ->where('awb.created_at', '>',  Carbon::yesterday()->hour(15)->minute(0)->second(0));
                                     })
+                        ->orderBy("awb.id_customer" , "desc")                                    
                         ->get(); 
         // echo $data['awb'];
         return view("pages.master.manifest.edit",$data);

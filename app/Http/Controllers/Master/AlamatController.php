@@ -56,7 +56,7 @@ class AlamatController extends Controller
         $kota = Alamat::select("pelanggan_alamat.*", "kota.nama as namakota" )
                 ->join('kota', 'kota.id', '=', 'pelanggan_alamat.idkota') 
                 ->where('pelanggan_alamat.id' ,'>', '0')
-                ->where('pelanggan_alamat.pelanggan_id' ,'=', Auth::user()->id)
+                ->where('pelanggan_alamat.pelanggan_id' ,'=', Auth::user()->id_customer)
                 ->get();
 
     
@@ -91,13 +91,16 @@ class AlamatController extends Controller
         }else{            
             $alamat = Alamat::where('id',$request['id'])->first(); 
         }
-        $alamat->Pelanggan_id     =  Auth::user()->id; 
+        $alamat->Pelanggan_id     =  Auth::user()->id_customer; 
         $alamat->alamat           = ($request->alamat)        ? $request->alamat        : ''; 
         $alamat->kodepos          = ($request->kodepos)       ? $request->kodepos       : ''; 
         $alamat->labelalamat      = ($request->labelalamat)   ? $request->labelalamat   : ''; 
         $alamat->kecamatan        = ($request->kecamatan)     ? $request->kecamatan     : ''; 
         $alamat->oa               = ($request->oa)            ? $request->oa            : 0; 
+        $alamat->updated_by       = Auth::user()->id; 
         $alamat->idkota           = ($request->idkota)        ? $request->idkota        : 0; 
+        $alamat->no_hp            = ($request->no_hp)         ? $request->no_hp         : 0; 
+        $alamat->nama_penerima    = ($request->nama_penerima) ? $request->nama_penerima : 0; 
         $alamat->save();
         return redirect('master/alamat')->with('message','Alamat created');
     }

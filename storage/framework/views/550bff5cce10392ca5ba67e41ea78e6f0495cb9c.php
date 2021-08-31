@@ -100,45 +100,55 @@
                     <div class="col-sm-3" style="padding:0px;">
                         <table  class=" col-12 table-bordered"  style="font-size:0.23cm; margin-top:0.4cm; border-right:0px !important;">
                             <tr>
+                                <td style="width:2.4cm;"><b>NO.</b></td>
+                                <td>&nbsp;<?php echo e($manifest->kode); ?></td>
+                            </tr>
+                            <tr>
                                 <td style="width:2.4cm;"><b>Asal </b></td>
-                                <td>&nbsp;Surabaya</td>
+                                <td>&nbsp;<?php echo e($manifest->namakotaasal); ?>-(<?php echo e($manifest->kodekotaasal); ?>)</td>
                             </tr>
                             <tr>
                                 <td style="width:2.4cm;"><b>Tgl Pengiriman </b></td>
-                                <td>&nbsp;30 juni 2021</td>
+                                <td>&nbsp;<?php echo e($manifest->tanggal_manifest); ?></td>
                             </tr>
                             <tr>
-                                <td style="width:2.4cm;"><b>Jumlah Kiriman</b></td>
-                                <td>&nbsp;10</td>
-                            </tr>
-                            <tr>
-                                <td style="width:2.4cm;"><b>Jumlah Koli</b></td>
-                                <td>&nbsp;20</td>
-                            </tr>
+                                <table class="col-12 table-bordered text-center" style="font-size:0.28cm;">
+                                    <tr>
+                                        <td class="font-weight-bold">Koli</td>
+                                        <td class="font-weight-bold">Kg</td>
+                                        <td class="font-weight-bold">Doc</td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo e($manifest->jumlah_koli); ?></td>
+                                        <td><?php echo e($manifest->jumlah_kg); ?></td>
+                                        <td><?php echo e($manifest->jumlah_doc); ?></td>
+                                    </tr>
+                                </table> 
+                            </tr> 
                         </table>
                     </div>
                     <div class="col-sm-4" style="padding:0px;">
                         <table  class=" col-12 table-bordered"  style="font-size:0.23cm; margin-top:0.4cm;">
                             <tr>
                                 <td style="width:3cm;"><b>Tujuan </b></td>
-                                <td>&nbsp;Jember</td>
+                                <td>&nbsp;<?php echo e($manifest->namakotatujuan); ?>-(<?php echo e($manifest->kodekotatujuan); ?>)</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Didaftar & Dicek Oleh </b></td>
-                                <td>&nbsp;David suro</td>
+                                <td style="width:3cm;"><b>Dicetak Oleh </b></td>
+                                <td>&nbsp;<?php echo e(Auth::user()->nama); ?></td>
                             </tr>
                             <tr>
                                 <td style="width:3cm;"><b>Dibawa Oleh (supir)</b></td>
-                                <td>&nbsp;Rudi</td>
+                                <td>&nbsp;<?php echo e($manifest->supir); ?></td>
                             </tr>
                             <tr>
                                 <td style="width:3cm;"><b>Diterima & Dicek Oleh(agen)</b></td>
-                                <td>&nbsp;bambang</td>
+                                <td>&nbsp;<?php echo e($manifest->namaagen); ?></td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-sm-2" style="padding:10px; padding-top:15px;">
-                        <?php echo QrCode::size(87)->generate('ItSolutionStuff.com');; ?> 
+                        <?php echo QrCode::size(87)->generate($manifest->kode);; ?> 
                     </div>
                 </div>
                 <div class="card"> 
@@ -146,41 +156,49 @@
                         <table class="table table-striped table-bordered" style="font-size:0.25cm;">
                             <thead>
                                 <tr>
-                                    <th style="width:1cm;">NO</th> 
-                                    <th style="width:1cm;">AWB</th> 
-                                    <th style="width:1cm;">PENGIRIM</th> 
-                                    <th style="width:1cm;">PENERIMA</th> 
-                                    <th style="width:1cm;">TUJUAN</th> 
-                                    <th style="width:1cm;">KL</th> 
-                                    <th style="width:1cm;">KG</th> 
-                                    <th style="width:1cm;">D/P</th> 
-                                    <th style="width:1cm;">NM.PENERIMA</th> 
-                                    <th style="width:1cm;">TGL.TERIMA</th> 
-                                    <th style="width:1cm;">KET</th> 
+                                    <th style="width:0.5cm;padding:0.1cm;">NO</th> 
+                                    <th style="width:1cm;padding:0.1cm;">AWB</th> 
+                                    <th style="width:2cm;padding:0.1cm;">PENGIRIM</th> 
+                                    <th style="width:1cm;padding:0.1cm;">PENERIMA</th> 
+                                    <th style="width:1cm;padding:0.1cm;">TUJUAN</th> 
+                                    <th style="width:0.5cm;padding:0.1cm;">KL</th> 
+                                    <th style="width:0.5cm;padding:0.1cm;">KG</th> 
+                                    <th style="width:0.5cm;padding:0.1cm;">Doc</th> 
+                                    <th style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>  
+                                    <th style="width:1cm;padding:0.1cm;">KET</th> 
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php $__currentLoopData = $awb; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr style="padding:0px;">
-                                    <td style="padding:2px;">1</td>   
-                                    <td style="padding:2px;">AWB0003</td> 
-                                    <td style="padding:2px;" class='text-left'>David surosegoro</td> 
-                                    <td style="padding:2px;" class='text-left'>Indra Prasetya</td> 
-                                    <td style="padding:2px;">Malang</td> 
-                                    <td style="padding:2px;" class='text-center'>3</td> 
-                                    <td style="padding:2px;" class='text-center'>20</td> 
-                                    <td style="padding:2px;"></td> 
-                                    <td style="padding:2px;" class='text-left'>Yogi</td> 
-                                    <td style="padding:2px;">5 mei 2021</td> 
-                                    <td style="padding:2px;"></td> 
+                                    <td class='text-center' style="padding:5px;"><?php echo e($loop->index+1); ?></td>   
+                                    <td style="padding:5px;"><?php echo e($item->noawb); ?></td> 
+                                    <td style="padding:5px;" class='text-left'><?php echo e($item->namacust); ?></td> 
+                                    <td style="padding:5px;" class='text-left'><?php echo e($item->nama_penerima); ?></td> 
+                                    <td style="padding:5px;"><?php echo e($item->kotatujuan); ?></td> 
+                                    <td style="padding:5px;" class='text-center'>
+                                        <?php if($item->qty > 0 && $item->qtykoli == 0): ?>
+                                            <?php echo e($item->qty); ?>
+
+                                        <?php else: ?>
+                                            <?php echo e($item->qtykoli); ?>   
+                                        <?php endif; ?>
+                                    </td> 
+                                    <td style="padding:5px;" class='text-center'><?php echo e($item->qty_kg); ?></td> 
+                                    <td style="padding:5px;" class='text-center'><?php echo e($item->qty_doc); ?></td> 
+                                    <td style="padding:5px;"><?php echo e($item->nama_penerima); ?></td>  
+                                    <td style="padding:5px;"><?php echo e($item->keterangan); ?></td> 
                                 </tr>   
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>   
                             </tbody>
                         </table>
                         <table class="table table-striped table-bordered" >
                             <thead>
                                 <tr> 
-                                    <td class='text-left' style="font-size:0.22cm;">
+                                    <td class='text-left' style="font-size:0.22cm;padding:0.1cm;">
                                         <span style="font-weight:bold;">Keterangan</span><br>
-                                        In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.
+                                        <?php echo e($manifest->keterangan); ?>
+
                                     </td>
                                 </tr>
                             </thead>

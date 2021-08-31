@@ -12,11 +12,11 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label>Nama Customer:</label>
-        <input type="text" class="form-control" name="nama" placeholder="Input nama customer. . . "/>
+        <input type="text" class="form-control" name="nama" placeholder="Input nama customer. . . " required/>
       </div>
       <div class="form-group">
        <label>Kota:</label>
-       <select type="text" class="form-control select2" name="idkota" >
+       <select type="text" class="form-control select2" name="idkota" required>
          <?php $__currentLoopData = $kota; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <?php if($k->id == "3578"): ?>
             <option value="<?php echo e($k->id); ?>" selected><?php echo e($k->nama); ?> </option>
@@ -28,17 +28,22 @@
      </div>
     <div class="form-group">
      <label>Alamat Customer:</label>
-     <input type="text" class="form-control" name="alamat" placeholder="Input alamat customer. . ."/>
+     <input type="text" class="form-control" name="alamat" placeholder="Input alamat customer. . ." required/>
    </div>
    <div class="form-group">
      <label>Nomor Telepon Customer:</label>
-      <input type="text" class="form-control" name="notelp" placeholder="Input nomor telepon customer. . ."/>
+      <input type="text" class="form-control" name="notelp" placeholder="Input nomor telepon customer. . ." required/>
     </div>
 
     <div class="form-group">
       <label>Kode Customer:</label>
-       <input type="text" class="form-control" name="kode" placeholder="Input kode customer. . ."/>
+       <input type="text" class="form-control" name="kode" placeholder="Input kode customer. . ." required/>
      </div>
+
+     <div class="form-group">
+      <label>Kode Pos Customer:</label>
+      <input type="text" class="form-control" name="kodepos" placeholder="Input kodepos customer. . ." />
+    </div>
 
      <div class="form-group">
       <label>Rekening:</label>
@@ -55,15 +60,6 @@
        <input type="text" name="rekeningatasnama" class="form-control" placeholder="Input Nomor Atas Nama Rekening. . ."/>
      </div>
      
-     <div class="form-group">
-      <label>Hak Akses Mengubah Satuan</label>
-      <div class="checkbox-inline">
-        <label class="checkbox checkbox-lg">
-        <input name="access" type="checkbox">
-        <span></span>Berikan hak akses</label>
-      </div>
-      <span class="form-text text-muted">Centang untuk memberikan hak akses untuk mengubah satuan</span>
-    </div>
 
    </div>
    <div class="col-lg-6">
@@ -105,19 +101,38 @@
 
      <div class="form-group">
       <label>Harga Out Area:</label>
-       <input type="text" class="form-control rupiah"  name="harga_oa" placeholder="Input harga out area. . ."/>
+       <input type="text" class="form-control rupiah"  name="harga_oa" placeholder="Input harga out area. . ." required/>
      </div>
 
     <div class="form-group">
       <label>Harga per Kg:</label>
-       <input type="text" class="form-control rupiah" name="harga_kg" placeholder="Input harga per Kg. . ."/>
+       <input type="text" class="form-control rupiah" name="harga_kg" placeholder="Input harga per Kg. . ." required/>
      </div>
 
     <div class="form-group">
       <label>Harga Per Dokumen:</label>
-       <input type="text" class="form-control rupiah" name="harga_doc" placeholder="Input harga per dokumen. . ."/>
+       <input type="text" class="form-control rupiah" name="harga_doc" placeholder="Input harga per dokumen. . ." required/>
      </div>
+     
+     <div class="form-group">
+      <label>Hak Akses Mengubah Satuan</label>
+      <div class="checkbox-inline">
+        <label class="checkbox checkbox-lg">
+        <input name="access" type="checkbox">
+        <span></span>Berikan hak akses</label>
+      </div>
+      <span class="form-text text-muted">Centang untuk memberikan hak akses untuk mengubah satuan</span>
+    </div>
 
+     <div class="form-group">
+      <label>Customer ini adalah agen</label>
+      <div class="checkbox-inline">
+        <label class="checkbox checkbox-lg">
+        <input name="is_agen" type="checkbox">
+        <span></span>Ya</label>
+      </div>
+      <span class="form-text text-muted">Centang untuk menandai customer ini sebagai agen</span>
+    </div>
    </div>
   </div>
   <div class="card-footer">

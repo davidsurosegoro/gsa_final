@@ -21,6 +21,7 @@ Route::prefix('popup')->group(function () {
 
 
 Route::get('/', 'HomeController@index');
+Route::get('scannerawb/{status}', 'ScannerController@awb');
 
 Route::prefix('log')->group(function () {
 
@@ -148,6 +149,7 @@ Route::prefix('awb')->group(function () {
 	Route::get('/datatables','AwbController@datatables');
 	Route::post('/filter-customer','AwbController@filter_customer');
 	Route::post('/filter-alamat','AwbController@filter_alamat');
+	Route::post('/updateawb','AwbController@updateawb');
 });
 
 

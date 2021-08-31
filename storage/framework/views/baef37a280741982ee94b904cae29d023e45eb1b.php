@@ -17,6 +17,14 @@
             <input type="text" required class="form-control" name="labelalamat" value="<?php echo e((old('labelalamat') && old('labelalamat') !='') ?old('labelalamat'): $alamat->labelalamat); ?>" />        
         </div>
         <div class="form-group col-lg-6">
+            <label>nama Penerima:</label>
+             <input type="text" required class="form-control" name="nama_penerima" value="<?php echo e((old('nama_penerima') && old('nama_penerima') !='') ?old('nama_penerima'): $alamat->nama_penerima); ?>" />        
+        </div>
+        <div class="form-group col-lg-6">
+            <label>no telp:</label>
+             <input type="text" required class="form-control" name="no_hp" value="<?php echo e((old('no_hp') && old('no_hp') !='') ?old('no_hp'): $alamat->no_hp); ?>" />        
+        </div>
+        <div class="form-group col-lg-6">
             <label>Alamat:</label>
             <input type="text" required class="form-control" name="alamat" value="<?php echo e((old('alamat') && old('alamat') !='') ?old('alamat'): $alamat->alamat); ?>" />        
         </div>  
