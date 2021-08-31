@@ -32,14 +32,14 @@ class AwbController extends Controller
         $is_akses_qty = "false"; $hide_qty = "false";
         $customer = Customer::find(Auth::user()->id_customer);
         if(!empty($customer)):
-            if($customer->can_access_satuan == 1):
+            if($customer->can_access_satuan == "1"):
                 $is_akses_qty = "true";
             endif;
-            if($customer->is_agen == 1):
+            if($customer->is_agen == "1"):
                 $hide_qty = "true";
             endif;
         else:
-            if(Auth::user()->level == 1):
+            if(Auth::user()->level == "1"):
                 $is_akses_qty = "true";
             endif;
         endif;
@@ -50,9 +50,9 @@ class AwbController extends Controller
         
         $customer = ""; $agen_tujuan = "";
         $kota = Kota::where('id','>',0)->get();
-        if (Auth::user()->level == 2) :
+        if (Auth::user()->level == "2") :
             $customer = Customer::where('id', Auth::user()->id_customer)->first();
-        elseif (Auth::user()->level == 1) :
+        elseif (Auth::user()->level == "1") :
             $customer = Customer::all();
         endif;
         $awb = Awb::find($id);
@@ -95,11 +95,11 @@ class AwbController extends Controller
         $customer = Customer::find($request->id_customer);
         $total_harga = 0; $harga_oa = 0;
         $qty = ($request->qty == null) ? 0 : $request->qty;
-        if (Auth::user()->level == 1) :
+        if (Auth::user()->level == "1") :
             $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
             $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
         endif;
-        if(Auth::user()->level == 3 && $customer->can_access_satuan == 1):
+        if(Auth::user()->level == "3" && $customer->can_access_satuan == 1):
             $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
             $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
         endif;
@@ -284,11 +284,11 @@ class AwbController extends Controller
         
         return Datatables::of($awbs)
             ->addColumn('aksi', function ($a) {
-                if ($a['status_tracking'] !== 'booked' && Auth::user()->level !== 1) :
+                if ($a['status_tracking'] !== 'booked' && Auth::user()->level !== "1") :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="detail('.$a['id'].',`'.$a['noawb'].'`)" data-placement="bottom" title="Lihat Data"><i class="flaticon-eye"> </i></button>
                     </div>';
-                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == 1) :
+                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == "1") :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
@@ -299,14 +299,14 @@ class AwbController extends Controller
                     </a>
                     <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button>
                     </div>';
-                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == 2) :
+                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == "2") :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
                     </a> 
                     
                     <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button></div>';
-                elseif ($a['status_tracking'] !== 'booked' && Auth::user()->level == 1) :
+                elseif ($a['status_tracking'] !== 'booked' && Auth::user()->level == "1") :
                     
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
@@ -373,7 +373,7 @@ class AwbController extends Controller
             $harga_kg = $customer->harga_kg * $qty_kg; 
         endif;
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb)  + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
-        if ($charge_oa == 1) :
+        if ($charge_oa == "1") :
             if ($customer->jenis_out_area == "shipment") :
                 $harga_oa = 0;
             elseif ($customer->jenis_out_area == "resi") :
