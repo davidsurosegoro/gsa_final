@@ -51,7 +51,7 @@
             </div>
             <div class="modal-body"> 
                 <input type="text" required class="form-control" name="diterima_oleh" id="diterima_oleh" value="" placeholder="diterima oleh"/>        
-                <input type="text" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
+                <input type="hidden" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="updatepenerima()" class="btn btn-success" >Simpan</button> 
