@@ -37,6 +37,13 @@
                     </label>
                 </div>
             </div>
+            <div class="col-12 text-center">
+                <div class="btn-group   mb-5"  >
+                    <label class="btn btn-success" data-toggle="modal" data-target="#modalkodemanual" style="cursor: pointer;">
+                        Input AWB Manual
+                    </label> 
+                </div>
+            </div>    
         </div> 
     </div>  
 </div>
@@ -58,6 +65,24 @@
             </div>
         </div>
     </div>
+</div> 
+<div class="modal " id="modalkodemanual" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Input kode AWB manual</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"> 
+                <input type="text" required class="form-control" name="kode_awb" id="kode_awb" value="" placeholder="kode AWB"/>               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id='simpankodemanual' >Simpan</button> 
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @section('script')
@@ -70,65 +95,65 @@
 <script type="text/javascript"> </script>
        
 <script type="text/javascript"> 
-	$(document).ready(function(){   
-                            // $('#modalpenerima').modal('show');
-		
+	$(document).ready(function(){    
 		scanner.addListener('scan',function(kode_awb_or_manifest){ 
 			scanner.stop() 
-			x.play();  
-            $.ajax({
-                method  :'POST',
-                url     :'{{ url('awb/updateawb') }}',
-                data    :{
-                    kode        : kode_awb_or_manifest,
-                    status      : $('#statusawb').val(),
-                    '_token'    : "{{ csrf_token() }}" 
-                },
-                success:function(data){
-                    if(data.statuserror)    {toastr.error( data.statuserror)}
-                    if(data.statuswarning)  {toastr.warning( data.statuswarning)}
-                    if(data.statussuccess)  {
-                        toastr.success( data.statussuccess)
-                       
-                     }                  
-                    if(data.openmodal == 'open'){
-                        $('#modalpenerima').modal('show');
-                        $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
-                        $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
-                    }else{
-                        scanner.start()
-                    }
-                     
-                }
-            }) 
-		});
-
-        
-
+			x.play();   
+            scan_update_status(kode_awb_or_manifest);
+		});  
 	}); 
-    function updatepenerima(){
-            $.ajax({
-                method  :'POST',
-                url     :'{{ url('awb/updatediterima') }}',
-                data    :{
-                    kode            : $('#kodeawb_penerima').val(),
-                    diterima_oleh   : $('#diterima_oleh').val(),
-                    '_token'        : "{{ csrf_token() }}" 
-                },
-                success:function(data){ 
-                    if(data.statussuccess)  {
-                        toastr.success( data.statussuccess) 
-                        $('#modalpenerima').modal('hide');
-                    }        
-					scanner.start() 
+    
+    $("#simpankodemanual").on('click',function(){  
+        scan_update_status($('#kode_awb').val())
+    })
+
+    function scan_update_status(kode_awb_or_manifest){
+        $.ajax({
+            method  :'POST',
+            url     :'{{ url('awb/updateawb') }}',
+            data    :{
+                kode        : kode_awb_or_manifest,
+                status      : $('#statusawb').val(),
+                '_token'    : "{{ csrf_token() }}" 
+            },
+            success:function(data){
+                if(data.statuserror)    {toastr.error( data.statuserror)}
+                if(data.statuswarning)  {
+                    $('#modalkodemanual').modal('hide');
+                    toastr.warning( data.statuswarning)
                 }
-            }) 
-        }
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess)
+                    $('#modalkodemanual').modal('hide');
+                }                  
+                if(data.openmodal == 'open'){
+                    $('#modalpenerima').modal('show');
+                    $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
+                    $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
+                }else{
+                    scanner.start()
+                } 
+            }
+        }) 
+    }
+    function updatepenerima(){
+        $.ajax({
+            method  :'POST',
+            url     :'{{ url('awb/updatediterima') }}',
+            data    :{
+                kode            : $('#kodeawb_penerima').val(),
+                diterima_oleh   : $('#diterima_oleh').val(),
+                '_token'        : "{{ csrf_token() }}" 
+            },
+            success:function(data){ 
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess) 
+                    $('#modalpenerima').modal('hide');
+                }        
+                scanner.start() 
+            }
+        }) 
+    }
 	
-</script>
-@if(Session::get('message') == "kodesudahada")
-<script type="text/javascript">
-    toastr.error("Kode kota sudah ada!");
-</script>
-@endif
+</script> 
 @endsection 
