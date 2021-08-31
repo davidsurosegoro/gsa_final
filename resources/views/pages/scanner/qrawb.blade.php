@@ -66,7 +66,7 @@
         </div>
     </div>
 </div> 
-<div class="modal " id="modalkodemanual" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal " id="modalkodemanual" data-backdrop="dismiss"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -87,7 +87,9 @@
 @endsection
 @section('script')
 
-
+<div style="position: fixed; width:100%;height:100%; z-index:200000;background-color:rgba(0,0,0,0.6);" class="d-none" id="loading">
+    <img src="{{asset('assets/gsa/img/loading.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:5%;">
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="{{asset('assets/gsa/scanner/js-scanner.js')}}"></script> 
@@ -95,6 +97,13 @@
 <script type="text/javascript"> </script>
        
 <script type="text/javascript"> 
+    $(document)
+    .ajaxStart(function () {
+        $('#loading').removeClass('d-none')
+    })
+    .ajaxStop(function () {
+        $('#loading').addClass('d-none')
+    });
 	$(document).ready(function(){    
 		scanner.addListener('scan',function(kode_awb_or_manifest){ 
 			scanner.stop() 
@@ -104,6 +113,7 @@
 	}); 
     
     $("#simpankodemanual").on('click',function(){  
+		x.play();   
         scan_update_status($('#kode_awb').val())
     })
 
@@ -117,6 +127,7 @@
                 '_token'    : "{{ csrf_token() }}" 
             },
             success:function(data){
+                $('#kode_awb').val('')
                 if(data.statuserror)    {toastr.error( data.statuserror)}
                 if(data.statuswarning)  {
                     $('#modalkodemanual').modal('hide');
@@ -151,6 +162,7 @@
                 if(data.statussuccess)  {
                     toastr.success( data.statussuccess) 
                     $('#modalpenerima').modal('hide');
+                    $('#diterima_oleh'      ).val('')
                 }        
                 scanner.start() 
             }
