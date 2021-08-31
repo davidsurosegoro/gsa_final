@@ -150,6 +150,7 @@ Route::prefix('awb')->group(function () {
 	Route::post('/filter-customer','AwbController@filter_customer');
 	Route::post('/filter-alamat','AwbController@filter_alamat');
 	Route::post('/updateawb','AwbController@updateawb');
+	Route::post('/updatediterima','AwbController@updatediterima');
 });
 
 

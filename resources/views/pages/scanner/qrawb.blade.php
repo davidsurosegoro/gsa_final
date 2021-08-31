@@ -40,6 +40,25 @@
         </div> 
     </div>  
 </div>
+<div class="modal fade" id="modalpenerima" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Isi nama Penerima</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"> 
+                <input type="text" required class="form-control" name="diterima_oleh" id="diterima_oleh" value="" placeholder="diterima oleh"/>        
+                <input type="text" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="updatepenerima()" class="btn btn-success" >Simpan</button> 
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 
@@ -52,6 +71,7 @@
        
 <script type="text/javascript"> 
 	$(document).ready(function(){   
+                            // $('#modalpenerima').modal('show');
 		
 		scanner.addListener('scan',function(kode_awb_or_manifest){ 
 			scanner.stop() 
@@ -67,15 +87,43 @@
                 success:function(data){
                     if(data.statuserror)    {toastr.error( data.statuserror)}
                     if(data.statuswarning)  {toastr.warning( data.statuswarning)}
-                    if(data.statussuccess)  {toastr.success( data.statussuccess) }                  
-                    
-					scanner.start()
+                    if(data.statussuccess)  {
+                        toastr.success( data.statussuccess)
+                       
+                     }                  
+                    if(data.openmodal == 'open'){
+                        $('#modalpenerima').modal('show');
+                        $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
+                        $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
+                    }else{
+                        scanner.start()
+                    }
                      
                 }
             }) 
 		});
 
+        
+
 	}); 
+    function updatepenerima(){
+            $.ajax({
+                method  :'POST',
+                url     :'{{ url('awb/updatediterima') }}',
+                data    :{
+                    kode            : $('#kodeawb_penerima').val(),
+                    diterima_oleh   : $('#diterima_oleh').val(),
+                    '_token'        : "{{ csrf_token() }}" 
+                },
+                success:function(data){ 
+                    if(data.statussuccess)  {
+                        toastr.success( data.statussuccess) 
+                        $('#modalpenerima').modal('hide');
+                    }        
+					scanner.start() 
+                }
+            }) 
+        }
 	
 </script>
 @if(Session::get('message') == "kodesudahada")

@@ -201,6 +201,7 @@ class AwbController extends Controller
         $status                 =  Crypt::decrypt($request->status);
         $returnmessage          = '';
         $typereturn             = ' ';
+        $openmodal              = ($status=='complete') ? 'open' : 'close';
         //check apakah status sudah seperti yang direquest untuk diganti
         
         $awb                    =  Awb::where('noawb', $request->kode)->first();
@@ -213,18 +214,29 @@ class AwbController extends Controller
                 $typereturn    = 'statuswarning';
             }else{
                 $awb->status_tracking   = $status;
-                if($status=='complete'){
-                    $awb->tanggal_diterima = Carbon::now()->addHours(7);
-                    $awb->diterima_oleh    = 'andi';
-                }
+                
                 $awb->save();
         
                 $data['success']        =$awb->wasChanged('status_tracking');
                 $returnmessage = 'Update Kode AWB '.$kode.' ke '.$status.', sukses di update!';
                 $typereturn    = 'statussuccess';
             }
+            if($status=='complete'){
+                $awb->tanggal_diterima = Carbon::now()->addHours(7);
+            }
         } 
-        return response()->json(array($typereturn => $returnmessage));
+        return response()->json(array($typereturn => $returnmessage, 'openmodal'=>$openmodal,'awb'=>$awb));
+    }
+    public function updatediterima(Request $request){
+        $returnmessage      = 'Data penerima berhasil disimpan';
+        $typereturn         = 'statussuccess';
+        $kode               = $request->kode; 
+        $awb                =  Awb::where('noawb', $request->kode)->first();
+        $awb->diterima_oleh = $request->diterima_oleh;
+        
+        $awb->save();
+         
+        return response()->json(array($typereturn => $returnmessage ));
     }
 
     public function manifest(Request $request){
