@@ -83,42 +83,31 @@
             </div>
           </div>
           @else
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <div class="form-group">
               <label>Qty Koli Kecil</label>
               <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
             </div>
-          </div>
-          <div class="col-lg-4">
-            
             <div class="form-group">
               <label>Qty Koli Sedang</label>
               <input type="number" class="form-control" value="{{ $awb->qty_sedang }}" name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
             </div>
-          </div>
-          <div class="col-lg-4">
             
             <div class="form-group">
               <label>Qty Koli Besar</label>
               <input type="number" class="form-control" value="{{ $awb->qty_besar }}" name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             
             <div class="form-group">
               <label>Qty Koli Besar Banget</label>
               <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}" name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
             </div>
-          </div>
-          <div class="col-lg-4">
-            
             <div class="form-group">
               <label>Qty Koli Kg</label>
               <input type="number" class="form-control" value="{{ $awb->qty_kg }}" name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
             </div>
-          </div>
-          <div class="col-lg-4">
-            
             <div class="form-group">
               <label>Qty Koli Dokumen</label>
               <input type="number" class="form-control" value="{{ $awb->qty_doc }}" name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
@@ -138,7 +127,7 @@
           <div class="col-lg-6">
               <div class="form-group">
                 <label>Nama Penerima</label>
-                <input type="text" class="form-control" value="{{ $awb->nama_penerima }}" name="nama_penerima" placeholder="Input Nama Penerima. . ." required>
+                <input type="text" id="nama_penerima" class="form-control" value="{{ $awb->nama_penerima }}" name="nama_penerima" placeholder="Input Nama Penerima. . ." required>
               </div>
               <div class="form-group">
                 <label>Alamat Tujuan Penerima</label>
@@ -164,11 +153,11 @@
               </div>
             <div class="form-group">
               <label>Kode Pos Penerima</label>
-              <input type="text" class="form-control" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
+              <input type="text" id="kodepos_penerima" class="form-control" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label>No Telp Penerima</label>
-              <input type="text" class="form-control" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
+              <input type="text" id="notelp_penerima" class="form-control" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
             </div>
           </div>
           <div class="col-lg-6">
@@ -223,10 +212,18 @@
               <select style="width:90%" class="select2 form-control" id="kota_asal" name="id_kota_asal" readonly="true" required >
                 <option value="">--Pilih Kota Asal--</option>
                 @foreach($kota as $c)
-                  @if($c->id == $awb->id_kota_asal)
-                    <option value="{{ $c->id }}" selected>{{ $c->nama }}</option>
+                  @if($id !== "0")
+                    @if($c->id == $awb->id_kota_asal)
+                      <option value="{{ $c->id }}" selected>{{ $c->nama }}</option>
+                    @else
+                    <option value="{{ $c->id }}">{{ $c->nama }}</option>
+                    @endif
                   @else
-                  <option value="{{ $c->id }}">{{ $c->nama }}</option>
+                    @if($c->kode == "SUB")
+                      <option value="{{ $c->id }}" selected>{{ $c->nama }}</option>
+                    @else
+                      <option value="{{ $c->id }}">{{ $c->nama }}</option>
+                    @endif
                   @endif
                 @endforeach
               </select>
@@ -341,15 +338,12 @@
   </div>
   <div class="card-footer d-flex justify-content-between">
     <button type="submit" class="btn btn-primary mr-2">SIMPAN</button>
-    <input style="width:500px;" type="text" class="form-control" name="harga_total" id="harga_total" readonly="true" placeholder="0" >
   </div>
 </form>
 </div>
 @endsection
 @section('script')
 <script>
-  $('#alamat_pengirim').hide()
-  $('#alamat_tujuan').hide()
   // $('#kota_asal').on('change',function(){
   //   $.ajax({
   //     method:'POST',
@@ -393,16 +387,20 @@
         $('#nama_pengirim').val(data.data.nama)
         $('#alamat_pengirim_auto').html(data.alamat)
         $('#alamat_tujuan_auto').html(data.alamat)
-        $('#alamat_tujuan').html(data.data.alamat)
+        $('#alamat_tujuan_auto').val('manual')
+        $('#alamat_tujuan').val('')
+        $('#nama_penerima').val('')
+        $('#kodepos_penerima').val('')
+        $('#notelp_penerima').val('')
         $('#alamat_pengirim').val(data.data.alamat)
         $('#kodepos_pengirim').val(data.data.kodepos)
         $('#notelp_pengirim').val(data.data.notelp)
-        if(data.count_alamat == 0){
-          $('#alamat_pengirim').show()
-        }
-        else{
-          $('#alamat_pengirim').hide()
-        }
+        // if(data.count_alamat == 0){
+        //   $('#alamat_pengirim').show()
+        // }
+        // else{
+        //   $('#alamat_pengirim').hide()
+        // }
       }
     })
   })
@@ -411,11 +409,11 @@
     var value = $(this).val()
     console.log(value)
     if(value == "manual"){
-      $('#alamat_pengirim').show()
+      // $('#alamat_pengirim').show()
       $('#alamat_pengirim').val('')
     }
     else{
-      $('#alamat_pengirim').hide()
+      // $('#alamat_pengirim').hide()
       $('#alamat_pengirim').val(value)
     }
   })
@@ -424,22 +422,42 @@
     var value = $(this).val()
     console.log(value)
     if(value == "manual"){
-      $('#alamat_tujuan').show()
+      // $('#alamat_tujuan').show()
       $('#alamat_tujuan').val('')
+      $('#nama_penerima').val('')
+      $('#notelp_penerima').val('')
+      $('#kodepos_penerima').val('')
     }
     else{
-      $('#alamat_tujuan').hide()
+      // $('#alamat_tujuan').hide()
       $('#alamat_tujuan').val(value)
+      $.ajax({
+        method:'POST',
+        url:'{{ url("awb/filter-data-penerima") }}',
+        data:{
+          alamat: $(this).val(),
+          '_token': $('input[name=_token]').val()
+        },
+        success:function(data){
+          $('#nama_penerima').val(data.customer.nama_penerima)
+          $('#notelp_penerima').val(data.customer.no_hp)
+          $('#kodepos_penerima').val(data.customer.kodepos)
+        }
+
+      });
+      // $('#nama_penerima').val('')
+      // $('#notelp_penerima').val('')
+      // $('#kodepos_penerima').val('')
     }
   })
   
   $(document).ready(function(){
     if($('#check_alamat_tujuan').val() == 0){
-      $('#alamat_tujuan').show()
+      // $('#alamat_tujuan').show()
     }
 
     if($('#check_alamat_pengirim').val() == 0){
-      $('#alamat_pengirim').show()
+      // $('#alamat_pengirim').show()
     }
   })
 </script>

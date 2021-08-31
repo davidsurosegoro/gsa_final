@@ -27,7 +27,21 @@ class AwbController extends Controller
 
     public function index()
     {
-        return view('pages.awb.index');
+        $is_akses_qty = "false"; $hide_qty = "false";
+        $customer = Customer::find(Auth::user()->id_customer);
+        if(!empty($customer)):
+            if($customer->can_access_satuan == 1):
+                $is_akses_qty = "true";
+            endif;
+            if($customer->is_agen == 1):
+                $hide_qty = "true";
+            endif;
+        else:
+            if(Auth::user()->level == 1):
+                $is_akses_qty = "true";
+            endif;
+        endif;
+        return view('pages.awb.index',compact('is_akses_qty','hide_qty'));
     }
 
     public function edit($id){
@@ -128,6 +142,7 @@ class AwbController extends Controller
             ]);
             return redirect('awb')->with('message', 'created');
         else:
+            $before_update = Awb::find($request->idawb);
             $awb = Awb::find($request->idawb)->update([
             'noawb' => $request->noawb,
             'id_customer' => $request->id_customer,
@@ -147,7 +162,7 @@ class AwbController extends Controller
             'notelp_pengirim' => $request->notelp_pengirim,
             'keterangan' => $request->keterangan,
             'total_harga' => ($total_harga['total'] == null) ? 0 : $total_harga['total'],
-            'tanggal_awb' => date("Y-m-d", strtotime($request->tanggal_awb)),
+            'tanggal_awb' => $before_update->tanggal_awb,
             'created_by' => Auth::user()->id,
             'status_invoice' => 0,
             'status_tracking' => 'booked',
@@ -165,6 +180,7 @@ class AwbController extends Controller
             'idr_oa' => ($total_harga['oa'] == null) ? 0 : $total_harga['oa'],
             'id_manifest' => 0,
             'id_invoice' => 0,
+            'tanggal_diterima' => $before_update->tanggal_diterima
         ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -187,11 +203,17 @@ class AwbController extends Controller
         return response()->json(array('awb' => $awb));
     }
 
+    public function filter_data_penerima(Request $request)
+    {
+        $customer = Alamat::where('alamat',$request->alamat)->first();
+        return response()->json(array('customer' => $customer));
+    }
+
     public function datatables()
     {
-        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL");
+        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL ORDER BY a.id DESC");
         if (Auth::user()->level !== 1) :
-            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = ".Auth::user()->id_customer." AND a.deleted_at IS NULL");
+            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = ".Auth::user()->id_customer." AND a.deleted_at IS NULL ORDER BY a.id DESC");
         endif;
         $awbs = new Collection;
         foreach ($awb as $a) :
@@ -204,7 +226,13 @@ class AwbController extends Controller
                 'kota_transit' => $a->kota_transit,
                 'tanggal_awb' => date("d F Y", strtotime($a->tanggal_awb)),
                 'status_tracking' => $a->status_tracking,
-                'qty' => $a->qty
+                'qty' => $a->qty,
+                'kecil' => $a->qty_kecil,
+                'sedang' => $a->qty_sedang,
+                'besar' => $a->qty_besar,
+                'besarbanget' => $a->qty_besarbanget,
+                'doc' => $a->qty_doc,
+                'kg' => $a->qty_kg,
             ]);
         endforeach;
         
@@ -241,9 +269,15 @@ class AwbController extends Controller
                     <a href='.url('printout/awb/'.$a['id']).' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                     <i class="flaticon2-print" ></i>
                     </a>
-                    <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button>
                 
                     </div>';
+                endif;
+            })
+            ->addColumn('qty_stat',function($a){
+                if($a['qty'] !== 0 || $a['kecil'] !== 0 || $a['sedang'] !== 0 || $a['besar'] !== 0 || $a['besarbanget'] !== 0 || $a['doc'] !== 0 || $a['kg'] !== 0 ):
+                    return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli('.$a['id'].')" class="label label-lg label-success label-inline mr-2"> Terisi </span>';
+                else:
+                    return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terisi </span>';
                 endif;
             })
             ->editColumn('kota_tujuan', function ($a) {
@@ -253,8 +287,13 @@ class AwbController extends Controller
                 endif;
                 return $string;
             })
-            ->rawColumns(['kota_tujuan', 'aksi'])
+            ->rawColumns(['kota_tujuan', 'aksi','qty_stat'])
             ->make(true);
+    }
+
+    public function koli(Request $request){
+        $awb = Awb::find($request->id);
+        return response()->json(array('awb' => $awb));
     }
 
     public function filter_kota_agen(Request $request)
@@ -290,10 +329,10 @@ class AwbController extends Controller
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb)  + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
         if ($charge_oa == 1) :
             if ($customer->jenis_out_area == "shipment") :
-                $harga_oa = $harga_total;
+                $harga_oa = 0;
             elseif ($customer->jenis_out_area == "resi") :
-                $harga_oa = $harga_total + $customer->harga_oa;
-            else :
+                $harga_oa = $customer->harga_oa;
+            elseif ($customer->jenis_out_area == "koli") :
                 $harga_oa = ($qty_kecil + $qty_sedang + $qty_besar + $qty_besar_banget + $qty_dokumen + $qty_kg) * $customer->harga_oa;
             endif;
         endif;

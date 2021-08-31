@@ -118,12 +118,32 @@ class PrintoutController extends Controller
                             LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
                             LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
                             WHERE a.id = ".$id." ");
-        return view("pages.printout.awb",compact('awb'));
+        // dd(strlen($awb[0]->noawb));
+        $noawb = "";
+        for($i = 0; $i < 10 - strlen($awb[0]->noawb) ; $i++ ){
+            $noawb .= "0";
+        }
+        $noawb .= $awb[0]->noawb;
+        return view("pages.printout.awb",compact('awb','noawb'));
     }
     public function awbtri($id)
     {
-        $data=[];
-        return view("pages.printout.awbtri",$data);
+        $awb = DB::SELECT("SELECT
+                            a.*,
+                            k1.kode AS kota_tujuan_kode,
+                            k2.kode AS kota_asal_kode
+                            FROM
+                                awb a
+                            LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
+                            LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
+                            WHERE a.id = ".$id." ");
+        // dd(strlen($awb[0]->noawb));
+        $noawb = "";
+        for($i = 0; $i < 10 - strlen($awb[0]->noawb) ; $i++ ){
+            $noawb .= "0";
+        }
+        $noawb .= $awb[0]->noawb;
+        return view("pages.printout.awbtri",compact('awb','noawb'));
     }
 
     /**
