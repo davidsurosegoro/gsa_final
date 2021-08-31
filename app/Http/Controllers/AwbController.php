@@ -93,7 +93,7 @@ class AwbController extends Controller
         $charge_oa = $kecamatan->oa;
         $created_at = date( "Y-m-d H:i:s", strtotime( date( "Y-M-d H:i:s") ) + 7 * 3600 );
         $customer = Customer::find($request->id_customer);
-        $total_harga = 0; $harga_oa = 0;
+        $total_harga = array('total_harga' => null, 'oa' => null); $harga_oa = 0;
         $qty = ($request->qty == null) ? 0 : $request->qty;
         if (Auth::user()->level == "1") :
             $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
