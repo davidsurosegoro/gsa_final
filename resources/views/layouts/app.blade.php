@@ -19,7 +19,7 @@
         <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/ol/ol.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="{{asset('assets/GSA/fa/css/font-awesome.min.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
         <!--end::Global Theme Styles-->
         <!--begin::Layout Themes(used by all pages)-->
         <!--end::Layout Themes-->
