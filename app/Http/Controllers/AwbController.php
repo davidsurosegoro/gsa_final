@@ -12,6 +12,7 @@ use App\Awb;
 use App\Agen;
 use App\Alamat;
 use App\ViewAgenKota;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -212,6 +213,10 @@ class AwbController extends Controller
                 $typereturn    = 'statuswarning';
             }else{
                 $awb->status_tracking   = $status;
+                if($status=='complete'){
+                    $awb->tanggal_diterima = Carbon::now()->addHours(7);
+                    $awb->diterima_oleh    = 'andi';
+                }
                 $awb->save();
         
                 $data['success']        =$awb->wasChanged('status_tracking');
