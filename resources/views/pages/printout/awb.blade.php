@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>AWB</title>
-        <link href="{{asset('assets/gsa/css/bootstrap.min.css')}}" rel="stylesheet" />
+        <link href="{{asset('assets/gsa/css/boots.css')}}" rel="stylesheet" />
         <link href="" rel="stylesheet" />
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
