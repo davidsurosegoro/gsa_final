@@ -4755,7 +4755,7 @@
   .page-link:not(:disabled):not(.disabled) {
     cursor: pointer;
   }
-  
+   
   .page-item:first-child .page-link {
     margin-left: 0;
     border-top-left-radius: 0.25rem;
