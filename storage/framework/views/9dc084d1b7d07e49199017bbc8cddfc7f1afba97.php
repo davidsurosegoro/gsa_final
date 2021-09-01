@@ -17,10 +17,12 @@
           <thead>
             <tr>  
               <th>Label</th>
+              <th>nama Penerima</th>    
               <th>Alamat</th> 
               <th>Kodepos</th> 
               <th>Kota</th>    
               <th>Kecamatan</th>    
+              <th>notelp</th>    
               <th width='5%'>Aksi</th>
             </tr>
           </thead>
@@ -39,10 +41,12 @@
 	     ajax       :'<?php echo e(url('master/alamat/datatables')); ?>',
 	     columns    : [ 
           {data: 'labelalamat',       name:'label'}, 
+          {data: 'nama_penerima',     name:'nama_penerima'}, 
           {data: 'alamat',            name:'alamat'}, 
           {data: 'kodepos',           name:'kodepos'}, 
           {data: 'namakota',          name:'namakota'},  
           {data: 'kecamatan',         name:'kecamatan'},  
+          {data: 'no_hp',             name:'no_hp'},  
           {data: 'aksi',              name:'aksi'},
       ],
      

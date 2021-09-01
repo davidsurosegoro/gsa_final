@@ -77,15 +77,15 @@
                             <p class="col-8 font-weight-bold text-left" style="font-size:0.25cm;padding:0px; margin:0px;">GLOBAL SERVICE ASIA<br>Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
                             <table  class=" col-12 table-bordered"  style="font-size:0.27cm; border-right:0px !important;">
                                 <tr style="padding:0px;">
-                                    <td style="font-size:0.5cm;line-height:0.4cm;" colspan='2'><b>No. </b>0000030123</td> 
+                                    <td style="font-size:0.5cm;line-height:0.4cm;" colspan='2'><b>No. </b><?php echo e($awb[0]->noawb); ?></td> 
                                 </tr>
                                 <tr>
                                     <td style="width:2.4cm;line-height:0.2cm;"><b>PICKUP BY </b></td>
                                     <td style="width:2.4cm;line-height:0.2cm;"><b>TANGGAL</b></td> 
                                 </tr>
                                 <tr>
-                                    <td style="line-height:0.2cm;">Anton Driver</td>
-                                    <td style="line-height:0.2cm;">30-SEPTEMBER-2021</td>
+                                    <td style="line-height:0.2cm;">Driver</td>
+                                    <td style="line-height:0.2cm;"><?php echo e(date('d-F-Y',strtotime($awb[0]->tanggal_awb))); ?></td>
                                 </tr> 
                             </table>
                         </div>  
@@ -94,26 +94,27 @@
                                 <tr>
                                     <td style="width:25%; height:1.3cm;font-size:1cm;line-height:0cm;position:relative;">
                                         <span class="font-weight-bold" style="position:absolute; top:0.1cm;right:1px;font-size:0.22cm;">KOTA ASAL</span>
-                                        SUB<br>
+                                        <?php echo e($awb[0]->kota_asal_kode); ?><br>
                                     </td> 
                                 </tr>
                                 <tr>
                                     <td style="width:25%; height:1.3cm;font-size:1cm;line-height:0cm;position:relative;">
                                         <span class="font-weight-bold" style="position:absolute; top:0.1cm;right:1px;font-size:0.22cm;">KOTA TUJUAN</span>
-                                        MLG<br>
+                                        <?php echo e($awb[0]->kota_tujuan_kode); ?><br>
                                     </td>  
                                 </tr>
                             </table>
                         </div>
                         <div class="col-2 text-center" >
-                            <?php echo QrCode::size(95)->generate('ItSolutionStuff.com');; ?> 
+                            <?php echo QrCode::size(95)->generate($awb[0]->noawb );; ?> 
                         </div>
                         <table class="table-striped table-bordered col-3"  >
                             <thead>
                                 <tr> 
                                     <td class='text-left' style="font-size:0.24cm;">
                                         <span style="font-weight:bold;">Keterangan</span><br>
-                                        In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.
+                                        <?php echo e($awb[0]->keterangan); ?>
+
                                     </td>
                                 </tr>
                             </thead>
@@ -131,25 +132,25 @@
                                         <tr style="height: 3cm; font-size:0.25cm;">
                                             <td style="width:50%;">
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NAMA PENGIRIM:</span><br>
-                                                    <span style="font-size:0.35cm;">David surosegoro<br><span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->nama_pengirim); ?><br><span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">ALAMAT:</span><br>
-                                                    <span style="font-size:0.35cm;">Jl. gayungkebonsari manunggal c10<br><span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->alamat_pengirim); ?><br><span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">KODEPOS:</span><br>
-                                                    <span style="font-size:0.35cm;">60226<br><span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->kodepos_pengirim); ?><br><span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NO HP:</span><br>
-                                                    <span style="font-size:0.35cm;">08151651564 <span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->notelp_pengirim); ?> <span>
                                                     
                                                 
                                             </td>   
                                             <td style="width:50%;">
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NAMA PENERIMA:</span><br>
-                                                    <span style="font-size:0.35cm;">Indra Prasetya<br><span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->nama_penerima); ?><br><span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">ALAMAT:</span><br>
-                                                    <span style="font-size:0.35cm;">Jl. gayungkebonsari manunggal c10<br><span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->alamat_tujuan); ?><br><span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">KODEPOS:</span><br>
-                                                    <span style="font-size:0.35cm;">60226<br><span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->kodepos_penerima); ?><br><span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NO HP:</span><br>
-                                                    <span style="font-size:0.35cm;">08151651564 <span>
+                                                    <span style="font-size:0.35cm;"><?php echo e($awb[0]->notelp_penerima); ?> <span>
                                             </td>    
                                         </tr>
                                     </thead> 
@@ -170,12 +171,12 @@
                                         <th width='16.6%'>Doc</th> 
                                     </tr> 
                                     <tr class="text-center">
-                                        <td>2</td> 
-                                        <td>0</td> 
-                                        <td>4</td> 
-                                        <td>0</td> 
-                                        <td>0</td> 
-                                        <td>1</td> 
+                                        <td><?php echo e($awb[0]->qty_kecil); ?></td> 
+                                        <td><?php echo e($awb[0]->qty_sedang); ?></td> 
+                                        <td><?php echo e($awb[0]->qty_besar); ?></td> 
+                                        <td><?php echo e($awb[0]->qty_besarbanget); ?></td> 
+                                        <td><?php echo e($awb[0]->qty_kg); ?></td> 
+                                        <td><?php echo e($awb[0]->qty_doc); ?></td> 
                                     </tr> 
                                 </table>
                                 <table  class="col-12  "  style="font-size:0.35cm; border-right:0px !important;">

@@ -12,7 +12,9 @@ use App\Awb;
 use App\Agen;
 use App\Alamat;
 use App\ViewAgenKota;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
@@ -30,14 +32,14 @@ class AwbController extends Controller
         $is_akses_qty = "false"; $hide_qty = "false";
         $customer = Customer::find(Auth::user()->id_customer);
         if(!empty($customer)):
-            if($customer->can_access_satuan == 1):
+            if($customer->can_access_satuan == "1"):
                 $is_akses_qty = "true";
             endif;
-            if($customer->is_agen == 1):
+            if($customer->is_agen == "1"):
                 $hide_qty = "true";
             endif;
         else:
-            if(Auth::user()->level == 1):
+            if(Auth::user()->level == "1"):
                 $is_akses_qty = "true";
             endif;
         endif;
@@ -48,9 +50,9 @@ class AwbController extends Controller
         
         $customer = ""; $agen_tujuan = "";
         $kota = Kota::where('id','>',0)->get();
-        if (Auth::user()->level == 2) :
+        if (Auth::user()->level == "2") :
             $customer = Customer::where('id', Auth::user()->id_customer)->first();
-        elseif (Auth::user()->level == 1) :
+        elseif (Auth::user()->level == "1") :
             $customer = Customer::all();
         endif;
         $awb = Awb::find($id);
@@ -91,13 +93,13 @@ class AwbController extends Controller
         $charge_oa = $kecamatan->oa;
         $created_at = date( "Y-m-d H:i:s", strtotime( date( "Y-M-d H:i:s") ) + 7 * 3600 );
         $customer = Customer::find($request->id_customer);
-        $total_harga = 0; $harga_oa = 0;
+        $total_harga = array('total' => null, 'oa' => null); $harga_oa = 0;
         $qty = ($request->qty == null) ? 0 : $request->qty;
-        if (Auth::user()->level == 1) :
+        if (Auth::user()->level == "1") :
             $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
             $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
         endif;
-        if(Auth::user()->level == 3 && $customer->can_access_satuan == 1):
+        if(Auth::user()->level == "2" && $customer->can_access_satuan == 1):
             $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
             $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
         endif;
@@ -194,6 +196,49 @@ class AwbController extends Controller
         return response()->json(array('awb' => $awb));
     }
 
+    public function updateawb(Request $request){
+        $kode                   = $request->kode;
+        $status                 =  Crypt::decrypt($request->status);
+        $returnmessage          = '';
+        $typereturn             = ' ';
+        $openmodal              = ($status=='complete') ? 'open' : 'close';
+        //check apakah status sudah seperti yang direquest untuk diganti
+        
+        $awb                    =  Awb::where('noawb', $request->kode)->first();
+        if(!$awb){
+            $returnmessage = 'Kode AWB '.$kode.' tidak ditemukan!';
+            $typereturn    = 'statuserror';
+        }else if($awb->id){
+            if($awb->status_tracking == $status){
+                $returnmessage = 'Kode AWB '.$kode.' Sudah berstatus '.$status.'!';
+                $typereturn    = 'statuswarning';
+            }else{
+                $awb->status_tracking   = $status;
+                
+                $awb->save();
+        
+                $data['success']        =$awb->wasChanged('status_tracking');
+                $returnmessage = 'Update Kode AWB '.$kode.' ke '.$status.', sukses di update!';
+                $typereturn    = 'statussuccess';
+            }
+            if($status=='complete'){
+                $awb->tanggal_diterima = Carbon::now()->addHours(7);
+            }
+        } 
+        return response()->json(array($typereturn => $returnmessage, 'openmodal'=>$openmodal,'awb'=>$awb));
+    }
+    public function updatediterima(Request $request){
+        $returnmessage      = 'Data penerima berhasil disimpan';
+        $typereturn         = 'statussuccess';
+        $kode               = $request->kode; 
+        $awb                =  Awb::where('noawb', $request->kode)->first();
+        $awb->diterima_oleh = $request->diterima_oleh;
+        
+        $awb->save();
+         
+        return response()->json(array($typereturn => $returnmessage ));
+    }
+
     public function manifest(Request $request){
         Awb::find($request->id)->update([
             'status_tracking' => 'at-manifest',
@@ -212,7 +257,8 @@ class AwbController extends Controller
     public function datatables()
     {
         $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL ORDER BY a.id DESC");
-        if (Auth::user()->level !== 1) :
+        if (Auth::user()->level !== "1") :
+            //dd(Auth::user()->level);
             $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = ".Auth::user()->id_customer." AND a.deleted_at IS NULL ORDER BY a.id DESC");
         endif;
         $awbs = new Collection;
@@ -238,11 +284,11 @@ class AwbController extends Controller
         
         return Datatables::of($awbs)
             ->addColumn('aksi', function ($a) {
-                if ($a['status_tracking'] !== 'booked' && Auth::user()->level !== 1) :
+                if ($a['status_tracking'] !== 'booked' && Auth::user()->level !== "1") :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="modal" data-target="#modal-show" onClick="detail('.$a['id'].',`'.$a['noawb'].'`)" data-placement="bottom" title="Lihat Data"><i class="flaticon-eye"> </i></button>
                     </div>';
-                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == 1) :
+                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == "1") :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
@@ -253,14 +299,14 @@ class AwbController extends Controller
                     </a>
                     <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button>
                     </div>';
-                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == 2) :
+                elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == "2") :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
                     </a> 
                     
                     <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button></div>';
-                elseif ($a['status_tracking'] !== 'booked' && Auth::user()->level == 1) :
+                elseif ($a['status_tracking'] !== 'booked' && Auth::user()->level == "1") :
                     
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">

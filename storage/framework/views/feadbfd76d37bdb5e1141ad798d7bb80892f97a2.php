@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="card card-custom">
   <div class="card-header flex-wrap border-0 pt-6 pb-0">
     <div class="card-title">
@@ -7,7 +7,7 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data manifest yang tersedia</span></h3>
     </div>
     <div class="card-toolbar">
-      <a href="{{url('master/manifest/grouping') }}" class="btn btn-primary font-weight-bolder">
+      <a href="<?php echo e(url('master/manifest/grouping')); ?>" class="btn btn-primary font-weight-bolder">
       <i class="la la-plus"></i>Tambah Data manifest</a>
     </div>
   </div>
@@ -43,8 +43,9 @@
         </button>
       </div>
       <div class="modal-body row" > 
-        <form class="col-12 bg-light" style="padding-bottom:10px;" id="formmanifest_" method="post" action="{{url('master/manifest/updatestatus')}}">
-          {{ csrf_field() }}
+        <form class="col-12 bg-light" style="padding-bottom:10px;" id="formmanifest_" method="post" action="<?php echo e(url('master/manifest/updatestatus')); ?>">
+          <?php echo e(csrf_field()); ?>
+
           <div class="form-group">
             <table class="table table-striped table-hover table-bordered">
               <tr>
@@ -82,8 +83,8 @@
   </div>
 </div>
 
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
 <script type="text/javascript"> 
     $(document).on("click",".openstatus",function() {
       $('#Kotaasal'           ).html($(this).attr('kodekotaasal'))
@@ -99,7 +100,7 @@
         $(this).prop('disabled', true);
         $.ajax({
             type      : "POST",
-            url       : "{{url('master/manifest/updatestatus')}}",
+            url       : "<?php echo e(url('master/manifest/updatestatus')); ?>",
             dataType  : "json",
             data      : $('#formmanifest_').serialize(),
             success : function(response) {
@@ -120,7 +121,7 @@
 	     processing : true,
 	     serverSide : false,
 	     paging     : true,
-	     ajax       :'{{ url('master/manifest/datatables') }}',
+	     ajax       :'<?php echo e(url('master/manifest/datatables')); ?>',
 	     columns    : [
          
       
@@ -155,7 +156,7 @@
             if (result.value) {
               $.ajax({
                 method  :'POST',
-                url     :'{{ url('master/users/delete') }}',
+                url     :'<?php echo e(url('master/users/delete')); ?>',
                 data    :{
                   id:id,
                   status:status,
@@ -174,14 +175,16 @@
 
   </script>
   
-@if(Session::get('message') == "created")
+<?php if(Session::get('message') == "created"): ?>
     <script type="text/javascript">
         toastr.success("Manifest Baru Berhasil ditambahkan!");
     </script>
-@endif
-@if(Session::get('message') == "updated")
+<?php endif; ?>
+<?php if(Session::get('message') == "updated"): ?>
     <script type="text/javascript">
         toastr.success("Data Manifest Berhasil diubah!");
     </script>
-@endif
-@endsection
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\GSA\gsa_final\resources\views/pages/master/manifest/index.blade.php ENDPATH**/ ?>

@@ -13,9 +13,7 @@ class Manifest extends Model
 
     public static function getNoManifest()
     {
-        $res = DB::table("manifest")->select(DB::raw("kode"))
-            ->orderBy('kode', 'desc')->first();
-        $res = ($res && $res ='') ? 0 : $res;
-        return  sprintf("%08s", $res ? $res->kode + 1 : 1);
+        $res = DB::table('manifest')->count();
+        return  sprintf("%08s", $res );
     }
 }

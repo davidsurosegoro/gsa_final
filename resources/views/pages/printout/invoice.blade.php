@@ -171,16 +171,16 @@
                                         @else
                                         <table style="table" style="background-color:white;">
                                             <tr style="background-color:white;">
-                                                <td style="padding:5px; font-weight:bold;">K</td>
-                                                <td style="padding:5px; font-weight:bold;">S</td>
-                                                <td style="padding:5px; font-weight:bold;">B</td>
-                                                <td style="padding:5px; font-weight:bold;">BB</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">K</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">S</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">B</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">BB</td>
                                             </tr>                                    
                                             <tr style="background-color:white;">
-                                                <td style="padding:5px;">{{$item->qty_kecil}}</td>
-                                                <td style="padding:5px;">{{$item->qty_sedang}}</td>
-                                                <td style="padding:5px;">{{$item->qty_besar}}</td>
-                                                <td style="padding:5px;">{{$item->qty_besarbanget}}</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_kecil}}</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_sedang}}</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_besar}}</td>
+                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_besarbanget}}</td>
                                             </tr>    
                                         </table>    
                                         @endif
@@ -188,8 +188,8 @@
                                     <td style="padding:5px;">{{$item->qty_kg}}</td> 
                                     <td style="padding:5px;">{{$item->qty_doc}}</td> 
                                     <td style="padding:5px;">{{$item->keterangan}}</td> 
-                                    <td style="padding:5px;">{{number_format($item->idr_oa)}}</td> 
-                                    <td style="padding:5px;">{{number_format($item->total_harga, 0) }}</td> 
+                                    <td style="padding:5px; text-align:right;">{{number_format($item->idr_oa)}}</td> 
+                                    <td style="padding:5px; text-align:right;">{{number_format($item->total_harga, 0) }}</td> 
                                 </tr>   
                                 @endforeach 
                                 <tr style="padding:0px; background-color:#a1ffbc;"> 
@@ -198,8 +198,8 @@
                                     <td style="padding:5px;font-weight:bold !important;">{{$invoice->total_kg}}</td>   
                                     <td style="padding:5px;font-weight:bold !important;">{{$invoice->total_doc}}</td>   
                                     <td style="padding:5px;font-weight:bold !important;"></td>   
-                                    <td style="padding:5px;font-weight:bold !important;">{{number_format($invoice->total_oa, 0) }}</td> 
-                                    <td style="padding:5px;font-weight:bold !important;">{{number_format($invoice->total_harga, 0) }}</td> 
+                                    <td style="padding:5px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_oa, 0) }}</td> 
+                                    <td style="padding:5px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_harga, 0) }}</td> 
                                 </tr>     
                             </tbody>
                         </table>

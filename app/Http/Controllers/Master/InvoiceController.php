@@ -183,7 +183,10 @@ class InvoiceController extends Controller
                                     ->join      ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan')
                                     ->leftJoin  ("manifest",            'manifest.id',      '=', 'awb.id_manifest')
                                     ->where ("awb.status_tracking", '=' , 'complete') 
-                                    ->where ("awb.id_customer", '=' , $id) 
+                                    ->where ("awb.id_invoice",      '=' , 0) 
+                                    ->where ("awb.id_customer",     '=' , $id) 
+                                    ->orderBy("id_manifest", "desc")
+                                    ->orderBy("charge_oa", "desc")
                                     ->get(); 
         // echo $data['awb'];
         return view("pages.master.invoice.edit",$data);

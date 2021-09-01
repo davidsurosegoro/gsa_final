@@ -2,7 +2,7 @@
 @section('content')
 <div class="card card-custom gutter-b example example-compact">
 <div class="card-header">
-    <h3 class="card-title">FORM UBAH DATA MANIFEST </h3>
+    <h3 class="card-title">FORM MANIFEST </h3>
 </div>
 <form class="form" method="POST"  action="{{url('master/manifest/save')}}" >   
 @php($total_kg      = 0)   

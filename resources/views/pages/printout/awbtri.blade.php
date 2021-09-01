@@ -77,7 +77,7 @@
                             <p class="col-8 font-weight-bold text-left" style="font-size:0.25cm;padding:0px; margin:0px;">GLOBAL SERVICE ASIA<br>Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
                             <table  class=" col-12 table-bordered"  style="font-size:0.27cm; border-right:0px !important;">
                                 <tr style="padding:0px;">
-                                    <td style="font-size:0.5cm;line-height:0.4cm;" colspan='2'><b>No. </b>{{ $noawb }}</td> 
+                                    <td style="font-size:0.5cm;line-height:0.4cm;" colspan='2'><b>No. </b>{{ $awb[0]->noawb }}</td> 
                                 </tr>
                                 <tr>
                                     <td style="width:2.4cm;line-height:0.2cm;"><b>PICKUP BY </b></td>
@@ -106,7 +106,7 @@
                             </table>
                         </div>
                         <div class="col-2 text-center" >
-                            {!! QrCode::size(95)->generate('ItSolutionStuff.com'); !!} 
+                            {!! QrCode::size(95)->generate($awb[0]->noawb ); !!} 
                         </div>
                         <table class="table-striped table-bordered col-3"  >
                             <thead>
