@@ -143,6 +143,7 @@ Route::prefix('awb')->group(function () {
 	Route::post('/delete', 'AwbController@delete');
 	Route::post('/manifest', 'AwbController@manifest');
 	Route::post('/koli', 'AwbController@koli');
+	Route::post('/show', 'AwbController@show');
 	Route::post('/filter-data-penerima', 'AwbController@filter_data_penerima');
 	Route::post('/filter-kota-agen', 'AwbController@filter_kota_agen');
 	Route::get('/datatables','AwbController@datatables');

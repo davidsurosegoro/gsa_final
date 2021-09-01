@@ -33,6 +33,7 @@
   </div>
 </div>
 @include('pages.awb.ajax.modal_koli')
+@include('pages.awb.ajax.modal_view')
 @endsection
 @section('script')
 <script>
@@ -137,6 +138,21 @@
                 $('#doc').html(data.awb.qty_doc)
                 $('#kg').html(data.awb.qty_kg)
                 $('#qty').html(data.awb.qty)
+                $('#noawb_koli').html(data.awb.noawb)
+              } 
+            })
+    }
+    function detail(id){
+      $.ajax({
+              method:'POST',
+              url:'{{ url("awb/show") }}',
+              data:{
+                id:id,
+                '_token': $('input[name=_token]').val()
+              },
+              success:function(data){
+                console.log(data)
+                $('#res_show_awb').html(data.view)
               } 
             })
     }

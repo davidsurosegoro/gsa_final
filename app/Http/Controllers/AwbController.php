@@ -240,7 +240,7 @@ class AwbController extends Controller
             ->addColumn('aksi', function ($a) {
                 if ($a['status_tracking'] !== 'booked' && Auth::user()->level !== 1) :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                    <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="detail('.$a['id'].',`'.$a['noawb'].'`)" data-placement="bottom" title="Lihat Data"><i class="flaticon-eye"> </i></button>
+                    <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="modal" data-target="#modal-show" onClick="detail('.$a['id'].',`'.$a['noawb'].'`)" data-placement="bottom" title="Lihat Data"><i class="flaticon-eye"> </i></button>
                     </div>';
                 elseif ($a['status_tracking'] == 'booked' && Auth::user()->level == 1) :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
@@ -294,6 +294,16 @@ class AwbController extends Controller
     public function koli(Request $request){
         $awb = Awb::find($request->id);
         return response()->json(array('awb' => $awb));
+    }
+
+    public function show(Request $request){
+        $awb = Awb::find($request->id);
+        $kota_tujuan = Kota::find($awb->id_kota_tujuan);
+        $kota_asal = Kota::find($awb->id_kota_asal);
+        $kota_transit = Kota::find($awb->id_kota_transit);
+        $agen_tujuan = Agen::find($awb->id_agen_penerima);
+        $view = (string) view('pages.awb.ajax.show', compact('kota_asal','kota_transit','kota_tujuan','awb','agen_tujuan'));
+        return response()->json(array('view' => $view));
     }
 
     public function filter_kota_agen(Request $request)
