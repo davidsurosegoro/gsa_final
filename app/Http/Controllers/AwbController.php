@@ -106,7 +106,9 @@ class AwbController extends Controller
                 $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
             endif;
         else:
-            $total_harga['total'] = $request->harga_total;
+            if(Auth::user()->level == "1"):
+                $total_harga['total'] = $request->harga_total;
+            endif;
         endif;
         if($request->idawb == 0):
             $awb = Awb::create([
