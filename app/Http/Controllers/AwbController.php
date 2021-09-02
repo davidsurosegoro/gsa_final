@@ -235,17 +235,17 @@ class AwbController extends Controller
         } 
         return response()->json(array($typereturn => $returnmessage, 'openmodal'=>$openmodal,'awb'=>$awb));
     }
-    // public function updatediterima(Request $request){
-    //     $returnmessage      = 'Data penerima berhasil disimpan';
-    //     $typereturn         = 'statussuccess';
-    //     $kode               = $request->kode; 
-    //     $awb                =  Awb::where('noawb', $request->kode)->first();
-    //     $awb->diterima_oleh = $request->diterima_oleh;
+    public function updatediterima(Request $request){
+        $returnmessage      = 'Data penerima berhasil disimpan';
+        $typereturn         = 'statussuccess';
+        $kode               = $request->kode; 
+        $awb                =  Awb::where('noawb', $request->kode)->first();
+        $awb->diterima_oleh = $request->diterima_oleh;
         
-    //     $awb->save();
+        $awb->save();
          
-    //     return response()->json(array($typereturn => $returnmessage ));
-    // }
+        return response()->json(array($typereturn => $returnmessage ));
+    }
 
     public function manifest(Request $request){
         Awb::find($request->id)->update([
@@ -266,9 +266,12 @@ class AwbController extends Controller
     {
         $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL ORDER BY a.id DESC");
         if (Auth::user()->level !== "1") :
-            //dd(Auth::user()->level);
             $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = ".Auth::user()->id_customer." AND a.deleted_at IS NULL ORDER BY a.id DESC");
         endif;
+        if(Auth::user() && Auth::user()->level){
+
+        }
+        dd(Auth::user()->id_customer);
         $awbs = new Collection;
         foreach ($awb as $a) :
             $awbs->push([
