@@ -2,8 +2,18 @@
 @section('content')
 
 <div class="card card-custom gutter-b example example-compact">
-  <div class="card-header">
-    <h3 class="card-title">Form Pengisian AWB </h3>
+  <div class="card-header"
+    @if ($hilang =="hilang")
+        style="background-color:red;"        
+    @endif
+  >
+    <h3 class="card-title">Form Pengisian AWB 
+      @if ($hilang =="hilang")
+      <br>
+        No Referensi AWB {{$awb->noawb}}
+      @endif
+
+    </h3>
   </div>
   @if(!empty($alamat_tujuan_array))
     <input type="hidden" id="check_alamat_tujuan" value="1">
