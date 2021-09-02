@@ -67,7 +67,7 @@
       
       <div class="card-body">
         <h6 class="panel-title txt-dark"><i class="flaticon-shopping-basket"> </i>Data Jumlah Barang</h6>
-          @if(Auth::user()->level !== 1 && $customer->can_access_satuan !== 1)
+          @if(Auth::user()->level !== "1" && $customer->can_access_satuan !== 1)
           <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
