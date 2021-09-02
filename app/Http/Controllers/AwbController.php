@@ -89,23 +89,28 @@ class AwbController extends Controller
 
     public function save(Request $request)
     {
+        $noawb = Awb::getNoAwb();
         $kecamatan = Kecamatan::find($request->id_kecamatan_tujuan);
         $charge_oa = $kecamatan->oa;
         $created_at = date( "Y-m-d H:i:s", strtotime( date( "Y-M-d H:i:s") ) + 7 * 3600 );
         $customer = Customer::find($request->id_customer);
         $total_harga = array('total' => null, 'oa' => null); $harga_oa = 0;
         $qty = ($request->qty == null) ? 0 : $request->qty;
-        if (Auth::user()->level == "1") :
-            $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
-            $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
-        endif;
-        if(Auth::user()->level == "2" && $customer->can_access_satuan == 1):
-            $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_dokumen, $customer, $charge_oa);
-            $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
+        if($customer->is_agen == 0):
+            if (Auth::user()->level == "1") :
+                $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
+                $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
+            endif;
+            if(Auth::user()->level == "2" && $customer->can_access_satuan == 1):
+                $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
+                $qty = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
+            endif;
+        else:
+            $total_harga['total'] = $request->harga_total;
         endif;
         if($request->idawb == 0):
             $awb = Awb::create([
-                'noawb' => $request->noawb,
+                'noawb' => $noawb,
                 'id_customer' => $request->id_customer,
                 'id_kota_tujuan' => $request->id_kota_tujuan,
                 'id_kota_asal' => $request->id_kota_asal,
@@ -141,12 +146,12 @@ class AwbController extends Controller
                 'idr_oa' => ($total_harga['oa'] == null) ? 0 : $total_harga['oa'],
                 'id_manifest' => 0,
                 'id_invoice' => 0,
+                'is_agen' => $customer->is_agen
             ]);
             return redirect('awb')->with('message', 'created');
         else:
             $before_update = Awb::find($request->idawb);
             $awb = Awb::find($request->idawb)->update([
-            'noawb' => $request->noawb,
             'id_customer' => $request->id_customer,
             'id_kota_tujuan' => $request->id_kota_tujuan,
             'id_kota_asal' => $request->id_kota_asal,
@@ -182,7 +187,8 @@ class AwbController extends Controller
             'idr_oa' => ($total_harga['oa'] == null) ? 0 : $total_harga['oa'],
             'id_manifest' => 0,
             'id_invoice' => 0,
-            'tanggal_diterima' => $before_update->tanggal_diterima
+            'tanggal_diterima' => $before_update->tanggal_diterima,
+            'is_agen' => $customer->is_agen
         ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -192,7 +198,7 @@ class AwbController extends Controller
         $awb =  DB::table('awb')->where('id', $request->id)->first();
         DB::table('awb')
               ->where('id', $request->id)
-              ->update(['deleted_at' => date( "Y-m-d H:i:s", strtotime( date( "Y-M-d H:i:s") ) + 7 * 3600 )]);
+              ->update(['status_tracking' => 'cancel']);
         return response()->json(array('awb' => $awb));
     }
 
@@ -333,7 +339,24 @@ class AwbController extends Controller
                 endif;
                 return $string;
             })
-            ->rawColumns(['kota_tujuan', 'aksi','qty_stat'])
+            ->editColumn('status_tracking',function($a){
+                if($a['status_tracking'] == 'booked'):
+                    return '<span class="badge badge-info"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] = 'at-manifest'):
+                    return '<span class="badge badge-primary"><i class="fa fa-truck"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] = 'loaded'):
+                    return '<span class="badge badge-primary"><i class="fas fa-truck-loading"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] = 'at-agen'):
+                    return '<span class="badge badge-warning"><i class="fas fa-user-friends"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] = 'delivery-by-courier'):
+                    return '<span class="badge badge-info"><i class="fa fa-motorcycle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] = 'complete'):
+                    return '<span class="badge badge-success"><i class="fa fa-check-circle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] = 'cancel'):   
+                    return '<span class="badge badge-danger"><i class="fa fa-times-circle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                endif;
+            })
+            ->rawColumns(['kota_tujuan', 'aksi','qty_stat','status_tracking'])
             ->make(true);
     }
 
@@ -371,6 +394,12 @@ class AwbController extends Controller
     public function filter_alamat(Request $request){
         $alamat = Alamat::find($request->alamat_id);
         return response()->json(array('data' => $alamat));
+    }
+
+    public function updateHarga($id){
+        $customer = Customer::find($awb->id_customer);
+       //dd($customer);
+        $total = $this->hitungHargaTotal($awb->qty_kecil, $awb->qty_sedang, $awb->qty_besar, $awb->qty_besarbanget, $awb->qty_kg, $awb->qty_doc, $customer, $awb->charge_oa);
     }
 
     private function hitungHargaTotal($qty_kecil, $qty_sedang, $qty_besar, $qty_besar_banget, $qty_kg, $qty_dokumen, $customer, $charge_oa)

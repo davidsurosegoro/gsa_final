@@ -23,7 +23,7 @@
         <div class="card-body mb-5">
           <h6 class="panel-title txt-dark" style="border-bottom:1px solid #EBEDF3;"><i class="flaticon-profile-1"> </i> Data Umum Pengiriman</h6>
           <div class="row">
-              <div class="col-lg-4">
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label>Customer</label>
                   <select id="customer" style="width:90%" class="select2 form-control" name="id_customer" required>
@@ -47,14 +47,7 @@
                   </select>
                 </div>
               </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label>Nomor AWB:</label>
-                    <input name="noawb" type="text" class="form-control" value="{{ $awb->noawb }}" placeholder="Input nomor awb. . . " required>
-                  </div>
-                </div>
-                
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                   <div class="form-group">
                     <label>Tanggal:</label>
                     <div class="input-group date">
@@ -74,47 +67,79 @@
       
       <div class="card-body">
         <h6 class="panel-title txt-dark"><i class="flaticon-shopping-basket"> </i>Data Jumlah Barang</h6>
-        <div class="row">
           @if(Auth::user()->level !== "1" && $customer->can_access_satuan !== 1)
-          <div class="col-lg-4">
-            <div class="form-group">
-              <label>Qty</label>
-              <input type="number" class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>Qty</label>
+                <input type="number" class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0">
+              </div>
             </div>
           </div>
           @else
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label>Qty Koli Kecil</label>
-              <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
+          <div class="row" id="qty-detail">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label>Qty Koli Kecil</label>
+                <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
+              </div>
+              <div class="form-group">
+                <label>Qty Koli Sedang</label>
+                <input type="number" class="form-control" value="{{ $awb->qty_sedang }}" name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
+              </div>
+              
+              <div class="form-group">
+                <label>Qty Koli Besar</label>
+                <input type="number" class="form-control" value="{{ $awb->qty_besar }}" name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Qty Koli Sedang</label>
-              <input type="number" class="form-control" value="{{ $awb->qty_sedang }}" name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
-            </div>
-            
-            <div class="form-group">
-              <label>Qty Koli Besar</label>
-              <input type="number" class="form-control" value="{{ $awb->qty_besar }}" name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
+            <div class="col-lg-6">
+              
+              <div class="form-group">
+                <label>Qty Koli Besar Banget</label>
+                <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}" name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
+              </div>
+              <div class="form-group">
+                <label>Qty Koli Kg</label>
+                <input type="number" class="form-control" value="{{ $awb->qty_kg }}" name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
+              </div>
+              <div class="form-group">
+                <label>Qty Koli Dokumen</label>
+                <input type="number" class="form-control" value="{{ $awb->qty_doc }}" name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+              </div>
             </div>
           </div>
-          <div class="col-lg-6">
-            
-            <div class="form-group">
-              <label>Qty Koli Besar Banget</label>
-              <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}" name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
+          <div class="row" id="customer-biasa">
+              
+            <div class="col-md-12">
+              <div class="alert alert-custom alert-light-dark fade show mb-5" role="alert">
+                <div class="alert-icon">
+                  <i class="flaticon-warning"></i>
+                </div>
+                <div class="alert-text"><strong>INFO</strong> Customer yang anda pilih diatas adalah agen</div>
+                <div class="alert-close">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                      <i class="ki ki-close"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Qty Koli Kg</label>
-              <input type="number" class="form-control" value="{{ $awb->qty_kg }}" name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label>Qty</label>
+                <input type="number" class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0" required>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Qty Koli Dokumen</label>
-              <input type="number" class="form-control" value="{{ $awb->qty_doc }}" name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label>Harga Total</label>
+                <input type="text" class="form-control rupiah" id="harga_total" value="{{ $awb->harga_total }}" name="harga_total" placeholder="Input harga total. . ." required>
+              </div>
             </div>
           </div>
           @endif
-        </div>
       </div>
     </div>
     
@@ -167,7 +192,7 @@
               </div>
               <div class="form-group">
                 <label>Alamat Pengirim</label>
-                <select id="alamat_pengirim_auto" class="form-control mb-2" name="alamat_pengirim_auto"> 
+                {{-- <select id="alamat_pengirim_auto" class="form-control mb-2" name="alamat_pengirim_auto"> 
                     @if($id == 0)
                     <option value="manual">Input Alamat Manual</option>
                     @else
@@ -184,7 +209,7 @@
                         <option value="manual" selected>Input Alamat Manual</option>
                       @endif
                     @endif
-                </select>
+                </select> --}}
                 <input type="text" id="alamat_pengirim" class="form-control mb-2" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . .">
               </div>
             <div class="form-group">
@@ -344,6 +369,7 @@
 @endsection
 @section('script')
 <script>
+  $('#customer-biasa').hide();
   // $('#kota_asal').on('change',function(){
   //   $.ajax({
   //     method:'POST',
@@ -383,9 +409,9 @@
         '_token': $('input[name=_token]').val()
       },
       success:function(data){
-        console.log(data);
+        console.log(data.data.is_agen);
         $('#nama_pengirim').val(data.data.nama)
-        $('#alamat_pengirim_auto').html(data.alamat)
+        // $('#alamat_pengirim_auto').html(data.alamat)
         $('#alamat_tujuan_auto').html(data.alamat)
         $('#alamat_tujuan_auto').val('manual')
         $('#alamat_tujuan').val('')
@@ -401,6 +427,14 @@
         // else{
         //   $('#alamat_pengirim').hide()
         // }
+        if(data.data.is_agen == 1){
+          $('#customer-biasa').show()
+          $('#qty-detail').hide()
+        }
+        else{
+          $('#customer-biasa').hide()
+          $('#qty-detail').show()
+        }
       }
     })
   })
