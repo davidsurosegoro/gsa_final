@@ -253,8 +253,6 @@
                 @endforeach
               </select>
             </div>
-            
-            
             @if((int)Auth::user()->level == 1)
             {{-- <div class="form-group">
               <label>Agen Asal</label>
@@ -283,6 +281,18 @@
             </div>
             @endif
             
+            
+            <div class="form-group">
+              <label>Ada Faktur</label>
+              <label class="checkbox checkbox-primary">
+                @if($awb->ada_faktur == 1)
+                <input type="checkbox" name="ada_faktur" checked="checked">
+                @else
+                <input type="checkbox" name="ada_faktur">
+                @endif
+                <span></span> Faktur Tersedia</label>
+                <span class="form-text text-muted"></span>
+            </div>
           </div>
             <div class="col-lg-6">
               <div class="form-group">

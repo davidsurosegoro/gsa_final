@@ -89,6 +89,10 @@ class AwbController extends Controller
 
     public function save(Request $request)
     {
+        $ada_faktur = 0;
+        if($request->ada_faktur == "on"):
+            $ada_faktur = 1;
+        endif;
         $noawb = Awb::getNoAwb();
         $kecamatan = Kecamatan::find($request->id_kecamatan_tujuan);
         $charge_oa = $kecamatan->oa;
@@ -148,7 +152,8 @@ class AwbController extends Controller
                 'idr_oa' => ($total_harga['oa'] == null) ? 0 : $total_harga['oa'],
                 'id_manifest' => 0,
                 'id_invoice' => 0,
-                'is_agen' => $customer->is_agen
+                'is_agen' => $customer->is_agen,
+                'ada_faktur' => $ada_faktur
             ]);
             return redirect('awb')->with('message', 'created');
         else:
@@ -190,7 +195,8 @@ class AwbController extends Controller
             'id_manifest' => 0,
             'id_invoice' => 0,
             'tanggal_diterima' => $before_update->tanggal_diterima,
-            'is_agen' => $customer->is_agen
+            'is_agen' => $customer->is_agen,
+            'ada_faktur' => $ada_faktur
         ]);
             return redirect('awb')->with('message', 'updated');
         endif;
