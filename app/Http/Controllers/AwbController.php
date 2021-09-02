@@ -235,17 +235,17 @@ class AwbController extends Controller
         } 
         return response()->json(array($typereturn => $returnmessage, 'openmodal'=>$openmodal,'awb'=>$awb));
     }
-    // public function updatediterima(Request $request){
-    //     $returnmessage      = 'Data penerima berhasil disimpan';
-    //     $typereturn         = 'statussuccess';
-    //     $kode               = $request->kode; 
-    //     $awb                =  Awb::where('noawb', $request->kode)->first();
-    //     $awb->diterima_oleh = $request->diterima_oleh;
+    public function updatediterima(Request $request){
+        $returnmessage      = 'Data penerima berhasil disimpan';
+        $typereturn         = 'statussuccess';
+        $kode               = $request->kode; 
+        $awb                =  Awb::where('noawb', $request->kode)->first();
+        $awb->diterima_oleh = $request->diterima_oleh;
         
-    //     $awb->save();
+        $awb->save();
          
-    //     return response()->json(array($typereturn => $returnmessage ));
-    // }
+        return response()->json(array($typereturn => $returnmessage ));
+    }
 
     public function manifest(Request $request){
         Awb::find($request->id)->update([

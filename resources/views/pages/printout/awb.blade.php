@@ -126,9 +126,9 @@
                     <div class="col-sm-5" style="padding:5px; padding-top:0.3cm;">
                         {!! QrCode::size(142)->generate($awb[0]->noawb); !!} 
                     </div>
-                </div>
+                </div> 
                 <div class="card " > 
-                    <div class="table-responsive-sm row" style="position: relative; margin:0px;">
+                    <div class="row" style="position: relative; margin:0px;">
                         <div class=" text-right" style="padding:0px;position:absolute; bottom:-10px; right:0px;font-size:0.7cm;">
                             1/1
                         </div>
@@ -316,10 +316,9 @@
                         <p class="col-12" style="font-size:0.2cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
                         <table  class=" col-12 table-bordered"  style="font-size:0.4cm; border-right:0px !important;">
                             <tr>
-                                <td class="couture" style="font-size:0.55cm;" colspan='2'><b>No. </b>{{ $awb[0]->noawb }}</td> 
+                                <td class="couture" style="font-size:0.55cm;line-height: 6mm;" colspan='2'><b>No. </b>{{ $awb[0]->noawb }}</td> 
                             </tr> 
-                            <tr>
-                                <td>Driver</td>
+                            <tr> 
                                 <td>{{ date('d F Y',strtotime($awb[0]->tanggal_awb)) }}</td>
                             </tr> 
                         </table>
@@ -329,7 +328,7 @@
                     </div>
                 </div>
                 <div class="card " > 
-                    <div class="table-responsive-sm row" style="position: relative; margin:0px;">
+                    <div class=" row" style="position: relative; margin:0px;">
                         <div class=" text-right" style="padding:0px;position:absolute; bottom:-10px; right:0px;font-size:0.7cm;">
                             {{ $i }}/{{ $awb[0]->qty }}
                         </div>
@@ -375,39 +374,42 @@
                                 <tr style="height: 3cm; font-size:0.25cm;">
                                     <td style="width:50%;padding:0.1cm;">
                                         <span class="font-weight-bold" style="font-size:0.25cm;">NAMA PENGIRIM:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->nama_pengirim }}<br></span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->nama_pengirim }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->alamat_pengirim }}<br></span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->alamat_pengirim }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">KODEPOS:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->kodepos_pengirim }}<br></span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->kodepos_pengirim }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">NO HP:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->notelp_pengirim }} </span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->notelp_pengirim }} </span>
                                             
                                         
                                     </td>   
-                                    <td style="width:50%;padding:0.1cm;">
+                                    <td style="width:50%; ">
                                         <span class="font-weight-bold" style="font-size:0.25cm;">NAMA PENERIMA:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->nama_penerima }}<br></span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->nama_penerima }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->alamat_tujuan }}<br></span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->alamat_tujuan }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">KODEPOS:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->kodepos_penerima }}<br></span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->kodepos_penerima }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">NO HP:</span><br>
-                                            <span style="font-size:0.4cm;">{{ $awb[0]->notelp_penerima }} </span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->notelp_penerima }} </span>
                                     </td>    
                                 </tr>
                             </thead> 
                         </table> 
-                        <table class="table-striped table-bordered col-10" style='margin-top:0.1cm;'>
-                            <thead>
-                                <tr> 
-                                    <td class='text-left' style="font-size:0.3cm;">
-                                        <span style="font-weight:bold;">Keterangan</span><br>
-                                        {{ $awb[0]->keterangan }}
-                                    </td>
-                                </tr>
-                            </thead>
-                        </table> 
+                        @if($awb[0]->keterangan)
+                            <table class="table-striped table-bordered col-10" style='margin-top:0.1cm;'>
+                                <thead>
+                                    <tr> 
+                                        <td class='text-left' style="font-size:0.25cm;">
+                                            <span style="font-weight:bold;">Keterangan</span><br>
+                                            {{ $awb[0]->keterangan }}
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table> 
+                        @endif
+                        
                     </div> 
                 </div> 
             </div> 
