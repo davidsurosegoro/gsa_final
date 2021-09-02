@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>AWB</title>
-        <link href="<?php echo e(asset('assets/gsa/css/bootstrap.min.css')); ?>" rel="stylesheet" />
+        <link href="<?php echo e(asset('assets/gsa/css/boots.css')); ?>" rel="stylesheet" />
         <link href="" rel="stylesheet" />
         <script type="text/javascript" src="<?php echo e(asset('assets/gsa/js/jquery.min.js')); ?>"></script>
         <style>
