@@ -33,7 +33,7 @@ class ManifestController extends Controller
     public function datatables()
     {   
         
-        dd(Auth::user()->id_customer);
+        dd((int)Auth::user()->id_customer);
         dd(Auth::user());
         $manifest = Manifest::select(DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y') as tanggal_manifest"),"manifest.*" , "kotaasal.kode as kodekotaasal","kotatujuan.kode as kodekotatujuan" ,"users.nama as namauser")
                 ->join('kota as kotaasal',      'kotaasal.id',     '=', 'manifest.id_kota_asal') 
