@@ -16,6 +16,11 @@
     <tr>
         <th colspan="6" class="text-center">Qty </th>
     </tr>
+    @if($awb->is_agen == 1)
+    <tr>
+      <th class="text-center"><u>{{ $awb->qty }} </u></th>
+    </tr>
+    @else
     <tr>
       <th>Kecil</th>
       <th>Sedang</th>
@@ -32,6 +37,7 @@
       <th>{{ $awb->qty_kg }}</th>
       <th>{{ $awb->qty_doc }}</th>
     </tr>
+    @endif
   </table>
 </div>
   

@@ -130,7 +130,14 @@
                 '_token': $('input[name=_token]').val()
               },
               success:function(data){
-                console.log(data)
+                if(data.awb.is_agen == "0"){
+                  $('#table-not-agen').show();
+                  $('#table-agen').hide();
+                }
+                else{
+                  $('#table-not-agen').hide();
+                  $('#table-agen').show();
+                }
                 $('#kecil').html(data.awb.qty_kecil)
                 $('#sedang').html(data.awb.qty_sedang)
                 $('#besar').html(data.awb.qty_besar)

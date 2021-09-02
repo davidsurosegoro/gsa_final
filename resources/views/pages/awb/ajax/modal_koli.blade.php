@@ -10,7 +10,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <table class="table table-bordered table-hovered table-striped">
+          <table class="table table-bordered table-hovered table-striped" id="table-not-agen">
             @if($is_akses_qty == "true")
             <tr>
               <td style="width: 40%;">Koli Kecil </td>
@@ -38,6 +38,12 @@
               <th > <b><em id="qty"></em></b> </th>
             </tr>
             @endif
+          </table>
+          <table class="table table-bordered table-hovered table-striped" id="table-agen">
+            <tr style="">
+              <th style="width: 40%;">Total </th>
+              <th > <b><em id="qty"></em></b> </th>
+            </tr>
           </table>
         </div>
         <div class="modal-footer">
