@@ -11,6 +11,7 @@ use App\Agen;
 use App\Manifest;
 use App\Awb;
 use Carbon\Carbon;
+use Auth;
 use App\Kota;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
