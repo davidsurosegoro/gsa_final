@@ -132,6 +132,7 @@
                         <div class=" text-right" style="padding:0px;position:absolute; bottom:-10px; right:0px;font-size:0.7cm;">
                             1/1
                         </div>
+                        
                         <table  class="couture col-12 table-bordered font-weight-bold"  style="font-size:0.35cm; margin-top:0.1cm;border-right:0px !important;">
                             <tr>
                                 {{-- <th colspan='5'>Quantity:</th> --}}

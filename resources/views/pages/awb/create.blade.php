@@ -409,7 +409,7 @@
         '_token': $('input[name=_token]').val()
       },
       success:function(data){
-        console.log(data.data.is_agen);
+        console.log(data.data);
         $('#nama_pengirim').val(data.data.nama)
         // $('#alamat_pengirim_auto').html(data.alamat)
         $('#alamat_tujuan_auto').html(data.alamat)
