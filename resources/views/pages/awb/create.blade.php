@@ -18,14 +18,19 @@
 <form class="form" method="POST" action="{{ url('awb/save')}}">
   {{ csrf_field() }}
   <input type="hidden" name="idawb" value="{{ $id }}">
+  @if($hilang == "hilang")
+  <input type="hidden" name="referensi" value="{{ $awb->noawb }}">
+  @else
+  <input type="hidden" name="referensi" value="">
+  @endif
   <div class="card-body">
     <div class="row">
         <div class="card-body mb-5">
           <h6 class="panel-title txt-dark" style="border-bottom:1px solid #EBEDF3;"><i class="flaticon-profile-1"> </i> Data Umum Pengiriman</h6>
           <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-4">
                 <div class="form-group">
-                  <label>Customer</label>
+                  <label class="font-weight-bold">Customer</label>
                   <select id="customer" style="width:90%" class="select2 form-control" name="id_customer" required>
                     @if((int)Auth::user()->level == 1)
                       <option value="">--Pilih Customer--</option>
@@ -47,19 +52,32 @@
                   </select>
                 </div>
               </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label>Tanggal:</label>
-                    <div class="input-group date">
-                      <input name="tanggal_awb" type="text" class="form-control datepicker" value="{{ date('m/d/Y') }}" readonly="true" placeholder="Select date">
-                      <div class="input-group-append">
-                        <span class="input-group-text">
-                          <i class="la la-calendar-check-o"></i>
-                        </span>
-                      </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="font-weight-bold">Tanggal:</label>
+                  <div class="input-group date">
+                    <input name="tanggal_awb" type="text" class="form-control datepicker" value="{{ date('m/d/Y') }}" readonly="true" placeholder="Select date">
+                    <div class="input-group-append">
+                      <span class="input-group-text">
+                        <i class="la la-calendar-check-o"></i>
+                      </span>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="font-weight-bold">Ada Faktur</label>
+                  <label class="checkbox checkbox-primary" >
+                    @if($awb->ada_faktur == 1)
+                    <input type="checkbox" name="ada_faktur" checked="checked">
+                    @else
+                    <input type="checkbox" name="ada_faktur">
+                    @endif
+                    <span></span> &nbsp;Faktur Tersedia</label>
+                    <span class="form-text text-muted"></span>
+                </div>
+              </div>
           </div>
       </div>
     </div>
@@ -71,40 +89,46 @@
           <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
-                <label>Qty</label>
+                <label class="font-weight-bold">Qty</label>
                 <input type="number" class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0">
               </div>
             </div>
           </div>
           @else
           <div class="row" id="qty-detail">
-            <div class="col-lg-6">
+            <div class="col-lg-2">
               <div class="form-group">
-                <label>Qty Koli Kecil</label>
+                <label class="font-weight-bold">Qty Koli Kecil</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
               </div>
+            </div>
+            <div class="col-lg-2">
               <div class="form-group">
-                <label>Qty Koli Sedang</label>
+                <label class="font-weight-bold">Qty Koli Sedang</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_sedang }}" name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
               </div>
-              
+            </div>
+            <div class="col-lg-2">
               <div class="form-group">
-                <label>Qty Koli Besar</label>
+                <label class="font-weight-bold">Qty Koli Besar</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_besar }}" name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
               </div>
             </div>
-            <div class="col-lg-6">
-              
+            <div class="col-lg-2"> 
               <div class="form-group">
-                <label>Qty Koli Besar Banget</label>
+                <label class="font-weight-bold">Qty Koli Besar Banget</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}" name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
               </div>
+            </div>
+            <div class="col-lg-2">
               <div class="form-group">
-                <label>Qty Koli Kg</label>
+                <label class="font-weight-bold">Qty Koli Kg</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_kg }}" name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
               </div>
+            </div>
+            <div class="col-lg-2">
               <div class="form-group">
-                <label>Qty Koli Dokumen</label>
+                <label class="font-weight-bold">Qty Koli Dokumen</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_doc }}" name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
               </div>
             </div>
@@ -128,13 +152,13 @@
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <label>Qty</label>
+                <label class="font-weight-bold">Qty</label>
                 <input type="number" class="form-control" id="qty_biasa" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . .">
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <label>Harga Total</label>
+                <label class="font-weight-bold">Harga Total</label>
                 <input type="text" class="form-control rupiah" id="harga_total" value="{{ $awb->harga_total }}" name="harga_total" placeholder="Input harga total. . ." >
               </div>
             </div>
@@ -151,11 +175,11 @@
         <div class="row">
           <div class="col-lg-6">
               <div class="form-group">
-                <label>Nama Penerima</label>
+                <label class="font-weight-bold">Nama Penerima</label>
                 <input type="text" id="nama_penerima" class="form-control" value="{{ $awb->nama_penerima }}" name="nama_penerima" placeholder="Input Nama Penerima. . ." required>
               </div>
               <div class="form-group">
-                <label>Alamat Tujuan Penerima</label>
+                <label class="font-weight-bold">Alamat Tujuan Penerima</label>
                 <select id="alamat_tujuan_auto" class="form-control mb-2" name="alamat_tujan_auto"> 
                   @if($id == 0)
                   <option value="manual">Input Alamat Manual</option>
@@ -177,21 +201,21 @@
               <input type="text" class="form-control" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
               </div>
             <div class="form-group">
-              <label>Kode Pos Penerima</label>
+              <label class="font-weight-bold">Kode Pos Penerima</label>
               <input type="text" id="kodepos_penerima" class="form-control" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
-              <label>No Telp Penerima</label>
+              <label class="font-weight-bold">No Telp Penerima</label>
               <input type="text" id="notelp_penerima" class="form-control" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
             </div>
           </div>
           <div class="col-lg-6">
               <div class="form-group">
-                <label>Nama Pengirim</label>
+                <label class="font-weight-bold">Nama Pengirim</label>
                 <input type="text" id="nama_pengirim" class="form-control" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
               </div>
               <div class="form-group">
-                <label>Alamat Pengirim</label>
+                <label class="font-weight-bold">Alamat Pengirim</label>
                 {{-- <select id="alamat_pengirim_auto" class="form-control mb-2" name="alamat_pengirim_auto"> 
                     @if($id == 0)
                     <option value="manual">Input Alamat Manual</option>
@@ -213,11 +237,11 @@
                 <input type="text" id="alamat_pengirim" class="form-control mb-2" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . .">
               </div>
             <div class="form-group">
-              <label>Kode Pos Pengirim</label>
+              <label class="font-weight-bold">Kode Pos Pengirim</label>
               <input type="text" id="kodepos_pengirim" class="form-control" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
-              <label>No Telp Pengirim</label>
+              <label class="font-weight-bold">No Telp Pengirim</label>
               <input type="text" id="notelp_pengirim" class="form-control" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
             </div>  
           </div>
@@ -233,7 +257,7 @@
         <div class="row">
           <div class="col-lg-6">
             <div class="form-group">
-              <label>Kota Asal</label>
+              <label class="font-weight-bold">Kota Asal</label><br>
               <select style="width:90%" class="select2 form-control" id="kota_asal" name="id_kota_asal" readonly="true" required >
                 <option value="">--Pilih Kota Asal--</option>
                 @foreach($kota as $c)
@@ -255,7 +279,7 @@
             </div>
             @if((int)Auth::user()->level == 1)
             {{-- <div class="form-group">
-              <label>Agen Asal</label>
+              <label class="font-weight-bold">Agen Asal</label>
               <select style="width:90%" class="select2 form-control"  id="agen_asal" name="id_agen_asal" required>
                 <option value="">--Pilih Kota Asal Terlebih Dahulu--</option>
                 
@@ -267,7 +291,7 @@
            
             </div> --}}
             <div class="form-group">
-              <label>Kota Transit</label>
+              <label class="font-weight-bold">Kota Transit</label>
               <select style="width:90%" class="select2 form-control" name="id_kota_transit" >
                 <option value="">--Pilih Kota Transit--</option>
                 @foreach($kota as $c)
@@ -279,24 +303,11 @@
                 @endforeach
               </select>
             </div>
-            @endif
-            
-            
-            <div class="form-group">
-              <label>Ada Faktur</label>
-              <label class="checkbox checkbox-primary">
-                @if($awb->ada_faktur == 1)
-                <input type="checkbox" name="ada_faktur" checked="checked">
-                @else
-                <input type="checkbox" name="ada_faktur">
-                @endif
-                <span></span> Faktur Tersedia</label>
-                <span class="form-text text-muted"></span>
-            </div>
+            @endif 
           </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <label>Kota Tujuan</label>
+                <label class="font-weight-bold">Kota Tujuan</label>
                 <select style="width:90%" class="select2 form-control" id="kota_tujuan" name="id_kota_tujuan" required>
                   <option value="">--Pilih Kota Tujuan--</option>
                   @foreach($kota as $c)
@@ -310,7 +321,7 @@
               </div>
               
             <div class="form-group">
-              <label>Kecamatan Tujuan</label>
+              <label class="font-weight-bold">Kecamatan Tujuan</label>
               <select style="width:90%" class="select2 form-control" id="kecamatan_tujuan" name="id_kecamatan_tujuan" required>
                 <option value="">--Pilih Kecamatan Tujuan--</option>
                 @if($awb->id == 0)
@@ -328,7 +339,7 @@
             </div>
             @if((int)Auth::user()->level == 1)
             <div class="form-group">
-              <label>Agen Tujuan</label>
+              <label class="font-weight-bold">Agen Tujuan</label>
               <select style="width:90%" class="select2 form-control" id="agen_tujuan" name="id_agen_penerima" required>
                 <option value="">--Pilih  Kota Tujuan Terlebih Dahulu--</option>
                 @if($id !== "0")
@@ -344,7 +355,7 @@
               <span class="form-text text-warning">Opsi Agen Tujuan akan muncul otomatis sesuai dengan pilihan Kota Tujuan</span>
             </div>
             {{-- <div class="form-group">
-              <label>Status Out Area </label>
+              <label class="font-weight-bold">Status Out Area </label>
               <label class="checkbox checkbox-danger">
                   @if($awb->charge_oa == 0)
                   <input type="checkbox" name="charge_oa">
@@ -362,7 +373,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group">
-              <label>Keterangan tambahan :</label>
+              <label class="font-weight-bold">Keterangan tambahan :</label>
               <textarea name="keterangan" rows="4" class="form-control"> {{ $awb->keterangan }}</textarea>
             </div>
           </div>

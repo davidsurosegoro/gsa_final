@@ -40,7 +40,6 @@
   *::after {
     box-sizing: border-box;
   }
-  
   html {
     font-family: sans-serif;
     line-height: 1.15;
@@ -391,6 +390,54 @@
     font-size: 1rem;
   }
   
+  .printcontainer:hover {
+    line-height: 55px !important;
+     
+  transition: line-height 0.3s ease-in-out;
+  }
+  .printcontainer {
+    z-index: 200000;
+    position: fixed;
+    top: 0px;
+    right: 50px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 150px;
+    /* height: 50px; */
+    background-color: #27ae60;
+    cursor: pointer;
+    box-shadow: -1px 1px 10px 0px rgb(0 0 0 / 75%);
+    -webkit-box-shadow: -1px 1px 10px 0px rgb(0 0 0 / 75%);
+    -moz-box-shadow: -1px 1px 10px 0px rgba(0,0,0,0.75);
+    text-align: center;
+    font-size: 22px;
+    line-height: 43px;
+    color: white;
+    letter-spacing: 2px;
+    transition: line-height 0.3s ease-in-out;
+  }
+  .statuscontainer {
+    z-index: 200000;
+    position: fixed;
+    top: 10px;
+    right: 200px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    padding-right:15px;
+    padding-left:15px;
+    /* height: 50px; */
+    background-color: #274fae;
+    cursor: pointer;
+    box-shadow: -1px 1px 10px 0px rgb(0 0 0 / 25%);
+    -webkit-box-shadow: -1px 1px 10px 0px rgb(0 0 0 / 25%);
+    -moz-box-shadow: -1px 1px 10px 0px rgba(0,0,0,0.25);
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    color: white;
+    letter-spacing: 2px;
+    transition: line-height 0.3s ease-in-out;
+  }
   .lead {
     font-size: 1.25rem;
     font-weight: 300;

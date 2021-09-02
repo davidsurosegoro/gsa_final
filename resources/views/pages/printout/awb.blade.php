@@ -6,6 +6,7 @@
         <title>AWB</title>
         <link href="{{asset('assets/gsa/css/boots.css')}}" rel="stylesheet" />
         <link href="" rel="stylesheet" />
+        <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
             @font-face {
@@ -106,8 +107,20 @@
         </style>
     </head>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
+        <div class="printcontainer d-print-none" 
+            @if($awb[0]->status_tracking==='booked')
+                onclick="updatetomanifest()"
+            @else
+                onclick="window.print()"                
+            @endif    
+        >
+            <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        </div>
+        <div class="statuscontainer d-print-none" > Status =
+            {{$awb[0]->status_tracking}}
+        </div>
         @if($awb[0]->qty == 0)
-        <div class="card page">
+        <div class="card page" style="position: relative;">
                 <div class="card-header  " style="padding:0px !important; display: flex;">  
                     <div class="col-7 text-center" style=" padding:1px;">
                         <img src='{{asset('assets/gsa/logo.jpg')}}' style="width:1.5cm;" class="col-">
@@ -233,7 +246,7 @@
                 </div>
             </div>
             <div class="card " > 
-                <div class="table-responsive-sm row" style="position: relative; margin:0px;">
+                <div class=" row" style="position: relative; margin:0px;">
                     <div class=" text-right" style="padding:0px;position:absolute; bottom:-10px; right:0px;font-size:0.7cm;">
                         1/1
                     </div>
@@ -416,6 +429,35 @@
             @endfor
             @endif
         <script type="text/javascript" src="{{asset('assets/gsa/js/bootstrap.bundle.min.js')}}"></script>
-        <script type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery(document).bind("keyup keydown", function(e){
+                if(e.ctrlKey && e.keyCode == 80){
+                    return false;
+                }
+            });
+            function updatetomanifest(){
+                $.ajax({
+                    method  :'POST',
+                    url     :'{{ url('awb/updatetomanifest') }}',
+                    data    :{
+                        id              : "{{ $awb[0]->id }}",
+                        '_token'        : "{{ csrf_token() }}" 
+                    },
+                    success:function(data){ 
+                        // if(data.statussuccess)  {
+                        //     // toastr.success( data.statussuccess) 
+                        //     // $('#modalpenerima').modal('hide');
+                        //     // $('#diterima_oleh'      ).val('')
+                        // }  
+                        if(data.status != ''){
+
+                            alert(data.status)
+                        }
+                        window.print();      
+                        // scanner.start() 
+                    }
+                }) 
+            }
+        </script>
     </body>
 </html>

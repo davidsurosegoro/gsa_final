@@ -46,7 +46,7 @@ class AwbController extends Controller
         return view('pages.awb.index',compact('is_akses_qty','hide_qty'));
     }
 
-    public function edit($id){
+    public function edit($id,$hilang){
         
         $customer = ""; $agen_tujuan = "";
         $kota = Kota::where('id','>',0)->get();
@@ -83,8 +83,8 @@ class AwbController extends Controller
         if(empty($agen_tujuan)){
             $agen_tujuan = ViewAgenKota::where('id',$awb->id_kota_tujuan)->get();
         }
-        
-        return view('pages.awb.create',compact('kota', 'customer','awb','agen_tujuan','agen_master','id','alamat_pengirim_array','kecamatan_tujuan','alamat_pengirim','alamat_tujuan_array','alamat_tujuan','master_alamat'));
+        $hilang = $hilang;
+        return view('pages.awb.create',compact('kota','hilang', 'customer','awb','agen_tujuan','agen_master','id','alamat_pengirim_array','kecamatan_tujuan','alamat_pengirim','alamat_tujuan_array','alamat_tujuan','master_alamat'));
     }
 
     public function save(Request $request)
@@ -114,7 +114,11 @@ class AwbController extends Controller
                 $total_harga['total'] = substr(preg_replace('/[.,]/', '', $request->harga_total), 0, -2);
             endif;
         endif;
-        if($request->idawb == 0):
+
+        if($request->referensi !== ""):
+            $total_harga['oa'] = 0;
+        endif;
+        if($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
             $awb = Awb::create([
                 'noawb' => $noawb,
                 'id_customer' => $request->id_customer,
@@ -137,7 +141,7 @@ class AwbController extends Controller
                 'tanggal_awb' => date("Y-m-d", strtotime($request->tanggal_awb)),
                 'created_by' => Auth::user()->id,
                 'status_invoice' => 0,
-                'status_tracking' => 'booked',
+                'status_tracking' => ($request->referensi == null) ?  'booked' : 'complete',
                 'status_manifest' => 0,
                 'status_paid_agen' => 0,
                 'qty_kecil' => ($request->qty_kecil == null) ? 0 : $request->qty_kecil,
@@ -153,7 +157,8 @@ class AwbController extends Controller
                 'id_manifest' => 0,
                 'id_invoice' => 0,
                 'is_agen' => $customer->is_agen,
-                'ada_faktur' => $ada_faktur
+                'ada_faktur' => $ada_faktur,
+                'referensi' => $request->referensi
             ]);
             return redirect('awb')->with('message', 'created');
         else:
@@ -253,6 +258,23 @@ class AwbController extends Controller
         return response()->json(array($typereturn => $returnmessage ));
     }
 
+    public function updatetomanifest(Request $request){
+        $returnmessage      = '';
+        $typereturn         = 'status';
+        $kode               = $request->id; 
+        $awb                =  Awb::where('id', $request->id)->first();
+        if($awb->status_tracking == 'booked'){
+            $awb->status_tracking = 'at-manifest';            
+            $awb->save();
+            $returnmessage      = 'Status AWB berhasil dirubah ke "at-manifest"';
+        }
+        // else if($awb->status_tracking == 'at-manifest'){
+        //     $returnmessage      = 'Status AWB sudah '.$awb->status_tracking; 
+        // }
+         
+        return response()->json(array($typereturn => $returnmessage ));
+    }
+
     public function manifest(Request $request){
         Awb::find($request->id)->update([
             'status_tracking' => 'at-manifest',
@@ -303,7 +325,7 @@ class AwbController extends Controller
                     </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int)Auth::user()->level == 1) :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                    <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
+                    <a href='.url('awb/edit/'.$a['id'].'/edit').' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
                     </a>
                     <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="updateManifest('.$a['id'].',`'.$a['noawb'].'`)" data-placement="bottom" title="Ubah ke Manifested"><i class="flaticon-truck"> </i></button>
@@ -311,10 +333,13 @@ class AwbController extends Controller
                     <i class="flaticon2-print" ></i>
                     </a>
                     <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button>
+                    <a href='.url('awb/edit/'.$a['id'].'/hilang').' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
+                    <i class="flaticon-edit-1" ></i>
+                    </a>
                     </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int)Auth::user()->level == 2) :
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                    <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
+                    <a href='.url('awb/edit/'.$a['id'].'/edit').' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
                     </a> 
                     
@@ -322,7 +347,7 @@ class AwbController extends Controller
                 elseif ($a['status_tracking'] !== 'booked' && (int)Auth::user()->level == 1) :
                     
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                    <a href='.url('awb/edit/'.$a['id']).' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
+                    <a href='.url('awb/edit/'.$a['id'].'/edit').' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                         <i class="flaticon-edit-1" ></i>
                     </a>
                     <a href='.url('printout/awb/'.$a['id']).' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">

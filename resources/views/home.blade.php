@@ -144,7 +144,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a  href="{{ url('scannerawb/'.Crypt::encrypt('at-manifest').'') }}"            class="btn btn-primary btn-lg btn-block"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;Scan tiba di-manifest</a> 
+                    {{-- <a  href="{{ url('scannerawb/'.Crypt::encrypt('at-manifest').'') }}"            class="btn btn-primary btn-lg btn-block"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;Scan tiba di-manifest</a>  --}}
                     <a  href="{{ url('scannerawb/'.Crypt::encrypt('loaded').'') }}"                 class="btn btn-primary btn-lg btn-block"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;Scan Loading ke truck</a> 
                     <a  href="{{ url('scannerawb/'.Crypt::encrypt('delivery-by-courier').'') }}"    class="btn btn-primary btn-lg btn-block"><i class="fa fa-motorcycle" aria-hidden="true"></i> &nbsp;Scan pengantaran ke tujuan</a> 
                     <a  href="{{ url('scannerawb/'.Crypt::encrypt('complete').'') }}"               class="btn btn-primary btn-lg btn-block"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Scan sudah tiba di tujuan</a> 

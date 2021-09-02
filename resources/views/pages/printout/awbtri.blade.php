@@ -4,36 +4,46 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>AWB</title>
-        <link href="{{asset('assets/gsa/css/bootstrap.min.css')}}" rel="stylesheet" />
+        <link href="{{asset('assets/gsa/css/boots.css')}}" rel="stylesheet" />
         <link href="" rel="stylesheet" />
+        <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
             @page {
-                size: 21cm 29.7cm;
+                size: a4;
                 margin: 0;
             }
             @media print {
                 .no-print,
                 .no-print * {
                     display: none !important;
-                }  html, body {
-                            width: 210mm;
-                            height: 297mm; 
-                    }
+                }  
+                html, body {
+                    width: 210mm;
+                    height: 290mm !important; 
+                    margin-top:0px !important;
+                    /* background-color: red !important; */
+                }
                 .page { 
                     margin: 0px !important;
+                    /* background-color: green; */
                     border: 0px !important;
-                    height: 297mm !important; 
+                    height: 210mm !important; 
                     border-radius: initial;
                     box-shadow: initial;
                     background: initial;
                     page-break-after: always;
                     width:100% !important;
+                    /* background-color: blue; */
                 }
                 .height33{ 
-                    margin-top:2mm !important;
-                    height:95mm !important;
-                    border:1px solid black !important;
+                    margin:0px !important;
+                    margin-top:1mm !important;
+                    height:93mm !important;
+                    border:1px solid black !important; 
+                    /* background-color:hotpink; */
+                }
+                .card{ 
                 }
             } 
             body {
@@ -68,10 +78,12 @@
         </style>
     </head>
     <body  class="snippet-body" style="background-color:white;">
+        <div class="printcontainer d-print-none" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        </div>
             <div class="card page">
                 @for ($i = 0; $i < 3; $i++)
                 <div class="height33">                        
-                    <div class="card-header  " style="padding:0px !important; display: flex;">  
+                    <div class="card-header  " style="padding-top:0.1cm !important; display: flex;">  
                         <div class="col-5 row text-center" style=" padding:1px;margin:0px;">
                             <img src='{{asset('assets/gsa/logo.jpg')}}'   style='width:1.1cm;height:1.3cm;' class="col-3">
                             <p class="col-8 font-weight-bold text-left" style="font-size:0.25cm;padding:0px; margin:0px;">GLOBAL SERVICE ASIA<br>Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
@@ -110,8 +122,15 @@
                         </div>
                         <table class="table-striped table-bordered col-3"  >
                             <thead>
+                                @if ($awb[0]->ada_faktur == 1)                                            
                                 <tr> 
-                                    <td class='text-left' style="font-size:0.24cm;">
+                                    <td class='text-left' style="font-size:0.24cm; height:0.3cm;text-align:center !important; border:0px ;">
+                                        <span class="badge badge-success" style="font-size:0.5cm;width:100%;">ADA FAKTUR</span><br>
+                                    </td>
+                                </tr>
+                                @endif 
+                                <tr> 
+                                    <td class='text-left' style="font-size:0.24cm;"> 
                                         <span style="font-weight:bold;">Keterangan</span><br>
                                         {{ $awb[0]->keterangan }}
                                     </td>
@@ -119,8 +138,8 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="card " style="margin-top:0.2cm;"> 
-                        <div class=" row" style="position: relative;margin:0px; "> 
+                    <div class=" " style="margin-top:0cm; padding-top:0cm; padding-bottom:1cm;"> 
+                        <div class=" " style="display:flex; relative;margin:0px; padding-bottom:10px;"> 
                             <div class="col-6 " style="padding:0px;">
                                 <table class="table-striped table-bordered" style="font-size:0.25cm; width:100%;">
                                     <thead>
@@ -131,25 +150,25 @@
                                         <tr style="height: 3cm; font-size:0.25cm;">
                                             <td style="width:50%;">
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NAMA PENGIRIM:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->nama_pengirim }}<br><span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->nama_pengirim }}<br></span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">ALAMAT:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->alamat_pengirim }}<br><span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->alamat_pengirim }}<br></span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">KODEPOS:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->kodepos_pengirim }}<br><span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->kodepos_pengirim }}<br></span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NO HP:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->notelp_pengirim }} <span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->notelp_pengirim }} </span>
                                                     
                                                 
                                             </td>   
                                             <td style="width:50%;">
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NAMA PENERIMA:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->nama_penerima }}<br><span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->nama_penerima }}<br></span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">ALAMAT:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->alamat_tujuan }}<br><span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->alamat_tujuan }}<br></span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">KODEPOS:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->kodepos_penerima }}<br><span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->kodepos_penerima }}<br></span>
                                                 <span class="font-weight-bold" style="font-size:0.22cm;">NO HP:</span><br>
-                                                    <span style="font-size:0.35cm;">{{ $awb[0]->notelp_penerima }} <span>
+                                                    <span style="font-size:0.35cm;">{{ $awb[0]->notelp_penerima }} </span>
                                             </td>    
                                         </tr>
                                     </thead> 
@@ -159,7 +178,25 @@
                             <div class="col-6" style="padding:0px;">
                                 <table  class="col-12 table-bordered"  style="font-size:0.35cm; border-right:0px !important;">
                                     <tr>
-                                        {{-- <th colspan='5'>Quantity:</th> --}}
+                                        <th colspan='6' style="font-style:italic;font-weight:bold;text-align:center;
+                                            @if ($i==0)
+                                                background-color:#c5ffe1;
+                                                @elseif ($i==1)
+                                                background-color:#feffc5;
+                                                @elseif ($i==2)
+                                                background-color:#ffc5c5;
+                                            @endif
+                                            ">
+                                            **
+                                            @if ($i==0)
+                                                Untuk disimpan Agen
+                                            @elseif ($i==1)
+                                                Untuk disimpan Penerima
+                                            @elseif ($i==2)
+                                                Kembali ke Surabaya
+                                            @endif
+                                            **
+                                        </th>
                                     </tr>
                                     <tr class="text-center">
                                         @if($awb[0]->is_agen == 1)
@@ -191,9 +228,9 @@
                                         {{-- <th colspan='5'>Quantity:</th> --}}
                                     </tr>
                                     <tr class="text-center">
-                                        <th width='33.3%' style="padding-top:4cm;">MARKETING<br>(David suro)</th> 
-                                        <th width='33.3%' style="padding-top:4cm;">CUSTOMER<br>(David suro)</th> 
-                                        <th width='33.3%' style="padding-top:4cm;">PENERIMA<br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</th>  
+                                        <th width='33.3%' style="padding-top:3.3cm;">MARKETING<br>(David suro)</th> 
+                                        <th width='33.3%' style="padding-top:3.3cm;">CUSTOMER<br>(David suro)</th> 
+                                        <th width='33.3%' style="padding-top:3.3cm;">PENERIMA<br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</th>  
                                     </tr>  
                                 </table>
                             </div> 

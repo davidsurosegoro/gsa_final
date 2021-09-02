@@ -7,7 +7,7 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data AWB</span></h3>
     </div>
     <div class="card-toolbar">
-      <a href="{{ url('awb/edit/0') }}" class="btn btn-primary font-weight-bolder">
+      <a href="{{ url('awb/edit/0/0') }}" class="btn btn-primary font-weight-bolder">
       <i class="la la-plus"></i>Buat AWB Baru</a>
     </div>
   </div>

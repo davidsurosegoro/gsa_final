@@ -4,8 +4,9 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>MANIFEST</title>
-        <link href="{{asset('assets/gsa/css/bootstrap.min.css')}}" rel="stylesheet" />
+        <link href="{{asset('assets/gsa/css/boots.css')}}" rel="stylesheet" />
         <link href="" rel="stylesheet" />
+        <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
             @page {
@@ -84,6 +85,8 @@
         </style>
     </head>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
+        <div class="printcontainer d-print-none" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        </div>
             <div class="card page">
                 <div class="card-header row" style="padding:0px !important;"> 
                     <div class="col-12 text-center font-weight-bold">

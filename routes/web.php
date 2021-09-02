@@ -139,7 +139,7 @@ Route::prefix('master')->group(function(){
 
 Route::prefix('awb')->group(function () {
 	Route::get('/', 'AwbController@index');
-	Route::get('/edit/{id}', 'AwbController@edit');
+	Route::get('/edit/{id}/{hilang}', 'AwbController@edit');
 	Route::post('/save', 'AwbController@save');
 	Route::post('/delete', 'AwbController@delete');
 	Route::post('/manifest', 'AwbController@manifest');
@@ -153,6 +153,7 @@ Route::prefix('awb')->group(function () {
 	Route::post('/updateawb','AwbController@updateawb');
 	Route::post('/updatediterima','AwbController@updatediterima');
 	// Route::get('/update-harga/{id}','AwbController@updateHarga');
+	Route::post('/updatetomanifest','AwbController@updatetomanifest');
 });
 
 
