@@ -107,7 +107,7 @@ class AwbController extends Controller
             endif;
         else:
             if(Auth::user()->level == "1"):
-                $total_harga['total'] = $request->harga_total;
+                $total_harga['total'] = substr(preg_replace('/[.,]/', '', $request->harga_total), 0, -2);
             endif;
         endif;
         if($request->idawb == 0):
@@ -265,7 +265,7 @@ class AwbController extends Controller
     public function datatables()
     {
         $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL ORDER BY a.id DESC");
-        if (Auth::user()->level !== "1") :
+        if (Auth::user()->level !== 1) :
             //dd(Auth::user()->level);
             $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = ".Auth::user()->id_customer." AND a.deleted_at IS NULL ORDER BY a.id DESC");
         endif;
@@ -289,7 +289,6 @@ class AwbController extends Controller
                 'kg' => $a->qty_kg,
             ]);
         endforeach;
-        
         return Datatables::of($awbs)
             ->addColumn('aksi', function ($a) {
                 if ($a['status_tracking'] !== 'booked' && Auth::user()->level !== "1") :
@@ -344,17 +343,17 @@ class AwbController extends Controller
             ->editColumn('status_tracking',function($a){
                 if($a['status_tracking'] == 'booked'):
                     return '<span class="badge badge-info"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
-                elseif($a['status_tracking'] = 'at-manifest'):
-                    return '<span class="badge badge-primary"><i class="fa fa-truck"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
-                elseif($a['status_tracking'] = 'loaded'):
+                elseif($a['status_tracking'] == 'at-manifest'):
+                    return '<span class="badge badge-dark"><i class="fa fa-truck"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] == 'loaded'):
                     return '<span class="badge badge-primary"><i class="fas fa-truck-loading"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
-                elseif($a['status_tracking'] = 'at-agen'):
-                    return '<span class="badge badge-warning"><i class="fas fa-user-friends"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
-                elseif($a['status_tracking'] = 'delivery-by-courier'):
-                    return '<span class="badge badge-info"><i class="fa fa-motorcycle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
-                elseif($a['status_tracking'] = 'complete'):
+                elseif($a['status_tracking'] == 'at-agen'):
+                    return '<span class="badge badge-dark"><i class="fas fa-user-friends"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] == 'delivery-by-courier'):
+                    return '<span class="badge badge-warning"><i class="fa fa-motorcycle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
+                elseif($a['status_tracking'] == 'complete'):
                     return '<span class="badge badge-success"><i class="fa fa-check-circle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
-                elseif($a['status_tracking'] = 'cancel'):   
+                elseif($a['status_tracking'] == 'cancel'):   
                     return '<span class="badge badge-danger"><i class="fa fa-times-circle"  style="color:white;"></i>&nbsp;'.$a['status_tracking'].'</span>';
                 endif;
             })
