@@ -162,20 +162,28 @@
                                         {{-- <th colspan='5'>Quantity:</th> --}}
                                     </tr>
                                     <tr class="text-center">
-                                        <th width='16.6%'>K</th> 
-                                        <th width='16.6%'>S</th> 
-                                        <th width='16.6%'>B</th> 
-                                        <th width='16.6%'>BB</th> 
-                                        <th width='16.6%'>Kg</th> 
-                                        <th width='16.6%'>Doc</th> 
+                                        @if($awb[0]->is_agen == 1)
+                                            <th width='100%'>QTY</th> 
+                                        @else
+                                            <th width='16.6%'>K</th> 
+                                            <th width='16.6%'>S</th> 
+                                            <th width='16.6%'>B</th> 
+                                            <th width='16.6%'>BB</th> 
+                                            <th width='16.6%'>Kg</th> 
+                                            <th width='16.6%'>Doc</th>
+                                        @endif 
                                     </tr> 
                                     <tr class="text-center">
+                                        @if($awb[0]->is_agen == 1)
+                                        <td>{{ $awb[0]->qty }}</td> 
+                                        @else
                                         <td>{{ $awb[0]->qty_kecil }}</td> 
                                         <td>{{ $awb[0]->qty_sedang }}</td> 
                                         <td>{{ $awb[0]->qty_besar }}</td> 
                                         <td>{{ $awb[0]->qty_besarbanget }}</td> 
                                         <td>{{ $awb[0]->qty_kg }}</td> 
                                         <td>{{ $awb[0]->qty_doc }}</td> 
+                                        @endif
                                     </tr> 
                                 </table>
                                 <table  class="col-12  "  style="font-size:0.35cm; border-right:0px !important;">

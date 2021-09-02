@@ -27,7 +27,7 @@
                 <div class="form-group">
                   <label>Customer</label>
                   <select id="customer" style="width:90%" class="select2 form-control" name="id_customer" required>
-                    @if(Auth::user()->level == "1")
+                    @if((int)Auth::user()->level == 1)
                       <option value="">--Pilih Customer--</option>
                       @foreach($customer as $c)
                         @if($c->id == $awb->id_customer)
@@ -67,7 +67,7 @@
       
       <div class="card-body">
         <h6 class="panel-title txt-dark"><i class="flaticon-shopping-basket"> </i>Data Jumlah Barang</h6>
-          @if(Auth::user()->level !== "1" && $customer->can_access_satuan !== 1)
+          @if((int)Auth::user()->level !== 1 && $customer->can_access_satuan !== 1)
           <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
@@ -255,7 +255,7 @@
             </div>
             
             
-            @if(Auth::user()->level == "1")
+            @if((int)Auth::user()->level == 1)
             {{-- <div class="form-group">
               <label>Agen Asal</label>
               <select style="width:90%" class="select2 form-control"  id="agen_asal" name="id_agen_asal" required>
@@ -316,7 +316,7 @@
                 @endif
               </select>
             </div>
-            @if(Auth::user()->level == "1")
+            @if((int)Auth::user()->level == 1)
             <div class="form-group">
               <label>Agen Tujuan</label>
               <select style="width:90%" class="select2 form-control" id="agen_tujuan" name="id_agen_penerima" required>
