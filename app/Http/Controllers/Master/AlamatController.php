@@ -53,12 +53,15 @@ class AlamatController extends Controller
     }
     public function datatables()
     { 
-        $kota = Alamat::select("pelanggan_alamat.*", "kota.nama as namakota" )
-                ->join('kota', 'kota.id', '=', 'pelanggan_alamat.idkota') 
-                ->where('pelanggan_alamat.id' ,'>', '0')
-                ->where('pelanggan_alamat.pelanggan_id' ,'=', Auth::user()->id_customer)
-                ->get();
-
+        $kota = Alamat::select("pelanggan_alamat.*", "kota.nama as namakota" ,"customer.nama as namacustomer")
+                ->join('kota',      'kota.id',      '=', 'pelanggan_alamat.idkota') 
+                ->join('customer',  'customer.id',  '=', 'pelanggan_alamat.pelanggan_id') 
+                ->where('pelanggan_alamat.id' ,'>', '0') ;
+                
+        if((int)Auth::user()->level!==1){
+            $kota->where('pelanggan_alamat.pelanggan_id' ,'=', Auth::user()->id_customer);
+        }
+        $kota->get();
     
         return Datatables::of($kota)
         ->addColumn('aksi', function ($a) { 
@@ -91,7 +94,7 @@ class AlamatController extends Controller
         }else{            
             $alamat = Alamat::where('id',$request['id'])->first(); 
         }
-        $alamat->Pelanggan_id     =  Auth::user()->id_customer; 
+        $alamat->Pelanggan_id     =  ((int)Auth::user()->level !==1) ? Auth::user()->id_customer : $request->pelanggan_id; 
         $alamat->alamat           = ($request->alamat)        ? $request->alamat        : ''; 
         $alamat->kodepos          = ($request->kodepos)       ? $request->kodepos       : ''; 
         $alamat->labelalamat      = ($request->labelalamat)   ? $request->labelalamat   : ''; 
@@ -118,6 +121,7 @@ class AlamatController extends Controller
         $data['kota']       = Kota::all();
         $data['kecamatan']  = kecamatan::orderBy('nama','asc')->get();
         $data['alamat']     = Alamat::find($id);
+        $data['customer']   = Customer::get();
         return view("pages.master.alamat.edit",$data);
     }
 
