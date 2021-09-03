@@ -56,14 +56,15 @@
 
 
 
-var xs      		= document.getElementById("myAudio");  
-const video         = document.getElementById('qr-video');
-const camHasCamera  = document.getElementById('cam-has-camera');
-const camList       = document.getElementById('cam-list');
-const camHasFlash   = document.getElementById('cam-has-flash');
-const flashToggle   = document.getElementById('flash-toggle');
-const flashState    = document.getElementById('flash-state');
-const camQrResult   = document.getElementById('cam-qr-result');  
+QrScanner.WORKER_PATH   = "scanner2/qr-scanner-worker.min.js"  ;
+var xs      		    = document.getElementById("myAudio");  
+const video             = document.getElementById('qr-video');
+const camHasCamera      = document.getElementById('cam-has-camera');
+const camList           = document.getElementById('cam-list');
+const camHasFlash       = document.getElementById('cam-has-flash');
+const flashToggle       = document.getElementById('flash-toggle');
+const flashState        = document.getElementById('flash-state');
+const camQrResult       = document.getElementById('cam-qr-result');  
 
     // ####### Web Cam Scanning #######
 

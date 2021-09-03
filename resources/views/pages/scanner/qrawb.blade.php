@@ -94,69 +94,10 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="{{asset('assets/gsa/scanner2/qr-scanner.umd.min.js')}}"></script>
+<script src="{{asset('assets/gsa/scanner/custom-js-scanner.js')}}"></script> 
 <script type="text/javascript">  
-    QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
+    // QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
 
-
-
-    var xs      		= document.getElementById("myAudio");  
-const video         = document.getElementById('qr-video');
-const camHasCamera  = document.getElementById('cam-has-camera');
-const camList       = document.getElementById('cam-list');
-const camHasFlash   = document.getElementById('cam-has-flash');
-const flashToggle   = document.getElementById('flash-toggle');
-const flashState    = document.getElementById('flash-state');
-const camQrResult   = document.getElementById('cam-qr-result');  
-
-    // ####### Web Cam Scanning #######
-
-    const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
-        camQrResult.textContent = error;
-        camQrResult.style.color = 'inherit';
-    });
-
-    const updateFlashAvailability = () => {
-        scanner.hasFlash().then(hasFlash => {
-            camHasFlash.textContent = hasFlash;
-            flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
-        });
-    };
-
-    scanner.start().then(() => {
-        updateFlashAvailability();
-        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-        // start the scanner earlier.
-        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-            const option = document.createElement('option');
-            option.value = camera.id;
-            option.text = camera.label;
-            camList.add(option);
-        }));
-    });
-
-    QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
-
-    // for debugging
-    window.scanner = scanner;
- 
-
-    camList.addEventListener('change', event => {
-        scanner.setCamera(event.target.value).then(updateFlashAvailability);
-    });
-
-    flashToggle.addEventListener('click', () => {
-        scanner.toggleFlash().then(() => flashState.textContent = scanner.isFlashOn() ? 'on' : 'off');
-    });
-
-    document.getElementById('start-button').addEventListener('click', () => {
-        scanner.start();
-    });
-
-    document.getElementById('stop-button').addEventListener('click', () => {
-        scanner.stop();
-    });
     function setResult(label, result) {
         label.textContent = result; 
         label.style.color = 'teal';
@@ -227,5 +168,4 @@ const camQrResult   = document.getElementById('cam-qr-result');
     }
 	
 </script> 
-{{-- <script src="{{asset('assets/gsa/scanner/custom-js-scanner.js')}}"></script>  --}}
 @endsection 
