@@ -100,6 +100,29 @@ class AwbController extends Controller
         $customer = Customer::find($request->id_customer);
         $total_harga = array('total' => null, 'oa' => null); $harga_oa = 0;
         $qty = ($request->qty == null) ? 0 : $request->qty;
+        if($request->jenis_koli == "koli"):
+            $request->qty_doc = 0;
+            $request->qty_kg = 0;
+        elseif($request->jenis_koli == "dokumen"):
+            $request->qty_kecil = 0;
+            $request->qty_sedang = 0; 
+            $request->qty_besar = 0; 
+            $request->qty_besar_banget = 0;
+            $request->qty_kg = 0;
+        elseif($request->jenis_koli == "kg"):
+            $request->qty_kecil = 0;
+            $request->qty_sedang = 0; 
+            $request->qty_besar = 0; 
+            $request->qty_besar_banget = 0;
+            $request->qty_doc = 0;
+        else:
+            $request->qty_kecil = 0;
+            $request->qty_sedang = 0; 
+            $request->qty_besar = 0; 
+            $request->qty_besar_banget = 0;
+            $request->qty_doc = 0;
+            $request->qty_kg = 0;
+        endif;
         if($customer->is_agen == 0):
             if ((int)Auth::user()->level == 1) :
                 $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
@@ -114,8 +137,7 @@ class AwbController extends Controller
                 $total_harga['total'] = substr(preg_replace('/[.,]/', '', $request->harga_total), 0, -2);
             endif;
         endif;
-
-        if($request->referensi !== ""):
+        if($request->hilang == "hilang"):
             $total_harga['oa'] = 0;
         endif;
         if($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
@@ -133,7 +155,7 @@ class AwbController extends Controller
                 'notelp_penerima' => $request->notelp_penerima,
                 'kodepos_penerima' => $request->kodepos_penerima,
                 'nama_pengirim' => $request->nama_pengirim,
-                'alamat_pengirim' => ($request->alamat_pengirim_auto == "manual") ?  $request->alamat_pengirim : $request->alamat_pengirim_auto,
+                'alamat_pengirim' => $request->alamat_pengirim,
                 'kodepos_pengirim' => $request->kodepos_pengirim,
                 'notelp_pengirim' => $request->notelp_pengirim,
                 'keterangan' => $request->keterangan,
@@ -158,7 +180,8 @@ class AwbController extends Controller
                 'id_invoice' => 0,
                 'is_agen' => $customer->is_agen,
                 'ada_faktur' => $ada_faktur,
-                'referensi' => $request->referensi
+                'referensi' => $request->referensi,
+                'jenis_koli' => $request->jenis_koli
             ]);
             return redirect('awb')->with('message', 'created');
         else:
@@ -176,7 +199,7 @@ class AwbController extends Controller
             'notelp_penerima' => $request->notelp_penerima,
             'kodepos_penerima' => $request->kodepos_penerima,
             'nama_pengirim' => $request->nama_pengirim,
-            'alamat_pengirim' => ($request->alamat_pengirim_auto == "manual") ?  $request->alamat_pengirim : $request->alamat_pengirim_auto,
+            'alamat_pengirim' => $request->alamat_pengirim,
             'kodepos_pengirim' => $request->kodepos_pengirim,
             'notelp_pengirim' => $request->notelp_pengirim,
             'keterangan' => $request->keterangan,
@@ -201,7 +224,8 @@ class AwbController extends Controller
             'id_invoice' => 0,
             'tanggal_diterima' => $before_update->tanggal_diterima,
             'is_agen' => $customer->is_agen,
-            'ada_faktur' => $ada_faktur
+            'ada_faktur' => $ada_faktur,
+            'jenis_koli' => $request->jenis_koli
         ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -333,8 +357,8 @@ class AwbController extends Controller
                     <i class="flaticon2-print" ></i>
                     </a>
                     <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`'.$a['noawb'].'`)"> <i class="flaticon-delete"></i> </button>
-                    <a href='.url('awb/edit/'.$a['id'].'/hilang').' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
-                    <i class="flaticon-edit-1" ></i>
+                    <a href='.url('awb/edit/'.$a['id'].'/hilang').' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
+                    <i class="flaticon-exclamation" ></i>
                     </a>
                     </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int)Auth::user()->level == 2) :

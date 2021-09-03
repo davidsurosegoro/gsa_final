@@ -56,6 +56,11 @@
 	    {data: 'aksi', name:'aksi'},
 	],
 	 "order": [[ 0, "desc" ]],
+   "createdRow": function( row, data, dataIndex){
+                if( data.qty < 0){
+                    $(row).addClass('bg-danger');
+                }
+            }
    });
    datatable.column(0).visible(false);  
    function deleteAwb(id,noawb)
