@@ -175,7 +175,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"> 
                     <a  href="{{ url('scannermanifest/'.Crypt::encrypt('delivering').'') }}"  class="btn btn-primary btn-lg btn-block"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;Scan Loading ke truck</a> 
                     <a  href="{{ url('scannermanifest/'.Crypt::encrypt('arrived').'') }}" class="btn btn-primary btn-lg btn-block"><i class="fa fa-check-square" aria-hidden="true"></i> &nbsp;Scan tiba di agen</a> 
                 </div>
