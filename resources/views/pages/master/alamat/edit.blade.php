@@ -31,6 +31,21 @@
             <label>kodepos:</label>
             <input type="text" required class="form-control" name="kodepos" value="{{ (old('kodepos') && old('kodepos') !='') ?old('kodepos'): $alamat->kodepos  }}" />        
         </div> 
+        @if (((int)Auth::user()->level==1))
+            <div class="form-group col-lg-6" id='groupcustomer'>
+                <label>Belongs to Customer:</label>
+                <select class="custom-select"  name="pelanggan_id" id="pelanggan_id">
+                    <option value='' >Choose...</option>
+                    @foreach ($customer as $item)
+                        <option 
+                            @if($item->id == $alamat->pelanggan_id)
+                                selected
+                            @endif
+                            value="{{$item->id}}">{{$item->kode}} - {{$item->nama}}</option>
+                    @endforeach
+                </select>        
+            </div>     
+        @endif        
         <div class="form-group col-lg-6">
             <label>Kota:</label>
             <select type="text" required class="form-control select2 required" id='kota' name="idkota" >

@@ -93,7 +93,7 @@
                 </thead>
                 <tbody>
                     @foreach ($awb as $item)
-                    <tr style="padding:0px;">
+                    <tr style="padding:0px; @if($item['total_harga'] <= 0)background-color: #ffadad; @endif"  >
                         <td class='text-center' style="padding:5px;">{{ $loop->index+1 }}</td>   
                         <td style="padding:5px;">{{$item->tanggal_awb}}</td>  
                         <td style="padding:5px;">{{$item->noawb}}</td>  
