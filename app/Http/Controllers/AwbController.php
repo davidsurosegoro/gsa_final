@@ -9,6 +9,7 @@ use App\Kota;
 use App\Kecamatan;
 use App\Customer;
 use App\Awb;
+use App\Manifest;
 use App\Agen;
 use App\Alamat;
 use App\ViewAgenKota;
@@ -213,6 +214,43 @@ class AwbController extends Controller
               ->where('id', $request->id)
               ->update(['status_tracking' => 'cancel']);
         return response()->json(array('awb' => $awb));
+    }
+
+    public function updatemanifestqr(Request $request){
+        $kode                   = $request->kode;
+        $status                 =  Crypt::decrypt($request->status);
+        $returnmessage          = '';
+        $typereturn             = ' ';
+        $openmodal              = ($status=='complete') ? 'open' : 'close';
+        $manifest               =  Manifest::   where('kode',           $request->kode) ->first();
+        $awb                    =  Awb::        where('id_manifest',    $manifest->id)  ->get(); 
+        
+        if(!$manifest){
+            $returnmessage = 'Kode MANIFEST '.$kode.' tidak ditemukan!';
+            $typereturn    = 'statuserror';
+        }else if($manifest->id){
+            if($manifest->status == $status){
+                $returnmessage = 'Kode AWB '.$kode.' Sudah berstatus '.$status.'!';
+                $typereturn    = 'statuswarning';
+            }else{
+                $manifest->status                       = $status;
+                if($status=='arrived'){
+                    $manifest->discan_terima_oleh           = (int)Auth::user()->id;
+                    $manifest->discan_diterima_oleh_nama    = Auth::user()->nama;
+                    $manifest->tanggal_diterima             = Carbon::now()->addHours(7);
+                }
+                
+                $manifest->save();
+        
+                $data['success'] = $manifest->wasChanged('status');
+                //---------------UPDATE STATUS_TRACKING DI TABLE AWB---------------------------------------------
+                DB::table('awb')->where('id_manifest', $manifest['id'])->update([ 'status_tracking'  => (($status=='delivering') ? 'loaded' : 'at-agen')]);
+                $returnmessage   = 'Update Kode MANIFEST '.$kode.' ke '.$status.', sukses di update!';
+                $typereturn      = 'statussuccess';
+            } 
+
+        } 
+        return response()->json(array($typereturn => $returnmessage, 'openmodal'=>$openmodal,'manifest'=>$manifest,'awb'=>$awb));
     }
 
     public function updateawb(Request $request){

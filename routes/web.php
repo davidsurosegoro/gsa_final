@@ -21,7 +21,8 @@ Route::prefix('popup')->group(function () {
 
 
 Route::get('/', 'HomeController@index');
-Route::get('scannerawb/{status}', 'ScannerController@awb');
+Route::get('scannerawb/{status}',  	   'ScannerController@awb');
+Route::get('scannermanifest/{status}', 'ScannerController@manifest');
 
 Route::prefix('log')->group(function () {
 
@@ -151,6 +152,7 @@ Route::prefix('awb')->group(function () {
 	Route::post('/filter-customer','AwbController@filter_customer');
 	Route::post('/filter-alamat','AwbController@filter_alamat');
 	Route::post('/updateawb','AwbController@updateawb');
+	Route::post('/updatemanifestqr','AwbController@updatemanifestqr');
 	Route::post('/updatediterima','AwbController@updatediterima');
 	// Route::get('/update-harga/{id}','AwbController@updateHarga');
 	Route::post('/updatetomanifest','AwbController@updatetomanifest');
