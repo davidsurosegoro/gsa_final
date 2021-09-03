@@ -4,7 +4,7 @@
 <div class="card card-custom gutter-b example example-compact">
   <div class="card-header"
     @if ($hilang =="hilang")
-        style="background-color:red;"        
+        style="background-color:#f64e60;"        
     @endif
   >
     <h3 class="card-title">Form Pengisian AWB 
@@ -28,6 +28,7 @@
 <form class="form" method="POST" action="{{ url('awb/save')}}">
   {{ csrf_field() }}
   <input type="hidden" name="idawb" value="{{ $id }}">
+  <input type="hidden" name="hilang" value="{{ $hilang }}">
   @if($hilang == "hilang")
   <input type="hidden" name="referensi" value="{{ $awb->noawb }}">
   @else
@@ -105,48 +106,75 @@
             </div>
           </div>
           @else
+          <div class="row" id="row-jenis-koli">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label class="font-weight-bold">Jenis Koli</label>
+                  <select class="form-control" id="jenis_koli" name="jenis_koli" required>
+                    <option value="">--Pilih Jenis Koli--</option>
+                    @if($awb->jenis_koli == "koli")
+                      <option value="koli" selected>Koli</option>
+                      <option value="dokumen">Dokumen</option>
+                      <option value="kg">Kilogram (Kg)</option>
+                    @elseif($awb->jenis_koli == "dokumen")
+                      <option value="koli">Koli</option>
+                      <option value="dokumen" selected>Dokumen</option>
+                      <option value="kg">Kilogram (Kg)</option>
+                    @elseif($awb->jenis_koli == "kg")
+                      <option value="koli">Koli</option>
+                      <option value="dokumen">Dokumen</option>
+                      <option value="kg" selected>Kilogram (Kg)</option>
+                    @else
+                      <option value="koli">Koli</option>
+                      <option value="dokumen">Dokumen</option>
+                      <option value="kg">Kilogram (Kg)</option>
+                    @endif
+                  </select>
+              </div>
+            </div>
+          </div>
           <div class="row" id="qty-detail">
             <div class="col-lg-2">
-              <div class="form-group">
+              <div class="form-group" id="qty_koli_k">
                 <label class="font-weight-bold">Qty Koli Kecil</label>
                 <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
               </div>
             </div>
             <div class="col-lg-2">
-              <div class="form-group">
+              <div class="form-group" id="qty_koli_s">
                 <label class="font-weight-bold">Qty Koli Sedang</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_sedang }}" name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
+                <input type="number" class="form-control" value="{{ $awb->qty_sedang }}"  name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
               </div>
             </div>
             <div class="col-lg-2">
-              <div class="form-group">
+              <div class="form-group" id="qty_koli_b">
                 <label class="font-weight-bold">Qty Koli Besar</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_besar }}" name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
+                <input type="number" class="form-control" value="{{ $awb->qty_besar }}"  name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
               </div>
             </div>
             <div class="col-lg-2"> 
-              <div class="form-group">
+              <div class="form-group" id="qty_koli_bb">
                 <label class="font-weight-bold">Qty Koli Besar Banget</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}" name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
+                <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}"  name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
               </div>
             </div>
             <div class="col-lg-2">
-              <div class="form-group">
+              <div class="form-group" id="qty_koli_kg" >
                 <label class="font-weight-bold">Qty Koli Kg</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_kg }}" name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
+                <input type="number" class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
               </div>
             </div>
             <div class="col-lg-2">
-              <div class="form-group">
+              <div class="form-group" id="qty_koli_doc" >
                 <label class="font-weight-bold">Qty Koli Dokumen</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_doc }}" name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+                <input type="number" class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
               </div>
             </div>
           </div>
           <div class="row" id="customer-biasa">
               
             <div class="col-md-12">
-              <div class="alert alert-custom alert-light-dark fade show mb-5" role="alert">
+              <div class="alert alert-custom alert-light-warning fade show mb-5" role="alert">
                 <div class="alert-icon">
                   <i class="flaticon-warning"></i>
                 </div>
@@ -169,7 +197,7 @@
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Harga Total</label>
-                <input type="text" class="form-control rupiah" id="harga_total" value="{{ $awb->harga_total }}" name="harga_total" placeholder="Input harga total. . ." >
+                <input type="text" class="form-control rupiah" id="harga_total" value="{{ $awb->total_harga }}" name="harga_total" placeholder="Input harga total. . ." >
               </div>
             </div>
           </div>
@@ -208,7 +236,7 @@
                       @endif
                   @endif
               </select>
-              <input type="text" class="form-control" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
+              <input type="text" class="form-control" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Penerima</label>
@@ -244,7 +272,7 @@
                       @endif
                     @endif
                 </select> --}}
-                <input type="text" id="alamat_pengirim" class="form-control mb-2" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . .">
+                <input type="text" id="alamat_pengirim" maxlength="120" class="form-control mb-2" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Pengirim</label>
@@ -384,7 +412,7 @@
           <div class="col-lg-12">
             <div class="form-group">
               <label class="font-weight-bold">Keterangan tambahan :</label>
-              <textarea name="keterangan" rows="4" class="form-control"> {{ $awb->keterangan }}</textarea>
+              <textarea name="keterangan" maxlength="100" rows="4" class="form-control"> {{ $awb->keterangan }}</textarea>
             </div>
           </div>
         </div>
@@ -397,6 +425,7 @@
   </div>
 </form>
 </div>
+<input type="hidden" id="is_agen" value="{{ $awb->is_agen }}">
 @endsection
 @section('script')
 <script>
@@ -463,12 +492,16 @@
           $('#qty-detail').hide()
           $("#harga_total").attr("required", "true");
           $("#qty_biasa").attr("required", "true");
+          $('#row-jenis-koli').hide()
+          $("#jenis_koli").removeAttr("required");
         }
         else{
           $('#customer-biasa').hide()
           $('#qty-detail').show()
           $("#harga_total").removeAttr("required");
           $("#qty_biasa").removeAttr("required");
+          $('#row-jenis-koli').show()
+          $("#jenis_koli").attr("required", "true");
         }
       }
     })
@@ -487,9 +520,45 @@
     }
   })
 
-  $('#alamat_tujuan_auto').on('change',function(){
+  $('#jenis_koli').on('change',function(){
     var value = $(this).val()
     console.log(value)
+    if(value == "koli"){
+      $('#qty_koli_k').show();
+      $('#qty_koli_s').show();
+      $('#qty_koli_b').show();
+      $('#qty_koli_bb').show();
+      $('#qty_koli_doc').hide();
+      $('#qty_koli_kg').hide();
+    }
+    else if(value == "dokumen"){
+      $('#qty_koli_k').hide();
+      $('#qty_koli_s').hide();
+      $('#qty_koli_b').hide();
+      $('#qty_koli_bb').hide();
+      $('#qty_koli_doc').show();
+      $('#qty_koli_kg').hide();
+    }
+    else if(value == "kg"){
+      $('#qty_koli_k').hide();
+      $('#qty_koli_s').hide();
+      $('#qty_koli_b').hide();
+      $('#qty_koli_bb').hide();
+      $('#qty_koli_doc').hide();
+      $('#qty_koli_kg').show();
+    }
+    else{
+      $('#qty_koli_k').hide();
+      $('#qty_koli_s').hide();
+      $('#qty_koli_b').hide();
+      $('#qty_koli_bb').hide();
+      $('#qty_koli_doc').hide();
+      $('#qty_koli_kg').hide();
+    }
+  })
+
+  $('#alamat_tujuan_auto').on('change',function(){
+    var value = $(this).val()
     if(value == "manual"){
       // $('#alamat_tujuan').show()
       $('#alamat_tujuan').val('')
@@ -508,9 +577,11 @@
           '_token': $('input[name=_token]').val()
         },
         success:function(data){
+          console.log(data)
           $('#nama_penerima').val(data.customer.nama_penerima)
           $('#notelp_penerima').val(data.customer.no_hp)
           $('#kodepos_penerima').val(data.customer.kodepos)
+          $('#kota_tujuan').val(data.customer.idkota).trigger('change')
         }
 
       });
@@ -527,6 +598,49 @@
 
     if($('#check_alamat_pengirim').val() == 0){
       // $('#alamat_pengirim').show()
+    }
+
+    if($('#is_agen').val() == 1){
+      
+          $('#customer-biasa').show()
+          $('#qty-detail').hide()
+          $("#harga_total").attr("required", "true");
+          $("#qty_biasa").attr("required", "true");
+          $('#row-jenis-koli').hide()
+          $("#jenis_koli").removeAttr("required");
+    }
+
+    if($('#jenis_koli').val() == "koli"){
+      $('#qty_koli_k').show();
+      $('#qty_koli_s').show();
+      $('#qty_koli_b').show();
+      $('#qty_koli_bb').show();
+      $('#qty_koli_doc').hide();
+      $('#qty_koli_kg').hide();
+    }
+    else if($('#jenis_koli').val() == "dokumen"){
+      $('#qty_koli_k').hide();
+      $('#qty_koli_s').hide();
+      $('#qty_koli_b').hide();
+      $('#qty_koli_bb').hide();
+      $('#qty_koli_doc').show();
+      $('#qty_koli_kg').hide();
+    }
+    else if($('#jenis_koli').val() == "kg"){
+      $('#qty_koli_k').hide();
+      $('#qty_koli_s').hide();
+      $('#qty_koli_b').hide();
+      $('#qty_koli_bb').hide();
+      $('#qty_koli_doc').hide();
+      $('#qty_koli_kg').show();
+    }
+    else{
+      $('#qty_koli_k').hide();
+      $('#qty_koli_s').hide();
+      $('#qty_koli_b').hide();
+      $('#qty_koli_bb').hide();
+      $('#qty_koli_doc').hide();
+      $('#qty_koli_kg').hide();
     }
   })
 </script>
