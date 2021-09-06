@@ -17,7 +17,7 @@ action="{{url('master/kota/update')}}"
     <div class="row">
         <div class="form-group col-lg-6">
             <label>Kode Kota:</label>
-            <input type="text" required class="form-control" name="kode" value="{{ (old('kode') && old('kode') !='') ?old('kode'): $kota->kode  }}" />        
+            <input type="text" required class="form-control" name="kode" value="{{ (old('kode') && old('kode') !='') ?old('kode'): $kota->kode  }}"  maxlength="3"/>        
         </div>
         <div class="form-group col-lg-6">
             <label>Nama Kota:</label>

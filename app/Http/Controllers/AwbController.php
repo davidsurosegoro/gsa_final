@@ -11,6 +11,7 @@ use App\Kecamatan;
 use App\Kota;
 use App\Manifest;
 use App\ViewAgenKota;
+use App\Historyscanawb;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -186,6 +187,7 @@ class AwbController extends Controller
                 'referensi'           => $request->referensi,
                 'jenis_koli'          => $request->jenis_koli,
             ]);
+            $this->inserthistoryscan($awb->id,(($request->referensi == null) ? 'booked' : 'complete'),0);
             return redirect('awb')->with('message', 'created');
         else:
             $before_update = Awb::find($request->idawb);
@@ -269,11 +271,13 @@ class AwbController extends Controller
                 }
 
                 $manifest->save();
-
+                $this->inserthistoryscan(0,   (($status == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+                
                 $data['success'] = $manifest->wasChanged('status');
                 //---------------UPDATE STATUS_TRACKING DI TABLE AWB---------------------------------------------
                 DB::table('awb')->where('id_manifest', $manifest['id'])->update(['status_tracking' => (($status == 'delivering') ? 'loaded' : 'at-agen')]);
                 $returnmessage = 'Update Kode MANIFEST ' . $kode . ' ke ' . $status . ', sukses di update!';
+                // echo($manifest['id']);
                 $typereturn    = 'statussuccess';
             }
 
@@ -302,7 +306,7 @@ class AwbController extends Controller
                 $awb->status_tracking = $status;
 
                 $awb->save();
-
+                $this->inserthistoryscan($awb->id,$status,0);
                 $data['success'] = $awb->wasChanged('status_tracking');
                 $returnmessage   = 'Update Kode AWB ' . $kode . ' ke ' . $status . ', sukses di update!';
                 $typereturn      = 'statussuccess';
@@ -313,6 +317,35 @@ class AwbController extends Controller
         }
         return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
     }
+
+    
+    public function inserthistoryscan($idawb,$tipe,$idmanifest)
+    {
+        if($idmanifest==0){
+            $Historyscanawb             = new Historyscanawb();  
+            $Historyscanawb->tipe       = $tipe;
+            $Historyscanawb->iduser     = Auth::user()->id;
+            $Historyscanawb->namauser   = Auth::user()->nama;
+            $Historyscanawb->idawb      = $idawb;
+            $Historyscanawb->created_at = Carbon::now()->addHours(7);            
+            $Historyscanawb->save(); 
+        }else{
+            $awb_get_for_history['awb'] =  Awb::select('awb.*' )
+                    ->where ("awb.id_manifest", '=' , $idmanifest)                    
+                    ->get(); 
+            foreach ($awb_get_for_history['awb'] as $item){  
+                // dd($Historyscanawb);
+                $Historyscanawb             = new Historyscanawb();  
+                $Historyscanawb->tipe       = $tipe;
+                $Historyscanawb->iduser     = Auth::user()->id;
+                $Historyscanawb->namauser   = Auth::user()->nama;
+                $Historyscanawb->idawb      = $item->id;
+                $Historyscanawb->created_at = Carbon::now()->addHours(7);            
+                $Historyscanawb->save(); 
+            }
+        }
+    }
+
     public function updatediterima(Request $request)
     {
         $returnmessage      = 'Data penerima berhasil disimpan';
@@ -532,4 +565,5 @@ class AwbController extends Controller
         $tots        = array('total' => $harga_total, 'oa' => $harga_oa);
         return $tots;
     }
+
 }

@@ -20,9 +20,10 @@ Route::prefix('popup')->group(function () {
 });
 
 
-Route::get('/', 'HomeController@index');
-Route::get('scannerawb/{status}',  	   'ScannerController@awb')->middleware(['admin.agen.kurir']);
-Route::get('scannermanifest/{status}', 'ScannerController@manifest');
+Route::get('/',  						'HomeController@index');
+Route::get('/tracking/{kode}',			'TrackingController@index');
+Route::get('scannerawb/{status}',  	   	'ScannerController@awb')->middleware(['admin.agen.kurir']);
+Route::get('scannermanifest/{status}', 	'ScannerController@manifest');
 
 Route::prefix('log')->group(function () {
 

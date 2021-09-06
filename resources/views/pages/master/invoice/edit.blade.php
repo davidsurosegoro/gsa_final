@@ -83,6 +83,7 @@
                         <th style="width:10%;">No.Manifest</th>  
                         <th style="width:10%;">ASAL</th>  
                         <th style="width:10%;">Tujuan</th>  
+                        <th style="width:10%;">Penerima</th> 
                         <th style="width:10%;">Koli</th>  
                         <th style="width:5%;">Kg</th>  
                         <th style="width:5%;">Doc</th>   
@@ -100,6 +101,7 @@
                         <td style="padding:5px;">{{$item->kodemanifest}}</td>  
                         <td style="padding:5px;">{{$item->kotaasal}}</td>   
                         <td style="padding:5px;">{{$item->kotatujuan}}</td> 
+                        <td style="padding:5px;">{{$item->diterima_oleh}}</td> 
                         <td style="padding:5px;">
                             @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0) && $item->qty>0)
                             {{$item->qty}}
@@ -128,7 +130,7 @@
                     </tr>   
                     @endforeach 
                     <tr style="padding:0px; background-color:#a1ffbc;"> 
-                        <td style="padding:5px;" colspan='6' class="text-right"><h4>Total Bayar</h4></td>   
+                        <td style="padding:5px;" colspan='7' class="text-right"><h4>Total Bayar</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_koli}}</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_kg}}</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_doc}}</h4></td>   

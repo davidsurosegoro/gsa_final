@@ -110,6 +110,7 @@ class ManifestController extends Controller
         $manifest = Manifest::where('id',$request['idmanifest'])->first(); 
         $manifest->status = $request['status'];
         $manifest->save();
+        app('App\Http\Controllers\AwbController')->inserthistoryscan(0,(( $request['status'] == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
         return response()->json(array('success' => 'success'));
     }
     public function save(Request $request)
@@ -136,7 +137,7 @@ class ManifestController extends Controller
         $manifest->save();
 
         $data['awb'] =  Awb::select('awb.*' )
-                    ->where ("awb.status_tracking",     '=' , 'booked')
+                    ->where ("awb.status_tracking",     '=' , 'at-manifest')
                     ->where ("awb.id_manifest",         '=' , 0) 
                     ->where ("awb.id_kota_tujuan",      '=' , $manifest['id_kota_tujuan']) 
                     ->where ("awb.id_kota_asal",        '=' , $manifest['id_kota_asal']) 
@@ -193,7 +194,7 @@ class ManifestController extends Controller
                             )
                         ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
                         ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan')
-                        ->where ("awb.status_tracking", '=' , 'booked')
+                        ->where ("awb.status_tracking", '=' , 'at-manifest')
                         ->where ("awb.id_manifest",     '=' , 0)
                         ->where ("awb.id_kota_asal",    '=' , $kotaasal)
                         ->where ("awb.id_kota_tujuan",  '=' , $kotatujuan)
@@ -218,7 +219,7 @@ class ManifestController extends Controller
                             count(awb.id) as total"))
                         ->join  ("kota as kotaasal",   'kotaasal.id',   '=', 'awb.id_kota_asal')
                         ->join  ("kota as kotatujuan", 'kotatujuan.id', '=', 'awb.id_kota_tujuan')
-                        ->where ("awb.status_tracking", '=' , 'booked')
+                        ->where ("awb.status_tracking", '=' , 'at-manifest')
                         ->where ("awb.id_manifest",     '=' , 0)
                         ->where (function($query)
                                     {

@@ -84,6 +84,45 @@
             }
         </style>
     </head>
+    <?php
+        function penyebut($nilai) {
+            $nilai = abs($nilai);
+            $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+            $temp = "";
+            if ($nilai < 12) {
+                $temp = " ". $huruf[$nilai];
+            } else if ($nilai <20) {
+                $temp = penyebut($nilai - 10). " belas";
+            } else if ($nilai < 100) {
+                $temp = penyebut($nilai/10)." puluh". penyebut($nilai % 10);
+            } else if ($nilai < 200) {
+                $temp = " seratus" . penyebut($nilai - 100);
+            } else if ($nilai < 1000) {
+                $temp = penyebut($nilai/100) . " ratus" . penyebut($nilai % 100);
+            } else if ($nilai < 2000) {
+                $temp = " seribu" . penyebut($nilai - 1000);
+            } else if ($nilai < 1000000) {
+                $temp = penyebut($nilai/1000) . " ribu" . penyebut($nilai % 1000);
+            } else if ($nilai < 1000000000) {
+                $temp = penyebut($nilai/1000000) . " juta" . penyebut($nilai % 1000000);
+            } else if ($nilai < 1000000000000) {
+                $temp = penyebut($nilai/1000000000) . " milyar" . penyebut(fmod($nilai,1000000000));
+            } else if ($nilai < 1000000000000000) {
+                $temp = penyebut($nilai/1000000000000) . " trilyun" . penyebut(fmod($nilai,1000000000000));
+            }     
+            return $temp;
+        }
+
+        function terbilang($nilai) {
+            if($nilai<0) {
+                $hasil = "minus ". trim(penyebut($nilai));
+            } else {
+                $hasil = trim(penyebut($nilai));
+            }     		
+            return $hasil;
+        }
+
+        ?>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
         <div class="printcontainer d-print-none" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
         </div>
@@ -151,6 +190,7 @@
                                     <th style="padding:5px;width:10%;">No.Manifest</th>  
                                     <th style="padding:5px;width:10%;">ASAL</th>  
                                     <th style="padding:5px;width:10%;">Tujuan</th>  
+                                    <th style="padding:5px;width:10%;">Penerima</th>  
                                     <th style="padding:5px;width:10%;">Koli</th>  
                                     <th style="padding:5px;width:5%;">Kg</th>  
                                     <th style="padding:5px;width:5%;">Doc</th>   
@@ -162,54 +202,63 @@
                             <tbody>
                                 @foreach ($awb as $item)
                                 <tr style="padding:0px;">
-                                    <td class='text-center' style="padding:5px;">{{ $loop->index+1 }}</td>   
-                                    <td style="padding:5px;">{{$item->tanggal_awb}}</td>  
-                                    <td style="padding:5px;">{{$item->noawb}}</td>  
-                                    <td style="padding:5px;">{{$item->kodemanifest}}</td>  
-                                    <td style="padding:5px;">{{$item->kotaasal}}</td>   
-                                    <td style="padding:5px;">{{$item->kotatujuan}}</td> 
-                                    <td style="padding:5px;">
+                                    <td class='text-center' style="padding:5px;padding-left:2px;">{{ $loop->index+1 }}</td>   
+                                    <td style="padding:5px;padding-left:2px;">{{$item->tanggal_awb}}</td>  
+                                    <td style="padding:5px;padding-left:2px;">{{$item->noawb}}</td>  
+                                    <td style="padding:5px;padding-left:2px;">{{$item->kodemanifest}}</td>  
+                                    <td style="padding:5px;padding-left:2px;">{{$item->kotaasal}}</td>   
+                                    <td style="padding:5px;padding-left:2px;">{{$item->kotatujuan}}
+                                        @if ($item->labelalamat !== '' && $item->labelalamat !==null)                                        
+                                            <br>(<i>{{$item->labelalamat}}</i>)
+                                        @endif
+                                    </td> 
+                                    <td style="padding:5px;padding-left:2px;">{{$item->diterima_oleh}}</td> 
+                                    <td style="padding:5px;padding-left:2px;">
                                         @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0) && $item->qty>0)
                                         {{$item->qty}}
                                         @else
                                         <table style="table" style="background-color:white;">
                                             <tr style="background-color:white;">
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">K</td>
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">S</td>
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">B</td>
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px; font-weight:bold;">BB</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px; font-weight:bold;">K</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px; font-weight:bold;">S</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px; font-weight:bold;">B</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px; font-weight:bold;">BB</td>
                                             </tr>                                    
                                             <tr style="background-color:white;">
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_kecil}}</td>
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_sedang}}</td>
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_besar}}</td>
-                                                <td style="padding:5px;padding-top:0px;padding-bottom:0px;">{{$item->qty_besarbanget}}</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px;">{{$item->qty_kecil}}</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px;">{{$item->qty_sedang}}</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px;">{{$item->qty_besar}}</td>
+                                                <td style="padding:5px;padding-left:2px;padding-top:0px;padding-bottom:0px;">{{$item->qty_besarbanget}}</td>
                                             </tr>    
                                         </table>    
                                         @endif
                                     </td> 
-                                    <td style="padding:5px;">{{$item->qty_kg}}</td> 
-                                    <td style="padding:5px;">{{$item->qty_doc}}</td> 
-                                    <td style="padding:5px;">{{$item->keterangan}}</td> 
-                                    <td style="padding:5px; text-align:right;">{{number_format($item->idr_oa)}}</td> 
-                                    <td style="padding:5px; text-align:right;">{{number_format($item->total_harga, 0) }}</td> 
+                                    <td style="padding:5px;padding-left:2px;">{{$item->qty_kg}}</td> 
+                                    <td style="padding:5px;padding-left:2px;">{{$item->qty_doc}}</td> 
+                                    <td style="padding:5px;padding-left:2px;">{{$item->keterangan}}</td> 
+                                    <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->idr_oa)}}</td> 
+                                    <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td> 
                                 </tr>   
                                 @endforeach 
                                 <tr style="padding:0px; background-color:#a1ffbc;"> 
-                                    <td style="padding:5px;" colspan='6' class="text-right">Total Bayar</td>   
-                                    <td style="padding:5px;font-weight:bold !important;">{{$invoice->total_koli}}</td>   
-                                    <td style="padding:5px;font-weight:bold !important;">{{$invoice->total_kg}}</td>   
-                                    <td style="padding:5px;font-weight:bold !important;">{{$invoice->total_doc}}</td>   
-                                    <td style="padding:5px;font-weight:bold !important;"></td>   
-                                    <td style="padding:5px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_oa, 0) }}</td> 
-                                    <td style="padding:5px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_harga, 0) }}</td> 
+                                    <td style="padding:5px;padding-left:2px;" colspan='7' class="text-right">Total Bayar</td>   
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_koli}}</td>   
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_kg}}</td>   
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_doc}}</td>   
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;"></td>   
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_oa, 0) }}</td> 
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_harga, 0) }}</td> 
                                 </tr>     
                             </tbody>
                         </table>
                         <table class="table table-striped table-bordered" >
                             <thead>
                                 <tr> 
-                                    <td class='text-center' style="font-size:0.35cm;">TERBILANG : <span style="font-weight:bold;">TIGA RATUS ENAM PULUH RIBU RUPIAH</span></td>
+                                    <td class='text-center' style="font-size:0.35cm;">TERBILANG : 
+                                        <span style="font-weight:bold; text-transform:uppercase;">
+                                            <?php echo ucwords(terbilang($invoice->total_harga))." Rupiah";?>
+                                        </span>
+                                    </td>
                                 </tr>
                             </thead>
                         </table>
