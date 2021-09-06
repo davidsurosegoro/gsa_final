@@ -143,6 +143,11 @@ class AwbController extends Controller
         if ($request->hilang == "hilang"):
             $total_harga['oa'] = 0;
         endif;
+        $labelalamat = "";
+        if($request->labelalamat !== "manual"):
+            $masteralamat   = Alamat::where('alamat',$request->labelalamat)->first();
+            $labelalamat    = $masteralamat->labelalamat;
+        endif;
         if ($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
             $awb = Awb::create([
                 'noawb'               => $noawb,
@@ -185,6 +190,7 @@ class AwbController extends Controller
                 'ada_faktur'          => $ada_faktur,
                 'referensi'           => $request->referensi,
                 'jenis_koli'          => $request->jenis_koli,
+                'labelalamat'         => $labelalamat,
             ]);
             return redirect('awb')->with('message', 'created');
         else:
@@ -229,6 +235,7 @@ class AwbController extends Controller
                 'is_agen'             => $customer->is_agen,
                 'ada_faktur'          => $ada_faktur,
                 'jenis_koli'          => $request->jenis_koli,
+                'labelalamat'         => $labelalamat,
             ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -424,6 +431,9 @@ class AwbController extends Controller
                         <i class="flaticon2-print" ></i>
                         </a>
 
+                        <a href=' . url('awb/edit/' . $a['id'] . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
+                        <i class="flaticon-exclamation" ></i>
+                        </a>
                         </div>';
                 endif;
             })

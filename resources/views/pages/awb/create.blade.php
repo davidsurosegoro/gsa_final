@@ -42,7 +42,7 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="font-weight-bold">Customer</label>
-                  <select id="customer" style="width:90%" class="select2 form-control" name="id_customer" required>
+                  <select id="customer" style="width:90%" class="select2 select_readonly form-control" name="id_customer" required>
                     @if((int)Auth::user()->level == 1)
                       <option value="">--Pilih Customer--</option>
                       @foreach($customer as $c)
@@ -67,7 +67,15 @@
                 <div class="form-group">
                   <label class="font-weight-bold">Tanggal:</label>
                   <div class="input-group date">
+                    @if($id == 0)
                     <input name="tanggal_awb" type="text" class="form-control datepicker" value="{{ date('m/d/Y') }}" readonly="true" placeholder="Select date">
+                    @else
+                      @if($hilang == "hilang")
+                      <input name="tanggal_awb" type="text" class="form-control" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
+                      @else
+                      <input name="tanggal_awb" type="text" class="form-control datepicker" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
+                      @endif
+                    @endif
                     <div class="input-group-append">
                       <span class="input-group-text">
                         <i class="la la-calendar-check-o"></i>
@@ -81,9 +89,9 @@
                   <label class="font-weight-bold">Ada Faktur</label>
                   <label class="checkbox checkbox-primary" >
                     @if($awb->ada_faktur == 1)
-                    <input type="checkbox" name="ada_faktur" checked="checked">
+                    <input type="checkbox" name="ada_faktur" checked="checked" class="is_readonly">
                     @else
-                    <input type="checkbox" name="ada_faktur">
+                    <input type="checkbox" name="ada_faktur" class="is_readonly">
                     @endif
                     <span></span> &nbsp;Faktur Tersedia</label>
                     <span class="form-text text-muted"></span>
@@ -214,11 +222,11 @@
           <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Nama Penerima</label>
-                <input type="text" id="nama_penerima" class="form-control" value="{{ $awb->nama_penerima }}" name="nama_penerima" placeholder="Input Nama Penerima. . ." required>
+                <input type="text" id="nama_penerima" class="form-control is_readonly" value="{{ $awb->nama_penerima }}" name="nama_penerima" placeholder="Input Nama Penerima. . ." required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Alamat Tujuan Penerima</label>
-                <select id="alamat_tujuan_auto" class="form-control mb-2" name="alamat_tujan_auto"> 
+                <select id="alamat_tujuan_auto" class="form-control mb-2 is_readonly" name="labelalamat"> 
                   @if($id == 0)
                   <option value="manual">Input Alamat Manual</option>
                   @else
@@ -236,21 +244,21 @@
                       @endif
                   @endif
               </select>
-              <input type="text" class="form-control" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
+              <input type="text" class="form-control is_readonly" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Penerima</label>
-              <input type="text" id="kodepos_penerima" class="form-control" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
+              <input type="text" id="kodepos_penerima" class="form-control is_readonly" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label class="font-weight-bold">No Telp Penerima</label>
-              <input type="text" id="notelp_penerima" class="form-control" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
+              <input type="text" id="notelp_penerima" class="form-control is_readonly" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
             </div>
           </div>
           <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Nama Pengirim</label>
-                <input type="text" id="nama_pengirim" class="form-control" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
+                <input type="text" id="nama_pengirim" class="form-control is_readonly" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Alamat Pengirim</label>
@@ -272,15 +280,15 @@
                       @endif
                     @endif
                 </select> --}}
-                <input type="text" id="alamat_pengirim" maxlength="120" class="form-control mb-2" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
+                <input type="text" id="alamat_pengirim" maxlength="120" class="form-control mb-2 is_readonly" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Pengirim</label>
-              <input type="text" id="kodepos_pengirim" class="form-control" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
+              <input type="text" id="kodepos_pengirim" class="form-control is_readonly" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label class="font-weight-bold">No Telp Pengirim</label>
-              <input type="text" id="notelp_pengirim" class="form-control" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
+              <input type="text" id="notelp_pengirim" class="form-control is_readonly" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
             </div>  
           </div>
         </div>
@@ -296,7 +304,7 @@
           <div class="col-lg-6">
             <div class="form-group">
               <label class="font-weight-bold">Kota Asal</label><br>
-              <select style="width:90%" class="select2 form-control" id="kota_asal" name="id_kota_asal" readonly="true" required >
+              <select style="width:90%" class="select2 select_readonly form-control" id="kota_asal" name="id_kota_asal" readonly="true" required >
                 <option value="">--Pilih Kota Asal--</option>
                 @foreach($kota as $c)
                   @if($id !== "0")
@@ -318,7 +326,7 @@
             @if((int)Auth::user()->level == 1)
             {{-- <div class="form-group">
               <label class="font-weight-bold">Agen Asal</label>
-              <select style="width:90%" class="select2 form-control"  id="agen_asal" name="id_agen_asal" required>
+              <select style="width:90%" class="select2 select_readonly form-control"  id="agen_asal" name="id_agen_asal" required>
                 <option value="">--Pilih Kota Asal Terlebih Dahulu--</option>
                 
                 @if($id !== "0")
@@ -330,7 +338,7 @@
             </div> --}}
             <div class="form-group">
               <label class="font-weight-bold">Kota Transit</label>
-              <select style="width:90%" class="select2 form-control" name="id_kota_transit" >
+              <select style="width:90%" class="select2 select_readonly form-control" name="id_kota_transit" >
                 <option value="">--Pilih Kota Transit--</option>
                 @foreach($kota as $c)
                   @if($c->id == $awb->id_kota_transit)
@@ -346,7 +354,7 @@
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Kota Tujuan</label>
-                <select style="width:90%" class="select2 form-control" id="kota_tujuan" name="id_kota_tujuan" required>
+                <select style="width:90%" class="select2 select_readonly form-control" id="kota_tujuan" name="id_kota_tujuan" required>
                   <option value="">--Pilih Kota Tujuan--</option>
                   @foreach($kota as $c)
                     @if($c->id == $awb->id_kota_tujuan)
@@ -360,7 +368,7 @@
               
             <div class="form-group">
               <label class="font-weight-bold">Kecamatan Tujuan</label>
-              <select style="width:90%" class="select2 form-control" id="kecamatan_tujuan" name="id_kecamatan_tujuan" required>
+              <select style="width:90%" class="select2 select_readonly form-control" id="kecamatan_tujuan" name="id_kecamatan_tujuan" required>
                 <option value="">--Pilih Kecamatan Tujuan--</option>
                 @if($awb->id == 0)
                   <option value="{{ $awb->id_kecamatan_tujuan }}">{{ $awb->nama_kecamatan_tujuan }} </option>
@@ -378,7 +386,7 @@
             @if((int)Auth::user()->level == 1)
             <div class="form-group">
               <label class="font-weight-bold">Agen Tujuan</label>
-              <select style="width:90%" class="select2 form-control" id="agen_tujuan" name="id_agen_penerima" required>
+              <select style="width:90%" class="select2 select_readonly form-control" id="agen_tujuan" name="id_agen_penerima" required>
                 <option value="">--Pilih  Kota Tujuan Terlebih Dahulu--</option>
                 @if($id !== "0")
                 @foreach($agen_master as $a)
@@ -644,4 +652,11 @@
     }
   })
 </script>
+
+@if($hilang == "hilang")
+  <script>
+    $('.is_readonly').attr('readonly', true);
+    $('option').not(':selected').remove();
+  </script>
+@endif
 @endsection

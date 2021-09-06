@@ -32,7 +32,7 @@
               </div>
               <div class="form-group">
                 <label>Presentase Bagi Hasil :</label>
-                <input type="number" name="presentase" class="form-control form-control-solid" placeholder="Input Presentase Bagi Hasil. . ." >
+                <input type="number" name="presentase" class="form-control form-control-solid" placeholder="Input Presentase Bagi Hasil. . ." required>
               </div>
             </div>
           </div>
