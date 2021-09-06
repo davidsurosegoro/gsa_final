@@ -189,11 +189,11 @@
                                             ">
                                             **
                                             @if ($i==0)
-                                                Untuk disimpan Agen
+                                                Untuk Penagihan
                                             @elseif ($i==1)
-                                                Untuk disimpan Penerima
+                                                Untuk POD Balik
                                             @elseif ($i==2)
-                                                Kembali ke Surabaya
+                                                Arsip GSA
                                             @endif
                                             **
                                         </th>
