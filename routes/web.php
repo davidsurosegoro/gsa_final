@@ -21,7 +21,7 @@ Route::prefix('popup')->group(function () {
 
 
 Route::get('/', 'HomeController@index');
-Route::get('scannerawb/{status}',  	   'ScannerController@awb');
+Route::get('scannerawb/{status}',  	   'ScannerController@awb')->middleware(['admin.agen.kurir']);
 Route::get('scannermanifest/{status}', 'ScannerController@manifest');
 
 Route::prefix('log')->group(function () {
@@ -32,7 +32,7 @@ Route::get('qr-code-g', function () {
     QrCode::size(500)->format('png')->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
     return view('qrCode');    
 });
-Route::prefix('printout')->group(function(){ 
+Route::middleware(['auth','admin'])->prefix('printout')->group(function(){ 
 	Route::get('/invoice/{id}'  ,'PrintoutController@invoice');
 	Route::get('/manifest/{id}' ,'PrintoutController@manifest');
 	Route::get('/awb/{id}'  	,'PrintoutController@awb');
@@ -40,7 +40,7 @@ Route::prefix('printout')->group(function(){
 });
 
 Route::prefix('master')->group(function(){ 
-		Route::prefix('invoice')->group(function(){
+		Route::middleware(['auth','admin'])->prefix('invoice')->group(function(){
 			Route::get('/' 				,'Master\InvoiceController@index');
 			Route::get('/create' 		,'Master\InvoiceController@create');
 			Route::get('/grouping'  	,'Master\InvoiceController@grouping');
@@ -54,7 +54,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/edit/{idcust} ','Master\InvoiceController@edit');
 
 		});
-		Route::prefix('manifest')->group(function(){
+		Route::middleware(['auth'])->prefix('manifest')->group(function(){
 			Route::get('/' 				,'Master\ManifestController@index');
 			Route::get('/create' 		,'Master\ManifestController@create');
 			Route::get('/grouping'  	,'Master\ManifestController@grouping');
@@ -68,7 +68,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/edit/{kotaasal}/{kotatujuan}','Master\ManifestController@edit');
 
 		});
-		Route::prefix('alamat')->group(function(){
+		Route::middleware(['auth','admin.customer'])->prefix('alamat')->group(function(){
 			Route::get('/' 				,'Master\AlamatController@index');
 			Route::get('/create' 		,'Master\AlamatController@create');
 			Route::get('/edit/{id}'		,'Master\AlamatController@edit');
@@ -80,7 +80,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/checkusername'	,'Master\AlamatController@checkusername');
 
 		});
-		Route::prefix('kecamatan')->group(function(){
+		Route::middleware(['auth','admin'])->prefix('kecamatan')->group(function(){
 			Route::get('/' 				,'Master\KecamatanController@index');
 			Route::get('/create' 		,'Master\KecamatanController@create');
 			Route::get('/edit/{id}'		,'Master\KecamatanController@edit');
@@ -92,7 +92,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/checkusername'	,'Master\KecamatanController@checkusername');
 
 		});
-		Route::prefix('kota')->group(function(){
+		Route::middleware(['auth','admin'])->prefix('kota')->group(function(){
 			Route::get('/' 				,'Master\KotaController@index');
 			Route::get('/create' 		,'Master\KotaController@create');
 			Route::get('/edit/{id}'		,'Master\KotaController@edit');
@@ -104,7 +104,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/checkusername'	,'Master\KotaController@checkusername');
 
 		});
-		Route::prefix('users')->group(function(){
+		Route::middleware(['auth','admin'])->prefix('users')->group(function(){
 			Route::get('/' 				,'Master\UsersController@index');
 			Route::get('/create' 		,'Master\UsersController@create');
 			Route::get('/edit/{id}'		,'Master\UsersController@edit');
@@ -117,7 +117,7 @@ Route::prefix('master')->group(function(){
 
 		});
 
-		Route::prefix('customer')->group(function(){
+		Route::middleware(['auth','admin'])->prefix('customer')->group(function(){
 			Route::get('/','Master\CustomerController@index');
 			Route::get('/create','Master\CustomerController@create');
 			Route::get('/edit/{id}','Master\CustomerController@edit');
@@ -127,7 +127,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/datatables','Master\CustomerController@datatables');
 		});
 
-		Route::prefix('agen')->group(function(){
+		Route::middleware(['auth','admin'])->prefix('agen')->group(function(){
 			Route::get('/','Master\AgenController@index');
 			Route::get('/datatables','Master\AgenController@datatables');
 			Route::post('/save','Master\AgenController@save');
@@ -138,7 +138,7 @@ Route::prefix('master')->group(function(){
 });
 
 
-Route::prefix('awb')->group(function () {
+Route::middleware(['auth','admin.customer'])->prefix('awb')->group(function () {
 	Route::get('/', 'AwbController@index');
 	Route::get('/edit/{id}/{hilang}', 'AwbController@edit');
 	Route::post('/save', 'AwbController@save');
