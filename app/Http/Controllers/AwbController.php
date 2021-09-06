@@ -96,6 +96,7 @@ class AwbController extends Controller
             $ada_faktur = 1;
         endif;
         $noawb       = Awb::getNoAwb();
+        $noawb      .= $this->randomChar();
         $kecamatan   = Kecamatan::find($request->id_kecamatan_tujuan);
         $charge_oa   = $kecamatan->oa;
         $created_at  = date("Y-m-d H:i:s", strtotime(date("Y-M-d H:i:s")) + 7 * 3600);
@@ -541,5 +542,14 @@ class AwbController extends Controller
         $harga_total = $harga_total + $harga_oa;
         $tots        = array('total' => $harga_total, 'oa' => $harga_oa);
         return $tots;
+    }
+
+    private function randomChar()
+    {
+        $seed       = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        shuffle($seed); 
+        $rand       = '';
+        foreach (array_rand($seed, 3) as $k) $rand .= $seed[$k];
+        return $rand;
     }
 }
