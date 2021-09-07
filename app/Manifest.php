@@ -13,7 +13,7 @@ class Manifest extends Model
 
     public static function getNoManifest()
     {
-        $res = DB::table('manifest')->count();
-        return  sprintf("%08s", $res );
+        $res = DB::table('manifest')->count(); 
+        return  'MNFST/'.sprintf("%08s", $res );
     }
 }

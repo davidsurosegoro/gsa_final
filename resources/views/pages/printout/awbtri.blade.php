@@ -118,7 +118,7 @@
                             </table>
                         </div>
                         <div class="col-2 text-center" >
-                            {!! QrCode::size(95)->generate($awb[0]->noawb ); !!} 
+                            {!! QrCode::size(95)->generate(url('/t/'.$awb[0]->noawb)); !!} 
                         </div>
                         <table class="table-striped table-bordered col-3"  >
                             <thead>

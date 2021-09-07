@@ -137,7 +137,7 @@
                         </table>
                     </div>  
                     <div class="col-sm-5" style="padding:5px; padding-top:0.3cm;">
-                        {!! QrCode::size(142)->generate($awb[0]->noawb); !!} 
+                        {!! QrCode::size(142)->generate(url('/t/'.$awb[0]->noawb)); !!} 
                     </div>
                 </div> 
                 <div class="card " > 
@@ -242,7 +242,7 @@
                         </table>
                     </div>  
                     <div class="col-sm-5" style="padding:5px; padding-top:0.3cm;">
-                        {!! QrCode::size(142)->generate($awb[0]->noawb); !!} 
+                        {!! QrCode::size(142)->generate(url('/t/'.$awb[0]->noawb)); !!} 
                     </div>
                 </div>
                 <div class="card " > 

@@ -31,17 +31,30 @@ class TrackingController extends Controller
         //
 
         $data['statusada']          ='';
-        $data['historyscanawb']     = Historyscanawb::select('history_scan_awb.*','awb.noawb as kodeawb','awb.diterima_oleh as diterima_oleh') 
-                                        ->join("awb",'awb.id','=', 'history_scan_awb.idawb')
-                                        ->where('awb.noawb', $kode)
-                                        ->orderBy('history_scan_awb.id')
-                                        ->get();
-        if(count($data['historyscanawb'])==0){            
-            $data['statusada']          ='Kode AWB/Resi '.$kode.' tidak ditemukan!';
-        }  
+       
         if($kode=='cek'){
-            return view('pages.tracking.tracking');
-        } 
+            return view('pages.tracking.tracking',$data);
+        } else{
+            $data['historyscanawb']     = Historyscanawb::select('history_scan_awb.*','awb.noawb as kodeawb','awb.diterima_oleh as diterima_oleh','users.nama as namapembuat','kota.nama as namakotatujuan') 
+            ->join("awb",   'awb.id',   '=', 'history_scan_awb.idawb')
+            ->join("users", 'users.id', '=', 'awb.created_by')
+            ->join("kota",  'kota.id',  '=', 'awb.id_kota_tujuan')
+            ->where('awb.noawb', $kode)
+            ->orderBy('history_scan_awb.id')
+            ->get();
+            $data['awb']                = DB::SELECT("SELECT
+                        a.*,
+                        k1.kode AS kota_tujuan_kode,
+                        k2.kode AS kota_asal_kode
+                        FROM
+                            awb a
+                        LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
+                        LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
+                        WHERE a.noawb = '".$kode."' ");
+            if(count($data['historyscanawb'])==0){            
+                $data['statusada']          ='Kode AWB/Resi '.$kode.' tidak ditemukan!';
+            }  
+        }
         return view("pages.tracking.tracking",$data);
     }
     public function cari()

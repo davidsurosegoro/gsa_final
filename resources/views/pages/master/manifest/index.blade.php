@@ -136,7 +136,7 @@
           {data: 'status_info',       name:'Status'},
           {data: 'aksi',              name:'aksi'},
       ],
-	  //  "order": [[ 1, "asc" ]],
+	   "order": [[ 1, "desc" ]],
     });
 
     var detailRows = [];

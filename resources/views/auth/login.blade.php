@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/login/font/flaticon.css')}}">
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/login/style.css')}}">
 </head>
@@ -35,6 +36,7 @@
                         <a href="login-29.html" class="switcher-text1 active">Login</a>
                     </div>
                 </div>
+                
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">
                         <div class="fxt-header">
@@ -70,7 +72,8 @@
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-6">
                                         <div class="fxt-content-between">
-                                            <button type="submit" class="fxt-btn-fill">Log in</button>
+                                            <button type="submit" class="btn btn-warning">LOG IN</button>
+                                            <a href="{{url('/t/cek')}}" target="blank" type="submit" class="btn pull-right btn-success"> <span> Track AWB</span></a>
                                         </div>
                                     </div>
                                 </div>

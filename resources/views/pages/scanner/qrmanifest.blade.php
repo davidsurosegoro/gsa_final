@@ -150,7 +150,8 @@
         if(result){
             xs.play();   
             scanner.stop();
-            scan_update_status(result);
+            var codeonly = result.split("/t/") 
+            scan_update_status(codeonly[1]);
         }
     }
  

@@ -151,7 +151,7 @@
                         </table>
                     </div>
                     <div class="col-sm-2" style="padding:10px; padding-top:15px;">
-                        {!! QrCode::size(87)->generate($manifest->kode); !!} 
+                        {!! QrCode::size(87)->generate(url('/t/'.$manifest->kode)); !!}
                     </div>
                 </div>
                 <div class="card"> 
