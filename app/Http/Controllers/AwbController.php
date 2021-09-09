@@ -315,8 +315,8 @@ class AwbController extends Controller
             //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
             //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
             $qty_umum = $awb->qty;
-            if($awb->qty_kecil > 0 || $awb->qty_sedang > 0 || $awb->qty_besar > 0 || $awb->besarbanget > 0){
-                $qty_umum = $awb->qty_kecil + $awb->qty_sedang + $awb->qty_besar + $awb->besarbanget;
+            if($awb->qty_kecil > 0 || $awb->qty_sedang > 0 || $awb->qty_besar > 0 || $awb->qty_besarbanget > 0){
+                $qty_umum = $awb->qty_kecil + $awb->qty_sedang + $awb->qty_besar + $awb->qty_besarbanget;
             }
             if($awb->qty_kg > 0){
                 $qty_umum = 1;
@@ -400,8 +400,8 @@ class AwbController extends Controller
                 //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
                 //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI-------------------------------- 
                 $qty_umum = $item->qty;
-                if($item->qty_kecil > 0 || $item->qty_sedang > 0 || $item->qty_besar > 0 || $item->besarbanget > 0){
-                    $qty_umum = $item->qty_kecil + $item->qty_sedang + $item->qty_besar + $item->besarbanget;
+                if($item->qty_kecil > 0 || $item->qty_sedang > 0 || $item->qty_besar > 0 || $item->qty_besarbanget > 0){
+                    $qty_umum = $item->qty_kecil + $item->qty_sedang + $item->qty_besar + $item->qty_besarbanget;
                 }
                 if($item->qty_kg > 0){
                     $qty_umum = 1;
@@ -440,6 +440,7 @@ class AwbController extends Controller
         if ($awb->status_tracking == 'booked') {
             $awb->status_tracking = 'at-manifest';
             $awb->save();
+            $this->inserthistoryscan($awb->id,'at-manifest',0);
             $returnmessage = 'Status AWB berhasil dirubah ke "at-manifest"';
         }
         // else if($awb->status_tracking == 'at-manifest'){

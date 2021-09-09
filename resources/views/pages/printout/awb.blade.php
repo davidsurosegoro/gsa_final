@@ -119,7 +119,19 @@
         <div class="statuscontainer d-print-none" > Status =
             {{$awb[0]->status_tracking}}
         </div> 
-        @for($i = 1; $i <= $awb[0]->qty; $i++)
+        <?php
+            $qty_umum = $awb[0]->qty;
+            if($awb[0]->qty_kecil > 0 || $awb[0]->qty_sedang > 0 || $awb[0]->qty_besar > 0 || $awb[0]->qty_besarbanget > 0){
+                $qty_umum = $awb[0]->qty_kecil + $awb[0]->qty_sedang + $awb[0]->qty_besar + $awb[0]->qty_besarbanget;
+            }
+            if($awb[0]->qty_kg > 0){
+                $qty_umum = 1;
+            }
+            if($awb[0]->qty_doc > 0){
+                $qty_umum = $awb[0]->qty_doc;
+            } 
+        ?>
+        @for($i = 1; $i <= $qty_umum; $i++)
             <div class="card page">
                 <div class="card-header  " style="padding:0px !important; display: flex;">  
                     <div class="col-7 text-center" style=" padding:1px;">
