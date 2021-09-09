@@ -325,9 +325,9 @@ class AwbController extends Controller
                 $qty_umum = $awb->qty_doc;
             } 
             //--JIKA KODE AWB , dengan URUTAN ke sekian, sudah discan atau belum
-            $get_detail        = Detailqtyscanned::where('idawb',    '=', $awb->id)->where('status',   '=', $status);
-            $qty_count_scanned = $get_detail->where('qty_ke',   '=', $qty)->count();
-            $total_scanned     = $get_detail->count(); 
+            // $get_detail        = Detailqtyscanned::where('idawb',    '=', $awb->id)->where('status',   '=', $status);
+            $qty_count_scanned = Detailqtyscanned::where('idawb',    '=', $awb->id)->where('status',   '=', $status)->where('qty_ke',   '=', $qty)->count();
+            $total_scanned     = Detailqtyscanned::where('idawb',    '=', $awb->id)->where('status',   '=', $status)->count(); 
              
             if($qty_count_scanned>=1 && $qty != 'all'){
                 $typereturn    = 'statuswarning';
@@ -341,6 +341,7 @@ class AwbController extends Controller
             //     $typereturn    = 'statuswarning';
             // } 
             else {
+                dd($total_scanned);
                 $awb->status_tracking = $status;
                 $awb->save();
 
@@ -350,7 +351,7 @@ class AwbController extends Controller
                 for($i=1; $i<=($qty=='all' ? $qty_umum : 1);$i++){
                     $this->insertqty($status, $awb->id, $qty_umum, ($qty=='all' ? $i : $qty));
                 }
-                $total_scanned   = $get_detail->count(); 
+                $total_scanned   = Detailqtyscanned::where('idawb',    '=', $awb->id)->where('status',   '=', $status)->count(); 
                 $data['success'] = $awb->wasChanged('status_tracking');
                 $returnmessage   = 'Update Kode AWB ' . $kode . ', ke ' . $status . ', dengan urutan ke-'.$qty.' sukses di update!';
                 $typereturn      = 'statussuccess';
