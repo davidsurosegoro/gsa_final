@@ -333,6 +333,11 @@ class AwbController extends Controller
                 $typereturn    = 'statuswarning';
                 $returnmessage = 'Kode AWB ' . $kode . ', dengan urutan <b>ke-'.$qty.'</b>, Sudah discan ' . $status . '!';
                 return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
+            }
+            else if($total_scanned == $qty_umum && $qty == 'all'){
+                $typereturn    = 'statuswarning';
+                $returnmessage = 'Kode AWB ' . $kode . ', dengan urutan <b>ke-'.$qty.'</b>, Sudah discan ' . $status . '!';
+                return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
             } 
             
             // if ($awb->status_tracking == $status) {
