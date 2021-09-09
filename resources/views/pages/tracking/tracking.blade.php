@@ -33,7 +33,7 @@
                 height: 101%;
             }
             .track_tbl tbody tr:first-child td.track_dot span.track_line {
-                top: 30px;
+                top: 22px;
                 min-height: 25px;
             }
             .track_tbl tbody tr:last-child td.track_dot span.track_line {
@@ -291,7 +291,7 @@
         function openlink(){
             console.log($('#kodeawb').val().length)
             if($('#kodeawb').val().length>=8 && $('#kodeawb').val().length<=11){
-                window.open( "{{url('t/', '')}}"+"/"+$('#kodeawb').val(),"_self");   
+                window.open( "{{url('t/', '')}}"+"/"+$('#kodeawb').val()+"/t/1","_self");   
             }else{
                 toastr.error("Kode AWB tidak valid!");
             }

@@ -43,25 +43,27 @@ class ManifestController extends Controller
 
         return Datatables::of($manifest)
         ->addColumn('aksi', function ($a) { 
-            
+            $edit = ($a['status']=='arrived') ? '': '
+            <button 
+                type            = "button" 
+                class           = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   
+                idmanifest      = "' . $a['id'] . ' " 
+                kodemanifest    = "' . $a['kode'] . ' " 
+                tanggalmanifest = "' . $a['tanggal_manifest'] . ' " 
+                kodekotaasal    = "' . $a['kodekotaasal'] . ' " 
+                kodekotatujuan  = "' . $a['kodekotatujuan'] . ' " 
+                status          = "' . $a['status'] . '" 
+                data-toggle     = "modal" 
+                data-target     = ".bd-example-modal-lg"> 
+                    <i class="fa fa-edit" aria-hidden="true"></i> 
+            </button>
+            ';
             return '
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="'.url('printout/manifest/'.Crypt::encrypt($a['id'])).'" target="blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
+                <a href="'.url('printout/manifest/'.Crypt::encrypt($a['id'])).'" target="blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Lihat Detail/Print">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
-                <button 
-                    type            = "button" 
-                    class           = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   
-                    idmanifest      = "' . $a['id'] . ' " 
-                    kodemanifest    = "' . $a['kode'] . ' " 
-                    tanggalmanifest = "' . $a['tanggal_manifest'] . ' " 
-                    kodekotaasal    = "' . $a['kodekotaasal'] . ' " 
-                    kodekotatujuan  = "' . $a['kodekotatujuan'] . ' " 
-                    status          = "' . $a['status'] . '" 
-                    data-toggle     = "modal" 
-                    data-target     = ".bd-example-modal-lg"> 
-                        <i class="fa fa-edit" aria-hidden="true"></i> 
-                </button>
+                '.$edit.'
             </div>';
         })          
         ->addColumn('status_info', function ($a) { 
@@ -110,6 +112,12 @@ class ManifestController extends Controller
     { 
         $manifest = Manifest::where('id',$request['idmanifest'])->first(); 
         $manifest->status = $request['status'];
+        if($request['status'] == 'arrived'){
+            
+            $manifest->discan_terima_oleh        = (int) Auth::user()->id;
+            $manifest->discan_diterima_oleh_nama = Auth::user()->nama.' (Update status manual)';
+            $manifest->tanggal_diterima          = Carbon::now()->addHours(7);
+        }
         $manifest->save();
         if($request['status'] == 'delivering' || $request['status'] == 'arrived'){
             app('App\Http\Controllers\AwbController')->inserthistoryscan(0,(( $request['status'] == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );

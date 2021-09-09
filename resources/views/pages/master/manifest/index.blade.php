@@ -67,9 +67,9 @@
           <div class="form-group">
             <label for="exampleFormControlSelect2">Status</label>
             <select class="form-control" id="status" name="status">
-              <option value='checked'>checked</option>
-              <option value='delivering'>delivering</option>
-              <option value='arrived'>arrived</option>
+              <option class='options_' id='checked'    value='checked'   >checked</option>
+              <option class='options_' id='delivering' value='delivering'>delivering</option>
+              <option class='options_' id='arrived'    value='arrived'   >arrived</option>
             </select>
           </div>
           <div class="form-group" > 
@@ -93,27 +93,52 @@
 
       $('#idmanifest'         ).val($(this).attr('idmanifest')) 
       $("#status").val($(this).attr('status'));
+
+      $('.options_').removeClass('d-none')
+      if($(this).attr('status') == 'delivering'){
+        $('#checked').addClass('d-none')
+      }
+      else if($(this).attr('status') == 'arrived'){
+        $('#checked'   ).addClass('d-none')
+        $('#delivering').addClass('d-none')
+      }
     })
     $(document).on("click","#simpanbutton",function() {
         var btnsave = $(this);
         $(this).prop('disabled', true);
-        $.ajax({
-            type      : "POST",
-            url       : "{{url('master/manifest/updatestatus')}}",
-            dataType  : "json",
-            data      : $('#formmanifest_').serialize(),
-            success : function(response) {
-                console.log(response)
-                if(response && response.success && response.success=='success'){
-                  toastr.success("Status Manifest berhasil dirubah!");                  
-                  dt.ajax.reload();
-                  $('.bd-example-modal-lg').modal('toggle');
+        
+        Swal.fire({   
+            title               : "Anda Yakin?",   
+            text                : "Merubah status menjadi ("+$('#status').val()+") status yang sudah dirubah, tidak bisa dikembalikan lagi",   
+            icon                : "warning",   
+            showCancelButton    : true,   
+            confirmButtonColor  : "#e6b034",   
+            confirmButtonText   : "Ya, Rubah status ke - " +$('#status').val()                  
+          }).then((result) => {
+            console.log(result)
+          if (result.value) {
+            $.ajax({
+                type      : "POST",
+                url       : "{{url('master/manifest/updatestatus')}}",
+                dataType  : "json",
+                data      : $('#formmanifest_').serialize(),
+                success : function(response) {
+                    console.log(response)
+                    if(response && response.success && response.success=='success'){
+                      toastr.success("Status Manifest berhasil dirubah!");                  
+                      dt.ajax.reload();
+                      $('.bd-example-modal-lg').modal('toggle');
+                    }
+                    $(btnsave).prop('disabled', false);
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown)
                 }
-                $(btnsave).prop('disabled', false);
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                alert(errorThrown)
-            }
+            });
+          } else{
+            $(btnsave).prop('disabled', false);
+
+          }
         });
     })
     var dt = $('#datatables').DataTable({

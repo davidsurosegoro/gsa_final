@@ -50,26 +50,28 @@ class InvoiceController extends Controller
 
         return Datatables::of($manifest)
         ->addColumn('aksi', function ($a) { 
-            
+            $edit = ($a['status']=='paid' && $a['metodepembayaran'] != '') ? '': '
+            <button 
+                type                = "button" 
+                class               = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   
+                idinvoice           = "' . $a['id'] . ' " 
+                kodeinvoice         = "' . $a['kode'] . ' " 
+                tanggalinvoice      = "' . $a['tanggal_invoice'] . ' "
+                metodepembayaran    = "' . $a['metodepembayaran'] . '" 
+                namacustomer        = "' . $a['namacustomer'] . '" 
+                kodecustomer        = "' . $a['kodecustomer'] . '" 
+                status              = "' . $a['status'] . '" 
+                data-toggle         = "modal" 
+                data-target         = ".bd-example-modal-lg"> 
+                    <i class="fa fa-edit" aria-hidden="true"></i> 
+            </button>
+            ';
             return '
             <div class="btn-group" role="group" aria-label="Basic example">
                 <a href="'.url('printout/invoice/'.$a['id']).'" target="blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol print">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
-                <button 
-                    type                = "button" 
-                    class               = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   
-                    idinvoice           = "' . $a['id'] . ' " 
-                    kodeinvoice         = "' . $a['kode'] . ' " 
-                    tanggalinvoice      = "' . $a['tanggal_invoice'] . ' "
-                    metodepembayaran    = "' . $a['metodepembayaran'] . '" 
-                    namacustomer        = "' . $a['namacustomer'] . '" 
-                    kodecustomer        = "' . $a['kodecustomer'] . '" 
-                    status              = "' . $a['status'] . '" 
-                    data-toggle         = "modal" 
-                    data-target         = ".bd-example-modal-lg"> 
-                        <i class="fa fa-edit" aria-hidden="true"></i> 
-                </button>
+               '.$edit.'
             </div>';
         })          
         ->addColumn('status_info', function ($a) { 

@@ -67,16 +67,16 @@
           <div class="form-group">
             <label for="exampleFormControlSelect2">Status</label>
             <select class="form-control" id="status" name="status">
-              <option value='paid'>paid</option>
-              <option value='unpaid'>unpaid</option> 
+              <option class='options_'  id='paid' value='paid'>paid</option>
+              <option class='options_'  id='unpaid' value='unpaid'>unpaid</option> 
             </select>
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect2">Dibayarkan melalui</label>
             <select class="form-control" id="metodepembayaran" name="metodepembayaran">
               <option value=''>Pilih Metode Pembayaran</option>
-              <option value='tunai'>tunai</option>
-              <option value='transfer'>transfer</option> 
+              <option    id='tunai' value='tunai'>tunai</option>
+              <option   id='transfer' value='transfer'>transfer</option> 
             </select>
           </div>
           <div class="form-group" > 
@@ -100,26 +100,46 @@
       $('#idinvoice'         ).val($(this).attr('idinvoice')) 
       $('#metodepembayaran'  ).val($(this).attr('metodepembayaran')) 
       $("#status").val($(this).attr('status'));
+
+      $('.options_').removeClass('d-none')
+      if($(this).attr('status') == 'paid'){
+        $('#unpaid').addClass('d-none')
+      } 
     })
     $(document).on("click","#simpanbutton",function() {
         var btnsave = $(this);
         $(this).prop('disabled', true);
-        $.ajax({
-            type      : "POST",
-            url       : "{{url('master/invoice/updatestatus')}}",
-            dataType  : "json",
-            data      : $('#forminvoice_').serialize(),
-            success : function(response) { 
-                if(response && response.success && response.success=='success'){
-                  toastr.success("Status Invoice berhasil dirubah!");                  
-                  dt.ajax.reload();
-                  $('.bd-example-modal-lg').modal('toggle');
+        Swal.fire({   
+            title               : "Anda Yakin?",   
+            text                : "Merubah status menjadi ("+$('#status').val()+") status yang sudah dirubah, tidak bisa dikembalikan lagi",   
+            icon                : "warning",   
+            showCancelButton    : true,   
+            confirmButtonColor  : "#e6b034",   
+            confirmButtonText   : "Ya, Rubah status ke - " +$('#status').val()                  
+          }).then((result) => {
+            console.log(result)
+          if (result.value) {
+            $.ajax({
+                type      : "POST",
+                url       : "{{url('master/invoice/updatestatus')}}",
+                dataType  : "json",
+                data      : $('#forminvoice_').serialize(),
+                success : function(response) { 
+                    if(response && response.success && response.success=='success'){
+                      toastr.success("Status Invoice berhasil dirubah!");                  
+                      dt.ajax.reload();
+                      $('.bd-example-modal-lg').modal('toggle');
+                    }
+                    $(btnsave).prop('disabled', false);
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown)
                 }
-                $(btnsave).prop('disabled', false);
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                alert(errorThrown)
-            }
+            });
+          } else{
+            $(btnsave).prop('disabled', false);
+
+          }
         });
     })
     var dt = $('#datatables').DataTable({

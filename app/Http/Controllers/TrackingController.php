@@ -52,10 +52,13 @@ class TrackingController extends Controller
                         LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
                         LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
                         WHERE a.noawb = '".$kode."' ");
-            $data['Detailqtyscanned']   = Detailqtyscanned::select('*')
-                                            ->where('idawb','=',$data['awb'][0]->id)
-                                            ->orderBy('id','asc')
-                                            ->get();
+            if($data['awb']){
+
+                $data['Detailqtyscanned']   = Detailqtyscanned::select('*')
+                                                ->where('idawb','=',$data['awb'][0]->id)
+                                                ->orderBy('id','asc')
+                                                ->get();
+            }
             // dd($data['Detailqtyscanned']);
             if(count($data['historyscanawb'])==0){            
                 $data['statusada']          ='Kode AWB/Resi '.$kode.' tidak ditemukan!';
