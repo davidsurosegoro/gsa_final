@@ -14,6 +14,7 @@ use App\Historyscanawb;
 use Carbon\Carbon;
 use Auth;
 use App\Kota;
+use App\Detailqtyscanned;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -51,6 +52,11 @@ class TrackingController extends Controller
                         LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
                         LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
                         WHERE a.noawb = '".$kode."' ");
+            $data['Detailqtyscanned']   = Detailqtyscanned::select('*')
+                                            ->where('idawb','=',$data['awb'][0]->id)
+                                            ->orderBy('id','asc')
+                                            ->get();
+            // dd($data['Detailqtyscanned']);
             if(count($data['historyscanawb'])==0){            
                 $data['statusada']          ='Kode AWB/Resi '.$kode.' tidak ditemukan!';
             }  

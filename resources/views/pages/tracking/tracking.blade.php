@@ -51,7 +51,7 @@
             -moz-box-shadow: -1px 1px 5px 0px rgba(0,0,0,0.37);">   
                      <div class="col-sm-6 col-12 text-center" >
                         <div class="input-group text-center"> 
-                            <input type="text" onkeydown="search(this)" id="kodeawb" name="kode" class="form-control" placeholder="MASUKAN KODE AWB/RESI">
+                            <input type="text" onkeydown="search(this)" id="kodeawb" name="kode"  onpaste="return false" pattern="[A-Za-z]" class="form-control" placeholder="MASUKAN KODE AWB/RESI">
                             <span class="input-group-btn">
                                 <button onclick="openlink()" class="btn btn-success" type="button">Cari!</button>
                             </span>
@@ -59,7 +59,7 @@
                     </div><!-- /.col-lg-6 --> 
                 </div><!-- /.col-lg-6 --> <br> 
             <div class="row">   
-                @if (!empty($historyscanawb) )
+                @if (!empty($historyscanawb) && count($historyscanawb)>0)
                     <div class="col-12 col-sm-8">                        
                         <table class="table table-responsive table-bordered track_tbl col-12  " style="background-color: white;">
                             <thead>
@@ -93,7 +93,7 @@
                                                 <div type="button" class="btn btn-info">
                                                         <i class="fa fa-users" aria-hidden="true"></i>&nbsp;at-agen
                                                 </div> 
-                                            @elseif ($item->tipe == 'delivery-by-courier,')
+                                            @elseif ($item->tipe == 'delivery-by-courier')
                                                     <div type="button" class="btn btn-info">
                                                         <i class="fa fa-motorcycle" aria-hidden="true"></i>&nbsp;Delivery-by-courier
                                                     </div> 
@@ -110,13 +110,31 @@
                                             @elseif ($item->tipe == 'at-manifest')
                                                 Barang telah diterima di gudang pusat
                                             @elseif ($item->tipe == 'loaded')
-                                                Barang sedang dalam perjalanan menuju kota <b>{{$item->namakotatujuan}}</b>
+                                                Barang sedang dalam perjalanan menuju kota <b>{{$item->namakotatujuan}}</b> 
+                                                @foreach ($Detailqtyscanned as $detail)
+                                                    @if ($item->tipe == $detail->status)
+                                                    <br><span style="font-style: italic;">&nbsp;&nbsp;**koli ke-{{$detail->qty_ke}} = checked </span>
+                                                        
+                                                    @endif
+                                                @endforeach
                                             @elseif ($item->tipe == 'at-agen')
-                                                Barang telah diterima digudang kota <b>{{$item->namakotatujuan}}</b>    
-                                            @elseif ($item->tipe == 'delivery-by-courier,')
+                                                Barang telah diterima digudang kota <b>{{$item->namakotatujuan}}</b>  
+                                            @elseif ($item->tipe == 'delivery-by-courier')
                                                 Barang sedang dibawa oleh delivery courier ke tujuan
+                                                @foreach ($Detailqtyscanned as $detail)
+                                                    @if ($item->tipe == $detail->status)
+                                                    <br><span style="font-style: italic;">&nbsp;&nbsp;**koli ke-{{$detail->qty_ke}} = checked </span>
+                                                        
+                                                    @endif
+                                                @endforeach
                                             @elseif ($item->tipe == 'complete')
                                                 Barang telah diterima Oleh <b>{{$item->diterima_oleh}}</b>
+                                                @foreach ($Detailqtyscanned as $detail)
+                                                    @if ($item->tipe == $detail->status)
+                                                    <br><span style="font-style: italic;">&nbsp;&nbsp;**koli ke-{{$detail->qty_ke}} = checked </span>
+                                                        
+                                                    @endif
+                                                @endforeach
                                             @endif
                                         </td>
                                         <td>
@@ -143,20 +161,30 @@
                                 {{-- <th colspan='5'>Quantity:</th> --}}
                             </tr>
                             <tr class="text-center">
-                                <th width='16.6%'>K</th> 
-                                <th width='16.6%'>S</th> 
-                                <th width='16.6%'>B</th> 
-                                <th width='16.6%'>BB</th> 
-                                <th width='16.6%'>Kg</th> 
-                                <th width='16.6%'>Doc</th> 
+                                @if(($awb[0]->qty_kecil == 0 && $awb[0]->qty_sedang == 0 && $awb[0]->qty_besar == 0 && $awb[0]->qty_besarbanget==0) && $awb[0]->qty>0)
+                                    {{-- {{$item->qty}}  --}}
+                                    <th width='16.6%'  >qty</th> 
+                                @else
+
+                                    <th width='16.6%'>K</th> 
+                                    <th width='16.6%'>S</th> 
+                                    <th width='16.6%'>B</th> 
+                                    <th width='16.6%'>BB</th> 
+                                    <th width='16.6%'>Kg</th> 
+                                    <th width='16.6%'>Doc</th> 
+                                @endif
                             </tr> 
                             <tr class="text-center">
-                                <td>{{ $awb[0]->qty_kecil }}</td> 
-                                <td>{{ $awb[0]->qty_sedang }}</td> 
-                                <td>{{ $awb[0]->qty_besar }}</td> 
-                                <td>{{ $awb[0]->qty_besarbanget }}</td> 
-                                <td>{{ $awb[0]->qty_kg }}</td> 
-                                <td>{{ $awb[0]->qty_doc }}</td> 
+                                @if(($awb[0]->qty_kecil == 0 && $awb[0]->qty_sedang == 0 && $awb[0]->qty_besar == 0 && $awb[0]->qty_besarbanget==0) && $awb[0]->qty>0)
+                                    <td>{{ $awb[0]->qty }}</td> 
+                                @else
+                                    <td>{{ $awb[0]->qty_kecil }}</td> 
+                                    <td>{{ $awb[0]->qty_sedang }}</td> 
+                                    <td>{{ $awb[0]->qty_besar }}</td> 
+                                    <td>{{ $awb[0]->qty_besarbanget }}</td> 
+                                    <td>{{ $awb[0]->qty_kg }}</td> 
+                                    <td>{{ $awb[0]->qty_doc }}</td> 
+                                @endif
                             </tr> 
                         </table>
                         <table class=" table-bordered" style="font-size:0.3cm; width:100%;margin-bottom:0.1cm;margin-top:0.1cm;">
@@ -228,8 +256,13 @@
     <script src="{{ asset('assets/plugins/forms/submit/jquery.form.js')}}"></script> 
     <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js')}}"></script>
     <script src="{{ asset('assets/js/pages/features/miscellaneous/toastr.js')}}"></script> 
+    <script src="{{ asset('assets/gsa/js/jquery-key-restrictions.js')}}"></script> 
          
     <script type="text/javascript"> 
+        $(function(){
+            $("#kodeawb").alphaNumericOnly();
+        });
+
         toastr.options = {
               "closeButton": true,
               "debug": false,
@@ -246,15 +279,12 @@
               "hideEasing": "linear",
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
-            };
-        @if($statusada != '')
-            alert('{{$statusada}}')
-            toastr.error("Password berhasil dirubah!");
+            }; 
+        @if($statusada != '') 
+            toastr.error("{{$statusada}}");
         @endif
-        function search(kode){
-            // openlink(kode)
-            if(event.key === 'Enter') {
-                // alert(kode.value); 
+        function search(kode){ 
+            if(event.key === 'Enter') { 
                 openlink()       
             }
         } 

@@ -34,7 +34,8 @@ class InvoiceController extends Controller
     public function updatestatus(Request $request)
     { 
         $manifest = Invoice::where('id',$request['idinvoice'])->first(); 
-        $manifest->status = $request['status'];
+        $manifest->status           = $request['status'];
+        $manifest->metodepembayaran = $request['metodepembayaran'];
         $manifest->save();
         return response()->json(array('success' => 'success'));
     }
@@ -56,16 +57,17 @@ class InvoiceController extends Controller
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
                 <button 
-                    type            = "button" 
-                    class           = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   
-                    idinvoice       = "' . $a['id'] . ' " 
-                    kodeinvoice     = "' . $a['kode'] . ' " 
-                    tanggalinvoice  = "' . $a['tanggal_invoice'] . ' "
-                    namacustomer    = "' . $a['namacustomer'] . '" 
-                    kodecustomer    = "' . $a['kodecustomer'] . '" 
-                    status          = "' . $a['status'] . '" 
-                    data-toggle     = "modal" 
-                    data-target     = ".bd-example-modal-lg"> 
+                    type                = "button" 
+                    class               = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   
+                    idinvoice           = "' . $a['id'] . ' " 
+                    kodeinvoice         = "' . $a['kode'] . ' " 
+                    tanggalinvoice      = "' . $a['tanggal_invoice'] . ' "
+                    metodepembayaran    = "' . $a['metodepembayaran'] . '" 
+                    namacustomer        = "' . $a['namacustomer'] . '" 
+                    kodecustomer        = "' . $a['kodecustomer'] . '" 
+                    status              = "' . $a['status'] . '" 
+                    data-toggle         = "modal" 
+                    data-target         = ".bd-example-modal-lg"> 
                         <i class="fa fa-edit" aria-hidden="true"></i> 
                 </button>
             </div>';
@@ -145,6 +147,7 @@ class InvoiceController extends Controller
         $invoice->total_harga          = ($request->total_harga)            ? $request->total_harga         : 0; 
         $invoice->total_oa             = ($request->total_oa)               ? $request->total_oa            : 0; 
         $invoice->keterangan           = ($request->keterangan)             ? $request->keterangan          : ''; 
+        $invoice->metodepembayaran     = ($request->metodepembayaran)       ? $request->metodepembayaran    : '';         
         $invoice->tanggal_invoice      = Carbon::now()->addHours(7); 
         $invoice->status               = 'unpaid';  
         $invoice->save(); 

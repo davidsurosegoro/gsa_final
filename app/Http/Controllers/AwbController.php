@@ -12,6 +12,7 @@ use App\Kota;
 use App\Manifest;
 use App\ViewAgenKota;
 use App\Historyscanawb;
+use App\Detailqtyscanned;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -279,11 +280,13 @@ class AwbController extends Controller
                 }
 
                 $manifest->save();
-                $this->inserthistoryscan(0,   (($status == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+                if($status == 'delivering' ||$status == 'arrived'){
+                    $this->inserthistoryscan(0,   (($status == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+                    DB::table('awb')->where('id_manifest', $manifest['id'])->update(['status_tracking' => (($status == 'delivering') ? 'loaded' : 'at-agen')]);
+                }
                 
                 $data['success'] = $manifest->wasChanged('status');
                 //---------------UPDATE STATUS_TRACKING DI TABLE AWB---------------------------------------------
-                DB::table('awb')->where('id_manifest', $manifest['id'])->update(['status_tracking' => (($status == 'delivering') ? 'loaded' : 'at-agen')]);
                 $returnmessage = 'Update Kode MANIFEST ' . $kode . ' ke ' . $status . ', sukses di update!';
                 // echo($manifest['id']);
                 $typereturn    = 'statussuccess';
@@ -292,40 +295,84 @@ class AwbController extends Controller
         }
         return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'manifest' => $manifest, 'awb' => $awb));
     }
-
+    
     public function updateawb(Request $request)
     {
         $kode          = $request->kode;
+        $qty           = $request->qty;
         $status        = Crypt::decrypt($request->status);
         $returnmessage = '';
         $typereturn    = ' ';
-        $openmodal     = ($status == 'complete') ? 'open' : 'close';
-        //check apakah status sudah seperti yang direquest untuk diganti
+        $openmodal     = 'close';
+        $awb           = Awb::where('noawb', $request->kode)->first();
 
-        $awb = Awb::where('noawb', $request->kode)->first();
         if (!$awb) {
+            //JIKA KODE TIDAK DITEMUKAN----------------------------------------
             $returnmessage = 'Kode AWB ' . $kode . ' tidak ditemukan!';
             $typereturn    = 'statuserror';
         } else if ($awb->id) {
-            if ($awb->status_tracking == $status) {
-                $returnmessage = 'Kode AWB ' . $kode . ' Sudah berstatus ' . $status . '!';
-                $typereturn    = 'statuswarning';
-            } else {
-                $awb->status_tracking = $status;
 
+            //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
+            //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
+            $qty_umum = $awb->qty;
+            if($awb->qty_kecil > 0 || $awb->qty_sedang > 0 || $awb->qty_besar > 0 || $awb->besarbanget > 0){
+                $qty_umum = $awb->qty_kecil + $awb->qty_sedang + $awb->qty_besar + $awb->besarbanget;
+            }
+            if($awb->qty_kg > 0){
+                $qty_umum = 1;
+            }
+            if($awb->qty_doc > 0){
+                $qty_umum = $awb->qty_doc;
+            } 
+            //--JIKA KODE AWB , dengan URUTAN ke sekian, sudah discan atau belum
+            $get_detail        = Detailqtyscanned::where('idawb',    '=', $awb->id)->where('status',   '=', $status);
+            $qty_count_scanned = $get_detail->where('qty_ke',   '=', $qty)->count();
+            $total_scanned     = $get_detail->count(); 
+             
+            if($qty_count_scanned>=1 && $qty != 'all'){
+                $typereturn    = 'statuswarning';
+                $returnmessage = 'Kode AWB ' . $kode . ', dengan urutan <b>ke-'.$qty.'</b>, Sudah discan ' . $status . '!';
+                return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
+            } 
+            
+            // if ($awb->status_tracking == $status) {
+            //     //JIKA KODE TIDAK DITEMUKAN----------------------------------------
+            //     $returnmessage = 'Kode AWB ' . $kode . ' Sudah berstatus ' . $status . '!';
+            //     $typereturn    = 'statuswarning';
+            // } 
+            else {
+                $awb->status_tracking = $status;
                 $awb->save();
-                $this->inserthistoryscan($awb->id,$status,0);
+
+                if($total_scanned==0){
+                    $this->inserthistoryscan($awb->id,$status,0);
+                }
+                for($i=1; $i<=($qty=='all' ? $qty_umum : 1);$i++){
+                    $this->insertqty($status, $awb->id, $qty_umum, ($qty=='all' ? $i : $qty));
+                }
+                $total_scanned   = $get_detail->count(); 
                 $data['success'] = $awb->wasChanged('status_tracking');
-                $returnmessage   = 'Update Kode AWB ' . $kode . ' ke ' . $status . ', sukses di update!';
+                $returnmessage   = 'Update Kode AWB ' . $kode . ', ke ' . $status . ', dengan urutan ke-'.$qty.' sukses di update!';
                 $typereturn      = 'statussuccess';
             }
-            if ($status == 'complete') {
+            if ($status == 'complete' && ((int)$total_scanned == (int)$qty_umum)) {
                 $awb->tanggal_diterima = Carbon::now()->addHours(7);
+                $openmodal = 'open';
             }
         }
         return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
     }
 
+    public function insertqty($status,$idawb,$qty_ori,$qty_ke)
+    {
+        $Detailqtyscanned           = new Detailqtyscanned();  
+        $Detailqtyscanned->idawb    = $idawb;  
+        $Detailqtyscanned->qty_ke   = $qty_ke;  
+        $Detailqtyscanned->qty_ori  = $qty_ori;  
+        $Detailqtyscanned->status   = $status;  
+        $Detailqtyscanned->save();
+
+    }
     
     public function inserthistoryscan($idawb,$tipe,$idmanifest)
     {
@@ -350,6 +397,23 @@ class AwbController extends Controller
                 $Historyscanawb->idawb      = $item->id;
                 $Historyscanawb->created_at = Carbon::now()->addHours(7);            
                 $Historyscanawb->save(); 
+                //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
+                //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI-------------------------------- 
+                $qty_umum = $item->qty;
+                if($item->qty_kecil > 0 || $item->qty_sedang > 0 || $item->qty_besar > 0 || $item->besarbanget > 0){
+                    $qty_umum = $item->qty_kecil + $item->qty_sedang + $item->qty_besar + $item->besarbanget;
+                }
+                if($item->qty_kg > 0){
+                    $qty_umum = 1;
+                }
+                if($item->qty_doc > 0){
+                    $qty_umum = $item->qty_doc;
+                }
+                
+                for($i=1; $i<= $qty_umum;$i++){
+                    $this->insertqty($tipe, $item->id, $qty_umum,  $i);
+                }
+
             }
         }
     }

@@ -99,9 +99,15 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('assets/gsa/js/jquery-key-restrictions.js')}}"></script> 
 <script type="text/javascript">
     $(document).ready(function() {
+
         checkhidden(0)
+        $(function(){
+            $("#username").alphaNumericOnly();
+        });
+
         function checkhidden(resetval){
             if(resetval==1){
                 console.log('masuk  ')
