@@ -17,8 +17,9 @@
         <!--begin::Global Theme Styles(used by all pages)-->
         <link href="<?php echo e(asset('assets/plugins/global/plugins.bundle.css')); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo e(asset('assets/plugins/custom/prismjs/prismjs.bundle.css')); ?>" rel="stylesheet" type="text/css" />
-        <link href="<?php echo e(asset('assets/ol/ol.css')); ?>" rel="stylesheet" type="text/css" />
         <link href="<?php echo e(asset('assets/css/style.bundle.css')); ?>" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/devextreme/21.1.5/css/dx.light.css" rel="stylesheet">
+        
         <link rel="stylesheet" href="<?php echo e(asset('assets/gsa/fa/css/font-awesome.min.css')); ?>">
         <!--end::Global Theme Styles-->
         <!--begin::Layout Themes(used by all pages)-->
@@ -285,6 +286,8 @@ tr.details td.details-control {
         <!--begin::Page Scripts(used by this page)-->
         <script src=<?php echo e(asset('assets/js/pages/autoNumeric.js')); ?>></script>
         <script src="<?php echo e(asset('assets/js/pages/widgets.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/plugins/devex/js/jszip.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/plugins/devex/js/dx.all.js')); ?>"></script>
         <script type="text/javascript">
             function checkpassword() {  
                 var password    = $('#password'  ).val();
@@ -339,10 +342,30 @@ tr.details td.details-control {
             $('.select2').select2({
         });
             var base_url = '<?php echo e(env('APP_URL').'/'); ?>';
-            $('.rupiah').autoNumeric({allowDecimalPadding: false,
-    createLocalList: false,
-    decimalCharacterAlternative: ""})
+            $('.rupiah').autoNumeric({
+                allowDecimalPadding: false,
+                alwaysAllowDecimalCharacter: true,
+                decimalCharacterAlternative: ".",
+                decimalPlaces: 0,
+                outputFormat:'number'
+            })
             
+var loadPanel = $(".loadpanel").dxLoadPanel({
+        shadingColor: "rgba(0,0,0,0.4)",
+        position: { of: "#awb" },
+        visible: false,
+        showIndicator: true,
+        showPane: true,
+        shading: true,
+        closeOnOutsideClick: false,
+        onShown: function(){
+            setTimeout(function () { 
+                loadPanel.hide();          
+            }, 2000);
+        },
+        onHidden: function(){
+        }      
+    }).dxLoadPanel("instance");
     $('.datepicker').datepicker({
                rtl: KTUtil.isRTL(),
                todayHighlight: true,
