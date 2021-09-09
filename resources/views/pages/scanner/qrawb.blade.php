@@ -167,7 +167,9 @@
             var codeonly = result.split("/t/") 
             if(!codeonly[1] || !codeonly[2]){
                 toastr.warning("kode AWB tidak valid!!") 
-                scanner.start()
+                
+                
+                    setTimeout(function(){ scanner.start() }, 800);
             }else{
                 scan_update_status(codeonly[1],codeonly[2]);
             }
@@ -211,7 +213,9 @@
                     $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
                     $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
                 }else{
-                    scanner.start()
+                    
+                    
+                    setTimeout(function(){ scanner.start() }, 800);
                 } 
             }
         }) 
@@ -231,7 +235,9 @@
                     $('#modalpenerima').modal('hide');
                     $('#diterima_oleh'      ).val('')
                 }        
-                scanner.start() 
+                
+                
+                    setTimeout(function(){ scanner.start() }, 800); 
             }
         }) 
     }

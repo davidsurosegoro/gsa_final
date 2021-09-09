@@ -178,7 +178,8 @@
                     $('#modalkodemanual').modal('hide');
                     $('.modal-backdrop').remove();
                 }                  
-                scanner.start()
+                
+                setTimeout(function(){ scanner.start() }, 800);
              
             }
         }) 
