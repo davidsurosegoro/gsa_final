@@ -341,7 +341,7 @@ class AwbController extends Controller
             //     $typereturn    = 'statuswarning';
             // } 
             else {
-                dd($total_scanned);
+                // dd($total_scanned);
                 $awb->status_tracking = $status;
                 $awb->save();
 
