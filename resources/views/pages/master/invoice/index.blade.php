@@ -27,6 +27,7 @@
               <th>Total Harga</th> 
               <th>Keterangan</th>  
               <th width='5%'>Status</th> 
+              <th width='5%'>Pembayaran</th> 
               <th width='5%'>Aksi</th>
             </tr>
           </thead>
@@ -61,13 +62,21 @@
               </tr>
             </table>
             
-            <input type="text" name="idinvoice" id="idinvoice" class="d-none"  > 
+            <input type="text" name="idinvoice" id="idinvoice" class="d-none"  >  
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect2">Status</label>
             <select class="form-control" id="status" name="status">
               <option value='paid'>paid</option>
               <option value='unpaid'>unpaid</option> 
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect2">Dibayarkan melalui</label>
+            <select class="form-control" id="metodepembayaran" name="metodepembayaran">
+              <option value=''>Pilih Metode Pembayaran</option>
+              <option value='tunai'>tunai</option>
+              <option value='transfer'>transfer</option> 
             </select>
           </div>
           <div class="form-group" > 
@@ -89,6 +98,7 @@
       $('#kodeinvoice_'      ).html($(this).attr('kodeinvoice'))
 
       $('#idinvoice'         ).val($(this).attr('idinvoice')) 
+      $('#metodepembayaran'  ).val($(this).attr('metodepembayaran')) 
       $("#status").val($(this).attr('status'));
     })
     $(document).on("click","#simpanbutton",function() {
@@ -131,6 +141,7 @@
           {data: 'total_harga',       name:'total_harga'},  
           {data: 'keterangan',        name:'keterangan'},  
           {data: 'status_info',       name:'Status'},
+          {data: 'metodepembayaran',  name:'metodepembayaran'},
           {data: 'aksi',              name:'aksi'},
       ],
 	   "order": [[ 1, "asc" ]],

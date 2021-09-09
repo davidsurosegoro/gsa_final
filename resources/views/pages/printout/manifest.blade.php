@@ -37,6 +37,7 @@
                 }
             } 
             body {
+                font-family:sans-serif;
                 background-color: #000;
             }
 
@@ -101,7 +102,7 @@
                         
                     </div> 
                     <div class="col-sm-3" style="padding:0px;">
-                        <table  class=" col-12 table-bordered"  style="font-size:0.23cm; margin-top:0.4cm; border-right:0px !important;">
+                        <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm; border-right:0px !important;">
                             <tr>
                                 <td style="width:2.4cm;"><b>NO.</b></td>
                                 <td>&nbsp;{{$manifest->kode}}</td>
@@ -115,7 +116,7 @@
                                 <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
                             </tr>
                             <tr>
-                                <table class="col-12 table-bordered text-center" style="font-size:0.28cm;">
+                                <table class="col-12  text-center" style="font-size:0.33cm;">
                                     <tr>
                                         <td class="font-weight-bold">Koli</td>
                                         <td class="font-weight-bold">Kg</td>
@@ -131,7 +132,7 @@
                         </table>
                     </div>
                     <div class="col-sm-4" style="padding:0px;">
-                        <table  class=" col-12 table-bordered"  style="font-size:0.23cm; margin-top:0.4cm;">
+                        <table  class=" col-12 "  style="font-size:0.23cm; margin-top:0.4cm;">
                             <tr>
                                 <td style="width:3cm;"><b>Tujuan </b></td>
                                 <td>&nbsp;{{$manifest->namakotatujuan}}-({{$manifest->kodekotatujuan}})</td>
@@ -155,8 +156,8 @@
                     </div>
                 </div>
                 <div class="card"> 
-                    <div class="table-responsive-sm">
-                        <table class="table table-striped table-bordered" style="font-size:0.25cm;">
+                    <div class="">
+                        <table class="" style="font-size:0.4cm;width:100%;">
                             <thead>
                                 <tr>
                                     <th style="width:0.5cm;padding:0.1cm;">NO</th> 
@@ -194,7 +195,7 @@
                                 @endforeach   
                             </tbody>
                         </table>
-                        <table class="table table-striped table-bordered" >
+                        <table class="table table-striped " >
                             <thead>
                                 <tr> 
                                     <td class='text-left' style="font-size:0.22cm;padding:0.1cm;">

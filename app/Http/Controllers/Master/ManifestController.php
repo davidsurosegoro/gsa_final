@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Auth;
 use App\Kota;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
@@ -45,7 +46,7 @@ class ManifestController extends Controller
             
             return '
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="'.url('printout/manifest/'.$a['id']).'" target="blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
+                <a href="'.url('printout/manifest/'.Crypt::encrypt($a['id'])).'" target="blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
                     <i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
                 <button 
@@ -110,7 +111,9 @@ class ManifestController extends Controller
         $manifest = Manifest::where('id',$request['idmanifest'])->first(); 
         $manifest->status = $request['status'];
         $manifest->save();
-        app('App\Http\Controllers\AwbController')->inserthistoryscan(0,(( $request['status'] == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+        if($request['status'] == 'delivering' || $request['status'] == 'arrived'){
+            app('App\Http\Controllers\AwbController')->inserthistoryscan(0,(( $request['status'] == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+        }
         return response()->json(array('success' => 'success'));
     }
     public function save(Request $request)

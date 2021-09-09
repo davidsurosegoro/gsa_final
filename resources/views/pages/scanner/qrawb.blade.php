@@ -106,55 +106,56 @@
     const flashState    = document.getElementById('flash-state');
     const camQrResult   = document.getElementById('cam-qr-result');  
 
-        // ####### Web Cam Scanning #######
+    // ####### Web Cam Scanning #######
 
-        const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
-            camQrResult.textContent = error;
-            camQrResult.style.color = 'inherit';
+    const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
+        camQrResult.textContent = error;
+        camQrResult.style.color = 'inherit';
+    });
+
+    const updateFlashAvailability = () => {
+        scanner.hasFlash().then(hasFlash => {
+            camHasFlash.textContent = hasFlash;
+            flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
         });
+    };
 
-        const updateFlashAvailability = () => {
-            scanner.hasFlash().then(hasFlash => {
-                camHasFlash.textContent = hasFlash;
-                flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
-            });
-        };
+    scanner.start().then(() => {
+        updateFlashAvailability();
+        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+        // start the scanner earlier.
+        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+            const option = document.createElement('option');
+            option.value = camera.id;
+            option.text = camera.label;
+            camList.add(option);
+        }));
+    });
 
-        scanner.start().then(() => {
-            updateFlashAvailability();
-            // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-            // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-            // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-            // start the scanner earlier.
-            QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-                const option = document.createElement('option');
-                option.value = camera.id;
-                option.text = camera.label;
-                camList.add(option);
-            }));
-        });
+    QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
-        QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
+    // for debugging
+    window.scanner = scanner;
 
-        // for debugging
-        window.scanner = scanner;
+
+    camList.addEventListener('change', event => {
+        scanner.setCamera(event.target.value).then(updateFlashAvailability);
+    });
+
+    flashToggle.addEventListener('click', () => {
+        scanner.toggleFlash().then(() => flashState.textContent = scanner.isFlashOn() ? 'on' : 'off');
+    });
+
+    document.getElementById('start-button').addEventListener('click', () => {
+        scanner.start();
+    });
+
+    document.getElementById('stop-button').addEventListener('click', () => {
+        scanner.stop();
+    });
     
-
-        camList.addEventListener('change', event => {
-            scanner.setCamera(event.target.value).then(updateFlashAvailability);
-        });
-
-        flashToggle.addEventListener('click', () => {
-            scanner.toggleFlash().then(() => flashState.textContent = scanner.isFlashOn() ? 'on' : 'off');
-        });
-
-        document.getElementById('start-button').addEventListener('click', () => {
-            scanner.start();
-        });
-
-        document.getElementById('stop-button').addEventListener('click', () => {
-            scanner.stop();
-        });
     function setResult(label, result) {
         label.textContent = result; 
         label.style.color = 'teal';
@@ -164,21 +165,31 @@
             xs.play();   
             scanner.stop();
             var codeonly = result.split("/t/") 
-            scan_update_status(codeonly[1]);
+            if(!codeonly[1] || !codeonly[2]){
+                toastr.warning("kode AWB tidak valid!!") 
+                scanner.start()
+            }else{
+                scan_update_status(codeonly[1],codeonly[2]);
+            }
         }
     }
- 
+    
+    $('#simpankodemanual').click(function(){
+        scan_update_status($('#kode_awb').val(),'all');
+    })
+
     $(document) .ajaxStart(function () {
         $('#loading').removeClass('d-none')
     })          .ajaxStop(function () {
         $('#loading').addClass('d-none')
     }); 
-    function scan_update_status(kode_awb_or_manifest){
+    function scan_update_status(kode_awb_or_manifest, qty){
         $.ajax({
             method  :'POST',
             url     :'{{ url('awb/updateawb') }}',
             data    :{
                 kode        : kode_awb_or_manifest,
+                qty         : qty,
                 status      : $('#statusawb').val(),
                 '_token'    : "{{ csrf_token() }}" 
             },

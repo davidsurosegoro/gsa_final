@@ -15,6 +15,7 @@ use App\Invoice;
 use Carbon\Carbon;
 use App\Kota;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
@@ -75,7 +76,7 @@ class PrintoutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function manifest($id)
-    {
+    {   $id = Crypt::decrypt($id);
         $data['manifest']   = Manifest::select(
                                 DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y') as tanggal_manifest"),
                                 "manifest.*" , 
