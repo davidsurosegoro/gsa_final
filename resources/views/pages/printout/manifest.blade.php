@@ -9,6 +9,9 @@
         <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
+            table, th, td {
+                border: 1px solid black;
+            }
             @page {
                 size: A4;
                 margin: 0;
@@ -132,7 +135,7 @@
                         </table>
                     </div>
                     <div class="col-sm-4" style="padding:0px;">
-                        <table  class=" col-12 "  style="font-size:0.23cm; margin-top:0.4cm;">
+                        <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm;">
                             <tr>
                                 <td style="width:3cm;"><b>Tujuan </b></td>
                                 <td>&nbsp;{{$manifest->namakotatujuan}}-({{$manifest->kodekotatujuan}})</td>
@@ -142,11 +145,11 @@
                                 <td>&nbsp;{{ Auth::user()->nama }}</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Dibawa Oleh (supir)</b></td>
+                                <td style="width:3cm;"><b>Supir</b></td>
                                 <td>&nbsp;{{$manifest->supir}}</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Diterima & Dicek Oleh(agen)</b></td>
+                                <td style="width:3cm;"><b>Diterima Oleh(agen)</b></td>
                                 <td>&nbsp;{{$manifest->namaagen}}</td>
                             </tr>
                         </table>
@@ -174,6 +177,18 @@
                             </thead>
                             <tbody>
                                 @foreach ($awb as $item)
+                                <?php
+                                    $qty_umum = $item->qty;
+                                    if($item->qty_kecil > 0 || $item->qty_sedang > 0 || $item->qty_besar > 0 || $item->qty_besarbanget > 0){
+                                        $qty_umum = $item->qty_kecil + $item->qty_sedang + $item->qty_besar + $item->qty_besarbanget;
+                                    }
+                                    if($item->qty_kg > 0){
+                                        $qty_umum = 1;
+                                    }
+                                    if($item->qty_doc > 0){
+                                        $qty_umum = $item->qty_doc;
+                                    }
+                                ?>
                                 <tr style="padding:0px;">
                                     <td class='text-center' style="padding:5px;">{{ $loop->index+1 }}</td>   
                                     <td style="padding:5px;">{{$item->noawb}}</td> 
@@ -189,8 +204,20 @@
                                     </td> 
                                     <td style="padding:5px;" class='text-center'>{{$item->qty_kg}}</td> 
                                     <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td> 
-                                    <td style="padding:5px;">{{$item->nama_penerima}}</td>  
-                                    <td style="padding:5px;">{{$item->keterangan}}</td> 
+                                    <td style="padding:5px;">{{$item->nama_penerima}} </td>  
+                                    <td style="padding:5px;position:relative !important;">
+                                        {{$item->keterangan}}{{$item->qtyloaded}}
+                                        
+                                            <div class="d-print-none totalbarangmasuk" 
+                                                @if ($qty_umum - $item->qtyloaded == 0)                                            
+                                                    style="background-color: #27ae60;"
+                                                @else
+                                                    style="background-color: #d02626;"
+                                                @endif
+                                                >
+                                                Barang yang sudah masuk ke truck {{$item->qtyloaded}} dari {{ $qty_umum}} barang
+                                            </div>
+                                    </td> 
                                 </tr>   
                                 @endforeach   
                             </tbody>
@@ -198,7 +225,7 @@
                         <table class="table table-striped " >
                             <thead>
                                 <tr> 
-                                    <td class='text-left' style="font-size:0.22cm;padding:0.1cm;">
+                                    <td class='text-left' style="font-size:0.35cm;padding:0.1cm;">
                                         <span style="font-weight:bold;">Keterangan</span><br>
                                         {{$manifest->keterangan}}
                                     </td>

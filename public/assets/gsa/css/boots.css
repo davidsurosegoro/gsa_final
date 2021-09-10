@@ -438,6 +438,19 @@
     letter-spacing: 2px;
     transition: line-height 0.3s ease-in-out;
   }
+  .totalbarangmasuk{
+    width:200px;
+    position: absolute;
+     z-index:200; 
+     top:0px; 
+     right:-200px; 
+     padding-left:5px;
+     color:white;
+     border:1px solid black;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+  }
   .lead {
     font-size: 1.25rem;
     font-weight: 300;

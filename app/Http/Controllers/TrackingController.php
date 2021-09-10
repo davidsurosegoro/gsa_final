@@ -56,7 +56,7 @@ class TrackingController extends Controller
 
                 $data['Detailqtyscanned']   = Detailqtyscanned::select('*')
                                                 ->where('idawb','=',$data['awb'][0]->id)
-                                                ->orderBy('id','asc')
+                                                ->orderBy('qty_ke','asc')
                                                 ->get();
             }
             // dd($data['Detailqtyscanned']);

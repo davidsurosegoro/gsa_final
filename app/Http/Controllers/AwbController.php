@@ -396,13 +396,16 @@ class AwbController extends Controller
                     ->get(); 
             foreach ($awb_get_for_history['awb'] as $item){  
                 // dd($Historyscanawb);
-                $Historyscanawb             = new Historyscanawb();  
-                $Historyscanawb->tipe       = $tipe;
-                $Historyscanawb->iduser     = Auth::user()->id;
-                $Historyscanawb->namauser   = Auth::user()->nama;
-                $Historyscanawb->idawb      = $item->id;
-                $Historyscanawb->created_at = Carbon::now()->addHours(7);            
-                $Historyscanawb->save(); 
+                $history_count_scanned = Historyscanawb::where('idawb', '=', $item->id)->where('tipe',   '=', $tipe)->count();
+                if($history_count_scanned==0){
+                    $Historyscanawb             = new Historyscanawb();  
+                    $Historyscanawb->tipe       = $tipe;
+                    $Historyscanawb->iduser     = Auth::user()->id;
+                    $Historyscanawb->namauser   = Auth::user()->nama;
+                    $Historyscanawb->idawb      = $item->id;
+                    $Historyscanawb->created_at = Carbon::now()->addHours(7);            
+                    $Historyscanawb->save(); 
+                }
                 //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
                 //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI-------------------------------- 
                 $qty_umum = $item->qty;
@@ -415,7 +418,7 @@ class AwbController extends Controller
                 if($item->qty_doc > 0){
                     $qty_umum = $item->qty_doc;
                 }
-                
+                Detailqtyscanned::where('idawb', $item->id)->where('status',$tipe)->forceDelete();
                 for($i=1; $i<= $qty_umum;$i++){
                     $this->insertqty($tipe, $item->id, $qty_umum,  $i);
                 }

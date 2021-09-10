@@ -148,7 +148,7 @@ class ManifestController extends Controller
         $manifest->save();
 
         $data['awb'] =  Awb::select('awb.*' )
-                    ->where ("awb.status_tracking",     '=' , 'at-manifest')
+                    ->where (function ($query) {$query->where("awb.status_tracking", '=' , 'at-manifest')->orWhere("awb.status_tracking", '=' , 'booked');})
                     ->where ("awb.id_manifest",         '=' , 0) 
                     ->where ("awb.id_kota_tujuan",      '=' , $manifest['id_kota_tujuan']) 
                     ->where ("awb.id_kota_asal",        '=' , $manifest['id_kota_asal']) 
@@ -160,13 +160,13 @@ class ManifestController extends Controller
                     ->get(); 
         foreach ($data['awb'] as $item){  
             $item['id_manifest']     = $manifest['id'];
-            $item['status_tracking'] = 'at-manifest';            
+            // $item['status_tracking'] = 'at-manifest';            
             $item->save();
             echo $item;
         }
         $data['awb_update'] =  Awb::select(DB::raw("customer.id as idcust,ROUND((customer.harga_oa / count(awb.id)),2) as dividedoa,count(awb.id) as total"))
                     ->join  ("customer as customer",  'customer.id',    '=', 'awb.id_customer')
-                    ->where ("awb.status_tracking", '=' , 'at-manifest')
+                    ->where (function ($query) {$query->where("awb.status_tracking", '=' , 'at-manifest')->orWhere("awb.status_tracking", '=' , 'booked');})
                     ->where ("awb.id_manifest",             '=' , $manifest['id']) 
                     ->where ("customer.jenis_out_area",     '=' , 'shipment')  
                     ->where ("awb.id_kota_tujuan",          '=' , $manifest['id_kota_tujuan']) 
@@ -205,7 +205,7 @@ class ManifestController extends Controller
                             )
                         ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
                         ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan')
-                        ->where ("awb.status_tracking", '=' , 'at-manifest')
+                        ->where (function ($query) {$query->where("awb.status_tracking", '=' , 'at-manifest')->orWhere("awb.status_tracking", '=' , 'booked');})
                         ->where ("awb.id_manifest",     '=' , 0)
                         ->where ("awb.id_kota_asal",    '=' , $kotaasal)
                         ->where ("awb.id_kota_tujuan",  '=' , $kotatujuan)
@@ -230,7 +230,7 @@ class ManifestController extends Controller
                             count(awb.id) as total"))
                         ->join  ("kota as kotaasal",   'kotaasal.id',   '=', 'awb.id_kota_asal')
                         ->join  ("kota as kotatujuan", 'kotatujuan.id', '=', 'awb.id_kota_tujuan')
-                        ->where ("awb.status_tracking", '=' , 'at-manifest')
+                        ->where (function ($query) {$query->where("awb.status_tracking", '=' , 'at-manifest')->orWhere("awb.status_tracking", '=' , 'booked');})
                         ->where ("awb.id_manifest",     '=' , 0)
                         ->where (function($query)
                                     {

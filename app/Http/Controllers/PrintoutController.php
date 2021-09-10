@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
+use App\Detailqtyscanned;
 use Spatie\Activitylog\Models\Activity;
 
 class PrintoutController extends Controller
@@ -97,12 +98,14 @@ class PrintoutController extends Controller
                                 'awb.*',
                                 'customer.nama as namacust',
                                 'kotatujuan.nama as kotatujuan', 
-                                DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli')
+                                DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli'),
+                                DB::raw('(select count(*) from detail_qty_scanned where idawb=awb.id and status="loaded") as qtyloaded')
                             )
                         ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
                         ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
                         ->where ("awb.id_manifest",     '=' , $id)  
                         ->get(); 
+                         
         return view("pages.printout.manifest",$data);
     }
     /**
