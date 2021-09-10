@@ -150,7 +150,9 @@
                     <div class= "col-12 col-sm-4" style="background-color: white; padding:10px;margin-bottom:10px ;border:1px solid rgb(220, 220, 220) !Important;">
                         <table  class=" col-12 table-bordered"  style="font-size:0.4cm; border-right:0px !important;">
                             <tr>
-                                <td class="text-center couture" style="font-size:0.55cm;" colspan='2'><b>No. </b>{{ $awb[0]->noawb }}</td> 
+                                <td class="text-center couture" style="font-size:0.55cm;" colspan='2'><b>No. </b>{{ $awb[0]->noawb }}
+                                    <br>{{ $awb[0]->status_tracking }}
+                                </td> 
                             </tr> 
                             <tr> 
                                 <td class="text-center ">{{ date('d F Y',strtotime($awb[0]->tanggal_awb)) }}</td>

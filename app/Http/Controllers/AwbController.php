@@ -263,11 +263,17 @@ class AwbController extends Controller
         $openmodal     = ($status == 'complete') ? 'open' : 'close';
         $manifest      = Manifest::where('kode', $request->kode)->first();
         $awb           = Awb::where('id_manifest', $manifest->id)->get();
+        $continue      = true;
+        if($manifest->status == 'arrived'){
+            $continue      = false;
+            $returnmessage = 'Kode MANIFEST ' . $kode . ', Sudah berstatus ' .$manifest->status . ', tidak bisa di scan lagi!';
+            $typereturn    = 'statuswarning';
+        }
 
-        if (!$manifest) {
+        if (!$manifest && $continue==true) {
             $returnmessage = 'Kode MANIFEST ' . $kode . ' tidak ditemukan!';
             $typereturn    = 'statuserror';
-        } else if ($manifest->id) {
+        } else if ($manifest->id && $continue==true) {
             if ($manifest->status == $status) {
                 $returnmessage = 'Kode AWB ' . $kode . ' Sudah berstatus ' . $status . '!';
                 $typereturn    = 'statuswarning';

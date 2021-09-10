@@ -154,7 +154,10 @@
             scan_update_status(codeonly[1]);
         }
     }
- 
+    
+    $('#simpankodemanual').click(function(){
+        scan_update_status($('#kode_manifest').val());
+    })
     
     function scan_update_status(kode_manifest){
         $.ajax({

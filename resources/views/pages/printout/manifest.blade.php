@@ -102,6 +102,13 @@
                         <p class="col-12" style="font-size:0.18cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11</p>
                         <p class="col-12" style="font-size:0.18cm;padding:0px; margin:0px;">Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599
                         </p>
+                        @if ($manifest->status=='checked')
+                            <h2><button type="button" class=" d-print-none btn btn-default">{{$manifest->status}}</button></h2>                        
+                        @elseif ($manifest->status=='delivering')
+                            <h2><button type="button" class=" d-print-none btn btn-primary">{{$manifest->status}}</button></h2>                        
+                        @elseif ($manifest->status=='arrived')
+                            <h2><button type="button" class=" d-print-none btn btn-success">{{$manifest->status}}</button></h2>
+                        @endif
                         
                     </div> 
                     <div class="col-sm-3" style="padding:0px;">
@@ -117,21 +124,7 @@
                             <tr>
                                 <td style="width:2.4cm;"><b>Tgl Pengiriman </b></td>
                                 <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
-                            </tr>
-                            <tr>
-                                <table class="col-12  text-center" style="font-size:0.33cm;">
-                                    <tr>
-                                        <td class="font-weight-bold">Koli</td>
-                                        <td class="font-weight-bold">Kg</td>
-                                        <td class="font-weight-bold">Doc</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{$manifest->jumlah_koli}}</td>
-                                        <td>{{$manifest->jumlah_kg}}</td>
-                                        <td>{{$manifest->jumlah_doc}}</td>
-                                    </tr>
-                                </table> 
-                            </tr> 
+                            </tr>  
                         </table>
                     </div>
                     <div class="col-sm-4" style="padding:0px;">
@@ -163,16 +156,21 @@
                         <table class="" style="font-size:0.4cm;width:100%;">
                             <thead>
                                 <tr>
-                                    <th style="width:0.5cm;padding:0.1cm;">NO</th> 
-                                    <th style="width:1cm;padding:0.1cm;">AWB</th> 
-                                    <th style="width:2cm;padding:0.1cm;">PENGIRIM</th> 
-                                    <th style="width:1cm;padding:0.1cm;">PENERIMA</th> 
-                                    <th style="width:1cm;padding:0.1cm;">TUJUAN</th> 
-                                    <th style="width:0.5cm;padding:0.1cm;">KL</th> 
-                                    <th style="width:0.5cm;padding:0.1cm;">KG</th> 
-                                    <th style="width:0.5cm;padding:0.1cm;">Doc</th> 
-                                    <th style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>  
-                                    <th style="width:1cm;padding:0.1cm;">KET</th> 
+                                    <th rowspan="2" style="width:0.5cm;padding:0.1cm;">NO</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">AWB</th> 
+                                    <th rowspan="2" style="width:2cm;padding:0.1cm;">PENGIRIM</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">PENERIMA</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">TUJUAN</th> 
+                                    <th  style="width:0.5cm;padding:0.1cm;">KL</th> 
+                                    <th  style="width:0.5cm;padding:0.1cm;">KG</th> 
+                                    <th  style="width:0.5cm;padding:0.1cm;">Doc</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>  
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">KET</th> 
+                                </tr>
+                                <tr>
+                                    <td>{{$manifest->jumlah_koli}}</td>
+                                    <td>{{$manifest->jumlah_kg}}</td>
+                                    <td>{{$manifest->jumlah_doc}}</td>
                                 </tr>
                             </thead>
                             <tbody>
