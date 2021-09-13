@@ -142,40 +142,52 @@
             </div>
           </div>
           <div class="row" id="qty-detail">
-            <div class="col-lg-2">
-              <div class="form-group" id="qty_koli_k">
-                <label class="font-weight-bold">Qty Koli Kecil</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-lg-2">
+                  <div class="form-group" id="qty_koli_k">
+                    <label class="font-weight-bold">Qty Koli Kecil</label>
+                    <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <div class="form-group" id="qty_koli_s">
+                    <label class="font-weight-bold">Qty Koli Sedang</label>
+                    <input type="number" class="form-control" value="{{ $awb->qty_sedang }}"  name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <div class="form-group" id="qty_koli_b">
+                    <label class="font-weight-bold">Qty Koli Besar</label>
+                    <input type="number" class="form-control" value="{{ $awb->qty_besar }}"  name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
+                  </div>
+                </div>
+                <div class="col-lg-2"> 
+                  <div class="form-group" id="qty_koli_bb">
+                    <label class="font-weight-bold">Qty Koli Besar Banget</label>
+                    <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}"  name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="form-group" id="qty_koli_s">
-                <label class="font-weight-bold">Qty Koli Sedang</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_sedang }}"  name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
+            <div class="col-md-12">
+              <div class="row mb-0">
+                <div class="col-lg-2">
+                  <div class="form-group" id="qty_koli_kg" >
+                    <label class="font-weight-bold">Qty Koli Kg</label>
+                    <input type="number" class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-lg-2">
-              <div class="form-group" id="qty_koli_b">
-                <label class="font-weight-bold">Qty Koli Besar</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_besar }}"  name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
-              </div>
-            </div>
-            <div class="col-lg-2"> 
-              <div class="form-group" id="qty_koli_bb">
-                <label class="font-weight-bold">Qty Koli Besar Banget</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}"  name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="form-group" id="qty_koli_kg" >
-                <label class="font-weight-bold">Qty Koli Kg</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <div class="form-group" id="qty_koli_doc" >
-                <label class="font-weight-bold">Qty Koli Dokumen</label>
-                <input type="number" class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+            <div class="col-md-12">
+              <div class="row mb-0">
+                <div class="col-lg-2">
+                  <div class="form-group" id="qty_koli_doc" >
+                    <label class="font-weight-bold">Qty Koli Dokumen</label>
+                    <input type="number" class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -489,6 +501,12 @@
         $('#alamat_pengirim').val(data.data.alamat)
         $('#kodepos_pengirim').val(data.data.kodepos)
         $('#notelp_pengirim').val(data.data.notelp)
+        $("input[name=qty_kecil]").val(0)
+        $("input[name=qty_sedang]").val(0)
+        $("input[name=qty_besar]").val(0)
+        $("input[name=qty_besar_banget]").val(0)
+        $("input[name=qty_kg]").val(0)
+        $("input[name=qty_doc]").val(0)
         // if(data.count_alamat == 0){
         //   $('#alamat_pengirim').show()
         // }

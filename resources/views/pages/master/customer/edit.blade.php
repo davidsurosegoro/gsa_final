@@ -45,44 +45,6 @@
       <label>Kode Pos Customer:</label>
       <input type="text" class="form-control" name="kodepos" value="{{ $customer->kodepos }}" placeholder="Input kodepos customer. . ." />
     </div>
-
-     <div class="form-group">
-      <label>Rekening:</label>
-       <input type="text" class="form-control"  value="{{ $customer->rekening }}" name="rekening" placeholder="Input Nomor Rekening. . ."/>
-     </div>
-
-     <div class="form-group">
-      <label>Bank :</label>
-       <input type="text" class="form-control"  value="{{ $customer->bank }}" name="bank" placeholder="Input bank. . ."/>
-     </div>
-     
-     <div class="form-group">
-      <label>Rekening Atas Nama (a/n):</label>
-       <input type="text" name="rekeningatasnama"  value="{{ $customer->rekeningatasnama }}" class="form-control" placeholder="Input Nomor Atas Nama Rekening. . ."/>
-     </div>
-   </div>
-   <div class="col-lg-6">
-     
-    <div class="form-group">
-      <label>Harga Koli Kecil:</label>
-      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_k }}" name="harga_koli_k" placeholder="Input harga koli kecil. . ." required/>
-    </div>
-    <div class="form-group">
-      <label>Harga Koli Sedang:</label>
-      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_s }}" name="harga_koli_s" placeholder="Input harga koli sedang. . ." required/>
-    </div>
-    
-    <div class="form-group">
-      <label>Harga Koli Besar:</label>
-      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_b }}" name="harga_koli_b" placeholder="Input harga koli besar. . ." required/>
-    </div>
-    
-    <div class="form-group">
-      <label>Harga Koli Besar banget:</label>
-      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_bb }}" name="harga_koli_bb" placeholder="Input harga koli besar banget. . ." required/>
-    </div>
-    
-    
     <div class="form-group">
       <label>Jenis Out Area</label>
       <div class="radio-inline">
@@ -118,6 +80,56 @@
       </div>
       <span class="form-text text-muted">Pilih Jenis Out Area</span>
     </div>
+    
+    <div class="form-group">
+      <label>Hak Akses Mengubah Satuan</label>
+      <div class="checkbox-inline">
+        <label class="checkbox checkbox-lg">
+          
+          @if($customer->can_access_satuan)
+        <input name="access" type="checkbox" checked="checked">
+        @else
+        <input name="access" type="checkbox">
+        @endif
+        <span></span>Berikan hak akses</label>
+      </div>
+      <span class="form-text text-muted">Centang untuk memberikan hak akses untuk mengubah satuan</span>
+    </div>
+     {{-- <div class="form-group">
+      <label>Rekening:</label>
+       <input type="text" class="form-control"  value="{{ $customer->rekening }}" name="rekening" placeholder="Input Nomor Rekening. . ."/>
+     </div>
+
+     <div class="form-group">
+      <label>Bank :</label>
+       <input type="text" class="form-control"  value="{{ $customer->bank }}" name="bank" placeholder="Input bank. . ."/>
+     </div>
+     
+     <div class="form-group">
+      <label>Rekening Atas Nama (a/n):</label>
+       <input type="text" name="rekeningatasnama"  value="{{ $customer->rekeningatasnama }}" class="form-control" placeholder="Input Nomor Atas Nama Rekening. . ."/>
+     </div> --}}
+   </div>
+   <div class="col-lg-6">
+     
+    <div class="form-group">
+      <label>Harga Koli Kecil:</label>
+      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_k }}" name="harga_koli_k" placeholder="Input harga koli kecil. . ." required/>
+    </div>
+    <div class="form-group">
+      <label>Harga Koli Sedang:</label>
+      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_s }}" name="harga_koli_s" placeholder="Input harga koli sedang. . ." required/>
+    </div>
+    
+    <div class="form-group">
+      <label>Harga Koli Besar:</label>
+      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_b }}" name="harga_koli_b" placeholder="Input harga koli besar. . ." required/>
+    </div>
+    
+    <div class="form-group">
+      <label>Harga Koli Besar banget:</label>
+      <input type="text" class="form-control rupiah"  value="{{ $customer->harga_koli_bb }}" name="harga_koli_bb" placeholder="Input harga koli besar banget. . ." required/>
+    </div>
 
     <div class="form-group">
       <label>Harga Out Area:</label>
@@ -133,21 +145,6 @@
       <label>Harga per Dokumen:</label>
        <input type="text" class="form-control rupiah"  value="{{ $customer->harga_doc }}" name="harga_doc" placeholder="Input harga_doc. . ." required/>
      </div>
-     
-     <div class="form-group">
-      <label>Hak Akses Mengubah Satuan</label>
-      <div class="checkbox-inline">
-        <label class="checkbox checkbox-lg">
-          
-          @if($customer->can_access_satuan)
-        <input name="access" type="checkbox" checked="checked">
-        @else
-        <input name="access" type="checkbox">
-        @endif
-        <span></span>Berikan hak akses</label>
-      </div>
-      <span class="form-text text-muted">Centang untuk memberikan hak akses untuk mengubah satuan</span>
-    </div>
     
     <div class="form-group">
       <label>Customer ini adalah agen</label>
