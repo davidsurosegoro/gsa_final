@@ -161,7 +161,7 @@
                         color: #856404;
                         background-color: #fff3cd;
                         border-color: #ffeeba;">
-                            <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col-2">
+                            <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col-2" style="object-fit: cover;">
                             <div class="col-10">
                                 Untuk kelancaran scan QR, Gunakan browser google chrome
                                 <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
@@ -198,7 +198,7 @@
                         color: #856404;
                         background-color: #fff3cd;
                         border-color: #ffeeba;">
-                            <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col-2">
+                            <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col-2" style="object-fit: cover;">
                             <div class="col-10">
                                 Untuk kelancaran scan QR, Gunakan browser google chrome
                                 <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
