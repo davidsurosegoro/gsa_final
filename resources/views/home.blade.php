@@ -166,7 +166,7 @@
                                 Untuk kelancaran scan QR, Gunakan browser google chrome
                                 <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
                                     click disini untuk download chrome
-                                </a>
+                                </a> atau download pada playstore/appstore
                             </div>
                         </div>
                     @endif 
@@ -203,7 +203,7 @@
                                 Untuk kelancaran scan QR, Gunakan browser google chrome
                                 <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
                                     click disini untuk download chrome
-                                </a>
+                                </a> atau download pada playstore/appstore
                             </div>
                         </div>
                     @endif 
