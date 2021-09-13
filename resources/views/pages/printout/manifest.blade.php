@@ -122,7 +122,7 @@
                                 <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
                             </tr>
                             <tr>
-                                <td style="width:2.4cm;"><b>Tgl Pengiriman </b></td>
+                                <td style="width:2.4cm;"><b>Tgl </b></td>
                                 <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
                             </tr>  
                         </table>

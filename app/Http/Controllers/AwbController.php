@@ -257,7 +257,7 @@ class AwbController extends Controller
     public function updatemanifestqr(Request $request)
     {
         $kode          = $request->kode;
-        $status        = Crypt::decrypt($request->status);
+        $status        = ($request->status_nonencrypt) ? $request->status_nonencrypt : Crypt::decrypt($request->status);
         $returnmessage = '';
         $typereturn    = ' ';
         $openmodal     = ($status == 'complete') ? 'open' : 'close';
@@ -288,11 +288,11 @@ class AwbController extends Controller
                 $manifest->save();
                 if($status == 'delivering' ||$status == 'arrived'){
                     $this->inserthistoryscan(0,   (($status == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+                    //---------------UPDATE STATUS_TRACKING DI TABLE AWB---------------------------------------------
                     DB::table('awb')->where('id_manifest', $manifest['id'])->update(['status_tracking' => (($status == 'delivering') ? 'loaded' : 'at-agen')]);
                 }
                 
                 $data['success'] = $manifest->wasChanged('status');
-                //---------------UPDATE STATUS_TRACKING DI TABLE AWB---------------------------------------------
                 $returnmessage = 'Update Kode MANIFEST ' . $kode . ' ke ' . $status . ', sukses di update!';
                 // echo($manifest['id']);
                 $typereturn    = 'statussuccess';
@@ -304,19 +304,30 @@ class AwbController extends Controller
     
     public function updateawb(Request $request)
     {
-        $kode          = $request->kode;
-        $qty           = $request->qty;
-        $status        = Crypt::decrypt($request->status);
-        $returnmessage = '';
-        $typereturn    = ' ';
-        $openmodal     = 'close';
-        $awb           = Awb::where('noawb', $request->kode)->first();
-
-        if (!$awb) {
+        $kode               = $request->kode;
+        $qty                = $request->qty;
+        $status             = ($request->status_nonencrypt) ? $request->status_nonencrypt : Crypt::decrypt($request->status);
+        $returnmessage      = '';
+        $typereturn         = ' ';
+        $openmodal          = 'close';
+        $awb                = Awb::where('noawb', $request->kode)->first();
+        $continue           = true; 
+        if(($status == 'loaded' || $status == 'at-agen' || $status == 'delivery-by-courier' || $status == 'complete') && $awb->id_manifest==0){
+            $continue      = false;
+            $returnmessage = 'Gagal ganti status, Kode AWB ' . $kode . ', Belum masuk di daftar manifest! ';
+            $typereturn    = 'statuswarning';
+        }
+        // dd($awb);
+        if(($awb->status_tracking == 'complete' || $awb->status_tracking == 'cancel')&& $continue == true){
+            $continue      = false;
+            $returnmessage = 'Kode AWB ' . $kode . ', Sudah berstatus ' .$awb->status_tracking . ', tidak bisa di rubah lagi!';
+            $typereturn    = 'statuswarning';
+        }
+        if (!$awb && $continue == true) {
             //JIKA KODE TIDAK DITEMUKAN----------------------------------------
             $returnmessage = 'Kode AWB ' . $kode . ' tidak ditemukan!';
             $typereturn    = 'statuserror';
-        } else if ($awb->id) {
+        } else if ($awb->id && $continue == true) {
 
             //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
             //------------HITUNG UNTUK MENDAPATKAN TOTAL QTY ORI--------------------------------
@@ -582,7 +593,28 @@ class AwbController extends Controller
                     return '<span class="badge badge-danger"><i class="fa fa-times-circle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
                 endif;
             })
-            ->rawColumns(['kota_tujuan', 'aksi', 'qty_stat', 'status_tracking'])
+            ->addColumn('gantistatus', function ($a) { 
+                $status_ = ((int) Auth::user()->level != 1 || $a['status_tracking'] == 'booked' || $a['status_tracking'] == 'cancel' || $a['status_tracking'] == 'complete' ) ? '': '
+                <button 
+                    type            = "button" 
+                    class           = "btn  btn-info openstatus"   
+                    idawb           = "' . $a['id'] . ' " 
+                    kodeawb         = "' . $a['noawb'] . ' " 
+                    tanggalawb      = "' . $a['tanggal_awb'] . ' " 
+                    kodekotaasal    = "' . $a['kota_asal'] . ' " 
+                    kodekotatujuan  = "' . $a['kota_tujuan'] . ' " 
+                    status          = "' . $a['status_tracking'] . '" 
+                    data-toggle     = "modal" 
+                    data-target     = ".bd-example-modal-lg_"> 
+                        <i class="fa fa-bars" aria-hidden="true"></i>  
+                </button>
+                ';
+                return '
+                <div class="btn-group" role="group" aria-label="Basic example"> 
+                    '.$status_.'
+                </div>';
+            })          
+            ->rawColumns(['kota_tujuan', 'aksi', 'qty_stat', 'status_tracking', 'gantistatus'])
             ->make(true);
     }
 

@@ -43,7 +43,7 @@
         </button>
       </div>
       <div class="modal-body row" > 
-        <form class="col-12 bg-light" style="padding-bottom:10px;" id="formmanifest_" method="post" action="{{url('master/manifest/updatestatus')}}">
+        <form class="col-12 bg-light" style="padding-bottom:10px;" id="formmanifest_" >
           {{ csrf_field() }}
           <div class="form-group">
             <table class="table table-striped table-hover table-bordered">
@@ -63,6 +63,7 @@
             </table>
             
             <input type="text" name="idmanifest" id="idmanifest" class="d-none"  > 
+            <input type="text" name="kodemanifest" id="kodemanifest" class="d-none"  > 
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect2">Status</label>
@@ -92,6 +93,7 @@
       $('#kodemanifest_'      ).html($(this).attr('kodemanifest'))
 
       $('#idmanifest'         ).val($(this).attr('idmanifest')) 
+      $('#kodemanifest'       ).val($(this).attr('kodemanifest')) 
       $("#status").val($(this).attr('status'));
 
       $('.options_').removeClass('d-none')
@@ -114,33 +116,39 @@
             showCancelButton    : true,   
             confirmButtonColor  : "#e6b034",   
             confirmButtonText   : "Ya, Rubah status ke - " +$('#status').val()                  
-          }).then((result) => {
+            }).then((result) => {
             console.log(result)
-          if (result.value) {
-            $.ajax({
-                type      : "POST",
-                url       : "{{url('master/manifest/updatestatus')}}",
-                dataType  : "json",
-                data      : $('#formmanifest_').serialize(),
-                success : function(response) {
-                    console.log(response)
-                    if(response && response.success && response.success=='success'){
-                      toastr.success("Status Manifest berhasil dirubah!");                  
-                      dt.ajax.reload();
-                      $('.bd-example-modal-lg').modal('toggle');
-                    }
-                    $(btnsave).prop('disabled', false);
-                },
-                error : function(jqXHR, textStatus, errorThrown) {
-                    alert(errorThrown)
-                }
-            });
-          } else{
-            $(btnsave).prop('disabled', false);
-
-          }
+            if (result.value) {
+                scan_update_status($('#kodemanifest').val()); 
+            } else{
+                $(btnsave).prop('disabled', false); 
+            }
         });
     })
+    function scan_update_status(kode_manifest){
+        $.ajax({
+            method  :'POST',
+            url     :'{{ url('awb/updatemanifestqr') }}',
+            data    :{
+                kode                : kode_manifest,
+                status_nonencrypt   : $('#status').val(),
+                '_token'            : "{{ csrf_token() }}" 
+            },
+            success:function(data){
+                $('#simpanbutton').prop('disabled', false);
+                $('#kode_manifest').val('')
+                dt.ajax.reload();
+                $('.bd-example-modal-lg').modal('toggle');
+                if(data.statuserror)    {toastr.error( data.statuserror)}
+                if(data.statuswarning)  { 
+                    toastr.warning( data.statuswarning) 
+                }
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess) 
+                }                   
+            }
+        }) 
+    } 
     var dt = $('#datatables').DataTable({
 	     processing : true,
 	     serverSide : false,

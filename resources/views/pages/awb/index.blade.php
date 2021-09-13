@@ -25,6 +25,9 @@
               <th>Qty Detail</th>
               <th>Status</th>
               <th>Qty</th>
+              @if ((int)Auth::user()->level == 1)                  
+                <th>Ubah status</th>
+              @endif
               <th>Aksi</th>
             </tr>
           </thead>
@@ -32,12 +35,88 @@
       </div>
   </div>
 </div>
+<div class="modal fade bd-example-modal-lg bd-example-modal-lg_" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Rubah Status Manifest</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body row" > 
+        <div class="col-12 bg-light" style="padding-bottom:10px;" id="formawb"  > 
+          <div class="form-group">
+            <table class="table table-striped table-hover table-bordered">
+              <tr>
+                <td>Kode : </td>
+                <td>Tanggal :</td> 
+                <td>Kota asal :</td> 
+                <td>Kota Tujuan :</td> 
+              </tr>
+              
+              <tr>
+                <td id='kodeawb_'></td>
+                <td id='tanggalawb_'></td> 
+                <td id='Kotaasal_'></td> 
+                <td id='kotatujuan_'></td> 
+              </tr>
+            </table>
+            
+            <input type="text" name="idawb_" id="idawb_" class="d-none"  > 
+            <input type="text" name="kodeawb_" id="kodeawb_" class="d-none"  > 
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect2">Status</label>
+            <select class="form-control" id="status" name="status">
+              <option class='options_'                              value=''>                     pilih status</option> 
+              <option class='options_' id='loaded'                  value='loaded'>               loaded</option> 
+              <option class='options_' id='at-agen'                 value='at-agen'>              at-agen</option> 
+              <option class='options_' id='delivery-by-courier'     value='delivery-by-courier'>  delivery-by-courier</option> 
+              <option class='options_' id='complete'                value='complete'>             complete</option>  
+            </select>
+          </div>
+          <div class="form-group" > 
+            <button type="button" class="pull-left btn btn-secondary" data-dismiss="modal">Close</button> 
+            <button type="submit" id='simpanbutton' class="btn btn-primary pull-right mr-2">SIMPAN</button>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
 @include('pages.awb.ajax.modal_koli')
 @include('pages.awb.ajax.modal_view')
 @endsection
 @section('script')
 <script>
-  
+  $(document).on("click",".openstatus",function() {
+      $('#Kotaasal_'          ).html($(this).attr('kodekotaasal'))
+      $('#kotatujuan_'        ).html($(this).attr('kodekotatujuan'))
+      $('#tanggalawb_'        ).html($(this).attr('tanggalawb'))
+      $('#kodeawb_'           ).html($(this).attr('kodeawb'))
+
+      $('#idawb_'        ).val($(this).attr('idawb')) 
+      $('#kodeawb_'      ).val($(this).attr('kodeawb')) 
+
+      // CEK, jika status adalah at manifest, booked, cancel, maka di set 0 (pilih status)
+      $("#status"        ).val(
+          (
+            ($(this).attr('status') !='at-manifest' && $(this).attr('status') !='booked' && $(this).attr('status') !='cancel') 
+            ? $(this).attr('status') 
+            : ''
+          )
+        );
+
+      // $('.options_').removeClass('d-none')
+      // if($(this).attr('status') == 'delivering'){
+      //   $('#checked').addClass('d-none')
+      // }
+      // else if($(this).attr('status') == 'arrived'){
+      //   $('#checked'   ).addClass('d-none')
+      //   $('#delivering').addClass('d-none')
+      // }
+    })
   var datatable = $('#datatables').DataTable({
 	    processing: true,
 	    serverSide: false,
@@ -53,6 +132,10 @@
 	    {data: 'qty_stat', name:'qty_stat'},
 	    {data: 'status_tracking', name:'status_tracking'},
 	    {data: 'qty', name:'qty'},
+      
+      @if ((int)Auth::user()->level == 1)                  
+        {data: 'gantistatus', name:'gantistatus'},
+      @endif
 	    {data: 'aksi', name:'aksi'},
 	],
 	 "order": [[ 0, "desc" ]],
@@ -62,7 +145,56 @@
                 }
             }
    });
-   datatable.column(0).visible(false);  
+   datatable.column(0).visible(false); 
+
+   
+   $('#simpanbutton').click(function(){
+    if($(`#status`).val() == ''){
+      toastr.warning("Pilih Status terlebih dahulu !") 
+    }else{
+
+      Swal.fire({   
+          title               : "Anda Yakin?",   
+          text                : "Merubah status AWB -> "+$('#kodeawb_').val()+", menjadi ("+$('#status').val()+") status yang sudah dirubah, tidak bisa dikembalikan lagi",   
+          icon                : "warning",   
+          showCancelButton    : true,   
+          confirmButtonColor  : "#e6b034",   
+          confirmButtonText   : "Ya, Rubah status ke - " +$('#status').val()                  
+        }).then((result) => {
+          console.log(result)
+        if (result.value) { 
+          scan_update_status($('#kodeawb_').val(),'all'); 
+        } else{
+          $(btnsave).prop('disabled', false);
+
+        }
+      });
+    }
+  })
+   function scan_update_status(kode_awb_or_manifest, qty){
+        $.ajax({
+            method  :'POST',
+            url     :'{{ url('awb/updateawb') }}',
+            data    :{
+                kode                : kode_awb_or_manifest,
+                qty                 : qty,
+                status_nonencrypt   : $(`#status`).val(),
+                '_token'            : "{{ csrf_token() }}" 
+            },
+            success:function(data){
+              datatable.ajax.reload();
+                $('.bd-example-modal-lg').modal('toggle');
+                $('#kode_awb').val('')
+                if(data.statuserror)    {toastr.error( data.statuserror)}
+                if(data.statuswarning)  { 
+                    toastr.warning( data.statuswarning) 
+                }
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess) 
+                }       
+            }
+        }) 
+    } 
    function deleteAwb(id,noawb)
     {
          Swal.fire({   

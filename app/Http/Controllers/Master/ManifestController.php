@@ -110,19 +110,22 @@ class ManifestController extends Controller
     }
     public function updatestatus(Request $request)
     { 
-        $manifest = Manifest::where('id',$request['idmanifest'])->first(); 
-        $manifest->status = $request['status'];
-        if($request['status'] == 'arrived'){
+        // $manifest = Manifest::where('id',$request['idmanifest'])->first(); 
+        // if($manifest->status == 'arrived' && $request['status'] == 'delivering'){
+        //     return response()->json(array('success' => 'Manifest sudah ber status arrived! tidak bisa dikembalikan ke delivering'));
+        // }
+        // $manifest->status = $request['status'];
+        // if($request['status'] == 'arrived'){
             
-            $manifest->discan_terima_oleh        = (int) Auth::user()->id;
-            $manifest->discan_diterima_oleh_nama = Auth::user()->nama.' (Update status manual)';
-            $manifest->tanggal_diterima          = Carbon::now()->addHours(7);
-        }
-        $manifest->save();
-        if($request['status'] == 'delivering' || $request['status'] == 'arrived'){
-            app('App\Http\Controllers\AwbController')->inserthistoryscan(0,(( $request['status'] == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
-        }
-        return response()->json(array('success' => 'success'));
+        //     $manifest->discan_terima_oleh        = (int) Auth::user()->id;
+        //     $manifest->discan_diterima_oleh_nama = Auth::user()->nama.' (Update status manual)';
+        //     $manifest->tanggal_diterima          = Carbon::now()->addHours(7);
+        // }
+        // $manifest->save();
+        // if($request['status'] == 'delivering' || $request['status'] == 'arrived'){
+        //     app('App\Http\Controllers\AwbController')->inserthistoryscan(0,(( $request['status'] == 'delivering') ? 'loaded' : 'at-agen'),   $manifest['id'] );
+        // }
+        // return response()->json(array('success' => 'success'));
     }
     public function save(Request $request)
     {    
