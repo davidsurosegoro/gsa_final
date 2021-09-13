@@ -134,7 +134,10 @@
         @for($i = 1; $i <= $qty_umum; $i++)
             <div class="card page">
                 <div class="card-header  " style="padding:0px !important; display: flex;">  
-                    <div class="col-7 text-center" style=" padding:1px;">
+                    <div class="col-7 text-center" style=" padding:1px;position:relative;">
+                        @if ($awb[0]->ada_faktur == 1)                                            
+                        <span style="border:1px solid black; width:1.5cm; position:absolute; top:0px; left:0px;" class="col-">Faktur</span>
+                        @endif
                         <img src='{{asset('assets/gsa/logo.jpg')}}' style="width:1.5cm;" class="col-">
                         <p class="col-12 font-weight-bold" style="font-size:0.2cm;padding:0px; margin:0px;">GLOBAL SERVICE ASIA</p>
                         <p class="col-12" style="font-size:0.2cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        

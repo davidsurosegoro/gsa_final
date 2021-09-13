@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '3e9cf3d10078bf3e1cc7b10e09deaefa055d7a6f',
+    'reference' => 'b066879ef975f7f56b8f48549c73c40f4643c1b4',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -37,6 +37,15 @@
       array (
       ),
       'reference' => 'dff976c2f3487d42c1db75a3b180e2b9f0e72ce0',
+    ),
+    'composer/ca-bundle' => 
+    array (
+      'pretty_version' => '1.2.10',
+      'version' => '1.2.10.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9fdb22c2e97a614657716178093cd1da90a64aa8',
     ),
     'cordoval/hamcrest-php' => 
     array (
@@ -204,6 +213,15 @@
       array (
       ),
       'reference' => '8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
+    ),
+    'hisorange/browser-detect' => 
+    array (
+      'pretty_version' => '4.4.0',
+      'version' => '4.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '4f1fb99a8ecb5d28117f9a44874ff9a1fd7d1a61',
     ),
     'illuminate/auth' => 
     array (
@@ -408,6 +426,15 @@
         0 => 'v7.30.4',
       ),
     ),
+    'jaybizzle/crawler-detect' => 
+    array (
+      'pretty_version' => 'v1.2.106',
+      'version' => '1.2.106.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '78bf6792cbf9c569dc0bf2465481978fd2ed0de9',
+    ),
     'kodova/hamcrest-php' => 
     array (
       'replaced' => 
@@ -431,7 +458,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '3e9cf3d10078bf3e1cc7b10e09deaefa055d7a6f',
+      'reference' => 'b066879ef975f7f56b8f48549c73c40f4643c1b4',
     ),
     'laravel/tinker' => 
     array (
@@ -478,6 +505,15 @@
       ),
       'reference' => '3b9dff8aaf7323590c1d2e443db701eb1f9aa0d3',
     ),
+    'league/pipeline' => 
+    array (
+      'pretty_version' => '1.0.0',
+      'version' => '1.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8',
+    ),
     'livewire/livewire' => 
     array (
       'pretty_version' => 'v2.4.4',
@@ -486,6 +522,24 @@
       array (
       ),
       'reference' => '33101c83b75728651b9e668a4559f97def7c9138',
+    ),
+    'matomo/device-detector' => 
+    array (
+      'pretty_version' => '4.3.0',
+      'version' => '4.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3fcceafc601444412ce65297ba4ce878ee77e450',
+    ),
+    'mobiledetect/mobiledetectlib' => 
+    array (
+      'pretty_version' => '2.8.37',
+      'version' => '2.8.37.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9841e3c46f5bd0739b53aed8ac677fa712943df7',
     ),
     'mockery/mockery' => 
     array (
@@ -504,6 +558,15 @@
       array (
       ),
       'reference' => '1cb1cde8e8dd0f70cc0fe51354a59acad9302084',
+    ),
+    'mustangostang/spyc' => 
+    array (
+      'pretty_version' => '0.6.3',
+      'version' => '0.6.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '4627c838b16550b666d15aeae1e5289dd5b77da0',
     ),
     'myclabs/deep-copy' => 
     array (
@@ -670,6 +733,13 @@
       array (
       ),
       'reference' => '038d4196d8e8cb405cd5e82cedfe413ad6eef9ef',
+    ),
+    'piwik/device-detector' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '4.3.0',
+      ),
     ),
     'psr/container' => 
     array (
@@ -1197,6 +1267,15 @@
       array (
       ),
       'reference' => 'b43b05cf43c1b6d849478965062b6ef73e223bb5',
+    ),
+    'ua-parser/uap-php' => 
+    array (
+      'pretty_version' => 'v3.9.14',
+      'version' => '3.9.14.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b796c5ea5df588e65aeb4e2c6cce3811dec4fed6',
     ),
     'vlucas/phpdotenv' => 
     array (

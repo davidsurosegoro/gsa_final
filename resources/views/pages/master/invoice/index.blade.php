@@ -151,7 +151,7 @@
          
       
           {data: 'kode',              name:'kode'},  
-          {data: 'namacustomer',      name:'namacustomer'},  
+          {data: 'nama_pengirim_link',name:'nama_pengirim_link'},  
           {data: 'tanggal_invoice',   name:'tanggal_invoice'},  
           {data: 'namauser',          name:'namauser'},  
           {data: 'total_koli',        name:'total_koli'},  

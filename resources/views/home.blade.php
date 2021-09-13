@@ -155,6 +155,22 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    
+                    @if (Browser::isChrome() ) 
+                        <div class="alert alert-alert row" style="
+                        color: #856404;
+                        background-color: #fff3cd;
+                        border-color: #ffeeba;">
+                            <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col-2">
+                            <div class="col-10">
+                                Untuk kelancaran scan QR, Gunakan browser google chrome
+                                <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
+                                    click disini untuk download chrome
+                                </a>
+                            </div>
+                        </div>
+                    @endif 
+
                     {{-- <a  href="{{ url('scannerawb/'.Crypt::encrypt('at-manifest').'') }}"            class="btn btn-primary btn-lg btn-block"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;Scan tiba di-manifest</a>  --}}
                     <a  href="{{ url('scannerawb/'.Crypt::encrypt('loaded').'') }}"                 class="btn btn-primary btn-lg btn-block"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;Scan Loading ke truck</a> 
                     <a  href="{{ url('scannerawb/'.Crypt::encrypt('delivery-by-courier').'') }}"    class="btn btn-primary btn-lg btn-block"><i class="fa fa-motorcycle" aria-hidden="true"></i> &nbsp;Scan pengantaran ke tujuan</a> 

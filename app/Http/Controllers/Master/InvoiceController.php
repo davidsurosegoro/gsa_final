@@ -74,6 +74,9 @@ class InvoiceController extends Controller
                '.$edit.'
             </div>';
         })          
+        ->addColumn('nama_pengirim_link', function ($a) { 
+            return '<a target="blank" href="'.url('master/customer/edit/'.$a['id_customer']).'">' . $a['namacustomer'] . '</a>';
+        })
         ->addColumn('status_info', function ($a) { 
             $status='<span class="badge badge-danger"> <i class="fa fa-remove"  style="color:white;"></i>&nbsp;'.$a['status'].'</span>';
             if($a['status']=='paid'){
@@ -81,7 +84,7 @@ class InvoiceController extends Controller
             } 
             return $status;
         })          
-        ->rawColumns(['aksi','status_info'])
+        ->rawColumns(['aksi','status_info','nama_pengirim_link'])
         ->make(true); 
     }
     public function grouping()

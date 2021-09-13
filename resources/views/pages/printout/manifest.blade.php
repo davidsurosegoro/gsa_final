@@ -12,6 +12,9 @@
             table, th, td {
                 border: 1px solid black;
             }
+            .showonprint{
+                display: none;
+            }
             @page {
                 size: A4;
                 margin: 0;
@@ -25,6 +28,9 @@
                 body {
                     width: 210mm;
                     height: 297mm;
+                }
+                .showonprint{
+                    display: block !important;
                 }
                 .page {
                     margin: 0px !important;
@@ -189,7 +195,10 @@
                                 ?>
                                 <tr style="padding:0px;">
                                     <td class='text-center' style="padding:5px;">{{ $loop->index+1 }}</td>   
-                                    <td style="padding:5px;">{{$item->noawb}}</td> 
+                                    <td style="padding:5px;">
+                                        <a href="{{ url('t/'.$item['noawb'].'/t/0')}}" target="_blank" class="d-print-none">{{$item->noawb}}</a>
+                                        <span class="showonprint">{{$item->noawb}}</span>
+                                    </td> 
                                     <td style="padding:5px;" class='text-left'>{{$item->namacust}}</td> 
                                     <td style="padding:5px;" class='text-left'>{{$item->nama_penerima}}</td> 
                                     <td style="padding:5px;">{{$item->kotatujuan}}</td> 

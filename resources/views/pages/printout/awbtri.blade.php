@@ -46,6 +46,7 @@
                 .card{ 
                 }
             } 
+            
             body {
                 background-color: #000;
             } 
@@ -118,7 +119,7 @@
                             </table>
                         </div>
                         <div class="col-2 text-center" >
-                            {!! QrCode::size(95)->generate(url('/t/'.$awb[0]->noawb.'/t/0')); !!} 
+                            {!! QrCode::size(95)->generate(url('/t/'.$awb[0]->noawb.'/t/0')); !!}  
                         </div>
                         <table class="table-striped table-bordered col-3"  >
                             <thead>
@@ -178,6 +179,11 @@
                             <div class="col-6" style="padding:0px;">
                                 <table  class="col-12 table-bordered"  style="font-size:0.35cm; border-right:0px !important;">
                                     <tr>
+                                        <th colspan='6' style="font-style:italic;font-weight:bold;text-align:center;">
+                                            ** QR CODE TIDAK UNTUK DISCAN MERUBAH STATUS**
+                                        </th>
+                                    </tr>
+                                    <tr>
                                         <th colspan='6' style="font-style:italic;font-weight:bold;text-align:center;
                                             @if ($i==0)
                                                 background-color:#c5ffe1;
@@ -228,9 +234,9 @@
                                         {{-- <th colspan='5'>Quantity:</th> --}}
                                     </tr>
                                     <tr class="text-center">
-                                        <th width='33.3%' style="padding-top:3.3cm;">MARKETING<br>(David suro)</th> 
-                                        <th width='33.3%' style="padding-top:3.3cm;">CUSTOMER<br>(David suro)</th> 
-                                        <th width='33.3%' style="padding-top:3.3cm;">PENERIMA<br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</th>  
+                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">MARKETING<br>(David suro)</th> 
+                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">CUSTOMER<br>(<i>{{ $awb[0]->nama_pengirim }}</i>)</th> 
+                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">PENERIMA<br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</th>  
                                     </tr>  
                                 </table>
                             </div> 

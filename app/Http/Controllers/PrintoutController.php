@@ -114,7 +114,7 @@ class PrintoutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function awb($id)
-    {
+    {   $id = Crypt::decrypt($id);
         $awb = DB::SELECT("SELECT
                             a.*,
                             k1.kode AS kota_tujuan_kode,
@@ -133,7 +133,7 @@ class PrintoutController extends Controller
         return view("pages.printout.awb",compact('awb' ));
     }
     public function awbtri($id)
-    {
+    {   $id = Crypt::decrypt($id);
         $awb = DB::SELECT("SELECT
                             a.*,
                             k1.kode AS kota_tujuan_kode,

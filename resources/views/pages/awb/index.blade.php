@@ -118,20 +118,21 @@
       // }
     })
   var datatable = $('#datatables').DataTable({
-	    processing: true,
-	    serverSide: false,
-	    paging:true,
-	    ajax: '{{ url('awb/datatables') }}',
+	    processing    : true,
+	    serverSide    : false,
+	    paging        : true,      
+      pageLength    : 100,
+	    ajax          : '{{ url('awb/datatables') }}',
 	    columns: [
-	    {data: 'id', name:'id'},
-	    {data: 'noawb', name:'noawb'},
-	    {data: 'nama_pengirim', name:'nama_pengirim'},
-	    {data: 'kota_asal', name:'kota_asal'},
-	    {data: 'kota_tujuan', name:'kota_tujuan'},
-	    {data: 'tanggal_awb', name:'tanggal_awb'},
-	    {data: 'qty_stat', name:'qty_stat'},
+	    {data: 'id',              name:'id'},
+	    {data: 'noawb',           name:'noawb'},
+	    {data: 'nama_pengirim_link',   name:'nama_pengirim_link'},
+	    {data: 'kota_asal',       name:'kota_asal'},
+	    {data: 'kota_tujuan',     name:'kota_tujuan'},
+	    {data: 'tanggal_awb',     name:'tanggal_awb'},
+	    {data: 'qty_stat',        name:'qty_stat'},
 	    {data: 'status_tracking', name:'status_tracking'},
-	    {data: 'qty', name:'qty'},
+	    {data: 'qty',             name:'qty'},
       
       @if ((int)Auth::user()->level == 1)                  
         {data: 'gantistatus', name:'gantistatus'},

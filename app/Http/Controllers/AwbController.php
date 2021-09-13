@@ -505,6 +505,7 @@ class AwbController extends Controller
                 'id'              => $a->id,
                 'noawb'           => $a->noawb,
                 'nama_pengirim'   => $a->nama_pengirim,
+                'id_customer'     => $a->id_customer,
                 'kota_asal'       => $a->kota_asal,
                 'kota_tujuan'     => $a->kota_tujuan,
                 'kota_transit'    => $a->kota_transit,
@@ -534,10 +535,10 @@ class AwbController extends Controller
                             <i class="flaticon-edit-1" ></i>
                         </a>
                         <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="updateManifest(' . $a['id'] . ',`' . $a['noawb'] . '`)" data-placement="bottom" title="Ubah ke Manifested"><i class="flaticon-truck"> </i></button>
-                        <a href=' . url('printout/awb/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
+                        <a href=' . url('printout/awb/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                         <i class="flaticon2-print" ></i>
                         </a>
-                        <a href=' . url('printout/awbtri/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
+                        <a href=' . url('printout/awbtri/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
                         <i class="fas fa-print" ></i>
                         </a>
                         <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button>
@@ -555,11 +556,11 @@ class AwbController extends Controller
                 elseif ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level == 1):
 
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                        <a href=' . url('printout/awb/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
+                        <a href=' . url('printout/awb/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                         <i class="flaticon2-print" ></i>
                         </a>
                         
-                        <a href=' . url('printout/awbtri/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
+                        <a href=' . url('printout/awbtri/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
                         <i class="fas fa-print" ></i>
                         </a>
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
@@ -584,6 +585,9 @@ class AwbController extends Controller
                     $string .= '<span class="label label-info label-inline mr-2">Transit ' . $a['kota_transit'] . '</span>';
                 endif;
                 return $string;
+            })
+            ->addColumn('nama_pengirim_link', function ($a) { 
+                return '<a target="blank" href="'.url('master/customer/edit/'.$a['id_customer']).'"> ' . $a['nama_pengirim'] . '</a>';
             })
             ->editColumn('status_tracking', function ($a) {
                 if ($a['status_tracking'] == 'booked'):
@@ -623,7 +627,7 @@ class AwbController extends Controller
                     '.$status_.'
                 </div>';
             })          
-            ->rawColumns(['kota_tujuan', 'aksi', 'qty_stat', 'status_tracking', 'gantistatus'])
+            ->rawColumns(['kota_tujuan', 'aksi', 'qty_stat', 'status_tracking', 'gantistatus', 'nama_pengirim_link'])
             ->make(true);
     }
 
