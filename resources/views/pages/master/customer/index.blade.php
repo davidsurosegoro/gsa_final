@@ -21,9 +21,9 @@
               <th>Kode</th>
               <th>Alamat</th>
               <th>No Telp</th>
-              <th>Nomor Rekening</th>
+              {{-- <th>Nomor Rekening</th>
               <th>Atas Nama (a/n)</th>
-              <th>Bank</th>
+              <th>Bank</th> --}}
               <th>Akses Satuan</th>
               <th>Aksi</th>
             </tr>
@@ -86,9 +86,9 @@
 	     {data: 'kode', name:'kode'},
 	     {data: 'alamat', name:'alamat'},
 	     {data: 'notelp', name:'notelp'},
-	     {data: 'rekening', name:'rekening'},
-	     {data: 'rekeningatasnama', name:'rekeningatasnama'},
-	     {data: 'bank', name:'bank'},
+	    //  {data: 'rekening', name:'rekening'},
+	    //  {data: 'rekeningatasnama', name:'rekeningatasnama'},
+	    //  {data: 'bank', name:'bank'},
 	     {data: 'akses_satuan', name:'akses_satuan'},
 	     {data: 'aksi', name:'aksi'},
 	 ],

@@ -521,9 +521,12 @@ class AwbController extends Controller
         endforeach;
         return Datatables::of($awbs)
             ->addColumn('aksi', function ($a) {
-                if ($a['status_tracking'] !== 'booked' && (int) (int) Auth::user()->level !== 1):
+                if ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level !== 1):
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="modal" data-target="#modal-show" onClick="detail(' . $a['id'] . ',`' . $a['noawb'] . '`)" data-placement="bottom" title="Lihat Data"><i class="flaticon-eye"> </i></button>
+                        <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
+                        <i class="fas fa-map-marked-alt" ></i>
+                        </a>
                         </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int) Auth::user()->level == 1):
                     return '<div class="btn-group" role="group" aria-label="Basic example">
@@ -531,8 +534,11 @@ class AwbController extends Controller
                             <i class="flaticon-edit-1" ></i>
                         </a>
                         <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="updateManifest(' . $a['id'] . ',`' . $a['noawb'] . '`)" data-placement="bottom" title="Ubah ke Manifested"><i class="flaticon-truck"> </i></button>
-                        <a href=' . url('printout/awb/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
+                        <a href=' . url('printout/awb/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                         <i class="flaticon2-print" ></i>
+                        </a>
+                        <a href=' . url('printout/awbtri/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
+                        <i class="fas fa-print" ></i>
                         </a>
                         <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button>
                         <a href=' . url('awb/edit/' . $a['id'] . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
@@ -549,13 +555,16 @@ class AwbController extends Controller
                 elseif ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level == 1):
 
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                        <a href=' . url('awb/edit/' . $a['id'] . '/edit') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
-                            <i class="flaticon-edit-1" ></i>
-                        </a>
-                        <a href=' . url('printout/awb/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
+                        <a href=' . url('printout/awb/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                         <i class="flaticon2-print" ></i>
                         </a>
-
+                        
+                        <a href=' . url('printout/awbtri/' . $a['id']) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
+                        <i class="fas fa-print" ></i>
+                        </a>
+                        <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
+                        <i class="fas fa-map-marked-alt" ></i>
+                        </a>
                         <a href=' . url('awb/edit/' . $a['id'] . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
                         <i class="flaticon-exclamation" ></i>
                         </a>

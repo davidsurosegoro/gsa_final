@@ -77,7 +77,7 @@
 @endsection
 @section('script')
 <script>
-  
+
   $(document).on({
       ajaxStart: function() { loadPanel.show(); },
       ajaxStop: function() { loadPanel.hide(); }    
@@ -350,6 +350,21 @@
                     dataField: "kode_invoice",
                     dataType: "number",
                     width:150,
+                },
+                {
+                    caption: "Status Pembayaran",
+                    dataField: "status_pembayaran",
+                    dataType: "number",
+                    width:150,
+                    cellTemplate: function (container, options) {
+                      console.log(options.data)
+                      if(options.data.status_pembayaran == '' || options.data.status_pembayaran == 'unpaid'){
+                        $(container).html(`<span class="badge badge-danger"><i class="flaticon2-cross" style="color:white;"></i>Unpaid</span>`)
+                      }
+                      else{
+                        $(container).html(`<span class="badge badge-success"><i class="flaticon2-checkmark" style="color:white;"></i>Paid</span>`)
+                      }
+                    },
                 },
                 
             ],

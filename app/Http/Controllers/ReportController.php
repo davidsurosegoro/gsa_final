@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\ViewReportAwb;
 use App\ViewReportManifest;
 use App\ViewReportInvoice;
+use Illuminate\Support\Collection;
 
 class ReportController extends Controller
 {
@@ -35,6 +36,9 @@ class ReportController extends Controller
         })
         ->when(request('status_tracking') !== '-', function ($q) {
             return $q->where('status_tracking', '=',request('status_tracking'));
+        })
+        ->when(request('noawb') !== null, function($q){
+            return $q->where('noawb','like','%'.strtoupper(request('noawb')).'%');
         });
         $awbs = $query->where('tanggal_awb','>=',$periode[0])->where('tanggal_awb','<=',$periode[1])->get();
         $data['data']= $awbs;
@@ -60,6 +64,9 @@ class ReportController extends Controller
         })
         ->when(request('status') !== '-', function ($q) {
             return $q->where('status', '=',request('status'));
+        })
+        ->when(request('kode_manifest') !== null, function($q){
+            return $q->where('kode','like','%'.strtoupper(request('kode_manifest')).'%');
         });
         $awbs = $query->where('created_at','>=',$periode[0])->where('created_at','<=',$periode[1])->get();
         $data['data']= $awbs;
@@ -84,9 +91,40 @@ class ReportController extends Controller
         })
         ->when(request('status') !== '-', function ($q) {
             return $q->where('status', '=',request('status'));
+        })
+        ->when(request('kode_invoice') !== null, function($q){
+            return $q->where('kode','like','%'.strtoupper(request('kode_invoice')).'%');
         });
         $awbs = $query->where('tanggal_invoice','>=',$periode[0])->where('tanggal_invoice','<=',$periode[1])->get();
         $data['data']= $awbs;
         return response()->json($data);
+    }
+
+    public function bonus(){
+        $agen = Agen::orderBy('nama','asc')->get();
+        return view('pages.report.bonus',compact('agen'));
+    }
+
+    public function bonus_grid(Request $request){
+        $period = explode(" - ", $request->tanggal);
+        $periode = [Carbon::createFromFormat('d/m/Y', $period[0])->toDateString(), Carbon::createFromFormat('d/m/Y', $period[1])->toDateString()];
+        $query = ViewReportAwb::query();
+        $query->when(request('id_agen_asal') !== '-', function ($q) {
+            return $q->where('id_agen_asal', '=',request('id_agen_asal'));
+        })
+        ->when(request('id_agen_tujuan') !== '-', function ($q) {
+            return $q->where('id_agen_tujuan', '=',request('id_agen_tujuan'));
+        });
+        $awbs = $query->where('tanggal_awb','>=',$periode[0])->where('tanggal_awb','<=',$periode[1])->get();
+        $collection = new Collection;
+        foreach($awbs as $a):
+            $this->hitungBonus($a);
+        endforeach;
+        $data['data']= $awbs;
+        return response()->json($data);
+    }
+
+    private function hitungBonus($awb){
+        
     }
 }

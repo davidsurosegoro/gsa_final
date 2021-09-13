@@ -283,7 +283,7 @@ tr.details td.details-control {
         <script src="{{ asset('assets/js/pages/features/miscellaneous/toastr.js')}}"></script>
         <!--end::Page Vendors-->
         <!--begin::Page Scripts(used by this page)-->
-        <script src={{ asset('assets/js/pages/autoNumeric.js') }}></script>
+        <script src={{ asset('assets/js/pages/jquery.number.js') }}></script>
         <script src="{{ asset('assets/js/pages/widgets.js')}}"></script>
         <script src="{{ asset('assets/plugins/devex/js/jszip.min.js')}}"></script>
         <script src="{{ asset('assets/plugins/devex/js/dx.all.js')}}"></script>
@@ -341,13 +341,7 @@ tr.details td.details-control {
             $('.select2').select2({
         });
             var base_url = '{{ env('APP_URL').'/' }}';
-            $('.rupiah').autoNumeric({
-                allowDecimalPadding: false,
-                alwaysAllowDecimalCharacter: true,
-                decimalCharacterAlternative: ".",
-                decimalPlaces: 0,
-                outputFormat:'number'
-            })
+            $('.rupiah').number(true)
             
 var loadPanel = $(".loadpanel").dxLoadPanel({
         shadingColor: "rgba(0,0,0,0.4)",
