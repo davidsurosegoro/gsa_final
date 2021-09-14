@@ -16,10 +16,14 @@
               <div class="col-lg-3">
                 <label class="font-weight-bold mt-5">Customer:</label><br>
                 <select class="form-control select2" name="id_customer" id="id_customer">
+                  @if((int) Auth::user()->level == 1)
                   <option value="-">--Tampil Semua--</option>
                   @foreach($customer as $c)
                     <option value="{{ $c->id }}">{{ $c->nama }}</option>
                   @endforeach
+                  @elseif((int) Auth::user()->level == 2)
+                    <option value="{{ $customer->id }}">{{ $customer->nama }} </option>
+                  @endif
                 </select>
               </div>
               <div class="col-lg-6">

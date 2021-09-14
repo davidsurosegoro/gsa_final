@@ -336,7 +336,11 @@
                 $('#doc').html(data.awb.qty_doc)
                 $('#kg').html(data.awb.qty_kg)
                 $('#qty').html(data.awb.qty)
-                $('#noawb_koli').html(data.awb.noawb)
+                $('.total_harga').html(data.awb.total_harga)
+                $('.total_oa').html(data.awb.idr_oa).number(true)
+                $('#noawb_koli').html(data.awb.noawb).number(true)
+                $('.total_harga').number(true)
+                $('.total_oa').number(true)
               } 
             })
     }

@@ -159,13 +159,15 @@ Route::middleware(['auth','admin.customer'])->prefix('awb')->group(function () {
 	Route::post('/updatetomanifest','AwbController@updatetomanifest');
 });
 
-Route::middleware(['auth','admin'])->prefix('report')->group(function(){
+Route::middleware(['auth'])->prefix('report')->group(function(){
 	Route::get('awb','ReportController@awb');
 	Route::post('awb-grid','ReportController@awb_grid');
 	Route::get('manifest','ReportController@manifest');
 	Route::post('manifest-grid','ReportController@manifest_grid');
 	Route::get('invoice','ReportController@invoice');
 	Route::post('invoice-grid','ReportController@invoice_grid');
+	Route::get('bonus','ReportController@bonus');
+	Route::post('bonus-grid','ReportController@bonus_grid');
 });
 
 Route::prefix('ajax')->group(function () {
