@@ -318,7 +318,7 @@ class AwbController extends Controller
             $typereturn    = 'statuswarning';
         }
         // dd($awb);
-        if(($awb->status_tracking == 'complete' || $awb->status_tracking == 'cancel')&& $continue == true){
+        if(($awb->status_tracking == 'complete' || $awb->status_tracking == 'cancel')&& $continue == true && $status!= 'complete'){
             $continue      = false;
             $returnmessage = 'Kode AWB ' . $kode . ', Sudah berstatus ' .$awb->status_tracking . ', tidak bisa di rubah lagi!';
             $typereturn    = 'statuswarning';
