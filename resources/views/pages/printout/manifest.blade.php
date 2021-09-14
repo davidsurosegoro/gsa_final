@@ -120,15 +120,15 @@
                     <div class="col-sm-3" style="padding:0px;">
                         <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm; border-right:0px !important;">
                             <tr>
-                                <td style="width:2.4cm;"><b>NO.</b></td>
+                                <td ><b>NO.</b></td>
                                 <td>&nbsp;{{$manifest->kode}}</td>
                             </tr>
                             <tr>
-                                <td style="width:2.4cm;"><b>Asal </b></td>
+                                <td ><b>Asal </b></td>
                                 <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
                             </tr>
                             <tr>
-                                <td style="width:2.4cm;"><b>Tgl </b></td>
+                                <td ><b>Tgl </b></td>
                                 <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
                             </tr>  
                         </table>
@@ -148,7 +148,7 @@
                                 <td>&nbsp;{{$manifest->supir}}</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Diterima Oleh(agen)</b></td>
+                                <td style="width:3cm;"><b>Diterima agen</b></td>
                                 <td>&nbsp;{{$manifest->namaagen}}</td>
                             </tr>
                         </table>
@@ -170,13 +170,13 @@
                                     <th  style="width:0.5cm;padding:0.1cm;">KL</th> 
                                     <th  style="width:0.5cm;padding:0.1cm;">KG</th> 
                                     <th  style="width:0.5cm;padding:0.1cm;">Doc</th> 
-                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>  
+                                    {{-- <th rowspan="2" style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>   --}}
                                     <th rowspan="2" style="width:1cm;padding:0.1cm;">KET</th> 
                                 </tr>
                                 <tr>
-                                    <td>{{$manifest->jumlah_koli}}</td>
-                                    <td>{{$manifest->jumlah_kg}}</td>
-                                    <td>{{$manifest->jumlah_doc}}</td>
+                                    <td class="text-center">{{$manifest->jumlah_koli}}</td>
+                                    <td class="text-center">{{$manifest->jumlah_kg}}</td>
+                                    <td class="text-center">{{$manifest->jumlah_doc}}</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -211,7 +211,7 @@
                                     </td> 
                                     <td style="padding:5px;" class='text-center'>{{$item->qty_kg}}</td> 
                                     <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td> 
-                                    <td style="padding:5px;">{{$item->nama_penerima}} </td>  
+                                    {{-- <td style="padding:5px;">{{$item->nama_penerima}} </td>   --}}
                                     <td style="padding:5px;position:relative !important;">
                                         {{$item->keterangan}}{{$item->qtyloaded}}
                                         

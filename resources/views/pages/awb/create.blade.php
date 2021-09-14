@@ -449,6 +449,10 @@
 @endsection
 @section('script')
 <script>
+  
+  $('form').submit(function(){
+      $('body').find('button[type=submit]').prop('disabled', true);
+  });
   $('#customer-biasa').hide();
   // $('#kota_asal').on('change',function(){
   //   $.ajax({

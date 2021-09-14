@@ -468,6 +468,11 @@ class AwbController extends Controller
             $awb->save();
             $this->inserthistoryscan($awb->id,'at-manifest',0);
             $returnmessage = 'Status AWB berhasil dirubah ke "at-manifest"';
+        }else{
+            
+            $qty_count_manifest = Historyscanawb::where('tipe',    '=', 'at-manifest')->where('idawb',   '=', $awb->id)->count();
+            dd($qty_count_manifest);
+            $this->inserthistoryscan($awb->id,'at-manifest',0);
         }
         // else if($awb->status_tracking == 'at-manifest'){
         //     $returnmessage      = 'Status AWB sudah '.$awb->status_tracking;
@@ -533,8 +538,7 @@ class AwbController extends Controller
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         <a href=' . url('awb/edit/' . $a['id'] . '/edit') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                             <i class="flaticon-edit-1" ></i>
-                        </a>
-                        <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="updateManifest(' . $a['id'] . ',`' . $a['noawb'] . '`)" data-placement="bottom" title="Ubah ke Manifested"><i class="flaticon-truck"> </i></button>
+                        </a>                        
                         <a href=' . url('printout/awb/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                         <i class="flaticon2-print" ></i>
                         </a>

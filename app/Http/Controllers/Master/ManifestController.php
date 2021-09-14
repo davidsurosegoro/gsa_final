@@ -164,8 +164,7 @@ class ManifestController extends Controller
         foreach ($data['awb'] as $item){  
             $item['id_manifest']     = $manifest['id'];
             // $item['status_tracking'] = 'at-manifest';            
-            $item->save();
-            echo $item;
+            $item->save(); 
         }
         $data['awb_update'] =  Awb::select(DB::raw("customer.id as idcust,ROUND((customer.harga_oa / count(awb.id)),2) as dividedoa,count(awb.id) as total"))
                     ->join  ("customer as customer",  'customer.id',    '=', 'awb.id_customer')
@@ -219,7 +218,7 @@ class ManifestController extends Controller
                                     })
                         ->orderBy("awb.id_customer" , "desc")                                    
                         ->get(); 
-        // echo $data['awb'];
+        
         return view("pages.master.manifest.edit",$data);
         //
     }
@@ -242,10 +241,7 @@ class ManifestController extends Controller
                                     })
                         ->groupBy("kotaasal.kode" , "kotatujuan.kode","kotaasal.id" , "kotatujuan.id")
                         ->get(); 
-        // echo Carbon::now()->hour(16)->minute(0)->second(0);
-        // echo Carbon::now()->addHours(7);
-        // echo Carbon::now()->hour(16)->minute(0)->second(0).'<br>';
-        // echo Carbon::yesterday()->hour(16)->minute(0)->second(0);
+       
         return view("pages.master.manifest.grouping",$data);
     }
     /**

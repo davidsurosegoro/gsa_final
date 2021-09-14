@@ -291,6 +291,17 @@
                     width:170,
                 },
                 {
+                    caption: "OA/tidak",
+                    dataField: "charge_oa", 
+                    cellTemplate: function (container, options) {
+                      console.log(options.data.charge_oa)
+                      if(options.data.charge_oa == 1){                        
+                        $(container).html(`<span class="badge badge-success">OA</span>`)
+                      }
+                    },
+                    width:100,
+                },
+                {
                     caption: "QTY",
                     dataField: "qty",
                     dataType: "number",
@@ -330,6 +341,13 @@
                     caption: "koli doc",
                     dataField: "qty_doc",
                     dataType: "number",
+                    width:150,
+                },
+                {
+                    caption: "Total OA",
+                    dataField: "idr_oa",
+                    dataType: "number",
+                    format:"#,##0",
                     width:150,
                 },
                 {

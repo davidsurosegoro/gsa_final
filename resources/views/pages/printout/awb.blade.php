@@ -262,18 +262,12 @@
                         id              : "{{ $awb[0]->id }}",
                         '_token'        : "{{ csrf_token() }}" 
                     },
-                    success:function(data){ 
-                        // if(data.statussuccess)  {
-                        //     // toastr.success( data.statussuccess) 
-                        //     // $('#modalpenerima').modal('hide');
-                        //     // $('#diterima_oleh'      ).val('')
-                        // }  
+                    success:function(data){  
                         if(data.status != ''){
 
                             alert(data.status)
                         }
-                        window.print();      
-                        // scanner.start() 
+                        window.print();       
                     }
                 }) 
             }
