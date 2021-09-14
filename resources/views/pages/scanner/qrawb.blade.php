@@ -250,9 +250,7 @@
                     toastr.success( data.statussuccess) 
                     $('#modalpenerima').modal('hide');
                     $('#diterima_oleh'      ).val('')
-                }        
-                
-                
+                }   
                     setTimeout(function(){ scanner.start() }, 800); 
             }
         }) 

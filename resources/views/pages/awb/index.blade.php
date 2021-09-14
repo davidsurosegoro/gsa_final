@@ -85,11 +85,40 @@
     </div>
   </div>
 </div>
+<div class="modal  " id="modalpenerima"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Isi nama Penerima</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"> 
+                <input type="text" required class="form-control" name="diterima_oleh" id="diterima_oleh" value="" placeholder="diterima oleh"/>        
+                <input type="hidden" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="updatepenerima()" class="btn btn-success" >Simpan</button> 
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div style="position: fixed; width:100%;height:100%; top:0px; left:0px;z-index:200000;background-color:rgba(0,0,0,0.6);" class="d-none" id="loading">
+  <img src="{{asset('assets/gsa/img/loading.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:5%;">
+</div>
 @include('pages.awb.ajax.modal_koli')
 @include('pages.awb.ajax.modal_view')
 @endsection
 @section('script')
 <script>
+  
+  $(document) .ajaxStart(function () {
+        $('#loading').removeClass('d-none')
+    })          .ajaxStop(function () {
+        $('#loading').addClass('d-none')
+    }); 
   $(document).on("click",".openstatus",function() {
       $('#Kotaasal_'          ).html($(this).attr('kodekotaasal'))
       $('#kotatujuan_'        ).html($(this).attr('kodekotatujuan'))
@@ -192,10 +221,33 @@
                 }
                 if(data.statussuccess)  {
                     toastr.success( data.statussuccess) 
+                } 
+                if(data.openmodal == 'open'){
+                    $('#modalpenerima').modal('show');
+                    $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
+                    $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
                 }       
             }
         }) 
     } 
+    function updatepenerima(){
+        $.ajax({
+            method  :'POST',
+            url     :'{{ url('awb/updatediterima') }}',
+            data    :{
+                kode            : $('#kodeawb_penerima').val(),
+                diterima_oleh   : $('#diterima_oleh').val(),
+                '_token'        : "{{ csrf_token() }}" 
+            },
+            success:function(data){ 
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess) 
+                    $('#modalpenerima').modal('hide');
+                    $('#diterima_oleh'      ).val('')
+                }    
+            }
+        }) 
+    }
    function deleteAwb(id,noawb)
     {
          Swal.fire({   

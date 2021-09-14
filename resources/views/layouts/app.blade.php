@@ -287,6 +287,7 @@ tr.details td.details-control {
         <script src="{{ asset('assets/js/pages/widgets.js')}}"></script>
         <script src="{{ asset('assets/plugins/devex/js/jszip.min.js')}}"></script>
         <script src="{{ asset('assets/plugins/devex/js/dx.all.js')}}"></script>
+        <script src="{{ asset('assets/gsa/js/custom_ajax.js')}}"></script>
         <script type="text/javascript">
             function checkpassword() {  
                 var password    = $('#password'  ).val();
