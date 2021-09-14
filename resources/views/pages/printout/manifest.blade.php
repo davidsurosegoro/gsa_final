@@ -128,16 +128,16 @@
                                 <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
                             </tr>
                             <tr>
-                                <td ><b>Tgl </b></td>
-                                <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
+                                <td ><b>Tujuan </b></td>
+                                <td>&nbsp;{{$manifest->namakotatujuan}}-({{$manifest->kodekotatujuan}})</td>
                             </tr>  
                         </table>
                     </div>
                     <div class="col-sm-4" style="padding:0px;">
                         <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm;">
                             <tr>
-                                <td style="width:3cm;"><b>Tujuan </b></td>
-                                <td>&nbsp;{{$manifest->namakotatujuan}}-({{$manifest->kodekotatujuan}})</td>
+                                <td style="width:3cm;"><b>Tgl </b></td>
+                                <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
                             </tr>
                             <tr>
                                 <td style="width:3cm;"><b>Dicetak Oleh </b></td>
@@ -171,7 +171,7 @@
                                     <th  style="width:0.5cm;padding:0.1cm;">KG</th> 
                                     <th  style="width:0.5cm;padding:0.1cm;">Doc</th> 
                                     {{-- <th rowspan="2" style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>   --}}
-                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">KET</th> 
+                                    <th rowspan="2" style="width:2cm;padding:0.1cm;">KET</th> 
                                 </tr>
                                 <tr>
                                     <td class="text-center">{{$manifest->jumlah_koli}}</td>

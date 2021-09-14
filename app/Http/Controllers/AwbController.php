@@ -365,7 +365,6 @@ class AwbController extends Controller
             else {
                 // dd($total_scanned);
                 $awb->status_tracking = $status;
-                $awb->save();
 
                 if($total_scanned==0){
                     $this->inserthistoryscan($awb->id,$status,0);
@@ -382,6 +381,7 @@ class AwbController extends Controller
                 $awb->tanggal_diterima = Carbon::now()->addHours(7);
                 $openmodal = 'open';
             }
+            $awb->save();
         }
         return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
     }
@@ -468,11 +468,6 @@ class AwbController extends Controller
             $awb->save();
             $this->inserthistoryscan($awb->id,'at-manifest',0);
             $returnmessage = 'Status AWB berhasil dirubah ke "at-manifest"';
-        }else{
-            
-            $qty_count_manifest = Historyscanawb::where('tipe',    '=', 'at-manifest')->where('idawb',   '=', $awb->id)->count();
-            dd($qty_count_manifest);
-            $this->inserthistoryscan($awb->id,'at-manifest',0);
         }
         // else if($awb->status_tracking == 'at-manifest'){
         //     $returnmessage      = 'Status AWB sudah '.$awb->status_tracking;

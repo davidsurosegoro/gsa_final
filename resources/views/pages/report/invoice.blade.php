@@ -152,7 +152,7 @@
                         icon: 'export',
                         // text: 'Export to Excel',
                         onClick: function () {
-                            e.component.exportToExcel(true);
+                            e.component.exportToExcel(false);
                         }
                     },
                     location: 'after'
@@ -202,15 +202,7 @@
                     dataField: "status",
                     dataType: "string",
                     width:175,
-                    cellTemplate: function (container, options) {
-                      console.log(options.data.ada_faktur)
-                      if(options.data.status == "unpaid"){
-                        $(container).html(`<span class="badge badge-danger" ><i class="flaticon2-cross" style="color:white;"></i> UNPAID</span>`)
-                      }
-                      else{
-                        $(container).html(`<span class="badge badge-success"><i class="flaticon2-checkmark" style="color:white;"></i> PAID</span>`)
-                      }
-                    },
+                    
                 },
                 {
                     caption: "Keterangan",
