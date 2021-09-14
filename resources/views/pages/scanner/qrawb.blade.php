@@ -3,10 +3,12 @@
 <div class="card card-custom gutter-b example example-compact">
 <div class="card-header">
     <h3 class="card-title">SCANNER AWB <br>ke status -> {{Crypt::decrypt($status)}} </h3>
+    
 </div> 
 <input type='hidden' id='statusawb' value='{{$status}}' > 
 <div class=" ">
     <div class="container">
+       
         <div class="row">
             <audio id="myAudio">
                 <source src="{{asset('assets/gsa/scanner/beep-06.mp3')}}" type="audio/ogg"> 
@@ -14,6 +16,20 @@
             </audio>
             <div class="col-sm-2" style="padding:1px;"> </div>
             <div class="col-md-8 col-sm-12 border" style=" position:relative;"> 
+                @if (!Browser::isChrome() ) 
+                    <div class="alert alert-alert row" style="
+                    color: #856404;
+                    background-color: #fff3cd;
+                    border-color: #ffeeba;margin-top:10px;position: absolute;bottom:0px; z-index:2000;">
+                        <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col- " style="object-fit: contain; width:50px; ">
+                        <div class="col-11">
+                            Untuk kelancaran scan QR, Gunakan browser google chrome
+                            <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
+                                click disini untuk download chrome
+                            </a> atau download pada playstore/appstore
+                        </div>
+                    </div>
+                @endif 
                 <video id="qr-video"  class="col-sm-12"></video>
                 <img src="{{asset('assets/gsa/img/face-loader.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:50%;">
                 <select id="cam-list" class="form-control col-12 col-sm-5"  style="position: absolute;z-index:10; top:0;  right:0; margin:auto; ">

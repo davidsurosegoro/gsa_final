@@ -461,6 +461,10 @@
 @endsection
 @section('script')
 <script>
+  
+  $('form').submit(function(){
+      $('body').find('button[type=submit]').prop('disabled', true);
+  });
   $('#customer-biasa').hide();
   $('#div-kg-pertama').hide();
   $('#div-kg-selanjutnya').hide();

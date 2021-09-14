@@ -14,7 +14,7 @@
             {{ csrf_field() }}
             <div class="row">
               <div class="col-lg-3">
-                <label>Kota Asal:</label>
+                <label class="mt-5 font-weight-bold">Kota Asal:</label><br>
                 <select class="form-control select2" name="id_kota_asal" id="id_kota_asal">
                   <option value="-">--Tampil Semua--</option>
                   @foreach($kota as $k)
@@ -23,11 +23,11 @@
                 </select>
               </div>
               <div class="col-lg-6">
-                <label>Tanggal Awal - Akhir:</label>
+                <label class="mt-5 font-weight-bold">Tanggal Awal - Akhir:</label><br>
                 <input type="text" id="txtPeriod" class="form-control" name="tanggal" id="tanggal" required>
               </div>
               <div class="col-lg-3">
-                <label>Status Manifest</label>
+                <label class="mt-5 font-weight-bold">Status Manifest</label><br>
                 <select class="form-control select2" name="status" id="status">
                   <option value="-">--Tampil Semua--</option>
                   <option value="checked">checked</option>
@@ -36,7 +36,7 @@
                 </select>
               </div>
               <div class="col-lg-3">
-                <label>Kota Tujuan</label>
+                <label class="mt-5 font-weight-bold">Kota Tujuan</label><br>
                 <select class="form-control select2" name="id_kota_tujuan" id="id_kota_tujuan">
                   <option value="-">--Tampil Semua--</option>
                   @foreach($kota as $a)
@@ -45,13 +45,13 @@
                 </select>
               </div>
               <div class="col-lg-3">
-                <label>Kode Manifest </label>
+                <label class="mt-5 font-weight-bold">Kode Manifest </label><br>
                 <input type="text" name="kode_manifest" id="kode_manifest" class="form-control">
               </div>
             </div>
             <div class="row mt-2">
               <div class="col-lg-3">
-                <button type="button" class="btn btn-lg btn-outline-primary" id="btnproses"><i class="flaticon-search"></i> Cari</button>
+                <button type="button" class="btn btn-lg btn-outline-primary btn-success" id="btnproses"><i class="flaticon-search"></i> Cari</button>
               </div>
             </div>
           </form>
@@ -111,16 +111,16 @@
   function show_grid(data){
     var dataGrid = $("#awb").dxDataGrid({
             dataSource: data,
-            height:470,
+            height:570,
             paging: {
-                pageSize: 10,
+                pageSize: 1000,
             },
             pager: {
                 visible: true,
                 showNavigationButtons: true,
                 showInfo: true,
                 showPageSizeSelector: true,
-                allowedPageSizes: [10, 25, 50, 100]
+                allowedPageSizes: [100, 250, 500, 1000]
             },
             filterRow: {
                 visible: true,
@@ -154,7 +154,7 @@
                         icon: 'export',
                         // text: 'Export to Excel',
                         onClick: function () {
-                            e.component.exportToExcel(true);
+                            e.component.exportToExcel(false);
                         }
                     },
                     location: 'after'
@@ -178,19 +178,19 @@
                     caption: "Kode Manifest",
                     dataField: "kode",
                     dataType: "string",
-                    width:200,
+                    width:160,
                 },
                 {
                     caption: "Kota Asal",
                     dataField: "kota_asal",
                     dataType: "string",
-                    width:200,
+                    width:180,
                 },
                 {
                     caption: "Kota Tujuan",
                     dataField: "kota_tujuan",
                     dataType: "string",
-                    width:200,
+                    width:180,
                 },
                 {
                     caption: "Tanggal Manifest",
@@ -203,13 +203,13 @@
                     caption: "Dibuat Oleh",
                     dataField: "dibuat_oleh_user",
                     dataType: "string",
-                    width:175,
+                    width:120,
                 },
                 {
                     caption: "Supir",
                     dataField: "supir",
                     dataType: "string",
-                    width:175,
+                    width:120,
                 },
                 {
                     caption: "Keterangan",
@@ -221,19 +221,19 @@
                     caption: "Koli",
                     dataField: "jumlah_koli",
                     dataType: "number",
-                    width:170,
+                    width:70,
                 },
                 {
                     caption: "Doc",
                     dataField: "jumlah_doc",
                     dataType: "number",
-                    width:170,
+                    width:70,
                 },
                 {
                     caption: "Kg",
                     dataField: "jumlah_kg",
                     dataType: "number",
-                    width:170,
+                    width:70,
                 },
                 {
                     caption: "Tanggal Diterima",
@@ -243,10 +243,10 @@
                     width:170,
                 },
                 {
-                    caption: "Discan Oleh",
+                    caption: "Discan Oleh (diterima)",
                     dataField: "discan_diterima_oleh_nama",
                     dataType: "string",
-                    width:170,
+                    width:200,
                 },
                 
             ],

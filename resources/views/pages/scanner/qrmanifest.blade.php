@@ -14,6 +14,21 @@
             </audio>
             <div class="col-sm-2" style="padding:1px;"> </div>
             <div class="col-md-8 col-sm-12 border" style=" position:relative;"> 
+                
+                @if (!Browser::isChrome() ) 
+                    <div class="alert alert-alert row" style="
+                    color: #856404;
+                    background-color: #fff3cd;
+                    border-color: #ffeeba;margin-top:10px;position: absolute;bottom:0px; z-index:2000;">
+                        <img src="{{asset('assets/gsa/img/chrome.png')}}" class="col- " style="object-fit: contain; width:50px; ">
+                        <div class="col-11">
+                            Untuk kelancaran scan QR, Gunakan browser google chrome
+                            <a href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
+                                click disini untuk download chrome
+                            </a> atau download pada playstore/appstore
+                        </div>
+                    </div>
+                @endif 
                 <video id="qr-video"  class="col-sm-12"></video>
                 <img src="{{asset('assets/gsa/img/face-loader.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:50%;">
                 <select id="cam-list" class="form-control col-12 col-sm-5"  style="position: absolute;z-index:10; top:0;  right:0; margin:auto; ">
@@ -76,6 +91,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="{{asset('assets/gsa/scanner2/qr-scanner.umd.min.js')}}"></script>
 <script type="text/javascript">  
+    navigator.permissions.query({name:'camera'}).then(function(result) {
+        // alert(result.state);
+        if (result.state === 'granted') {
+            //permission has already been granted, no prompt is shown
+        } else if (result.state === 'prompt') {
+        //there's no peristent permission registered, will be showing the prompt
+        } else if (result.state === 'denied') {
+        //permission has been denied
+        }
+    });
+
     $(document) .ajaxStart(function () {
         $('#loading').removeClass('d-none')
     })          .ajaxStop(function () {

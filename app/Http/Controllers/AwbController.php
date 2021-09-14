@@ -327,7 +327,7 @@ class AwbController extends Controller
             $typereturn    = 'statuswarning';
         }
         // dd($awb);
-        if(($awb->status_tracking == 'complete' || $awb->status_tracking == 'cancel')&& $continue == true){
+        if(($awb->status_tracking == 'complete' || $awb->status_tracking == 'cancel')&& $continue == true && $status!= 'complete'){
             $continue      = false;
             $returnmessage = 'Kode AWB ' . $kode . ', Sudah berstatus ' .$awb->status_tracking . ', tidak bisa di rubah lagi!';
             $typereturn    = 'statuswarning';
@@ -374,7 +374,6 @@ class AwbController extends Controller
             else {
                 // dd($total_scanned);
                 $awb->status_tracking = $status;
-                $awb->save();
 
                 if($total_scanned==0){
                     $this->inserthistoryscan($awb->id,$status,0);
@@ -391,6 +390,7 @@ class AwbController extends Controller
                 $awb->tanggal_diterima = Carbon::now()->addHours(7);
                 $openmodal = 'open';
             }
+            $awb->save();
         }
         return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
     }
@@ -542,8 +542,7 @@ class AwbController extends Controller
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         <a href=' . url('awb/edit/' . $a['id'] . '/edit') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                             <i class="flaticon-edit-1" ></i>
-                        </a>
-                        <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" onClick="updateManifest(' . $a['id'] . ',`' . $a['noawb'] . '`)" data-placement="bottom" title="Ubah ke Manifested"><i class="flaticon-truck"> </i></button>
+                        </a>                        
                         <a href=' . url('printout/awb/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                         <i class="flaticon2-print" ></i>
                         </a>
