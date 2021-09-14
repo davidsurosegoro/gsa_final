@@ -172,10 +172,22 @@
             </div>
             <div class="col-md-12">
               <div class="row mb-0">
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                   <div class="form-group" id="qty_koli_kg" >
                     <label class="font-weight-bold">Qty Koli Kg</label>
                     <input type="number" class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
+                  </div>
+                </div>
+                <div class="col-lg-3" id="div-kg-pertama">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Harga 2 Kg Pertama</label>
+                    <input type="text" class="form-control rupiah" id="harga_kg_pertama" value="{{ $awb->harga_kg_pertama }}"  name="harga_kg_pertama" placeholder="Input harga 2 kg pertama. . ." value="0">
+                  </div>
+                </div>
+                <div class="col-lg-3" id="div-kg-selanjutnya">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Harga Kg Selanjutnya</label>
+                    <input type="text" class="form-control rupiah" id="harga_kg_selanjutnya" value="{{ $awb->harga_kg_selanjutnya }}"  name="harga_kg_selanjutnya" placeholder="Input harga kg selanjutnya. . ." value="0">
                   </div>
                 </div>
               </div>
@@ -450,6 +462,8 @@
 @section('script')
 <script>
   $('#customer-biasa').hide();
+  $('#div-kg-pertama').hide();
+  $('#div-kg-selanjutnya').hide();
   // $('#kota_asal').on('change',function(){
   //   $.ajax({
   //     method:'POST',
@@ -507,6 +521,8 @@
         $("input[name=qty_besar_banget]").val(0)
         $("input[name=qty_kg]").val(0)
         $("input[name=qty_doc]").val(0)
+        $("input[name=harga_kg_pertama]").val(0)
+        $("input[name=harga_kg_selanjutnya]").val(0)
         // if(data.count_alamat == 0){
         //   $('#alamat_pengirim').show()
         // }
@@ -528,6 +544,19 @@
           $("#qty_biasa").removeAttr("required");
           $('#row-jenis-koli').show()
           $("#jenis_koli").attr("required", "true");
+          if(data.data.id == 26){
+            $('#jenis_koli').val('kg').change();
+            $('#div-kg-pertama').show();
+            $('#div-kg-selanjutnya').show();
+            $("#jenis_koli").attr("readonly", "true");
+            // $('#harga_kg_pertama').val(data.data.harga_kg)
+            // $('#harga_kg_selanjutnya').val(data.data.harga_kg)
+          }
+          else{
+            $('#div-kg-pertama').hide();
+            $('#div-kg-selanjutnya').hide();
+            $("#jenis_koli").attr("readonly", "false");
+          }
         }
       }
     })
@@ -618,6 +647,10 @@
   })
   
   $(document).ready(function(){
+    if($('#customer').val() == 26){
+      $('#div-kg-pertama').show()
+      $('#div-kg-selanjutnya').show()
+    }
     if($('#check_alamat_tujuan').val() == 0){
       // $('#alamat_tujuan').show()
     }

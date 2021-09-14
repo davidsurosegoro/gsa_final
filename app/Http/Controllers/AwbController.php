@@ -140,7 +140,7 @@ class AwbController extends Controller
             endif;
         else:
             if ((int) Auth::user()->level == 1):
-                $total_harga['total'] = substr(preg_replace('/[.,]/', '', $request->harga_total), 0, -2);
+                $total_harga['total'] = str_replace(',', '', $request->harga_total);
             endif;
         endif;
         if ($request->hilang == "hilang"):
@@ -151,6 +151,11 @@ class AwbController extends Controller
             $masteralamat   = Alamat::where('alamat',$request->labelalamat)->first();
             $labelalamat    = $masteralamat->labelalamat;
         endif;
+        $harga_kg_pertama = ($request->harga_kg_pertama == null) ? 0 : str_replace(',', '',$request->harga_kg_pertama);
+        $harga_kg_selanjutnya = ($request->harga_kg_selanjutnya == null) ? 0 : str_replace(',', '',$request->harga_kg_selanjutnya);
+        if($customer->id == 26){
+            $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya);   
+        }
         if ($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
             $awb = Awb::create([
                 'noawb'               => $noawb,
@@ -194,6 +199,8 @@ class AwbController extends Controller
                 'referensi'           => $request->referensi,
                 'jenis_koli'          => $request->jenis_koli,
                 'labelalamat'         => $labelalamat,
+                'harga_kg_pertama'             => $harga_kg_pertama,
+                'harga_kg_selanjutnya'             => $harga_kg_selanjutnya,
             ]);
             $this->inserthistoryscan($awb->id,(($request->referensi == null) ? 'booked' : 'complete'),0);
             return redirect('awb')->with('message', 'created');
@@ -240,6 +247,8 @@ class AwbController extends Controller
                 'ada_faktur'          => $ada_faktur,
                 'jenis_koli'          => $request->jenis_koli,
                 'labelalamat'         => $labelalamat,
+                'harga_kg_pertama'    => $harga_kg_pertama,
+                'harga_kg_selanjutnya'=> $harga_kg_selanjutnya,
             ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -694,12 +703,23 @@ class AwbController extends Controller
             elseif ($customer->jenis_out_area == "resi"):
                 $harga_oa = $customer->harga_oa;
             elseif ($customer->jenis_out_area == "koli"):
-                $harga_oa = ($qty_kecil + $qty_sedang + $qty_besar + $qty_besar_banget + $qty_dokumen + $qty_kg) * $customer->harga_oa;
+                $oa_kg = ($qty_kg == 0) ? 0 : 1;
+                $harga_oa = ($qty_kecil + $qty_sedang + $qty_besar + $qty_besar_banget + $qty_dokumen + $oa_kg) * $customer->harga_oa;
             endif;
         endif;
         $harga_total = $harga_total + $harga_oa;
         $tots        = array('total' => $harga_total, 'oa' => $harga_oa);
         return $tots;
+    }
+
+    private function hitungHargaKg($qty_kg,$harga_pertama,$harga_selanjutnya){
+        $harga_kg = 0;
+        if ($qty_kg > 2):
+            $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ($qty_kg - 2));
+        else:
+            $harga_kg = $harga_pertama * $qty_kg;
+        endif;
+        return $harga_kg;
     }
 
     private function randomChar()

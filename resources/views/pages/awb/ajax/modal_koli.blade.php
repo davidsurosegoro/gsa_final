@@ -38,11 +38,27 @@
               <th > <b><em id="qty"></em></b> </th>
             </tr>
             @endif
+            <tr>
+              <td>Total Harga </td>
+              <th><strong class="total_harga"></strong></th>
+            </tr>
+            <tr>
+              <td>Total OA </td>
+              <th><strong class="total_oa"></strong></th>
+            </tr>
           </table>
           <table class="table table-bordered table-hovered table-striped" id="table-agen">
             <tr style="">
               <th style="width: 40%;">Total </th>
               <th > <b><em id="qty"></em></b> </th>
+            </tr>
+            <tr>
+              <td>Total Harga </td>
+              <th><strong class="total_harga"></strong></th>
+            </tr>
+            <tr>
+              <td>Total OA </td>
+              <th><strong class="total_oa"></strong></th>
             </tr>
           </table>
         </div>

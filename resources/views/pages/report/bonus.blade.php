@@ -18,7 +18,7 @@
                 <select class="form-control select2" name="id_agen_asal" id="id_agen_asal">
                   <option value="-">--Tampil Semua--</option>
                   @foreach($agen as $k)
-                    <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                    <option value="{{ $k['id'] }}">{{ $k['nama'] }}</option>
                   @endforeach
                 </select>
               </div>
@@ -31,7 +31,7 @@
                 <select class="form-control select2" name="id_agen_tujuan" id="id_agen_tujuan">
                   <option value="-">--Tampil Semua--</option>
                   @foreach($agen as $k)
-                    <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                    <option value="{{ $k['id'] }}">{{ $k['nama'] }}</option>
                   @endforeach
                 </select>
               </div>
@@ -185,6 +185,15 @@
                     dataField: "agen_asal",
                     dataType: "string",
                     width:175,
+                    cellTemplate: function (container, options) {
+                      console.log(options.data)
+                      if(options.data.is_agen == 1){
+                        $(container).html(`<span class="badge badge-primary">`+options.data.pengirim+`</span>`)
+                      }
+                      else{
+                        $(container).html(`<span class="badge badge-success">GLOBAL SERVICE ASIA</span>`)
+                      }
+                    },
                 },
                 {
                     caption: "Agen Tujuan",
@@ -197,6 +206,14 @@
                     dataField: "transit_surabaya",
                     dataType: "string",
                     width:170,
+                    cellTemplate: function (container, options) {
+                      if(options.data.kota_transit == 'SURABAYA'){
+                        $(container).html(`<span class="badge badge-primary">YES</span>`)
+                      }
+                      else{
+                        $(container).html(`<span class="badge badge-danger">NO</span>`)
+                      }
+                    },
                 },
                 {
                     caption: "Status AWB",
@@ -208,30 +225,35 @@
                     caption: "Total OA",
                     dataField: "idr_oa",
                     dataType: "number",
+                    format:"#,##0",
                     width:170,
                 },
                 {
                     caption: "Total Harga",
                     dataField: "total_harga",
                     dataType: "number",
+                    format:"#,##0",
                     width:170,
                 },
                 {
                     caption: "Bonus Agen Asal",
                     dataField: "bonus_agen_asal",
                     dataType: "number",
+                    format:"#,##0",
                     width:170,
                 },
                 {
                     caption: "Bonus GSA",
                     dataField: "bonus_gsa",
                     dataType: "number",
+                    format:"#,##0",
                     width:170,
                 },
                 {
                     caption: "Bonus Agen Tujuan",
                     dataField: "bonus_agen_tujuan",
                     dataType: "number",
+                    format:"#,##0",
                     width:170,
                 },
                 
