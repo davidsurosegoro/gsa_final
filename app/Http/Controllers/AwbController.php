@@ -271,8 +271,13 @@ class AwbController extends Controller
         $typereturn    = ' ';
         $openmodal     = ($status == 'complete') ? 'open' : 'close';
         $manifest      = Manifest::where('kode', $request->kode)->first();
-        $awb           = Awb::where('id_manifest', $manifest->id)->get();
+        $awb           = Awb::where('id_manifest', ($manifest!=null)?$manifest->id:0)->get();
         $continue      = true;
+        if($manifest==null){  
+            $returnmessage = 'Kode Manifest ' . $kode . ' tidak ditemukan!';
+            $typereturn    = 'statuserror';
+            return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
+        }
         if($manifest->status == 'arrived'){
             $continue      = false;
             $returnmessage = 'Kode MANIFEST ' . $kode . ', Sudah berstatus ' .$manifest->status . ', tidak bisa di scan lagi!';
@@ -321,6 +326,11 @@ class AwbController extends Controller
         $openmodal          = 'close';
         $awb                = Awb::where('noawb', $request->kode)->first();
         $continue           = true; 
+        if($awb==null){  
+            $returnmessage = 'Kode AWB ' . $kode . ' tidak ditemukan!';
+            $typereturn    = 'statuserror';
+            return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
+        }
         if(($status == 'loaded' || $status == 'at-agen' || $status == 'delivery-by-courier' || $status == 'complete') && $awb->id_manifest==0){
             $continue      = false;
             $returnmessage = 'Gagal ganti status, Kode AWB ' . $kode . ', Belum masuk di daftar manifest! ';

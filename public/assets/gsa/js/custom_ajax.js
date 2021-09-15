@@ -1,19 +1,9 @@
-function updatepenerima(){
-    $.ajax({
-        method  :'POST',
-        url     :'{{ url('awb/updatediterima') }}',
-        data    :{
-            kode            : $('#kodeawb_penerima').val(),
-            diterima_oleh   : $('#diterima_oleh').val(),
-            '_token'        : "{{ csrf_token() }}" 
-        },
-        success:function(data){ 
-            if(data.statussuccess)  {
-                toastr.success( data.statussuccess) 
-                $('#modalpenerima').modal('hide');
-                $('#diterima_oleh'      ).val('')
-            }   
-                setTimeout(function(){ scanner.start() }, 800); 
-        }
-    }) 
-}
+navigator.permissions.query({name:'camera'}).then(function(result) {
+    // alert(result.state);
+    if (result.state === 'granted') { 
+    } else if (result.state === 'prompt') { 
+    } else if (result.state === 'denied') {
+        // alert('Camera access denied!')
+        $('#cameraaccessdenied').removeClass('d-none') 
+    }
+});
