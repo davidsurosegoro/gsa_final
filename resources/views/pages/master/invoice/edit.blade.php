@@ -130,7 +130,9 @@
                     </tr>   
                     @endforeach 
                     <tr style="padding:0px; background-color:#a1ffbc;"> 
-                        <td style="padding:5px;" colspan='7' class="text-right"><h4>TOTAL </h4></td>   
+                        <td style="padding:5px;" colspan='7' class="text-right"><h4>TOTAL <br>
+                        
+                            <span class="font-weight-bold text-uppercase font-italic">({{App\Invoice::terbilang($total_bayarall)}} Rupiah)</span></h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_koli}}</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_kg}}</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_doc}}</h4></td>   
@@ -155,7 +157,9 @@
 </div>
 @endsection
 @section('script')
-<script type="text/javascript"> </script>
+<script type="text/javascript"> 
+ 
+</script>
 @if(Session::get('message') == "kodesudahada")
 <script type="text/javascript">
     toastr.error("Kode manifest sudah ada!");

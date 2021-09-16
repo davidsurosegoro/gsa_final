@@ -289,6 +289,10 @@ tr.details td.details-control {
         <script src="{{ asset('assets/plugins/devex/js/dx.all.js')}}"></script>
         <script src="{{ asset('assets/gsa/js/custom_ajax.js')}}"></script>
         <script type="text/javascript">
+        
+            $('form').submit(function(){
+                $('body').find('button[type=submit]').prop('disabled', true);
+            });
             function checkpassword() {  
                 var password    = $('#password'  ).val();
                 var repassword  = $('#repassword').val();
