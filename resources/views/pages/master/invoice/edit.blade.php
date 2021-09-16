@@ -13,7 +13,7 @@
 @foreach ($awb as $item) 
     @php($total_kg     += $item['qty_kg'])
     @php($total_doc    += $item['qty_doc'])
-    @if ($item->qty > 0 && $item->qtykoli == 0)
+    @if ($item->qty > 0 && $item->qty_kg == 0 && $item->qty_doc == 0)
         @php($total_koli += $item->qty)
     @else
         @php($total_koli +=$item->qtykoli)
@@ -103,7 +103,7 @@
                         <td style="padding:5px;">{{$item->kotatujuan}}</td> 
                         <td style="padding:5px;">{{$item->diterima_oleh}}</td> 
                         <td style="padding:5px;">
-                            @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0) && $item->qty>0)
+                            @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0)
                             {{$item->qty}}
                             @else
                             <table style="table" style="background-color:white;">
@@ -130,7 +130,9 @@
                     </tr>   
                     @endforeach 
                     <tr style="padding:0px; background-color:#a1ffbc;"> 
-                        <td style="padding:5px;" colspan='7' class="text-right"><h4>Total Bayar</h4></td>   
+                        <td style="padding:5px;" colspan='7' class="text-right"><h4>TOTAL <br>
+                        
+                            <span class="font-weight-bold text-uppercase font-italic">({{App\Invoice::terbilang($total_bayarall)}} Rupiah)</span></h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_koli}}</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_kg}}</h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_doc}}</h4></td>   
@@ -155,7 +157,9 @@
 </div>
 @endsection
 @section('script')
-<script type="text/javascript"> </script>
+<script type="text/javascript"> 
+ 
+</script>
 @if(Session::get('message') == "kodesudahada")
 <script type="text/javascript">
     toastr.error("Kode manifest sudah ada!");

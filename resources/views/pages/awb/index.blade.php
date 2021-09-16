@@ -7,9 +7,14 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data AWB</span></h3>
     </div>
     <div class="card-toolbar">
+      <div onclick="datatable.ajax.reload();" class="btn btn-default  text-center">
+      <i class="fa fa-refresh text-center"></i></div>
+      &nbsp;
       <a href="{{ url('awb/edit/0/0') }}" class="btn btn-primary font-weight-bolder">
       <i class="la la-plus"></i>Buat AWB Baru</a>
+      &nbsp;
     </div>
+    
   </div>
   <div class="card-body">
       <div class="table-responsive">
@@ -85,11 +90,32 @@
     </div>
   </div>
 </div>
+<div class="modal  " id="modalpenerima"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Isi nama Penerima</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"> 
+                <input type="text" required class="form-control" name="diterima_oleh" id="diterima_oleh" value="" placeholder="diterima oleh"/>        
+                <input type="hidden" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="updatepenerima()" class="btn btn-success" >Simpan</button> 
+            </div>
+        </div>
+    </div>
+</div> 
+
 @include('pages.awb.ajax.modal_koli')
 @include('pages.awb.ajax.modal_view')
 @endsection
 @section('script')
 <script>
+   
   $(document).on("click",".openstatus",function() {
       $('#Kotaasal_'          ).html($(this).attr('kodekotaasal'))
       $('#kotatujuan_'        ).html($(this).attr('kodekotatujuan'))
@@ -192,10 +218,33 @@
                 }
                 if(data.statussuccess)  {
                     toastr.success( data.statussuccess) 
+                } 
+                if(data.openmodal == 'open'){
+                    $('#modalpenerima').modal('show');
+                    $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
+                    $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
                 }       
             }
         }) 
     } 
+    function updatepenerima(){
+        $.ajax({
+            method  :'POST',
+            url     :'{{ url('awb/updatediterima') }}',
+            data    :{
+                kode            : $('#kodeawb_penerima').val(),
+                diterima_oleh   : $('#diterima_oleh').val(),
+                '_token'        : "{{ csrf_token() }}" 
+            },
+            success:function(data){ 
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess) 
+                    $('#modalpenerima').modal('hide');
+                    $('#diterima_oleh'      ).val('')
+                }    
+            }
+        }) 
+    }
    function deleteAwb(id,noawb)
     {
          Swal.fire({   

@@ -7,6 +7,9 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data invoice yang tersedia</span></h3>
     </div>
     <div class="card-toolbar">
+      <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
+      <i class="fa fa-refresh text-center"></i></div>
+      &nbsp;
       <a href="{{url('master/invoice/grouping') }}" class="btn btn-primary font-weight-bolder">
       <i class="la la-plus"></i>Tambah Data invoice</a>
     </div>
@@ -88,10 +91,11 @@
     </div>
   </div>
 </div>
-
+ 
 @endsection
 @section('script')
 <script type="text/javascript"> 
+ 
     $(document).on("click",".openstatus",function() {
       $('#customer_name'     ).html($(this).attr('namacustomer')) 
       $('#tanggalinvoice_'   ).html($(this).attr('tanggalinvoice'))

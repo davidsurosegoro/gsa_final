@@ -7,6 +7,9 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data manifest yang tersedia</span></h3>
     </div>
     <div class="card-toolbar">
+      <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
+      <i class="fa fa-refresh text-center"></i></div>
+      &nbsp;
       <a href="{{url('master/manifest/grouping') }}" class="btn btn-primary font-weight-bolder">
       <i class="la la-plus"></i>Tambah Data manifest</a>
     </div>
@@ -86,6 +89,8 @@
 @endsection
 @section('script')
 <script type="text/javascript"> 
+
+ 
     $(document).on("click",".openstatus",function() {
       $('#Kotaasal'           ).html($(this).attr('kodekotaasal'))
       $('#kotatujuan'         ).html($(this).attr('kodekotatujuan'))
