@@ -181,6 +181,12 @@
                     width:160,
                 },
                 {
+                    caption: "Status",
+                    dataField: "status",
+                    dataType: "string",
+                    width:160,
+                },
+                {
                     caption: "Kota Asal",
                     dataField: "kota_asal",
                     dataType: "string",

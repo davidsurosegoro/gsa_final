@@ -349,7 +349,7 @@
                     caption: "Kode Manifest",
                     dataField: "kode_manifest",
                     dataType: "string",
-                    width:150,
+                    width:160,
                 },
                 {
                     caption: "Kode Invoice",
