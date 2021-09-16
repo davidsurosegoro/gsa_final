@@ -91,19 +91,11 @@
     </div>
   </div>
 </div>
-
-<div style="position: fixed; width:100%;height:100%; top:0px; left:0px;z-index:200000;background-color:rgba(0,0,0,0.6);" class="d-none" id="loading">
-  <img src="{{asset('assets/gsa/img/loading.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:5%;">
-</div>
+ 
 @endsection
 @section('script')
 <script type="text/javascript"> 
-
-$(document) .ajaxStart(function () {
-        $('#loading').removeClass('d-none')
-    })          .ajaxStop(function () {
-        $('#loading').addClass('d-none')
-    }); 
+ 
     $(document).on("click",".openstatus",function() {
       $('#customer_name'     ).html($(this).attr('namacustomer')) 
       $('#tanggalinvoice_'   ).html($(this).attr('tanggalinvoice'))

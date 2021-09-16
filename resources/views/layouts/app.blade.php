@@ -263,6 +263,10 @@ tr.details td.details-control {
                 <!--end::Svg Icon-->
             </span>
         </div>
+        
+        <div style="position: fixed; width:100%;height:100%; top:0px; left:0px;z-index:200000;background-color:rgba(0,0,0,0.6);" class="d-none" id="loading">
+            <img src="{{asset('assets/gsa/img/loading.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:5%;">
+        </div>
         <!--end::Scrolltop-->
         <!--begin::Sticky Toolbar-->
         <!--end::Sticky Toolbar-->
@@ -289,7 +293,6 @@ tr.details td.details-control {
         <script src="{{ asset('assets/plugins/devex/js/dx.all.js')}}"></script>
         <script src="{{ asset('assets/gsa/js/custom_ajax.js')}}"></script>
         <script type="text/javascript">
-        
             $('form').submit(function(){
                 $('body').find('button[type=submit]').prop('disabled', true);
             });
