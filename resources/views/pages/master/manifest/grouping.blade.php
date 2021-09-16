@@ -2,7 +2,14 @@
 @section('content')
 <div class="card card-custom gutter-b example example-compact">
 <div class="card-header">
-    <h3 class="card-title">FORM UBAH DATA MANIFEST </h3>
+    
+    <h3 class="col- card-title">
+        FORM CREATE DATA MANIFEST 
+        &nbsp;
+        <span onclick="location.reload();" class="col- btn btn-default  text-center">
+        <i class="fa fa-refresh text-center"></i></span>
+    </h3>
+    
 </div>
   
 <div class="card-body">
