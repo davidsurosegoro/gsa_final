@@ -182,18 +182,9 @@
                 },
                 {
                     caption: "Agen Asal",
-                    dataField: "agen_asal",
+                    dataField: "pengirim",
                     dataType: "string",
                     width:175,
-                    cellTemplate: function (container, options) {
-                      console.log(options.data)
-                      if(options.data.is_agen == 1){
-                        $(container).html(`<span class="badge badge-primary">`+options.data.pengirim+`</span>`)
-                      }
-                      else{
-                        $(container).html(`<span class="badge badge-success">GLOBAL SERVICE ASIA</span>`)
-                      }
-                    },
                 },
                 {
                     caption: "Agen Tujuan",
@@ -203,17 +194,9 @@
                 },
                 {
                     caption: "Transit Surabaya",
-                    dataField: "transit_surabaya",
+                    dataField: "kota_transit",
                     dataType: "string",
                     width:170,
-                    cellTemplate: function (container, options) {
-                      if(options.data.kota_transit == 'SURABAYA'){
-                        $(container).html(`<span class="badge badge-primary">YES</span>`)
-                      }
-                      else{
-                        $(container).html(`<span class="badge badge-danger">NO</span>`)
-                      }
-                    },
                 },
                 {
                     caption: "Status AWB",

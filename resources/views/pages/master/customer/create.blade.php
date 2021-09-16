@@ -130,10 +130,24 @@
     <label>Customer ini adalah agen</label>
     <div class="checkbox-inline">
       <label class="checkbox checkbox-lg">
-      <input name="is_agen" type="checkbox">
+      <input name="is_agen" type="checkbox" id="is_agen">
       <span></span>Ya</label>
     </div>
     <span class="form-text text-muted">Centang untuk menandai customer ini sebagai agen</span>
+  </div>
+  <div class="form-group" id="id_agen_div">
+    <label>Belongs to agen</label>
+    
+    <select type="text" class="form-control select2" id="id_agen" name="id_agen" required>
+      <option value="">--Pilih Agen--</option>
+      @foreach($agen as $a)
+       @if($k->id == "3578")
+         <option value="{{ $a->id }}" selected>{{ $a->nama }} </option>
+         @else
+         <option value="{{ $a->id }}">{{ $a->nama }} </option>
+         @endif
+      @endforeach
+    </select>
   </div>
    </div>
   </div>
@@ -151,5 +165,18 @@
 
 @section('script')
 <script>
+  $('#id_agen_div').hide();
+  $('#id_agen').removeAttr("required")
+  $('#is_agen').change(function() {
+    console.log(this.checked);
+    if(this.checked){
+      $('#id_agen_div').show();
+      $('#id_agen').attr("required","true")
+    }
+    else{
+      $('#id_agen_div').hide();
+      $('#id_agen').removeAttr("required")
+    }
+  })
 </script>
 @endsection

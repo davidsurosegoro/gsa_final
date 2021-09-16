@@ -318,4 +318,9 @@
         toastr.success("Data AWB Berhasil diubah!");
     </script>
 @endif
+@if(Session::get('failed_customer') !== null)
+    <script type="text/javascript">
+        toastr.error("Data AWB Gagal diubah! Customer {{ Session::get('failed_customer') }} Belum ada di data agen");
+    </script>
+@endif
 @endsection

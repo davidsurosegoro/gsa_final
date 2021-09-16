@@ -170,4 +170,9 @@
         toastr.success("Data Customer Berhasil diubah!");
     </script>
 @endif
+@if(Session::get('failed') !== null)
+    <script type="text/javascript">
+        toastr.error("Gagal! Agen {{ Session::get('failed') }} Telah Dimiliki/Belongs to customer lain");
+    </script>
+@endif
 @endsection

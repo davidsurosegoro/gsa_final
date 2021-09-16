@@ -151,15 +151,30 @@
       <div class="checkbox-inline">
         <label class="checkbox checkbox-lg"> 
           @if($customer->is_agen)
-        <input name="is_agen" type="checkbox" checked="checked">
+          <input type="hidden" value="{{ $customer->id_agen }}" id="chk_is_agen">
+        <input name="is_agen" id="is_agen" type="checkbox" checked="checked">
         @else
-        <input name="is_agen" type="checkbox">
+        <input type="hidden" value="0" id="chk_is_agen">
+        <input name="is_agen" id="is_agen" type="checkbox">
         @endif
         <span></span>Ya</label>
       </div>
       <span class="form-text text-muted">Centang untuk menandai customer ini sebagai agen</span>
     </div>
-
+    <div class="form-group" id="id_agen_div">
+      <label>Belongs to agen</label>
+      
+      <select type="text" class="form-control select2" id="id_agen" name="id_agen" required>
+        <option value="">--Pilih Agen--</option>
+        @foreach($agen as $a)
+         @if($k->id == "3578")
+           <option value="{{ $a->id }}" selected>{{ $a->nama }} </option>
+           @else
+           <option value="{{ $a->id }}">{{ $a->nama }} </option>
+           @endif
+        @endforeach
+      </select>
+    </div>
    </div>
   </div>
   <div class="card-footer">
@@ -176,5 +191,30 @@
 
 @section('script')
 <script>
+  console.log($('#chk_is_agen').val())
+  $('#id_agen_div').hide();
+  $('#id_agen').removeAttr("required")
+  $('#is_agen').change(function() {
+    console.log(this.checked);
+    if(this.checked){
+      $('#id_agen_div').show();
+      $('#id_agen').attr("required","true")
+    }
+    else{
+      $('#id_agen_div').hide();
+      $('#id_agen').removeAttr("required")
+    }
+  })
+  $(document).ready(function(){
+    if($('#chk_is_agen').val() !== "0"){
+      $('#id_agen_div').show();
+      $('#id_agen').attr("required","true")
+      $('#id_agen').val(($('#chk_is_agen').val())).change();
+    }
+    else{
+      $('#id_agen_div').hide();
+      $('#id_agen').removeAttr("required")
+    }
+  })
 </script>
 @endsection

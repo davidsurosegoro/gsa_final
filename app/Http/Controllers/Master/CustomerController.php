@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Customer;
+use App\Agen;
 use App\Http\Controllers\Controller;
 use App\Kota;
 use Illuminate\Http\Request;
@@ -23,14 +24,16 @@ class CustomerController extends Controller
     public function create()
     {
         $kota = Kota::where('id', '>', 0)->get();
-        return view('pages.master.customer.create', compact('kota'));
+        $agen = Agen::orderBy('nama','ASC')->get();
+        return view('pages.master.customer.create', compact('kota','agen'));
     }
 
     public function edit($id)
     {
         $kota     = Kota::where('id', '>', 0)->get();
         $customer = Customer::find($id);
-        return view('pages.master.customer.edit', compact('customer', 'kota'));
+        $agen = Agen::orderBy('nama','ASC')->get();
+        return view('pages.master.customer.edit', compact('customer', 'kota','agen'));
     }
 
     public function delete(Request $request)
@@ -43,12 +46,14 @@ class CustomerController extends Controller
     public function save(Request $request)
     {
         $access = false;
+        $id_agen = 0;
         if ($request->access == "on") {
             $access = true;
         }
         $is_agen = false;
         if ($request->is_agen == "on") {
             $is_agen = true;
+            $id_agen = $request->id_agen;
         }
         $customer = Customer::create([
             'nama'              => $request->nama,
@@ -70,19 +75,26 @@ class CustomerController extends Controller
             'jenis_out_area'    => $request->jenis_out_area,
             'kodepos'           => $request->kodepos,
             'is_agen'           => $is_agen,
+            'id_agen'           => $id_agen
         ]);
         return redirect('master/customer')->with('message', 'created');
     }
 
     public function update(Request $request)
     {
-        $access = false;
+        $access     = false;
+        $id_agen    = 0;
         if ($request->access == "on") {
-            $access = true;
+            $access     = true;
         }
         $is_agen = false;
         if ($request->is_agen == "on") {
             $is_agen = true;
+            $id_agen    = $request->id_agen;
+            $agen_check = Customer::where('id_agen',$id_agen)->first();
+            if($agen_check !== null):
+                return redirect('master/customer')->with('failed', $agen_check->nama);
+            endif;
         }
         $customer = Customer::find($request->id)->update([
             'nama'              => $request->nama,
@@ -104,6 +116,7 @@ class CustomerController extends Controller
             'jenis_out_area'    => $request->jenis_out_area,
             'kodepos'           => $request->kodepos,
             'is_agen'           => $is_agen,
+            'id_agen'           => $id_agen
         ]);
         return redirect('master/customer')->with('message', 'updated');
     }

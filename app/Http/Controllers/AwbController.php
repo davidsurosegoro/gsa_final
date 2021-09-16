@@ -129,6 +129,7 @@ class AwbController extends Controller
             $request->qty_doc          = 0;
             $request->qty_kg           = 0;
         endif;
+        $id_agen_asal = 0;
         if ($customer->is_agen == 0):
             if ((int) Auth::user()->level == 1):
                 $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
@@ -141,6 +142,10 @@ class AwbController extends Controller
         else:
             if ((int) Auth::user()->level == 1):
                 $total_harga['total'] = str_replace(',', '', $request->harga_total);
+            endif;
+            $id_agen_asal = $customer->id_agen;
+            if($id_agen_asal == 0):
+                return redirect('awb')->with('failed_customer',$customer->nama);
             endif;
         endif;
         if ($request->hilang == "hilang"):
@@ -163,7 +168,7 @@ class AwbController extends Controller
                 'id_kota_tujuan'      => $request->id_kota_tujuan,
                 'id_kota_asal'        => $request->id_kota_asal,
                 'id_kota_transit'     => $request->id_kota_transit,
-                'id_agen_asal'        => ($request->id_agen_asal == null) ? 0 : $request->id_agen_asal,
+                'id_agen_asal'        => $id_agen_asal,
                 'id_agen_penerima'    => ($request->id_agen_penerima == null) ? 0 : $request->id_agen_penerima,
                 'charge_oa'           => $charge_oa,
                 'nama_penerima'       => $request->nama_penerima,
@@ -199,8 +204,9 @@ class AwbController extends Controller
                 'referensi'           => $request->referensi,
                 'jenis_koli'          => $request->jenis_koli,
                 'labelalamat'         => $labelalamat,
-                'harga_kg_pertama'             => $harga_kg_pertama,
-                'harga_kg_selanjutnya'             => $harga_kg_selanjutnya,
+                'harga_kg_pertama'    => $harga_kg_pertama,
+                'harga_kg_selanjutnya'=> $harga_kg_selanjutnya,
+                'jenis_oa'            => $customer->jenis_out_area
             ]);
             $this->inserthistoryscan($awb->id,(($request->referensi == null) ? 'booked' : 'complete'),0);
             return redirect('awb')->with('message', 'created');
@@ -211,7 +217,7 @@ class AwbController extends Controller
                 'id_kota_tujuan'      => $request->id_kota_tujuan,
                 'id_kota_asal'        => $request->id_kota_asal,
                 'id_kota_transit'     => $request->id_kota_transit,
-                'id_agen_asal'        => ($request->id_agen_asal == null) ? 0 : $request->id_agen_asal,
+                'id_agen_asal'        => $id_agen_asal,
                 'id_agen_penerima'    => ($request->id_agen_penerima == null) ? 0 : $request->id_agen_penerima,
                 'charge_oa'           => $charge_oa,
                 'nama_penerima'       => $request->nama_penerima,
@@ -249,6 +255,7 @@ class AwbController extends Controller
                 'labelalamat'         => $labelalamat,
                 'harga_kg_pertama'    => $harga_kg_pertama,
                 'harga_kg_selanjutnya'=> $harga_kg_selanjutnya,
+                'jenis_oa'            => $customer->jenis_out_area
             ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -693,7 +700,7 @@ class AwbController extends Controller
         if ($qty_kg > 2):
             $harga_kg = $customer->harga_kg * 2 + (2000 * ($qty_kg - 2));
         else:
-            $harga_kg = $customer->harga_kg * $qty_kg;
+            $harga_kg = $customer->harga_kg * 2;
         endif;
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb) + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
         if ($charge_oa == 1):
@@ -716,7 +723,7 @@ class AwbController extends Controller
         if ($qty_kg > 2):
             $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ($qty_kg - 2));
         else:
-            $harga_kg = $harga_pertama * $qty_kg;
+            $harga_kg = $harga_pertama * 2;
         endif;
         return $harga_kg;
     }
