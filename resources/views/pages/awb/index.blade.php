@@ -237,6 +237,7 @@
                 '_token'        : "{{ csrf_token() }}" 
             },
             success:function(data){ 
+                datatable.ajax.reload();
                 if(data.statussuccess)  {
                     toastr.success( data.statussuccess) 
                     $('#modalpenerima').modal('hide');
