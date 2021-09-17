@@ -543,6 +543,7 @@ class AwbController extends Controller
                 'besarbanget'     => $a->qty_besarbanget,
                 'doc'             => $a->qty_doc,
                 'kg'              => $a->qty_kg,
+                'is_agen'         => $a->is_agen
             ]);
         endforeach;
         return Datatables::of($awbs)
@@ -599,8 +600,12 @@ class AwbController extends Controller
             ->addColumn('qty_stat', function ($a) {
                 if ((int)$a['kecil'] !== 0 || (int)$a['sedang'] !== 0 || (int)$a['besar'] !== 0 || (int)$a['besarbanget'] !== 0 || (int)$a['doc'] !== 0 || (int)$a['kg'] !== 0):
                     return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi </span>';
-                else:
-                    return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terisi </span>';
+                else: 
+                    if($a['is_agen'] == 0):
+                        return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terisi </span>';
+                    else:
+                        return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi </span>';
+                    endif;
                 endif;
             })
             ->editColumn('kota_tujuan', function ($a) {
