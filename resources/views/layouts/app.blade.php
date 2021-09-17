@@ -375,19 +375,20 @@ var loadPanel = $(".loadpanel").dxLoadPanel({
         </script>
         @yield('script')
         <!--end::Page Scripts-->
-        
+        <script type="text/javascript">
+
+            $(document) .ajaxStart(function () {
+                $('#loading').removeClass('d-none')
+                console.log('start')
+            })          .ajaxStop(function () {
+                $('#loading').addClass('d-none')
+                console.log('stop')
+            }); 
+        </script>
     </body>
     
 @if(Session::get('message') == "Password Updated")
 <script type="text/javascript">
-
-    $(document) .ajaxStart(function () {
-        $('#loading').removeClass('d-none')
-        console.log('start')
-    })          .ajaxStop(function () {
-        $('#loading').addClass('d-none')
-        console.log('stop')
-    }); 
     toastr.success("Password berhasil dirubah!");
 </script>
 @endif 
