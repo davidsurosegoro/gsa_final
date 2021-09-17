@@ -96,6 +96,13 @@
 @section('script')
 <script type="text/javascript"> 
  
+$(document) .ajaxStart(function () {
+    $('#loading').removeClass('d-none')
+    console.log('start')
+})          .ajaxStop(function () {
+    $('#loading').addClass('d-none')
+    console.log('stop')
+}); 
     $(document).on("click",".openstatus",function() {
       $('#customer_name'     ).html($(this).attr('namacustomer')) 
       $('#tanggalinvoice_'   ).html($(this).attr('tanggalinvoice'))

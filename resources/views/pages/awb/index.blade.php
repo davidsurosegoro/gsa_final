@@ -115,7 +115,7 @@
 @endsection
 @section('script')
 <script>
-   
+    
   $(document).on("click",".openstatus",function() {
       $('#Kotaasal_'          ).html($(this).attr('kodekotaasal'))
       $('#kotatujuan_'        ).html($(this).attr('kodekotatujuan'))
