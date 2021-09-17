@@ -1,11 +1,4 @@
 
-$(document) .ajaxStart(function () {
-    $('#loading').removeClass('d-none')
-    console.log('start')
-})          .ajaxStop(function () {
-    $('#loading').addClass('d-none')
-    console.log('stop')
-}); 
 navigator.permissions.query({name:'camera'}).then(function(result) {
     // alert(result.state);
     if (result.state === 'granted') { 
