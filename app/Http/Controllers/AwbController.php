@@ -161,6 +161,9 @@ class AwbController extends Controller
         if($customer->id == 26){
             $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya);   
         }
+        if($request->id_kota_asal == 9479):
+            $id_agen_asal = 1;
+        endif;
         if ($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
             $awb = Awb::create([
                 'noawb'               => $noawb,
