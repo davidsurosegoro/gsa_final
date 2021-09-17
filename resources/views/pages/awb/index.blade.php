@@ -116,6 +116,13 @@
 @section('script')
 <script>
    
+$(document) .ajaxStart(function () {
+    $('#loading').removeClass('d-none')
+    console.log('start')
+})          .ajaxStop(function () {
+    $('#loading').addClass('d-none')
+    console.log('stop')
+}); 
   $(document).on("click",".openstatus",function() {
       $('#Kotaasal_'          ).html($(this).attr('kodekotaasal'))
       $('#kotatujuan_'        ).html($(this).attr('kodekotatujuan'))
