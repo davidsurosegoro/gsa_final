@@ -714,4 +714,10 @@
     $('option').not(':selected').remove();
   </script>
 @endif
+@if($awb->created_by > 1)
+  <script>
+    
+    $('#customer option').not(':selected').remove();
+  </script>
+@endif
 @endsection

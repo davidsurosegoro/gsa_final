@@ -231,7 +231,6 @@ class AwbController extends Controller
                 'keterangan'          => $request->keterangan,
                 'total_harga'         => ($total_harga['total'] == null) ? 0 : $total_harga['total'],
                 'tanggal_awb'         => $before_update->tanggal_awb,
-                'created_by'          => Auth::user()->id,
                 'status_invoice'      => 0,
                 'status_tracking'     => 'booked',
                 'status_manifest'     => 0,
@@ -598,7 +597,7 @@ class AwbController extends Controller
                 endif;
             })
             ->addColumn('qty_stat', function ($a) {
-                if ($a['qty'] !== 0 || $a['kecil'] !== 0 || $a['sedang'] !== 0 || $a['besar'] !== 0 || $a['besarbanget'] !== 0 || $a['doc'] !== 0 || $a['kg'] !== 0):
+                if ((int)$a['kecil'] !== 0 || (int)$a['sedang'] !== 0 || (int)$a['besar'] !== 0 || (int)$a['besarbanget'] !== 0 || (int)$a['doc'] !== 0 || (int)$a['kg'] !== 0):
                     return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi </span>';
                 else:
                     return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terisi </span>';

@@ -85,7 +85,7 @@ class AgenController extends Controller
 
     public function datatables()
     {
-        $agen    = DB::SELECT('SELECT a.* FROM agen a WHERE a.deleted_at IS NULL');
+        $agen    = DB::SELECT('SELECT a.* FROM agen a WHERE a.deleted_at IS NULL AND id > 1');
         $agens   = new Collection;
         $strings = "";
         foreach ($agen as $a):
