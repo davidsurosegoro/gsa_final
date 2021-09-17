@@ -4,7 +4,7 @@
   <div class="card-header flex-wrap border-0 pt-6 pb-0">
     <div class="card-title">
       <h3 class="card-label">Data AWB
-      <span class="d-block text-muted pt-2 font-size-sm">Data AWB</span></h3>
+      <span class="d-block text-muted pt-2 font-size-sm">Data AWB yang tampil adalah data 2 bulan terakhir, untuk lebih lengkap dapat melihat data di report AWB</span></h3>
     </div>
     <div class="card-toolbar">
       <div onclick="datatable.ajax.reload();" class="btn btn-default  text-center">
