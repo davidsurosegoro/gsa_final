@@ -101,6 +101,7 @@
 <script type="text/javascript">  
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
+    var allowscan       = true;  
     var xs      		= document.getElementById("myAudio");  
     const video         = document.getElementById('qr-video');
     const camHasCamera  = document.getElementById('cam-has-camera');
@@ -193,39 +194,45 @@
         $('#loading').addClass('d-none')
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
-        $.ajax({
-            method  :'POST',
-            url     :'{{ url('awb/updateawb') }}',
-            data    :{
-                kode        : kode_awb_or_manifest,
-                qty         : qty,
-                status      : $('#statusawb').val(),
-                '_token'    : "{{ csrf_token() }}" 
-            },
-            success:function(data){
-                $('#kode_awb').val('')
-                if(data.statuserror)    {toastr.error( data.statuserror)}
-                if(data.statuswarning)  {
-                    $('#modalkodemanual').modal('hide');
-                    toastr.warning( data.statuswarning)
-                    $('.modal-backdrop').remove();
+        if(allowscan){
+            allowscan==false;
+            $.ajax({
+                method  :'POST',
+                url     :'{{ url('awb/updateawb') }}',
+                data    :{
+                    kode        : kode_awb_or_manifest,
+                    qty         : qty,
+                    status      : $('#statusawb').val(),
+                    '_token'    : "{{ csrf_token() }}" 
+                },
+                success:function(data){
+                    $('#kode_awb').val('')
+                    if(data.statuserror)    {toastr.error( data.statuserror)}
+                    if(data.statuswarning)  {
+                        $('#modalkodemanual').modal('hide');
+                        toastr.warning( data.statuswarning)
+                        $('.modal-backdrop').remove();
+                    }
+                    if(data.statussuccess)  {
+                        toastr.success( data.statussuccess)
+                        $('#modalkodemanual').modal('hide');
+                        $('.modal-backdrop').remove();
+                    }                  
+                    if(data.openmodal == 'open'){
+                        $('#modalpenerima').modal('show');
+                        $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
+                        $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
+                    }else{
+                        
+                        
+                        setTimeout(function(){ 
+                            scanner.start() 
+                            allowscan==true;
+                        }, 800);
+                    } 
                 }
-                if(data.statussuccess)  {
-                    toastr.success( data.statussuccess)
-                    $('#modalkodemanual').modal('hide');
-                    $('.modal-backdrop').remove();
-                }                  
-                if(data.openmodal == 'open'){
-                    $('#modalpenerima').modal('show');
-                    $('#kodeawb_penerima'   ).val(kode_awb_or_manifest)
-                    $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
-                }else{
-                    
-                    
-                    setTimeout(function(){ scanner.start() }, 800);
-                } 
-            }
-        }) 
+            }) 
+        }
     }
     function updatepenerima(){
         $.ajax({

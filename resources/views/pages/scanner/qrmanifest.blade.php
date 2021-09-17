@@ -88,6 +88,7 @@
     
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
+    var allowscan       = true;  
     var xs      		= document.getElementById("myAudio");  
     const video         = document.getElementById('qr-video');
     const camHasCamera  = document.getElementById('cam-has-camera');
@@ -167,32 +168,39 @@
     })
     
     function scan_update_status(kode_manifest){
-        $.ajax({
-            method  :'POST',
-            url     :'{{ url('awb/updatemanifestqr') }}',
-            data    :{
-                kode        : kode_manifest,
-                status      : $('#statusmanifest').val(),
-                '_token'    : "{{ csrf_token() }}" 
-            },
-            success:function(data){
-                $('#kode_manifest').val('')
-                if(data.statuserror)    {toastr.error( data.statuserror)}
-                if(data.statuswarning)  {
-                    $('#modalkodemanual').modal('hide');
-                    toastr.warning( data.statuswarning)
-                    $('.modal-backdrop').remove();
+        
+        if(allowscan){
+            allowscan==false;
+            $.ajax({
+                method  :'POST',
+                url     :'{{ url('awb/updatemanifestqr') }}',
+                data    :{
+                    kode        : kode_manifest,
+                    status      : $('#statusmanifest').val(),
+                    '_token'    : "{{ csrf_token() }}" 
+                },
+                success:function(data){
+                    $('#kode_manifest').val('')
+                    if(data.statuserror)    {toastr.error( data.statuserror)}
+                    if(data.statuswarning)  {
+                        $('#modalkodemanual').modal('hide');
+                        toastr.warning( data.statuswarning)
+                        $('.modal-backdrop').remove();
+                    }
+                    if(data.statussuccess)  {
+                        toastr.success( data.statussuccess)
+                        $('#modalkodemanual').modal('hide');
+                        $('.modal-backdrop').remove();
+                    }                  
+                    
+                    setTimeout(function(){ 
+                        scanner.start() 
+                        allowscan==true;
+                    }, 800);
+                 
                 }
-                if(data.statussuccess)  {
-                    toastr.success( data.statussuccess)
-                    $('#modalkodemanual').modal('hide');
-                    $('.modal-backdrop').remove();
-                }                  
-                
-                setTimeout(function(){ scanner.start() }, 800);
-             
-            }
-        }) 
+            }) 
+        }
     } 
 	
 </script>  

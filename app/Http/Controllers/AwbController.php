@@ -340,17 +340,33 @@ class AwbController extends Controller
             $typereturn    = 'statuserror';
             return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
         }
-        if(($status == 'loaded' || $status == 'at-agen' || $status == 'delivery-by-courier' || $status == 'complete') && $awb->id_manifest==0){
+        
+// ----------------------------------------VALIDATE-------------------------------------
+// ----------------------------------------VALIDATE-------------------------------------
+        
+        // CEK jika AWB belum diterima agen, maka tidak bisa diganti status+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        if(($status == 'delivery-by-courier' || $status == 'complete') && ($awb->status_tracking == 'loaded' || $awb->status_tracking == 'at-manifest' || $awb->status_tracking == 'booked')&& $continue == true){
             $continue      = false;
-            $returnmessage = 'Gagal ganti status, Kode AWB ' . $kode . ', Belum masuk di daftar manifest! ';
+            $returnmessage = 'Gagal ganti status, Kode AWB <b>' . $kode . '</b>, Belum diterima agen! <br><br> AWB wajib di teirma agen terlebih dahulu';
             $typereturn    = 'statuswarning';
         }
-        // dd($awb);
+
+        // CEK jika AWB belum masuk /ditarik ke manifest, maka tidak bisa diganti status+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        if(($status == 'loaded' || $status == 'at-agen' || $status == 'delivery-by-courier' || $status == 'complete') && $awb->id_manifest==0&& $continue == true){
+            $continue      = false;
+            $returnmessage = 'Gagal ganti status, Kode AWB <b>' . $kode . '</b>, Belum masuk di daftar manifest! ';
+            $typereturn    = 'statuswarning';
+        }
+
+        // CEK jika awb sudah berstatus complete/cancel, sudah tidak bisa dirubah status lagi!
         if(($awb->status_tracking == 'complete' || $awb->status_tracking == 'cancel')&& $continue == true && $status!= 'complete'){
             $continue      = false;
-            $returnmessage = 'Kode AWB ' . $kode . ', Sudah berstatus ' .$awb->status_tracking . ', tidak bisa di rubah lagi!';
+            $returnmessage = 'Kode AWB <b>' . $kode . '</b>, Sudah berstatus ' .$awb->status_tracking . ', tidak bisa di rubah lagi!';
             $typereturn    = 'statuswarning';
         }
+// ----------------------------------------END OF VALIDATE-------------------------------------
+// ----------------------------------------END OF VALIDATE-------------------------------------
+        
         if (!$awb && $continue == true) {
             //JIKA KODE TIDAK DITEMUKAN----------------------------------------
             $returnmessage = 'Kode AWB ' . $kode . ' tidak ditemukan!';
@@ -602,12 +618,12 @@ class AwbController extends Controller
             })
             ->addColumn('qty_stat', function ($a) {
                 if ((int)$a['kecil'] !== 0 || (int)$a['sedang'] !== 0 || (int)$a['besar'] !== 0 || (int)$a['besarbanget'] !== 0 || (int)$a['doc'] !== 0 || (int)$a['kg'] !== 0):
-                    return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi </span>';
+                    return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi &nbsp; <i style="color:white !important;" class="fa fa-search" aria-hidden="true"></i></span>';
                 else: 
                     if($a['is_agen'] == 0):
                         return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terisi </span>';
                     else:
-                        return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi </span>';
+                        return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi &nbsp; <i style="color:white !important;" class="fa fa-search" aria-hidden="true"></i></span>';
                     endif;
                 endif;
             })
