@@ -208,7 +208,7 @@
                                     <td style="width:50%;padding:0.1cm;">
                                         <span class="font-weight-bold" style="font-size:0.25cm;">NAMA PENGIRIM:</span><br>
                                             <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->nama_pengirim }}<br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span><br>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span> 
                                             <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->alamat_pengirim }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">KODEPOS:</span>
                                             <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->kodepos_pengirim }}<br></span>
@@ -217,10 +217,10 @@
                                             
                                         
                                     </td>   
-                                    <td style="width:50%; ">
+                                    <td style="width:50%; padding:0.1cm;">
                                         <span class="font-weight-bold" style="font-size:0.25cm;">NAMA PENERIMA:</span><br>
                                             <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->nama_penerima }}<br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span><br>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span> 
                                             <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->alamat_tujuan }}<br></span>
                                         <span class="font-weight-bold" style="font-size:0.25cm;">KODEPOS:</span>
                                             <span style="font-size:0.4cm; letter-spacing:0.2mm;">{{ $awb[0]->kodepos_penerima }}<br></span>

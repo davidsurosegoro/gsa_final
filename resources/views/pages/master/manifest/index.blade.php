@@ -10,8 +10,10 @@
       <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
       <i class="fa fa-refresh text-center"></i></div>
       &nbsp;
-      <a href="{{url('master/manifest/grouping') }}" class="btn btn-primary font-weight-bolder">
-      <i class="la la-plus"></i>Tambah Data manifest</a>
+      @if ((int)Auth::user()->id ==1)          
+        <a href="{{url('master/manifest/grouping') }}" class="btn btn-primary font-weight-bolder">
+        <i class="la la-plus"></i>Tambah Data manifest</a>
+      @endif
     </div>
   </div>
   <div class="card-body">
@@ -22,6 +24,7 @@
               <th>Kode</th>
               <th>Asal</th>
               <th>Tujuan</th>
+              <th>AgenTujuan</th>
               <th>Tanggal</th>
               <th>Dibuat Oleh</th>
               <th>Koli</th>
@@ -165,6 +168,7 @@ $(document) .ajaxStart(function () {
 	     processing : true,
 	     serverSide : false,
 	     paging     : true,
+       pageLength : 100,
 	     ajax       :'{{ url('master/manifest/datatables') }}',
 	     columns    : [
          
@@ -172,6 +176,7 @@ $(document) .ajaxStart(function () {
           {data: 'kode',              name:'kode'}, 
           {data: 'kodekotaasal',      name:'Asal'}, 
           {data: 'kodekotatujuan',    name:'Tujuan'}, 
+          {data: 'kodeagen',          name:'AgenTujuan'}, 
           {data: 'tanggal_manifest',  name:'Tujuan'}, 
           {data: 'namauser',          name:'Dicek Oleh'}, 
           {data: 'jumlah_koli',       name:'Koli'}, 
@@ -181,7 +186,7 @@ $(document) .ajaxStart(function () {
           {data: 'status_info',       name:'Status'},
           {data: 'aksi',              name:'aksi'},
       ],
-	   "order": [[ 1, "desc" ]],
+	   "order": [[ 0, "desc" ]],
     });
 
     var detailRows = [];

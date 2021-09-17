@@ -149,7 +149,7 @@
                             </tr>
                             <tr>
                                 <td style="width:3cm;"><b>Diterima agen</b></td>
-                                <td>&nbsp;{{$manifest->namaagen}}</td>
+                                <td>&nbsp;{{$manifest->discan_diterima_oleh_nama}}</td>
                             </tr>
                         </table>
                     </div>
@@ -222,7 +222,7 @@
                                                     style="background-color: #d02626;"
                                                 @endif
                                                 >
-                                                Barang yang sudah masuk ke truck {{$item->qtyloaded}} dari {{ $qty_umum}} barang
+                                                 masuk ke truck {{$item->qtyloaded}} dari {{ $qty_umum}} barang
                                             </div>
                                     </td> 
                                 </tr>   

@@ -147,7 +147,7 @@
 	    processing    : true,
 	    serverSide    : false,
 	    paging        : true,      
-      pageLength    : 100,
+        pageLength    : 100,
 	    ajax          : '{{ url('awb/datatables') }}',
 	    columns: [
 	    {data: 'id',              name:'id'},

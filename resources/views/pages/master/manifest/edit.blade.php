@@ -19,12 +19,13 @@
 @endforeach
 <input type="hidden" name="id" value="{{ $manifest->id }}">
 <div class="d-none ">
-    tujuan:       <input type='text' name='id_kota_tujuan'          value='{{$kotatujuan[0]['id']}}'>
-    asal:     <input type='text' name='id_kota_asal'          value='{{$kotaasal[0]['id']}}'>
-    dibuat:     <input type='text' name='dibuat_oleh'           value='{{ Auth::user()->id}}'> 
-    kg:         <input type='text' name='jumlah_kg'             value='{{$total_kg}}'> 
-    koli:       <input type='text' name='jumlah_koli'           value='{{$total_koli}}'> 
-    doc:        <input type='text' name='jumlah_doc'            value='{{$total_doc}}'>  
+    tujuan:         <input type='text' name='id_kota_tujuan'        value='{{$kotatujuan[0]['id']}}'>
+    asal:           <input type='text' name='id_kota_asal'          value='{{$kotaasal[0]['id']}}'> 
+    agentujuan:     <input type='text' name='agen_tujuan'           value='{{$agentujuan[0]['id']}}'>
+    dibuat:         <input type='text' name='dibuat_oleh'           value='{{ Auth::user()->id}}'> 
+    kg:             <input type='text' name='jumlah_kg'             value='{{$total_kg}}'> 
+    koli:           <input type='text' name='jumlah_koli'           value='{{$total_koli}}'> 
+    doc:            <input type='text' name='jumlah_doc'            value='{{$total_doc}}'>  
 </div>
 {{ csrf_field() }}
 <div class="card-body">

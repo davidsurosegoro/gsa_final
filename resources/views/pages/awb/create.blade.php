@@ -117,7 +117,7 @@
           <div class="row" id="row-jenis-koli">
             <div class="col-lg-6">
               <div class="form-group">
-                <label class="font-weight-bold">Jenis Koli</label>
+                <label class="font-weight-bold">Jenis quantity (kl,kg,doc)</label>
                   <select class="form-control" id="jenis_koli" name="jenis_koli" required>
                     <option value="">--Pilih Jenis Koli--</option>
                     @if($awb->jenis_koli == "koli")
@@ -443,8 +443,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group">
-              <label class="font-weight-bold">Keterangan tambahan :</label>
-              <textarea name="keterangan" maxlength="100" rows="4" class="form-control"> {{ $awb->keterangan }}</textarea>
+              <label class="font-weight-bold">Keterangan tambahan (deskripsi):</label>
+              <textarea name="keterangan" maxlength="20" rows="4" class="form-control"> {{ $awb->keterangan }}</textarea>
             </div>
           </div>
         </div>

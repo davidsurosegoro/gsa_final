@@ -66,7 +66,7 @@ Route::prefix('master')->group(function(){
 			Route::post('/updatestatus'	,'Master\ManifestController@updatestatus');
 			Route::post('/gantipassword','Master\ManifestController@gantipassword');
 			Route::get('/checkusername'	,'Master\ManifestController@checkusername');
-			Route::get('/edit/{kotaasal}/{kotatujuan}','Master\ManifestController@edit');
+			Route::get('/edit/{kotaasal}/{kotatujuan}/{agentujuan}','Master\ManifestController@edit');
 
 		});
 		Route::middleware(['auth','admin.customer'])->prefix('alamat')->group(function(){

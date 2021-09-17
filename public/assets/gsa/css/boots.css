@@ -439,11 +439,11 @@
     transition: line-height 0.3s ease-in-out;
   }
   .totalbarangmasuk{
-    width:200px;
+    width:240px;
     position: absolute;
      z-index:200; 
      top:0px; 
-     right:-200px; 
+     right:-240px; 
      padding-left:5px;
      color:white;
      border:1px solid black;

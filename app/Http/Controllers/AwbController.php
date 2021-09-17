@@ -341,8 +341,8 @@ class AwbController extends Controller
             return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
         }
         
-// ----------------------------------------VALIDATE-------------------------------------
-// ----------------------------------------VALIDATE-------------------------------------
+        // ----------------------------------------VALIDATE-------------------------------------
+        // ----------------------------------------VALIDATE-------------------------------------
         
         // CEK jika AWB belum diterima agen, maka tidak bisa diganti status+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         if(($status == 'delivery-by-courier' || $status == 'complete') && ($awb->status_tracking == 'loaded' || $awb->status_tracking == 'at-manifest' || $awb->status_tracking == 'booked')&& $continue == true){
@@ -364,8 +364,8 @@ class AwbController extends Controller
             $returnmessage = 'Kode AWB <b>' . $kode . '</b>, Sudah berstatus ' .$awb->status_tracking . ', tidak bisa di rubah lagi!';
             $typereturn    = 'statuswarning';
         }
-// ----------------------------------------END OF VALIDATE-------------------------------------
-// ----------------------------------------END OF VALIDATE-------------------------------------
+        // ----------------------------------------END OF VALIDATE-------------------------------------
+        // ----------------------------------------END OF VALIDATE-------------------------------------
         
         if (!$awb && $continue == true) {
             //JIKA KODE TIDAK DITEMUKAN----------------------------------------

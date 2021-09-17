@@ -19,12 +19,15 @@
             <div class="card col-12 bg-light" style="padding:0px;">
                 <div class="card-body"  style="padding:10px;">
                     <h5>{{$item->total}} AWB</h5>
+                    <h5>
+                        <span class="badge badge-dark"><i class="fas fa-user-friends" style="color:white;"></i>&nbsp;(AGEN){{$item->agentujuan}}</span>
+                    </h5>
                     <h2 class="card-title">
                         {{$item->kotaasal}} 
                             &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i> &nbsp; 
                         {{$item->kotatujuan}} 
                     </h2>
-                    <a href="{{url('master/manifest/edit/'.$item->idkotaasal.'/'.$item->idkotatujuan)}}" class="btn btn-primary">Buat Manifest</a>
+                    <a href="{{url('master/manifest/edit/'.$item->idkotaasal.'/'.$item->idkotatujuan.'/'.$item->idagentujuan)}}" class="btn btn-primary">Buat Manifest</a>
                 </div>
             </div>           
         </div>
