@@ -152,11 +152,11 @@ Route::middleware(['auth'])->prefix('awb')->group(function () {
 	Route::middleware(['admin.customer'])->get('/datatables','AwbController@datatables');
 	Route::middleware(['admin.customer'])->post('/filter-customer','AwbController@filter_customer');
 	Route::middleware(['admin.customer'])->post('/filter-alamat','AwbController@filter_alamat');
-	Route::middleware(['admin.customer'])->post('/updatediterima','AwbController@updatediterima');
-	Route::middleware(['admin.agen.kurir'])->post('/updatetomanifest','AwbController@updatetomanifest');
 	// Route::middleware(['admin.customer'])->get('/update-harga/{id}','AwbController@updateHarga');
+	Route::middleware(['admin.agen.kurir'])->post('/updatetomanifest','AwbController@updatetomanifest');
 	Route::middleware(['admin.agen.kurir'])->post('/updateawb','AwbController@updateawb');
-	Route::middleware(['admin.customer'])->post('/updatemanifestqr','AwbController@updatemanifestqr');
+	Route::middleware(['admin.agen.kurir'])->post('/updatediterima','AwbController@updatediterima');
+	Route::middleware(['admin.agen.kurir'])->post('/updatemanifestqr','AwbController@updatemanifestqr');
 });
 
 Route::middleware(['auth'])->prefix('report')->group(function(){
