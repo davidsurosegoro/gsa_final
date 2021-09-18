@@ -139,24 +139,24 @@ Route::prefix('master')->group(function(){
 });
 
 
-Route::middleware(['auth','admin.customer'])->prefix('awb')->group(function () {
-	Route::get('/', 'AwbController@index');
-	Route::get('/edit/{id}/{hilang}', 'AwbController@edit');
-	Route::post('/save', 'AwbController@save');
-	Route::post('/delete', 'AwbController@delete');
-	Route::post('/manifest', 'AwbController@manifest');
-	Route::post('/koli', 'AwbController@koli');
-	Route::post('/show', 'AwbController@show');
-	Route::post('/filter-data-penerima', 'AwbController@filter_data_penerima');
-	Route::post('/filter-kota-agen', 'AwbController@filter_kota_agen');
-	Route::get('/datatables','AwbController@datatables');
-	Route::post('/filter-customer','AwbController@filter_customer');
-	Route::post('/filter-alamat','AwbController@filter_alamat');
-	Route::post('/updateawb','AwbController@updateawb');
-	Route::post('/updatemanifestqr','AwbController@updatemanifestqr');
-	Route::post('/updatediterima','AwbController@updatediterima');
-	// Route::get('/update-harga/{id}','AwbController@updateHarga');
-	Route::post('/updatetomanifest','AwbController@updatetomanifest');
+Route::middleware(['auth'])->prefix('awb')->group(function () {
+	Route::middleware(['admin.customer'])->get('/', 'AwbController@index');
+	Route::middleware(['admin.customer'])->get('/edit/{id}/{hilang}', 'AwbController@edit');
+	Route::middleware(['admin.customer'])->post('/save', 'AwbController@save');
+	Route::middleware(['admin.customer'])->post('/delete', 'AwbController@delete');
+	Route::middleware(['admin.customer'])->post('/manifest', 'AwbController@manifest');
+	Route::middleware(['admin.customer'])->post('/koli', 'AwbController@koli');
+	Route::middleware(['admin.customer'])->post('/show', 'AwbController@show');
+	Route::middleware(['admin.customer'])->post('/filter-data-penerima', 'AwbController@filter_data_penerima');
+	Route::middleware(['admin.customer'])->post('/filter-kota-agen', 'AwbController@filter_kota_agen');
+	Route::middleware(['admin.customer'])->get('/datatables','AwbController@datatables');
+	Route::middleware(['admin.customer'])->post('/filter-customer','AwbController@filter_customer');
+	Route::middleware(['admin.customer'])->post('/filter-alamat','AwbController@filter_alamat');
+	Route::middleware(['admin.customer'])->post('/updatediterima','AwbController@updatediterima');
+	Route::middleware(['admin.agen.kurir'])->post('/updatetomanifest','AwbController@updatetomanifest');
+	// Route::middleware(['admin.customer'])->get('/update-harga/{id}','AwbController@updateHarga');
+	Route::middleware(['admin.agen.kurir'])->post('/updateawb','AwbController@updateawb');
+	Route::middleware(['admin.customer'])->post('/updatemanifestqr','AwbController@updatemanifestqr');
 });
 
 Route::middleware(['auth'])->prefix('report')->group(function(){
