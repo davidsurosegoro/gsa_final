@@ -17,15 +17,9 @@ class OnlyAdminAgenKurir
      */
     public function handle($request, Closure $next)
     {
-        $status = Crypt::decrypt($request->route()->parameters['status']);
-        if($status == 'delivery-by-courier' || $status == 'complete'){
-            if((int)Auth::user()->level == 1 || (int)Auth::user()->level == 3):
-                return $next($request);
-            endif;
-        }
-        if($status == 'loaded' && (int)Auth::user()->level == 1){
+        if((int)Auth::user()->level == 1 || (int)Auth::user()->level == 3 || (int)Auth::user()->level == 4):
             return $next($request);
-        }
+        endif;
         abort(403);
     }
 }
