@@ -154,6 +154,7 @@ class InvoiceController extends Controller
         $invoice->keterangan           = ($request->keterangan)             ? $request->keterangan          : ''; 
         $invoice->metodepembayaran     = ($request->metodepembayaran)       ? $request->metodepembayaran    : '';         
         $invoice->tanggal_invoice      = Carbon::now()->addHours(7); 
+        $invoice->created_at           = Carbon::now()->addHours(7); 
         $invoice->status               = 'unpaid';  
         $invoice->save(); 
         DB::table('awb')
