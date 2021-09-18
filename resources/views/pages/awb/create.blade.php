@@ -104,12 +104,12 @@
       
       <div class="card-body">
         <h6 class="panel-title txt-dark"><i class="flaticon-shopping-basket"> </i>Data Jumlah Barang</h6>
-          @if((int)Auth::user()->level !== 1 && $customer->can_access_satuan !== 1)
+          @if((int)Auth::user()->level !== 1 && (int)$customer->can_access_satuan !== 1)
           <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
-                <label class="font-weight-bold">Qty</label>
-                <input type="number" class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0">
+                <label class="font-weight-bold">Qty @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                <input type="number" @if ($hilang =="hilang") max='0' @endif  class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0">
               </div>
             </div>
           </div>
@@ -146,26 +146,26 @@
               <div class="row">
                 <div class="col-lg-2">
                   <div class="form-group" id="qty_koli_k">
-                    <label class="font-weight-bold">Qty Koli Kecil</label>
-                    <input type="number" class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
+                    <label class="font-weight-bold">Qty Koli Kecil @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_kecil }}" name="qty_kecil" placeholder="Input jumlah koli kecil. . ." value="0">
                   </div>
                 </div>
                 <div class="col-lg-2">
                   <div class="form-group" id="qty_koli_s">
-                    <label class="font-weight-bold">Qty Koli Sedang</label>
-                    <input type="number" class="form-control" value="{{ $awb->qty_sedang }}"  name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
+                    <label class="font-weight-bold">Qty Koli Sedang @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_sedang }}"  name="qty_sedang" placeholder="Input jumlah koli sedang. . ." value="0">
                   </div>
                 </div>
                 <div class="col-lg-2">
                   <div class="form-group" id="qty_koli_b">
-                    <label class="font-weight-bold">Qty Koli Besar</label>
-                    <input type="number" class="form-control" value="{{ $awb->qty_besar }}"  name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
+                    <label class="font-weight-bold">Qty Koli Besar @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_besar }}"  name="qty_besar" placeholder="Input jumlah koli besar. . ." value="0">
                   </div>
                 </div>
                 <div class="col-lg-2"> 
                   <div class="form-group" id="qty_koli_bb">
-                    <label class="font-weight-bold">Qty Koli Besar Banget</label>
-                    <input type="number" class="form-control" value="{{ $awb->qty_besarbanget }}"  name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
+                    <label class="font-weight-bold">Qty Koli Besar Banget @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_besarbanget }}"  name="qty_besar_banget" placeholder="Input jumlah koli besar_banget. . ." value="0">
                   </div>
                 </div>
               </div>
@@ -174,8 +174,8 @@
               <div class="row mb-0">
                 <div class="col-lg-3">
                   <div class="form-group" id="qty_koli_kg" >
-                    <label class="font-weight-bold">Qty Koli Kg</label>
-                    <input type="number" class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
+                    <label class="font-weight-bold">Qty Koli Kg @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
                   </div>
                 </div>
                 <div class="col-lg-3" id="div-kg-pertama">
@@ -196,8 +196,8 @@
               <div class="row mb-0">
                 <div class="col-lg-2">
                   <div class="form-group" id="qty_koli_doc" >
-                    <label class="font-weight-bold">Qty Koli Dokumen</label>
-                    <input type="number" class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+                    <label class="font-weight-bold">Qty Koli Dokumen @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
                   </div>
                 </div>
               </div>
@@ -222,14 +222,14 @@
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <label class="font-weight-bold">Qty</label>
-                <input type="number" class="form-control" id="qty_biasa" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . .">
+                <label class="font-weight-bold">Qty @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                <input type="number" class="form-control" id="qty_biasa" @if ($hilang =="hilang") max='0' @endif value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . .">
               </div>
             </div>
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Harga Total</label>
-                <input type="text" class="form-control rupiah" id="harga_total" value="{{ $awb->total_harga }}" name="harga_total" placeholder="Input harga total. . ." >
+                <input type="text" class="form-control rupiah"  id="harga_total" value="{{ $awb->total_harga }}" name="harga_total" placeholder="Input harga total. . ." >
               </div>
             </div>
           </div>

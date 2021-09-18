@@ -544,7 +544,22 @@ class AwbController extends Controller
             $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
         endif;
         $awbs = new Collection;
+        // dd($awb);
         foreach ($awb as $a):
+            
+        $print_awb_biasa = '<a href=' . url('printout/awb/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
+                                <i class="flaticon2-print" ></i>
+                            </a>';
+        $print_awb_tri   =  '<a href=' . url('printout/awbtri/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
+                                <i class="fas fa-print" ></i>
+                            </a>';                    
+        if (
+                ((int)$a->qty_kecil <= 0 && (int)$a->qty_sedang <= 0 && (int)$a->qty_besar <= 0 && (int)$a->qty_besarbanget <= 0 && (int)$a->qty_doc <= 0 && $a->qty_kg <= 0 && $a->is_agen == 0) 
+                || ((int)$a->qty<= 0 )
+            ):
+                $print_awb_biasa = '';
+                $print_awb_tri   = '';
+        endif;
             $awbs->push([
                 'id'              => $a->id,
                 'noawb'           => $a->noawb,
@@ -562,7 +577,9 @@ class AwbController extends Controller
                 'besarbanget'     => $a->qty_besarbanget,
                 'doc'             => $a->qty_doc,
                 'kg'              => $a->qty_kg,
-                'is_agen'         => $a->is_agen
+                'is_agen'         => $a->is_agen,
+                'print_awb_biasa' => $print_awb_biasa,
+                'print_awb_tri'   => $print_awb_tri
             ]);
         endforeach;
         return Datatables::of($awbs)
@@ -578,14 +595,10 @@ class AwbController extends Controller
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         <a href=' . url('awb/edit/' . $a['id'] . '/edit') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                             <i class="flaticon-edit-1" ></i>
-                        </a>                        
-                        <a href=' . url('printout/awb/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
-                        <i class="flaticon2-print" ></i>
-                        </a>
-                        <a href=' . url('printout/awbtri/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
-                        <i class="fas fa-print" ></i>
-                        </a>
-                        <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button>
+                        </a>                       
+                        '.$a['print_awb_biasa'].'
+                        '.$a['print_awb_tri'].'
+                        <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus AWB" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button>
                         <a href=' . url('awb/edit/' . $a['id'] . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
                         <i class="flaticon-exclamation" ></i>
                         </a>
@@ -596,17 +609,12 @@ class AwbController extends Controller
                             <i class="flaticon-edit-1" ></i>
                         </a>
 
-                        <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button></div>';
+                        <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus AWB" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button></div>';
                 elseif ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level == 1):
 
                     return '<div class="btn-group" role="group" aria-label="Basic example">
-                        <a href=' . url('printout/awb/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
-                        <i class="flaticon2-print" ></i>
-                        </a>
-                        
-                        <a href=' . url('printout/awbtri/' .Crypt::encrypt($a['id'])) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
-                        <i class="fas fa-print" ></i>
-                        </a>
+                        '.$a['print_awb_biasa'].'
+                        '.$a['print_awb_tri'].'
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
                         <i class="fas fa-map-marked-alt" ></i>
                         </a>
