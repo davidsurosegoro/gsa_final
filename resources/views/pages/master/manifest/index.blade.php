@@ -75,7 +75,7 @@
             <label for="exampleFormControlSelect2">Status</label>
             <select class="form-control" id="status" name="status">
               <option class='options_' id='checked'    value='checked'   >checked</option>
-              <option class='options_' id='delivering' value='delivering'>delivering</option>
+              <option class='options_' id='delivering' value='delivering'>delivering (load ke truck)</option>
               <option class='options_' id='arrived'    value='arrived'   >arrived</option>
             </select>
           </div>

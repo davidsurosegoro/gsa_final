@@ -175,7 +175,7 @@ $(document) .ajaxStart(function () {
           {data: 'metodepembayaran',  name:'metodepembayaran'},
           {data: 'aksi',              name:'aksi'},
       ],
-	   "order": [[ 1, "asc" ]],
+	   "order": [[ 0, "desc" ]],
     });
 
     var detailRows = [];
