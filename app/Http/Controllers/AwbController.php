@@ -159,7 +159,7 @@ class AwbController extends Controller
         $harga_kg_pertama = ($request->harga_kg_pertama == null) ? 0 : str_replace(',', '',$request->harga_kg_pertama);
         $harga_kg_selanjutnya = ($request->harga_kg_selanjutnya == null) ? 0 : str_replace(',', '',$request->harga_kg_selanjutnya);
         if($customer->id == 26){
-            $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya);   
+            $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya,$charge_oa,$customer);   
         }
         if($request->id_kota_asal == 9479):
             $id_agen_asal = 1;
@@ -751,14 +751,17 @@ class AwbController extends Controller
         return $tots;
     }
 
-    private function hitungHargaKg($qty_kg,$harga_pertama,$harga_selanjutnya){
-        $harga_kg = 0;
-        if ($qty_kg > 2):
-            $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ($qty_kg - 2));
-        else:
-            $harga_kg = $harga_pertama * 2;
+    private function hitungHargaKg($qty_kg,$harga_pertama,$harga_selanjutnya,$charge_oa,$customer){
+        $harga_kg = 0; $harga_oa = 0;
+        if ($qty_kg > 0):
+            $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
+        // else:
+            // $harga_kg = $customer->harga_kg * 2;
         endif;
-        return $harga_kg;
+        if ($charge_oa == 1):
+            $harga_oa = $customer->harga_oa;
+        endif;
+        return $harga_kg + $harga_oa;
     }
 
     private function randomChar()
