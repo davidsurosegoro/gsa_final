@@ -730,7 +730,7 @@ class AwbController extends Controller
     {
         $harga_kg = 0;
         $harga_oa = 0;
-        if ($qty_kg > 2):
+        if ($qty_kg > 0):
             $harga_kg = $customer->harga_kg * 2 + (2000 * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
         // else:
             // $harga_kg = $customer->harga_kg * 2;
