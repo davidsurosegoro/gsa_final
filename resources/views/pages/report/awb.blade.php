@@ -16,7 +16,7 @@
               <div class="col-lg-3">
                 <label class="font-weight-bold mt-5">Customer:</label><br>
                 <select class="form-control select2" name="id_customer" id="id_customer">
-                  @if((int) Auth::user()->level == 1)
+                  @if((int) Auth::user()->level == 1 ||(int) Auth::user()->level == 3)
                   <option value="-">--Tampil Semua--</option>
                   @foreach($customer as $c)
                     <option value="{{ $c->id }}">{{ $c->nama }}</option>
@@ -43,15 +43,21 @@
                   <option value="cancel">cancel</option>
                 </select>
               </div>
-              <div class="col-lg-3">
-                <label class="font-weight-bold mt-5">Agen Tujuan</label><br>
-                <select class="form-control select2" name="id_agen_penerima" id="id_agen_penerima">
-                  <option value="-">--Tampil Semua--</option>
-                  @foreach($agen as $a)
-                    <option value="{{ $a->id }}">{{ $a->nama }}</option>
-                  @endforeach
-                </select>
-              </div>
+              
+                <div class="col-lg-3
+                
+                @if((int) Auth::user()->level == 3)
+                d-none
+                @endif
+                ">
+                  <label class="font-weight-bold mt-5">Agen Tujuan</label><br>
+                  <select class="form-control select2" name="id_agen_penerima" id="id_agen_penerima">
+                    <option value="-">--Tampil Semua--</option>
+                    @foreach($agen as $a)
+                      <option value="{{ $a->id }}">{{ $a->nama }}</option>
+                    @endforeach
+                  </select>
+                </div>
               <div class="col-lg-3">
                 <label class="font-weight-bold mt-5">Kode Awb </label><br>
                 <input type="text" name="noawb" id="noawb" class="form-control">
@@ -220,6 +226,12 @@
                 {
                     caption: "Kota Tujuan",
                     dataField: "kota_tujuan",
+                    dataType: "string", 
+                },
+                
+                {
+                    caption: "Agen Asal",
+                    dataField: "agen_asal",
                     dataType: "string", 
                 },
                 {
