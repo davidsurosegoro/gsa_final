@@ -278,7 +278,7 @@
                 },
                 {
                     caption: "Kecamatan",
-                    dataField: "kecamatan",
+                    dataField: "kecamatan_tujuan",
                     dataType: "string", 
                 },
                 {

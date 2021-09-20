@@ -97,6 +97,7 @@ class InvoiceController extends Controller
                         ->join  ("customer",   'customer.id',   '=', 'awb.id_customer') 
                         ->where ("awb.status_tracking", '=' , 'complete') 
                         ->where ("awb.id_invoice",      '=' , 0) 
+                        ->where ("awb.id_customer",    '<>' , 26)//---------------26 ini adalah customer biasa, dan tidak perlu ditagihkan. karena sudah cash 
                         ->groupBy("customer.kode" , "customer.nama","customer.id")
                         ->get(); 
         // echo Carbon::now()->hour(15)->minute(0)->second(0);

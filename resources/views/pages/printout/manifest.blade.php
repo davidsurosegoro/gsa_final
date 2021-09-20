@@ -16,7 +16,7 @@
                 display: none;
             }
             @page {
-                size: A4;
+                size: 210mm 280mm;
                 margin: 0;
             }
             @media print {
@@ -24,10 +24,13 @@
                 .no-print * {
                     display: none !important;
                 }
+                 table, th, td {
+                    border:dashed 1px  black;
+                }
                 html,
                 body {
                     width: 210mm;
-                    height: 297mm;
+                    height: 280m;
                 }
                 .showonprint{
                     display: block !important;
@@ -82,7 +85,9 @@
             .page {
                 width: 210mm;
                 min-height: auto;
+                height: auto;
                 padding: 5mm;
+                page-break-after: always;
                 margin: 10mm auto;
                 border: 1px #D3D3D3 solid;
                 border-radius: 5px;
@@ -118,17 +123,17 @@
                         
                     </div> 
                     <div class="col-sm-3" style="padding:0px;">
-                        <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm; border-right:0px !important;">
+                        <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm; border-right:0px !important; width:98%;">
                             <tr>
-                                <td ><b>NO.</b></td>
+                                <td >NO.</td>
                                 <td>&nbsp;{{$manifest->kode}}</td>
                             </tr>
                             <tr>
-                                <td ><b>Asal </b></td>
+                                <td >Asal </td>
                                 <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
                             </tr>
                             <tr>
-                                <td ><b>Tujuan </b></td>
+                                <td >Tujuan </td>
                                 <td>&nbsp;{{$manifest->namakotatujuan}}-({{$manifest->kodekotatujuan}})</td>
                             </tr>  
                         </table>
@@ -136,19 +141,19 @@
                     <div class="col-sm-4" style="padding:0px;">
                         <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm;">
                             <tr>
-                                <td style="width:3cm;"><b>Tgl </b></td>
+                                <td style="width:3cm;">Tgl </td>
                                 <td>&nbsp;{{$manifest->tanggal_manifest}}</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Dicetak Oleh </b></td>
+                                <td style="width:3cm;">Dicetak Oleh </td>
                                 <td>&nbsp;{{ Auth::user()->nama }}</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Supir</b></td>
+                                <td style="width:3cm;">Supir</td>
                                 <td>&nbsp;{{$manifest->supir}}</td>
                             </tr>
                             <tr>
-                                <td style="width:3cm;"><b>Diterima agen</b></td>
+                                <td style="width:3cm;">Diterima agen</td>
                                 <td>&nbsp;{{$manifest->discan_diterima_oleh_nama}}</td>
                             </tr>
                         </table>
@@ -159,27 +164,27 @@
                 </div>
                 <div class="card"> 
                     <div class="">
-                        <table class="" style="font-size:0.4cm;width:100%;">
-                            <thead>
+                        <table class="" style="font-size:0.4cm;width:100%;"> 
+                            <tbody>
                                 <tr>
-                                    <th rowspan="2" style="width:0.5cm;padding:0.1cm;">NO</th> 
-                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">AWB</th> 
-                                    <th rowspan="2" style="width:2cm;padding:0.1cm;">PENGIRIM</th> 
-                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">PENERIMA</th> 
-                                    <th rowspan="2" style="width:1cm;padding:0.1cm;">TUJUAN</th> 
-                                    <th  style="width:0.5cm;padding:0.1cm;">KL</th> 
-                                    <th  style="width:0.5cm;padding:0.1cm;">KG</th> 
-                                    <th  style="width:0.5cm;padding:0.1cm;">Doc</th> 
-                                    {{-- <th rowspan="2" style="width:1cm;padding:0.1cm;">NM.PENERIMA</th>   --}}
-                                    <th rowspan="2" style="width:2cm;padding:0.1cm;">KET</th> 
+                                    <th rowspan="2" style="width:0.5cm;padding:0.1cm;font-weight:normal;">NO</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">AWB</th> 
+                                    <th rowspan="2" style="width:2cm;padding:0.1cm;font-weight:normal;">PENGIRIM</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">PENERIMA</th> 
+                                    <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">TUJUAN</th> 
+                                    <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">KL</th> 
+                                    <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">KG</th> 
+                                    <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">Doc</th> 
+                                    {{-- <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">NM.PENERIMA</th>   --}}
+                                    <th rowspan="2" style="width:2cm;padding:0.1cm;font-weight:normal;">KET</th> 
                                 </tr>
                                 <tr>
                                     <td class="text-center">{{$manifest->jumlah_koli}}</td>
                                     <td class="text-center">{{$manifest->jumlah_kg}}</td>
                                     <td class="text-center">{{$manifest->jumlah_doc}}</td>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                </tr> 
+                                @for ($i = 0; $i < 3; $i++)
+                                    
                                 @foreach ($awb as $item)
                                 <?php
                                     $qty_umum = $item->qty;
@@ -194,25 +199,25 @@
                                     }
                                 ?>
                                 <tr style="padding:0px;">
-                                    <td class='text-center' style="padding:5px;">{{ $loop->index+1 }}</td>   
-                                    <td style="padding:5px;">
+                                    <td class='text-center' style="padding:2px;">{{ $loop->index+1 }}</td>   
+                                    <td style="padding:2px;">
                                         <a href="{{ url('t/'.$item['noawb'].'/t/0')}}" target="_blank" class="d-print-none">{{$item->noawb}}</a>
                                         <span class="showonprint">{{$item->noawb}}</span>
                                     </td> 
-                                    <td style="padding:5px;" class='text-left'>{{$item->namacust}}</td> 
-                                    <td style="padding:5px;" class='text-left'>{{$item->nama_penerima}}</td> 
-                                    <td style="padding:5px;">{{$item->kotatujuan}}</td> 
-                                    <td style="padding:5px;" class='text-center'>
+                                    <td style="padding:2px;" class='text-left'>{{$item->namacust}}</td> 
+                                    <td style="padding:2px;" class='text-left'>{{$item->nama_penerima}}</td> 
+                                    <td style="padding:2px;">{{$item->kotatujuan}}</td> 
+                                    <td style="padding:2px;" class='text-center'>
                                         @if ($item->qty > 0 && $item->qtykoli == 0)
                                             {{$item->qty}}
                                         @else
                                             {{$item->qtykoli}}   
                                         @endif
                                     </td> 
-                                    <td style="padding:5px;" class='text-center'>{{$item->qty_kg}}</td> 
-                                    <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td> 
-                                    {{-- <td style="padding:5px;">{{$item->nama_penerima}} </td>   --}}
-                                    <td style="padding:5px;position:relative !important;">
+                                    <td style="padding:2px;" class='text-center'>{{$item->qty_kg}}</td> 
+                                    <td style="padding:2px;" class='text-center'>{{$item->qty_doc}}</td> 
+                                    {{-- <td style="padding:2px;">{{$item->nama_penerima}} </td>   --}}
+                                    <td style="padding:2px;position:relative !important;">
                                         {{$item->keterangan}}{{$item->qtyloaded}}
                                         
                                             <div class="d-print-none totalbarangmasuk" 
@@ -227,13 +232,14 @@
                                     </td> 
                                 </tr>   
                                 @endforeach   
+                                @endfor
                             </tbody>
                         </table>
-                        <table class="table table-striped " >
-                            <thead>
-                                <tr> 
-                                    <td class='text-left' style="font-size:0.35cm;padding:0.1cm;">
-                                        <span style="font-weight:bold;">Keterangan</span><br>
+                        <table class="col-12" style="border:0px !important; "  >
+                            <thead  style="border:0px !important; " >
+                                <tr style="border:0px !important;"> 
+                                    <td class='text-left' style="font-size:0.35cm;padding:0.1cm; border:0px !important;">
+                                        <span style=" ;">Keterangan</span><br>
                                         {{$manifest->keterangan}}
                                     </td>
                                 </tr>

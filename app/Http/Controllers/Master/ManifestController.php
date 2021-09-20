@@ -165,8 +165,8 @@ class ManifestController extends Controller
                     ->where ("awb.id_agen_penerima",    '=' , $manifest['agen_tujuan'])//--------------------BARU 
                     ->where (function($query)
                                 {
-                                    $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0))
-                                            ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
+                                    $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0));
+                                            // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
                                 })
                     ->get(); 
         foreach ($data['awb'] as $item){  
@@ -227,8 +227,8 @@ class ManifestController extends Controller
                             ->where ("awb.id_agen_penerima",'=' , $agentujuan)//--------------------BARU
                             ->where (function($query)
                                         {
-                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0))
-                                                    ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
+                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0));
+                                                    // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
                                         })
                             ->orderBy("awb.id_customer" , "desc")                                    
                             ->get(); 
@@ -258,8 +258,8 @@ class ManifestController extends Controller
                             ->where ("awb.id_manifest",     '=' , 0)
                             ->where (function($query)
                                         {
-                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0))
-                                                    ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
+                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0));
+                                                    // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
                                         })
                             ->groupBy("kotaasal.kode" , "kotatujuan.kode","kotaasal.id" , "kotatujuan.id" , "agentujuan.kode" , "agentujuan.id")
                             ->get(); 

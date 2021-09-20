@@ -8,7 +8,7 @@
 <div class="card-body">
     <div class="row">
         @foreach ($awb as $item)
-        <div class="col-3">
+        <div class="col-3" style="margin-top:10px;">
             <div class="card col-12 bg-light" style="padding:0px;">
                 <div class="card-body"  style="padding:10px;">
                     <span class="badge badge-warning"> {{$item->total}} AWB belum ditagihkan</span><br><br>

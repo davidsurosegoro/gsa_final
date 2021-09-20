@@ -282,16 +282,30 @@ class AwbController extends Controller
         $manifest      = Manifest::where('kode', $request->kode)->first();
         $awb           = Awb::where('id_manifest', ($manifest!=null)?$manifest->id:0)->get();
         $continue      = true;
-        if($manifest==null){  
+
+        
+        // ----------------------------------------VALIDATE-------------------------------------
+        // ----------------------------------------VALIDATE-------------------------------------
+        if($continue==true && $manifest==null){  
+            $continue      = false;
             $returnmessage = 'Kode Manifest ' . $kode . ' tidak ditemukan!';
             $typereturn    = 'statuserror';
             return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
         }
-        if($manifest->status == 'arrived'){
+        if($continue==true && $manifest->status == 'checked' && $status=='arrived'){
+            $continue      = false;
+            $returnmessage = 'Kode MANIFEST ' . $kode . ', Masih berstatus ' .$manifest->status . '!<br><br> tidak bisa di rubah langsung ke arrived! ';
+            $typereturn    = 'statuswarning';
+            return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
+        }
+        if($continue==true && $manifest->status == 'arrived'){
             $continue      = false;
             $returnmessage = 'Kode MANIFEST ' . $kode . ', Sudah berstatus ' .$manifest->status . ', tidak bisa di scan lagi!';
             $typereturn    = 'statuswarning';
+            return response()->json(array($typereturn => $returnmessage, 'openmodal' => $openmodal, 'awb' => $awb));
         }
+        // ----------------------------------------END OF VALIDATE-------------------------------------
+        // ----------------------------------------END OF VALIDATE-------------------------------------
 
         if (!$manifest && $continue==true) {
             $returnmessage = 'Kode MANIFEST ' . $kode . ' tidak ditemukan!';
