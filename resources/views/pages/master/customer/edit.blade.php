@@ -68,14 +68,25 @@
           <input type="radio" name="jenis_out_area" value="koli" required>
           <span></span>Per Koli</label>
         @else
-          <input type="radio" name="jenis_out_area" value="shipment" required>
-          <span></span>Per Shipment</label>
-          <label class="radio">
-          <input type="radio" name="jenis_out_area" value="resi" required>
-          <span></span>Per Resi</label>
-          <label class="radio">
-          <input type="radio" name="jenis_out_area" value="koli" checked="checked" required>
-          <span></span>Per Koli</label>
+            @if($customer->id == 26)
+              <input type="radio" name="jenis_out_area" value="shipment" required disabled>
+              <span></span>Per Shipment</label>
+              <label class="radio">
+              <input type="radio" name="jenis_out_area" value="resi" required disabled>
+              <span></span>Per Resi</label>
+              <label class="radio">
+              <input type="radio" name="jenis_out_area" value="koli" checked="checked" required>
+              <span></span>Per Koli</label>
+            @else
+            <input type="radio" name="jenis_out_area" value="shipment" required>
+            <span></span>Per Shipment</label>
+            <label class="radio">
+            <input type="radio" name="jenis_out_area" value="resi" required>
+            <span></span>Per Resi</label>
+            <label class="radio">
+            <input type="radio" name="jenis_out_area" value="koli" checked="checked" required>
+            <span></span>Per Koli</label>
+            @endif
         @endif
       </div>
       <span class="form-text text-muted">Pilih Jenis Out Area</span>

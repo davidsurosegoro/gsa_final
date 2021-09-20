@@ -43,7 +43,22 @@
                   <option value="cancel">cancel</option>
                 </select>
               </div>
-              
+
+              <div class="col-lg-3
+                
+                @if((int) Auth::user()->level == 3)
+                d-none
+                @endif
+                ">
+                  <label class="font-weight-bold mt-5">Agen Asal</label><br>
+                  <select class="form-control select2" name="id_agen_asal" id="id_agen_asal">
+                    <option value="-">--Tampil Semua--</option>
+                    @foreach($agen as $a)
+                      <option value="{{ $a->id }}">{{ $a->nama }}</option>
+                    @endforeach
+                  </select>
+                </div>
+
                 <div class="col-lg-3
                 
                 @if((int) Auth::user()->level == 3)
@@ -58,6 +73,7 @@
                     @endforeach
                   </select>
                 </div>
+                
               <div class="col-lg-3">
                 <label class="font-weight-bold mt-5">Kode Awb </label><br>
                 <input type="text" name="noawb" id="noawb" class="form-control">
@@ -209,7 +225,7 @@
                 {
                     caption: "Tanggal",
                     dataField: "created_at",
-                    dataType: "datetime",
+                    dataType: "date",
                     format:"shortDateShortTime",
                     width:170,
                 },

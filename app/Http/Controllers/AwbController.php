@@ -552,7 +552,15 @@ class AwbController extends Controller
                             </a>';
         $print_awb_tri   =  '<a href=' . url('printout/awbtri/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
                                 <i class="fas fa-print" ></i>
-                            </a>';                    
+                            </a>';   
+        
+        $btn_hilang      = '';
+        if($a->qty > 0):
+            $btn_hilang  = '
+            <a href=' . url('awb/edit/' . $a->id . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
+            <i class="flaticon-exclamation" ></i>
+            </a>';
+        endif;                                  
         if (
                 ((int)$a->qty_kecil <= 0 && (int)$a->qty_sedang <= 0 && (int)$a->qty_besar <= 0 && (int)$a->qty_besarbanget <= 0 && (int)$a->qty_doc <= 0 && $a->qty_kg <= 0 && $a->is_agen == 0) 
                 || ((int)$a->qty<= 0 )
@@ -565,6 +573,7 @@ class AwbController extends Controller
                 'noawb'           => $a->noawb,
                 'nama_pengirim'   => $a->nama_pengirim,
                 'id_customer'     => $a->id_customer,
+                'id_agen_tujuan'  => $a->id_agen_penerima,
                 'kota_asal'       => $a->kota_asal,
                 'kota_tujuan'     => $a->kota_tujuan,
                 'kota_transit'    => $a->kota_transit,
@@ -579,7 +588,8 @@ class AwbController extends Controller
                 'kg'              => $a->qty_kg,
                 'is_agen'         => $a->is_agen,
                 'print_awb_biasa' => $print_awb_biasa,
-                'print_awb_tri'   => $print_awb_tri
+                'print_awb_tri'   => $print_awb_tri,
+                'btn_hilang'      => $btn_hilang,
             ]);
         endforeach;
         return Datatables::of($awbs)
@@ -599,9 +609,7 @@ class AwbController extends Controller
                         '.$a['print_awb_biasa'].'
                         '.$a['print_awb_tri'].'
                         <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus AWB" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button>
-                        <a href=' . url('awb/edit/' . $a['id'] . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
-                        <i class="flaticon-exclamation" ></i>
-                        </a>
+
                         </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int) Auth::user()->level == 2):
                     return '<div class="btn-group" role="group" aria-label="Basic example">
@@ -618,9 +626,7 @@ class AwbController extends Controller
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
                         <i class="fas fa-map-marked-alt" ></i>
                         </a>
-                        <a href=' . url('awb/edit/' . $a['id'] . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
-                        <i class="flaticon-exclamation" ></i>
-                        </a>
+                        '.$a['btn_hilang'].'
                         </div>';
                 endif;
             })
@@ -634,6 +640,14 @@ class AwbController extends Controller
                         return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi &nbsp; <i style="color:white !important;" class="fa fa-search" aria-hidden="true"></i></span>';
                     endif;
                 endif;
+            })
+            ->addColumn('agen_stat',function($a){
+                if($a['id_agen_tujuan'] == 0){
+                    return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terpilih </span>';
+                }
+                else{
+                    return '<span class="label label-lg label-success label-inline mr-2">Terpilih </span>';
+                }
             })
             ->editColumn('kota_tujuan', function ($a) {
                 $string = $a['kota_tujuan'];
@@ -683,7 +697,7 @@ class AwbController extends Controller
                     '.$status_.'
                 </div>';
             })          
-            ->rawColumns(['kota_tujuan', 'aksi', 'qty_stat', 'status_tracking', 'gantistatus', 'nama_pengirim_link'])
+            ->rawColumns(['kota_tujuan', 'aksi','agen_stat', 'qty_stat', 'status_tracking', 'gantistatus', 'nama_pengirim_link'])
             ->make(true);
     }
 

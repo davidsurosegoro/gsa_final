@@ -82,6 +82,7 @@ class CustomerController extends Controller
 
     public function update(Request $request)
     {
+        dd($request->all());
         $access     = false;
         $id_agen    = 0;
         if ($request->access == "on") {
