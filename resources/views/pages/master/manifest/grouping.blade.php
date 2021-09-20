@@ -15,7 +15,7 @@
 <div class="card-body">
     <div class="row">
         @foreach ($awb as $item)
-        <div class="col-2">
+        <div class="col-2" style="margin-top:10px;">
             <div class="card col-12 bg-light" style="padding:0px;">
                 <div class="card-body"  style="padding:10px;">
                     <h5>{{$item->total}} AWB</h5>

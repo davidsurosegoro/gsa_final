@@ -174,6 +174,9 @@
                                         </tr>
                                     </thead> 
                                 </table> 
+                                @if((int)$awb[0]->id_customer==26)
+                                    <b style="padding-left:5px;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
+                                @endif
                             </div>
                             
                             <div class="col-6" style="padding:0px;">

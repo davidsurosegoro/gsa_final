@@ -117,7 +117,11 @@
           <div class="row" id="row-jenis-koli">
             <div class="col-lg-6">
               <div class="form-group">
-                <label class="font-weight-bold">Jenis quantity (kl,kg,doc)</label>
+                <label class="font-weight-bold">Jenis quantity (kl,kg,doc)
+                  @if ((int)$awb['id'] > 0 && (int)$awb['kecil'] == 0 && (int)$awb['sedang'] == 0 && (int)$awb['besar'] == 0 && (int)$awb['besarbanget'] == 0 && (int)$awb['doc'] == 0 && (int)$awb['kg'] == 0 && (int)$awb['is_agen']==0)
+                    <span class="badge badge-success">&nbsp;Total Quantity umum =  {{ $awb->qty }}</span>
+                  @endif 
+                </label>
                   <select class="form-control" id="jenis_koli" name="jenis_koli" required>
                     <option value="">--Pilih Jenis Koli--</option>
                     @if($awb->jenis_koli == "koli")
