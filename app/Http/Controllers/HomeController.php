@@ -26,7 +26,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if((int) Auth::user()->level == 1){
+            return view('pages.home.admin');
+        }
+        else if((int) Auth::user()->level == 2){
+            return view('pages.home.customer');
+        }
+        else if((int) Auth::user()->level == 3){
+            return view('pages.home.agen');
+        }
+        else if((int) Auth::user()->level == 4){
+            return view('pages.home.kurir');
+        }
     }
 
     

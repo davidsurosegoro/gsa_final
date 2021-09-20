@@ -19,10 +19,10 @@ class LogController extends Controller
         return view('pages.log');
     }
 
-    public function datatables_log()
+    public function datatables()
     {
         $custom   = new Collection;
-        $activity = Activity::orderBy('created_at', 'desc')->take(5000)->get();
+        $activity = Activity::orderBy('created_at', 'desc')->take(500)->get();
         foreach ($activity as $a):
 
             $user       = 'Tidak ada';
@@ -31,28 +31,30 @@ class LogController extends Controller
             $kets       = '';
             $properties = json_decode($a->properties);
             if (!empty($users)):
-                $user = $users->name;
+                $user = $users->nama;
             endif;
-            //
-            if ($a->description == 'attribut_added'):
-                $desc = 'Menambahkan Attribut pada peta <strong> ' . $properties->table_name . '</strong>';
-                $kets = '';
-            elseif ($a->description == 'attribut_updated'):
-                $desc = 'Mengubah Attribut pada peta <strong> ' . $properties->table_name . '</strong>';
-            elseif ($a->description == 'created' && $a->subject_type == "App\Map"):
-                $desc = 'Tercatat Membuat layer baru';
-                $kets = 'Telah Membuat layer baru <strong> ' . $properties->attributes->nama_peta . '</strong>';
-            elseif ($a->description == 'updated' && $a->subject_type == "App\Map"):
-                $desc = 'Tercatat Mengupdate layer';
-                $kets = 'Telah Mengubah layer <strong> ' . $properties->attributes->nama_peta . '</strong>';
-            elseif ($a->description == 'deleted' && $a->subject_type == "App\Map"):
-                $desc = 'Tercatat Menghapus Layer';
-                $kets = 'Telah Menghapus layer <strong> ' . $properties->attributes->nama_peta . '</strong>';
-            else:
-                $desc = $a->description;
+            if ($a->description == 'created'):
+                if($a->subject_type == 'App\Awb'):
+                    $desc = 'Membuat AWB Baru';
+                    $kets = 'Nomor AWB terbuat <strong>'.$properties->attributes->noawb.'</strong>';
+                elseif($a->subject_type == 'App\Manifest'):
+                    $desc = 'Membuat Manifest Baru';
+                    $kets = 'Nomor Manifest Terbuat <strong>' . $properties->attributes->kode . '</strong>';
+                elseif($a->subject_type == 'App\Invoice'):
+                    $desc = 'Membuat Invoice Baru';
+                    $kets = 'Nomor Invoice Terbuat <strong>' . $properties->attributes->kode . '</strong>';
+                endif;
+            elseif ($a->description == 'updated'):
+                if($a->subject_type == 'App\Awb'):
+                    $desc = 'Mengubah data AWB nomor <strong> '.$properties->attributes->noawb.' </strong>';
+                elseif($a->subject_type == 'App\Manifest'):
+                    $desc = 'Mengubah data Manifest nomor <strong> '.$properties->attributes->kode.' </strong>';
+                elseif($a->subject_type == 'App\Invoice'):
+                    $desc = 'Mengubah data Invoice nomor <strong> '.$properties->attributes->kode.' </strong>';
+                endif;
             endif;
 
-            $tanggal = date('d F Y', strtotime($a->created_at));
+            $tanggal = date('d F Y, H.i', strtotime($a->created_at));
             $custom->push([
                 'user'        => $user,
                 'description' => $desc,
