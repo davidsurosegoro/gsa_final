@@ -28,6 +28,7 @@ Route::get('scannermanifest/{status}', 	'ScannerController@manifest');
 Route::prefix('log')->group(function () {
 
 	Route::get('/', 'LogController@index');
+	Route::get('datatables', 'LogController@datatables');
 });
 Route::get('qr-code-g', function () {
     QrCode::size(500)->format('png')->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
