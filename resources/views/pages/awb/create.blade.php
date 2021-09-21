@@ -25,7 +25,7 @@
   @else
     <input type="hidden" id="check_alamat_pengirim" value="0">
   @endif
-<form class="form" method="POST" action="{{ url('awb/save')}}">
+<form class="form" method="POST" action="{{ url('awb/save')}}" autocomplete="off">
   {{ csrf_field() }}
   <input type="hidden" name="idawb" value="{{ $id }}">
   <input type="hidden" name="hilang" value="{{ $hilang }}">
@@ -121,11 +121,6 @@
           <div class="row" id="row-jenis-koli">
             <div class="col-lg-6">
               <div class="form-group">
-                <label class="font-weight-bold">Jenis quantity (kl,kg,doc)
-                  @if ((int)$awb['id'] > 0 && (int)$awb['kecil'] == 0 && (int)$awb['sedang'] == 0 && (int)$awb['besar'] == 0 && (int)$awb['besarbanget'] == 0 && (int)$awb['doc'] == 0 && (int)$awb['kg'] == 0 && (int)$awb['is_agen']==0)
-                    <span class="badge badge-success">&nbsp;Total Quantity umum =  {{ $awb->qty }}</span>
-                  @endif 
-                </label>
                   <select class="form-control" id="jenis_koli" name="jenis_koli" required>
                     <option value="">--Pilih Jenis Koli--</option>
                     @if($awb->jenis_koli == "koli")
@@ -276,21 +271,21 @@
                       @endif
                   @endif
               </select>
-              <input type="text" autocomplete="off" class="form-control is_readonly" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
+              <input type="text" class="form-control is_readonly" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Penerima</label>
-              <input type="text" autocomplete="off" id="kodepos_penerima" class="form-control is_readonly" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
+              <input type="text" id="kodepos_penerima" class="form-control is_readonly" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label class="font-weight-bold">No Telp Penerima</label>
-              <input type="text" autocomplete="off" id="notelp_penerima" class="form-control is_readonly" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
+              <input type="text" id="notelp_penerima" class="form-control is_readonly" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
             </div>
           </div>
           <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Nama Pengirim</label>
-                <input type="text" autocomplete="off" id="nama_pengirim" class="form-control is_readonly" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
+                <input type="text" id="nama_pengirim" class="form-control is_readonly" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Alamat Pengirim</label>
@@ -312,15 +307,15 @@
                       @endif
                     @endif
                 </select> --}}
-                <input type="text" autocomplete="off" id="alamat_pengirim" maxlength="120" class="form-control mb-2 is_readonly" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
+                <input type="text" id="alamat_pengirim" maxlength="120" class="form-control mb-2 is_readonly" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Pengirim</label>
-              <input type="text" autocomplete="off" id="kodepos_pengirim" class="form-control is_readonly" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
+              <input type="text" id="kodepos_pengirim" class="form-control is_readonly" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label class="font-weight-bold">No Telp Pengirim</label>
-              <input type="text" autocomplete="off" id="notelp_pengirim" class="form-control is_readonly" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
+              <input type="text" id="notelp_pengirim" class="form-control is_readonly" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
             </div>  
           </div>
         </div>

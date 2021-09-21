@@ -142,7 +142,7 @@ Route::prefix('master')->group(function(){
 
 Route::middleware(['auth'])->prefix('awb')->group(function () {
 	Route::middleware(['admin.customer'])->get('/', 'AwbController@index');
-	Route::middleware(['admin.customer'])->get('/edit/{id}/{hilang}', 'AwbController@edit');
+	Route::middleware(['admin.customer','booked'])->get('/edit/{id}/{hilang}', 'AwbController@edit');
 	Route::middleware(['admin.customer'])->post('/save', 'AwbController@save');
 	Route::middleware(['admin.customer'])->post('/delete', 'AwbController@delete');
 	Route::middleware(['admin.customer'])->post('/manifest', 'AwbController@manifest');
