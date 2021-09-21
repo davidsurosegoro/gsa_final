@@ -5,11 +5,13 @@
     <h3 class="card-title">FORM INVOICE </h3>
 </div>
 <form class="form" method="POST"  action="{{url('master/invoice/save')}}" >   
-@php($total_kg          = 0)   
-@php($total_koli        = 0)   
-@php($total_doc         = 0)   
-@php($total_oa          = 0)   
-@php($total_bayarall    = 0)   
+<?php
+    $total_kg          = 0;
+    $total_koli        = 0;
+    $total_doc         = 0;
+    $total_oa          = 0;
+    $total_bayarall    = 0; 
+?>
 @foreach ($awb as $item) 
     @php($total_kg     += $item['qty_kg'])
     @php($total_doc    += $item['qty_doc'])
@@ -19,17 +21,21 @@
         @php($total_koli +=$item->qtykoli)
     @endif
     @php($total_oa          += $item->idr_oa)
-    @php($total_bayarall    += $item->total_harga)
+    @if ($customer->is_agen == 1)
+        @php($total_bayarall    += $item->total_harga * (((int)$item->id_kota_transit>0) ?   0.4 : 0.3 )    )
+    @else
+        @php($total_bayarall    += $item->total_harga)
+    @endif
 @endforeach
 <input type="hidden" name="id" value="{{ $invoice->id }}">
 <div class="  d-none "> 
-    dibuat:     <input type='text' name='mengetahui_oleh'       value='{{ Auth::user()->id}}'> 
-    idcustomer: <input type='text' name='id_customer'           value='{{$customer->id}}'> 
-    kg:         <input type='text' name='total_kg'              value='{{$total_kg}}'> 
-    koli:       <input type='text' name='total_koli'            value='{{$total_koli}}'> 
-    doc:        <input type='text' name='total_doc'             value='{{$total_doc}}'>  
-    harga:      <input type='text' name='total_harga'           value='{{$total_bayarall}}'>  
-    OA:         <input type='text' name='total_oa'              value='{{$total_oa}}'>  
+    dibuat:             <input type='text' name='mengetahui_oleh'       value='{{ Auth::user()->id}}'> 
+    idcustomer:         <input type='text' name='id_customer'           value='{{$customer->id}}'> 
+    kg:                 <input type='text' name='total_kg'              value='{{$total_kg}}'> 
+    koli:               <input type='text' name='total_koli'            value='{{$total_koli}}'> 
+    doc:                <input type='text' name='total_doc'             value='{{$total_doc}}'>  
+    harga:              <input type='text' name='total_harga'           value='{{$total_bayarall}}'>  
+    OA:                 <input type='text' name='total_oa'              value='{{$total_oa}}'>    
 </div>
 {{ csrf_field() }}
 <div class="card-body">
@@ -82,14 +88,25 @@
                         <th style="width:7%;">AWB</th>  
                         <th style="width:10%;">No.Manifest</th>  
                         <th style="width:10%;">ASAL</th>  
+                        
+                        @if ((int)$customer->is_agen == 1)
+                            <th style="width:10%;">Transit</th>  
+                        @endif
                         <th style="width:10%;">Tujuan</th>  
                         <th style="width:10%;">Penerima</th> 
                         <th style="width:10%;">Koli</th>  
-                        <th style="width:5%;">Kg</th>  
-                        <th style="width:5%;">Doc</th>   
-                        <th style="width:10%;">KET</th> 
-                        <th style="width:8%;">Biaya OA</th>  
-                        <th style="width:10%;">Total Bayar</th>  
+                        
+                        @if ((int)$customer->is_agen == 0)
+                            <th style="width:5%;">Kg</th>  
+                            <th style="width:5%;">Doc</th>   
+                            <th style="width:10%;">KET</th> 
+                            <th style="width:8%;">Biaya OA</th>  
+                            <th style="width:10%;">Total Bayar</th>  
+                        @elseif ((int)$customer->is_agen == 1)
+                            <th style="width:10%;">KET</th> 
+                            <th style="width:8%;">Harga Agen</th>  
+                            <th style="width:10%;">Biaya Handling</th>  
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -100,6 +117,10 @@
                         <td style="padding:5px;">{{$item->noawb}}</td>  
                         <td style="padding:5px;">{{$item->kodemanifest}}</td>  
                         <td style="padding:5px;">{{$item->kotaasal}}</td>   
+                        
+                        @if ((int)$customer->is_agen == 1)
+                            <td style="width:10%;">{{$item->kotatransit}}</td>  
+                        @endif
                         <td style="padding:5px;">{{$item->kotatujuan}}</td> 
                         <td style="padding:5px;">{{$item->diterima_oleh}}</td> 
                         <td style="padding:5px;">
@@ -122,23 +143,45 @@
                             </table>    
                             @endif
                         </td> 
-                        <td style="padding:5px;">{{$item->qty_kg}}</td> 
-                        <td style="padding:5px;">{{$item->qty_doc}}</td> 
-                        <td style="padding:5px;">{{$item->keterangan}}</td> 
-                        <td style="padding:5px;">{{number_format($item->idr_oa)}}</td> 
-                        <td style="padding:5px;">{{number_format($item->total_harga, 0) }}</td> 
+                        @if ((int)$customer->is_agen == 0)
+                            <td style="padding:5px;">{{$item->qty_kg}}</td> 
+                            <td style="padding:5px;">{{$item->qty_doc}}</td> 
+                            <td style="padding:5px;">{{$item->keterangan}}</td>                             
+                            <td style="padding:5px;">{{number_format($item->idr_oa)}}</td> 
+                            <td style="padding:5px;">{{number_format($item->total_harga, 0) }}</td> 
+                            
+                        @elseif ((int)$customer->is_agen == 1)
+                            <td style="padding:5px;">{{$item->keterangan}}</td>               
+                            <td style="padding:5px;">{{number_format($item->total_harga, 0) }}</td> 
+                            <th style="width:10%;">
+                                {{number_format(($item->total_harga * (((int)$item->id_kota_transit>0) ?   0.4 : 0.3 )), 0) }}
+                            </th>  
+                        @endif
                     </tr>   
                     @endforeach 
                     <tr style="padding:0px; background-color:#a1ffbc;"> 
-                        <td style="padding:5px;" colspan='7' class="text-right"><h4>TOTAL <br>
+                        <td style="padding:5px;" colspan='
+                        
+                        @if ((int)$customer->is_agen == 1)
+                            8
+                        @else
+                            7
+                        @endif
+                        ' class="text-right"><h4>TOTAL <br>
                         
                             <span class="font-weight-bold text-uppercase font-italic">({{App\Invoice::terbilang($total_bayarall)}} Rupiah)</span></h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_koli}}</h4></td>   
-                        <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_kg}}</h4></td>   
-                        <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_doc}}</h4></td>   
-                        <td style="padding:5px;font-weight:bold !important;"><h4></h4></td>   
-                        <td style="padding:5px;font-weight:bold !important;"><h4>{{number_format($total_oa, 0) }}</h4></td> 
-                        <td style="padding:5px;font-weight:bold !important;"><h4>{{number_format($total_bayarall, 0) }}</h4></td> 
+                        @if ((int)$customer->is_agen == 0)
+                            <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_kg}}</h4></td>   
+                            <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_doc}}</h4></td>   
+                            <td style="padding:5px;font-weight:bold !important;"><h4></h4></td> 
+                            <td style="padding:5px;font-weight:bold !important;"><h4>{{number_format($total_oa, 0) }}</h4></td> 
+                            <td style="padding:5px;font-weight:bold !important;"><h4>{{number_format($total_bayarall, 0) }}</h4></td>                             
+                        @elseif ((int)$customer->is_agen == 1)
+                            <td style="padding:5px;font-weight:bold !important;"><h4></h4></td> 
+                            <th style="width:10%;"></th>  
+                            <td style="padding:5px;font-weight:bold !important;"><h4>{{number_format($total_bayarall, 0) }}</h4></td>                             
+                        @endif
                     </tr>     
                 </tbody>
             </table>

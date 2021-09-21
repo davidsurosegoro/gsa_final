@@ -10,8 +10,11 @@
         @foreach ($awb as $item)
         <div class="col-3" style="margin-top:10px;">
             <div class="card col-12 bg-light" style="padding:0px;">
-                <div class="card-body"  style="padding:10px;">
+                <div class="card-body"  style="padding:10px; position:relative;">
                     <span class="badge badge-warning"> {{$item->total}} AWB belum ditagihkan</span><br><br>
+                    @if ((int)$item->is_agen == 1)                        
+                    <span style="position: absolute; top:0px;right:0px; z-index:10;" class="badge badge-info">  AGEN</span><br><br>
+                    @endif
                     <h1  >
                         {{$item->kodecustomer}}
                     </h1>
