@@ -150,6 +150,13 @@
 	    paging        : true,      
         pageLength    : 100,
 	    ajax          : '{{ url('awb/datatables') }}',
+      "columnDefs": [{
+                "targets": '_all',
+                "createdCell": function (td, cellData, rowData, row, col) {
+                    $(td).css('paddingLeft', '2px')
+                    $(td).css('paddingRight', '2px')
+                }
+            }],
 	    columns: [
 	    {data: 'id',              name:'id'},
 	    {data: 'noawb',           name:'noawb'},

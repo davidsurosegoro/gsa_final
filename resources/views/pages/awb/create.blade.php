@@ -67,14 +67,15 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label class="font-weight-bold">Tanggal:</label>
-                  <div class="input-group date">
+                  <div class="input-group date" style="position: relative;">
+                    <div style="width:100%; height:100%; position: absolute;  top:0px; left:0px;z-index:200;"></div>
                     @if($id == 0)
-                    <input name="tanggal_awb" type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y') }}" placeholder="Select date">
+                    <input name="tanggal_awb"  type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y') }}" placeholder="Select date">
                     @else
                       @if($hilang == "hilang")
-                      <input name="tanggal_awb" type="text" class="form-control" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
+                      <input name="tanggal_awb"  type="text" class="form-control" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
                       @else
-                      <input name="tanggal_awb" type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
+                      <input name="tanggal_awb"  type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
                       @endif
                     @endif
                     <div class="input-group-append">

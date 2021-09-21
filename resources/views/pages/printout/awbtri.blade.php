@@ -79,7 +79,18 @@
         </style>
     </head>
     <body  class="snippet-body" style="background-color:white;">
-        <div class="printcontainer d-print-none" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        <div class="printcontainer d-print-none" 
+            @if($awb[0]->status_tracking==='booked')
+                onclick="updatetomanifest()"
+            @else
+                onclick="window.print()"                
+            @endif    
+        >
+            <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        </div>
+        <div class="statuscontainer d-print-none" > Status =
+            {{$awb[0]->status_tracking}}
+        </div> 
         </div>
             <div class="card page">
                 @for ($i = 0; $i < 3; $i++)
@@ -249,7 +260,30 @@
                 
                 @endfor
             </div>
-        <script type="text/javascript" src="{{asset('assets/gsa/js/bootstrap.bundle.min.js')}}"></script>
-        <script type="text/javascript"></script>
+        <script type="text/javascript" src="{{asset('assets/gsa/js/bootstrap.bundle.min.js')}}"></script> 
+        <script type="text/javascript">
+            jQuery(document).bind("keyup keydown", function(e){
+                if(e.ctrlKey && e.keyCode == 80){
+                    return false;
+                }
+            });
+            function updatetomanifest(){
+                $.ajax({
+                    method  :'POST',
+                    url     :'{{ url('awb/updatetomanifest') }}',
+                    data    :{
+                        id              : "{{ $awb[0]->id }}",
+                        '_token'        : "{{ csrf_token() }}" 
+                    },
+                    success:function(data){  
+                        if(data.status != ''){
+
+                            alert(data.status)
+                        }
+                        window.print();       
+                    }
+                }) 
+            }
+        </script>
     </body>
 </html>

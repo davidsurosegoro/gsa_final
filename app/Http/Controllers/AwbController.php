@@ -649,7 +649,7 @@ class AwbController extends Controller
                     return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi &nbsp; <i style="color:white !important;" class="fa fa-search" aria-hidden="true"></i></span>';
                 else: 
                     if($a['is_agen'] == 0):
-                        return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terisi </span>';
+                        return '<span class="label label-lg label-danger label-inline mr-2" style="height:auto; font-size:10px;padding:2px;"> Belum Terisi<br>(admin only) </span>';
                     else:
                         return '<span style="cursor:pointer;" data-toggle="modal" data-target="#modal-koli" onClick="modalKoli(' . $a['id'] . ')" class="label label-lg label-success label-inline mr-2"> Terisi &nbsp; <i style="color:white !important;" class="fa fa-search" aria-hidden="true"></i></span>';
                     endif;
@@ -657,7 +657,7 @@ class AwbController extends Controller
             })
             ->addColumn('agen_stat',function($a){
                 if($a['id_agen_tujuan'] == 0){
-                    return '<span class="label label-lg label-danger label-inline mr-2"> Belum Terpilih </span>';
+                    return '<span class="label label-lg label-danger label-inline mr-2" style="height:auto; font-size:10px;padding:2px;"> Belum Terpilih<br>(admin only) </span>';
                 }
                 else{
                     return '<span class="label label-lg label-success label-inline mr-2">Terpilih </span>';
@@ -666,7 +666,7 @@ class AwbController extends Controller
             ->editColumn('kota_tujuan', function ($a) {
                 $string = $a['kota_tujuan'];
                 if ($a['kota_transit'] !== null):
-                    $string .= '<span class="label label-info label-inline mr-2">Transit ' . $a['kota_transit'] . '</span>';
+                    $string .= '<br><span class="label label-info label-inline mr-2" style="height:auto;">Transit ' . $a['kota_transit'] . '</span>';
                 endif;
                 return $string;
             })
