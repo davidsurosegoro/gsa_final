@@ -27,6 +27,7 @@
               <th>Kota Asal</th>
               <th>Kota Tujuan</th>
               <th>Tanggal</th>
+              <th>Agen Tujuan</th>
               <th>Qty Detail</th>
               <th>Status</th>
               <th>Qty</th>
@@ -156,6 +157,7 @@
 	    {data: 'kota_asal',       name:'kota_asal'},
 	    {data: 'kota_tujuan',     name:'kota_tujuan'},
 	    {data: 'tanggal_awb',     name:'tanggal_awb'},
+	    {data: 'agen_stat',       name:'agen_stat'},
 	    {data: 'qty_stat',        name:'qty_stat'},
 	    {data: 'status_tracking', name:'status_tracking'},
 	    {data: 'qty',             name:'qty'},

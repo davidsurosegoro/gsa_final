@@ -38,6 +38,9 @@ class ReportController extends Controller
         ->when(request('id_agen_penerima') !== '-', function ($q) {
             return $q->where('id_agen_penerima', '=',request('id_agen_penerima'));
         })
+        ->when(request('id_agen_asal') !== '-', function ($q) {
+            return $q->where('id_agen_asal', '=',request('id_agen_asal'));
+        })
         ->when(request('status_tracking') !== '-', function ($q) {
             return $q->where('status_tracking', '=',request('status_tracking'));
         })
@@ -53,8 +56,44 @@ class ReportController extends Controller
         ->when(request('noawb') !== null, function($q){
             return $q->where('noawb','like','%'.strtoupper(request('noawb')).'%');
         });
-        $awbs = $query->where('tanggal_awb','>=',$periode[0])->where('tanggal_awb','<=',$periode[1])->get();
-        $data['data']= $awbs;
+        $awbs = $query->whereDate('created_at','>=',$periode[0])->whereDate('created_at','<=',$periode[1])->orderBy('id','DESC')->get();
+        $collect_awb = new Collection;
+        foreach($awbs as $a):
+            $collect_awb->push([
+                'noawb' => $a->noawb,
+                'faktur_string' => $a->faktur_string,
+                'pengirim' => $a->pengirim,
+                'created_at' => date("Y-m-d H:i:s", strtotime(date($a->created_at))),
+                'kota_asal' => $a->kota_asal,
+                'kota_transit' => $a->kota_transit,
+                'kota_tujuan' => $a->kota_tujuan,
+                'agen_asal' => $a->agen_asal,
+                'agen_tujuan' => $a->agen_tujuan,
+                'nama_penerima' => $a->nama_penerima,
+                'labelalamat' => $a->labelalamat,
+                'kodepos_penerima' => $a->kodepos_penerima,
+                'alamat_tujuan' => $a->alamat_tujuan,
+                'kecamatan' => $a->kecamatan,
+                'notelp_penerima' => $a->notelp_penerima,
+                'tanggal_diterima' => $a->tanggal_diterima,
+                'diterima_oleh' => $a->diterima_oleh,
+                'oa_string' => $a->oa_string,
+                'qty' => $a->qty,
+                'qty_kecil' => $a->qty_kecil,
+                'qty_sedang' => $a->qty_sedang,
+                'qty_besar' => $a->qty_besar,
+                'qty_besarbanget' => $a->qty_besarbanget,
+                'qty_kg' => $a->qty_kg,
+                'qty_doc' => $a->qty_doc,
+                'oa_desc' => $a->oa_desc,
+                'idr_oa' => $a->idr_oa,
+                'total_harga' => $a->total_harga,
+                'kode_manifest' => $a->kode_manifest,
+                'kode_invoice' => $a->kode_invoice,
+                'status_pembayaran' => $a->status_pembayaran,
+        ]);
+        endforeach;
+        $data['data']= $collect_awb;
         return response()->json($data);
     }
 
@@ -78,11 +117,37 @@ class ReportController extends Controller
         ->when(request('status') !== '-', function ($q) {
             return $q->where('status', '=',request('status'));
         })
+        ->when((int) Auth::user()->level == 3 , function ($q) {
+            return  //$q->where('id_agen_penerima', '=',request('id_agen_penerima'));
+                $q->where (function($query)
+                    {
+                        $query  ->where('id_agen_penerima', '=', (int) Auth::user()->id_agen)
+                                ->orWhere('id_agen_tujuan',   '=', (int) Auth::user()->id_agen);
+                    });
+        })
         ->when(request('kode_manifest') !== null, function($q){
             return $q->where('kode','like','%'.strtoupper(request('kode_manifest')).'%');
         });
-        $awbs = $query->where('created_at','>=',$periode[0])->where('created_at','<=',$periode[1])->get();
-        $data['data']= $awbs;
+        $awbs = $query->whereDate('created_at','>=',$periode[0])->whereDate('created_at','<=',$periode[1])->orderBy('id','DESC')->get();
+        $collect_manifest = new Collection;
+        foreach($awbs as $a):
+            $collect_manifest->push([
+                'kode' => $a->kode,
+                'status' => $a->status,
+                'kota_asal' => $a->kota_asal,
+                'kota_tujuan' => $a->kota_tujuan,
+                'created_at' => date("Y-m-d H:i:s", strtotime(date($a->created_at))),
+                'dibuat_oleh_user' => $a->dibuat_oleh_user,
+                'supir' => $a->supir,
+                'keterangan' => $a->keterangan,
+                'jumlah_koli' => $a->jumlah_koli,
+                'jumlah_doc' => $a->jumlah_doc,
+                'jumlah_kg' => $a->jumlah_kg,
+                'tanggal_diterima' => $a->tanggal_diterima,
+                'discan_diterima_oleh_nama' => $a->discan_diterima_oleh_nama
+            ]);
+        endforeach;
+        $data['data']= $collect_manifest;
         return response()->json($data);
     }
 
@@ -111,7 +176,7 @@ class ReportController extends Controller
         ->when(request('kode_invoice') !== null, function($q){
             return $q->where('kode','like','%'.strtoupper(request('kode_invoice')).'%');
         });
-        $awbs = $query->where('tanggal_invoice','>=',$periode[0])->where('tanggal_invoice','<=',$periode[1])->get();
+        $awbs = $query->whereDate('created_at','>=',$periode[0])->whereDate('created_at','<=',$periode[1])->orderBy('id','DESC')->get();
         $data['data']= $awbs;
         return response()->json($data);
     }
@@ -119,10 +184,8 @@ class ReportController extends Controller
     public function bonus(){
         $agen = Agen::orderBy('nama','asc')->get();
         $customer = Customer::where('is_agen',1)->get();
-        if((int) Auth::user()->level !== 1){
-            $agen = Agen::find(Auth::user()->id_agen);
-        }
-        return view('pages.report.bonus',compact('agen'));
+        $kota = Kota::where('id','>',0)->orderBy('nama','asc')->get();
+        return view('pages.report.bonus',compact('agen','kota'));
     }
 
     public function bonus_grid(Request $request){
@@ -134,8 +197,19 @@ class ReportController extends Controller
         })
         ->when(request('id_agen_tujuan') !== '-', function ($q) {
             return $q->where('id_agen_penerima', '=',request('id_agen_tujuan'));
+        })
+        ->when(request('id_kota_tujuan') !== '-', function ($q) {
+            return $q->where('id_kota_tujuan', '=',request('id_kota_tujuan'));
+        })
+        ->when((int) Auth::user()->level == 3 , function ($q) {
+            return  //$q->where('id_agen_penerima', '=',request('id_agen_penerima'));
+                $q->where (function($query)
+                    {
+                        $query  ->where('id_agen_penerima', '=', (int) Auth::user()->id_agen)
+                                ->orWhere('id_agen_asal',   '=', (int) Auth::user()->id_agen);
+                    });
         });
-        $awbs = $query->where('tanggal_awb','>=',$periode[0])->where('tanggal_awb','<=',$periode[1])->where('status_tracking','complete')->get();
+        $awbs = $query->whereDate('created_at','>=',$periode[0])->whereDate('created_at','<=',$periode[1])->where('status_tracking','complete')->orderBy('id','desc')->get();
         $bonus = array();
         $collection = new Collection;
         foreach($awbs as $a):

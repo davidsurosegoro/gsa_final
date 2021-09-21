@@ -42,6 +42,16 @@ tr.details td.details-control {
             }
         </style>
     </head>
+@php
+$level = 'admin';
+if(Auth::user()->level == 2):
+    $level = 'customer';
+elseif(Auth::user()->level == 3):
+    $level = 'agen';
+elseif(Auth::user()->level == 4):
+    $level = 'kurir';
+endif;
+@endphp
     <!--end::Head-->
     <!--begin::Body-->
     <body id="kt_body" class="header-fixed header-mobile-fixed page-loading">
@@ -52,6 +62,17 @@ tr.details td.details-control {
             <a href="{{ url('/') }}">
                 <img alt="Logo" src="{{ asset('assets/img/sigis.png') }}" class="max-h-40px" />
             </a>
+            <div class="topbar-item">
+                <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                    <div class="d-flex flex-column text-right pr-3">
+                        <span class="text-white opacity-100 font-weight-bold font-size-xs d-md-inline">{{ $level }}</span>
+                        <span class="text-white font-weight-bolder font-size-xs d-md-inline">{{ Auth::user()->username }}</span>
+                    </div>
+                    <span class="symbol symbol-35">
+                        <span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-user text-white"></i></span>
+                    </span>
+                </div>
+            </div>
             <!--end::Logo-->
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center">
@@ -70,11 +91,25 @@ tr.details td.details-control {
                     <!--begin::Header-->
                     <div id="kt_header" class="header flex-column header-fixed">
                         <!--begin::Top-->
-                        <div class="header-top" style="background-color: white;">
+                        <div class="header-top" style="background-color:white;">
                             <!--begin::Container-->
                             <div class="container">
+                                
                                 <!--begin::Left-->
                                 <div class="d-none d-lg-flex align-items-center mr-3">
+                                    
+                                    
+                                    <div class="topbar-item">
+										<div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+											<div class="d-flex flex-column text-right pr-3">
+												<span class="text-success opacity-100 font-weight-bold font-size-sm d-none d-md-inline">{{ $level }}</span>
+												<span class="text-success font-weight-bolder font-size-sm d-none d-md-inline">{{ Auth::user()->username }}</span>
+											</div>
+											<span class="symbol symbol-35">
+												<span class="symbol-label font-size-h5 font-weight-bold text-success bg-white-o-30"><i class="fa fa-user text-success"></i></span>
+											</span>
+										</div>
+									</div>
                                     <!--begin::Logo-->
                                     <a href="{{ url('/') }}" class="mr-20">
                                         {{-- <img alt="Logo" src="{{ asset('assets/img/sigis.png') }}" class="max-h-65px" /> --}}
@@ -372,6 +407,13 @@ var loadPanel = $(".loadpanel").dxLoadPanel({
                todayHighlight: true,
                orientation: "bottom left",
               });
+    $('.datepicker_readonly').datepicker({
+               rtl: KTUtil.isRTL(),
+               todayHighlight: true,
+               orientation: "bottom left",
+               minDate: 0,
+               maxDate:0,
+              }).attr('readonly','readonly'); 
         </script>
         @yield('script')
         <!--end::Page Scripts-->

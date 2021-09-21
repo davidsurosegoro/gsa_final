@@ -11,6 +11,9 @@ class Manifest extends Model
 	use LogsActivity;
     protected $table = 'manifest';
 
+    
+    protected static $logAttributes = ['kode','id_kota_asal','id_kota_tujuan','tanggal_pengiriman','dicek_oleh','supir','id_agen_penerima','jumlah_kg','jumlah_koli','keterangan','created_by','updated_by','status','dibuat_oleh','jumlah_doc','tanggal_diterima','discan_terima_oleh','discan_diterima_oleh_nama','agen_tujuan'];
+
     public static function getNoManifest()
     {
         $res = DB::table('manifest')->count(); 

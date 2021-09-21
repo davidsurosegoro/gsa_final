@@ -13,7 +13,12 @@
           <form class="form" id="form">
             {{ csrf_field() }}
             <div class="row">
-              <div class="col-lg-3">
+              <div class="col-lg-3 
+              @if((int) Auth::user()->level == 3)
+              
+              d-none
+              @endif
+              ">
                 <label>Agen Asal:</label>
                 <select class="form-control select2" name="id_agen_asal" id="id_agen_asal">
                   <option value="-">--Tampil Semua--</option>
@@ -26,12 +31,30 @@
                 <label>Tanggal Awal - Akhir:</label>
                 <input type="text" id="txtPeriod" class="form-control" name="tanggal" id="tanggal" required>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 
+              @if((int) Auth::user()->level == 3)
+              d-none
+              @endif
+              ">
                 <label>Agen Tujuan</label>
                 <select class="form-control select2" name="id_agen_tujuan" id="id_agen_tujuan">
                   <option value="-">--Tampil Semua--</option>
                   @foreach($agen as $k)
                     <option value="{{ $k['id'] }}">{{ $k['nama'] }}</option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div class="col-lg-3 
+              @if((int) Auth::user()->level == 3)
+              d-none
+              @endif
+              ">
+                <label>Kota Tujuan</label>
+                <select class="form-control select2" name="id_kota_tujuan" id="id_kota_tujuan">
+                  <option value="-">--Tampil Semua--</option>
+                  @foreach($kota as $k)
+                    <option value="{{ $k->id }}">{{ $k->nama }}</option>
                   @endforeach
                 </select>
               </div>

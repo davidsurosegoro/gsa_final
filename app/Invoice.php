@@ -12,6 +12,8 @@ class Invoice extends Model
 	use LogsActivity;
     protected $table = 'invoice';
 
+    protected static $logAttributes = ['kode','id_customer','tanggal_invoice','mengetahui_oleh','status','keterangan','total_koli','total_harga','created_by','updated_by','total_kg','total_doc','total_oa','metodepembayaran'];
+
     public static function getNoInvoice()
     {
         $res = DB::table('invoice')->count();

@@ -68,12 +68,12 @@
                   <label class="font-weight-bold">Tanggal:</label>
                   <div class="input-group date">
                     @if($id == 0)
-                    <input name="tanggal_awb" type="text" class="form-control datepicker" value="{{ date('m/d/Y') }}" readonly="true" placeholder="Select date">
+                    <input name="tanggal_awb" type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y') }}" placeholder="Select date">
                     @else
                       @if($hilang == "hilang")
                       <input name="tanggal_awb" type="text" class="form-control" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
                       @else
-                      <input name="tanggal_awb" type="text" class="form-control datepicker" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
+                      <input name="tanggal_awb" type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y',strtotime($awb->tanggal_awb)) }}" readonly="true" placeholder="Select date">
                       @endif
                     @endif
                     <div class="input-group-append">
@@ -104,6 +104,10 @@
       
       <div class="card-body">
         <h6 class="panel-title txt-dark"><i class="flaticon-shopping-basket"> </i>Data Jumlah Barang</h6>
+        
+        @if((int)$id !== 0 && $awb->id_agen_penerima == 0)
+        <div class="alert alert-warning" role="alert">Qty inputan customer berikut ini adalah <strong style="color:black; font-size:12pt;"> {{ $awb->qty }}</strong></div>
+        @endif
           @if((int)Auth::user()->level !== 1 && (int)$customer->can_access_satuan !== 1)
           <div class="row">
             <div class="col-lg-4">
@@ -125,21 +129,21 @@
                   <select class="form-control" id="jenis_koli" name="jenis_koli" required>
                     <option value="">--Pilih Jenis Koli--</option>
                     @if($awb->jenis_koli == "koli")
-                      <option value="koli" selected>Koli</option>
                       <option value="dokumen">Dokumen</option>
                       <option value="kg">Kilogram (Kg)</option>
+                      <option value="koli" selected>Koli</option>
                     @elseif($awb->jenis_koli == "dokumen")
-                      <option value="koli">Koli</option>
                       <option value="dokumen" selected>Dokumen</option>
                       <option value="kg">Kilogram (Kg)</option>
-                    @elseif($awb->jenis_koli == "kg")
                       <option value="koli">Koli</option>
+                    @elseif($awb->jenis_koli == "kg")
                       <option value="dokumen">Dokumen</option>
                       <option value="kg" selected>Kilogram (Kg)</option>
-                    @else
                       <option value="koli">Koli</option>
+                    @else
                       <option value="dokumen">Dokumen</option>
                       <option value="kg">Kilogram (Kg)</option>
+                      <option value="koli">Koli</option>
                     @endif
                   </select>
               </div>
@@ -272,21 +276,21 @@
                       @endif
                   @endif
               </select>
-              <input type="text" class="form-control is_readonly" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
+              <input type="text" autocomplete="off" class="form-control is_readonly" maxlength="120" id="alamat_tujuan" value="{{ $awb->alamat_tujuan }}" name="alamat_tujuan" placeholder="Input Alamat tujuan. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Penerima</label>
-              <input type="text" id="kodepos_penerima" class="form-control is_readonly" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
+              <input type="text" autocomplete="off" id="kodepos_penerima" class="form-control is_readonly" value="{{ $awb->kodepos_penerima }}" name="kodepos_penerima" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label class="font-weight-bold">No Telp Penerima</label>
-              <input type="text" id="notelp_penerima" class="form-control is_readonly" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
+              <input type="text" autocomplete="off" id="notelp_penerima" class="form-control is_readonly" value="{{ $awb->notelp_penerima }}" name="notelp_penerima" placeholder="Input Nomor Telp Penerima. . ." required>
             </div>
           </div>
           <div class="col-lg-6">
               <div class="form-group">
                 <label class="font-weight-bold">Nama Pengirim</label>
-                <input type="text" id="nama_pengirim" class="form-control is_readonly" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
+                <input type="text" autocomplete="off" id="nama_pengirim" class="form-control is_readonly" value="{{ $awb->nama_pengirim }}" name="nama_pengirim" placeholder="Input Nama Pengirim. . ." required>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Alamat Pengirim</label>
@@ -308,15 +312,15 @@
                       @endif
                     @endif
                 </select> --}}
-                <input type="text" id="alamat_pengirim" maxlength="120" class="form-control mb-2 is_readonly" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
+                <input type="text" autocomplete="off" id="alamat_pengirim" maxlength="120" class="form-control mb-2 is_readonly" value="{{ $awb->alamat_pengirim }}" name="alamat_pengirim" placeholder="Input Alamat Manual. . ." required>
               </div>
             <div class="form-group">
               <label class="font-weight-bold">Kode Pos Pengirim</label>
-              <input type="text" id="kodepos_pengirim" class="form-control is_readonly" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
+              <input type="text" autocomplete="off" id="kodepos_pengirim" class="form-control is_readonly" value="{{ $awb->kodepos_pengirim }}" name="kodepos_pengirim" placeholder="Input Kode Pos. . ." required>
             </div>
             <div class="form-group">
               <label class="font-weight-bold">No Telp Pengirim</label>
-              <input type="text" id="notelp_pengirim" class="form-control is_readonly" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
+              <input type="text" autocomplete="off" id="notelp_pengirim" class="form-control is_readonly" value="{{ $awb->notelp_pengirim }}" name="notelp_pengirim" placeholder="Input Nomor Telp Pengirim. . ." required>
             </div>  
           </div>
         </div>
@@ -368,13 +372,11 @@
               <label class="font-weight-bold">Kota Transit</label>
               <select style="width:90%" class="select2 select_readonly form-control" name="id_kota_transit" >
                 <option value="">--Pilih Kota Transit--</option>
-                @foreach($kota as $c)
-                  @if($c->id == $awb->id_kota_transit)
-                    <option value="{{ $c->id }}" selected>{{ $c->nama }}</option>
+                  @if($awb->id_kota_transit)
+                    <option value="9479" selected>SURABAYA  </option>
                   @else
-                  <option value="{{ $c->id }}">{{ $c->nama }}</option>
+                  <option value="9479">SURABAYA</option>
                   @endif
-                @endforeach
               </select>
             </div>
             @endif 
@@ -564,6 +566,15 @@
             $('#div-kg-pertama').hide();
             $('#div-kg-selanjutnya').hide();
             $("#jenis_koli").attr("readonly", "false");
+          }
+        }
+        if(data.data.id == 26){
+          $("#jenis_koli option[value='koli']").remove();
+        }
+        else{
+          if($("#jenis_koli option[value='koli']").length == 0)
+          {
+            $("#jenis_koli").append('<option value="koli">Koli</option>');
           }
         }
       }
