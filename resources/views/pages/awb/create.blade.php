@@ -366,8 +366,8 @@
            
             </div> --}}
             <div class="form-group">
-              <label class="font-weight-bold">Kota Transit</label>
-              <select style="width:90%" class="select2 select_readonly form-control" name="id_kota_transit" >
+              <label class="font-weight-bold">Transit</label>
+              <select style="width:95%" class="select2 select_readonly form-control" name="id_kota_transit" >
                 <option value="">--Pilih Kota Transit--</option>
                   @if($awb->id_kota_transit)
                     <option value="9479" selected>SURABAYA  </option>
