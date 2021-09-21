@@ -73,7 +73,7 @@
                                     <div class="fxt-transformY-50 fxt-transition-delay-6">
                                         <div class="fxt-content-between">
                                             <button type="submit" class="btn btn-warning">LOG IN</button>
-                                            <a href="{{url('/t/cek')}}" target="blank" type="submit" class="btn pull-right btn-success"> <span> Track AWB</span></a>
+                                            <a href="{{url('/t/cek/t/2')}}" target="blank" type="submit" class="btn pull-right btn-success"> <span> Track AWB</span></a>
                                         </div>
                                     </div>
                                 </div>

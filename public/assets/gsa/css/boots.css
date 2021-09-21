@@ -6512,10 +6512,7 @@
     }
   }
   
-  @media print {
-    .d-print-none {
-      display: none !important;
-    }
+  @media print { 
     .d-print-inline {
       display: inline !important;
     }
@@ -8985,15 +8982,13 @@
     }
     pre,
     blockquote {
-      border: 1px solid #999;
-      page-break-inside: avoid;
+      border: 1px solid #999; 
     }
     thead {
       display: table-header-group;
     }
     tr,
-    img {
-      page-break-inside: avoid;
+    img { 
     }
     p,
     h2,
