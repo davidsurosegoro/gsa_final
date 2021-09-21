@@ -26,6 +26,7 @@
     <input type="hidden" id="check_alamat_pengirim" value="0">
   @endif
 <form class="form" method="POST" action="{{ url('awb/save')}}" autocomplete="off">
+  <input autocomplete="false" name="hidden" type="text" style="display:none;">
   {{ csrf_field() }}
   <input type="hidden" name="idawb" value="{{ $id }}">
   <input type="hidden" name="hilang" value="{{ $hilang }}">
