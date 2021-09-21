@@ -90,15 +90,16 @@ class InvoiceController extends Controller
     public function grouping()
     {   
         $data['awb'] =  Awb::select(DB::raw("
-                            customer.id   as idcustomer,  
-                            customer.nama as namacustomer,  
-                            customer.kode as kodecustomer,  
+                            customer.id         as idcustomer,  
+                            customer.nama       as namacustomer,  
+                            customer.kode       as kodecustomer,  
+                            customer.is_agen    as is_agen,  
                             count(awb.id) as total"))
                         ->join  ("customer",   'customer.id',   '=', 'awb.id_customer') 
                         ->where ("awb.status_tracking", '=' , 'complete') 
                         ->where ("awb.id_invoice",      '=' , 0) 
                         ->where ("awb.id_customer",    '<>' , 26)//---------------26 ini adalah customer biasa, dan tidak perlu ditagihkan. karena sudah cash 
-                        ->groupBy("customer.kode" , "customer.nama","customer.id")
+                        ->groupBy("customer.kode" , "customer.nama","customer.id","customer.is_agen")
                         ->get(); 
         // echo Carbon::now()->hour(15)->minute(0)->second(0);
         // echo Carbon::now()->addHours(7);
@@ -181,16 +182,18 @@ class InvoiceController extends Controller
         $data['invoice']    = Invoice::find(0);  
         $data['awb']        = Awb::select(
                                         'awb.*',
-                                        'customer.nama as namacust',
-                                        'kotatujuan.nama as kotatujuan', 
-                                        'kotaasal.nama as kotaasal', 
-                                        'manifest.kode as kodemanifest',
+                                        'customer.nama      as namacust',
+                                        'kotatujuan.nama    as kotatujuan', 
+                                        'kotaasal.nama      as kotaasal', 
+                                        'kotatransit.nama   as kotatransit', 
+                                        'manifest.kode      as kodemanifest',
                                         DB::raw("DATE_FORMAT(awb.created_at,'%d-%M-%Y') as tanggal_awb"),
                                         DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli')
                                     )
                                     ->join      ("customer",            'customer.id',      '=', 'awb.id_customer')
-                                    ->join      ("kota as kotaasal",    'kotaasal.id',      '=', 'awb.id_kota_asal')
-                                    ->join      ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan')
+                                    ->leftjoin  ("kota as kotaasal",    'kotaasal.id',      '=', 'awb.id_kota_asal')
+                                    ->leftjoin  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan')
+                                    ->leftjoin  ("kota as kotatransit", 'kotatransit.id',   '=', 'awb.id_kota_transit')
                                     ->leftJoin  ("manifest",            'manifest.id',      '=', 'awb.id_manifest')
                                     ->where ("awb.status_tracking", '=' , 'complete') 
                                     ->where ("awb.id_invoice",      '=' , 0) 

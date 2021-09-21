@@ -43,10 +43,11 @@ class PrintoutController extends Controller
         $data['invoice']   = Invoice::select(
                     DB::raw("DATE_FORMAT(invoice.created_at,'%d-%M-%Y') as tanggal_invoice"),
                     "invoice.*" ,  
-                    "customer.nama as namacustomer" ,  
-                    "customer.kode as kodecustomer" ,  
-                    "customer.alamat as alamatcustomer" ,  
-                    "customer.notelp as notelpcustomer" ,  
+                    "customer.nama      as namacustomer" ,  
+                    "customer.kode      as kodecustomer" ,  
+                    "customer.alamat    as alamatcustomer" ,  
+                    "customer.notelp    as notelpcustomer" ,  
+                    "customer.is_agen   as is_agen" ,  
                     "users.nama as namauser" ) 
                 ->join("users",                 'users.id',        '=', 'invoice.mengetahui_oleh')
                 ->join("customer",              'customer.id',     '=', 'invoice.id_customer')
@@ -55,19 +56,21 @@ class PrintoutController extends Controller
 
         $data['awb'] =  Awb::select(
                     'awb.*',
-                    'customer.nama as namacust',
-                    'manifest.kode as kodemanifest',
-                    'kotatujuan.nama as kotatujuan', 
-                    'kotaasal.nama as kotaasal', 
+                    'customer.nama      as namacust',
+                    'manifest.kode      as kodemanifest',
+                    'kotatujuan.nama    as kotatujuan', 
+                    'kotaasal.nama      as kotaasal', 
+                    'kotatransit.nama   as kotatransit', 
                     DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli')
                 )
-            ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
-            ->join  ("manifest",            'manifest.id',      '=', 'awb.id_manifest')
-            ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
-            ->join  ("kota as kotaasal",    'kotaasal.id',      '=', 'awb.id_kota_asal') 
-            ->where ("awb.id_invoice",     '=' , $id)  
-            ->orderBy("id_manifest", "desc")
-            ->orderBy("charge_oa", "desc")
+            ->join      ("customer",            'customer.id',      '=', 'awb.id_customer')
+            ->join      ("manifest",            'manifest.id',      '=', 'awb.id_manifest')
+            ->leftjoin  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
+            ->leftjoin  ("kota as kotaasal",    'kotaasal.id',      '=', 'awb.id_kota_asal') 
+            ->leftjoin  ("kota as kotatransit", 'kotatransit.id',   '=', 'awb.id_kota_transit') 
+            ->where     ("awb.id_invoice",     '=' , $id)  
+            ->orderBy   ("id_manifest", "desc")
+            ->orderBy   ("charge_oa", "desc")
             ->get(); 
         return view("pages.printout.invoice",$data);
     }

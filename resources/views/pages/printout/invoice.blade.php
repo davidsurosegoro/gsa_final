@@ -5,15 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>INVOICE</title> 
         <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
-        <link href="{{asset('assets/gsa/css/boots.css')}}" rel="stylesheet" />
+        <link href="{{asset('assets/gsa/css/boots_a4.css')}}" rel="stylesheet" />
         <link href="" rel="stylesheet" />
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
+            .showonprint{
+                display: none;
+            }
             @page {
                 size: A4;
                 margin: 0;
             }
-            @media print {
+            @media print { 
+                  tr,th,td {
+                    page-break-inside: avoid !important;
+                }
                 .no-print,
                 .no-print * {
                     display: none !important;
@@ -89,7 +95,7 @@
 
         ?>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
-        <div class="printcontainer d-print-none" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        <div class="printcontainer d-print-none no-print" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
         </div>
             <div class="card page">
                 <div class="card-header row" style="padding:0px !important;"> 
@@ -154,17 +160,26 @@
                                     <th style="padding:5px;width:7%;">AWB</th>  
                                     <th style="padding:5px;width:10%;">No.Manifest</th>  
                                     <th style="padding:5px;width:10%;">ASAL</th>  
-                                    <th style="padding:5px;width:10%;">Tujuan</th>  
+                                    @if ((int)$invoice->is_agen == 1)
+                                        <th style="width:10%;">Transit</th>  
+                                    @endif
+                                    <th style="padding:5px;width:10%;">Tujuan</th>                                      
                                     <th style="padding:5px;width:10%;">Penerima</th>  
                                     <th style="padding:5px;width:10%;">Koli</th>  
-                                    <th style="padding:5px;width:5%;">Kg</th>  
-                                    <th style="padding:5px;width:5%;">Doc</th>   
-                                    <th style="padding:5px;width:10%;">KET</th> 
-                                    <th style="padding:5px;width:8%;">Biaya OA</th>  
-                                    <th style="padding:5px;width:10%;">Total Bayar</th>  
+                                    @if ((int)$invoice->is_agen == 0)
+                                        <th style="padding:5px;width:5%;">Kg</th>  
+                                        <th style="padding:5px;width:5%;">Doc</th>   
+                                        <th style="padding:5px;width:10%;">KET</th> 
+                                        <th style="padding:5px;width:8%;">Biaya OA</th>  
+                                        <th style="padding:5px;width:10%;">Total Bayar</th>  
+                                    @elseif ((int)$invoice->is_agen == 1)
+                                        <th style="padding:5px;width:10%;">KET</th> 
+                                        <th style="padding:5px;width:10%;">Harga Agen</th>  
+                                        <th style="padding:5px;width:10%;">Biaya Handling</th>  
+                                    @endif 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody> 
                                 @foreach ($awb as $item)
                                 <tr style="padding:0px;">
                                     <td class='text-center' style="padding:5px;padding-left:2px;">{{ $loop->index+1 }}</td>   
@@ -172,6 +187,9 @@
                                     <td style="padding:5px;padding-left:2px;">{{$item->noawb}}</td>  
                                     <td style="padding:5px;padding-left:2px;">{{$item->kodemanifest}}</td>  
                                     <td style="padding:5px;padding-left:2px;">{{$item->kotaasal}}</td>   
+                                    @if ((int)$invoice->is_agen == 1)
+                                        <td style="padding:5px;padding-left:2px;">{{$item->kotatransit}}</td>  
+                                    @endif
                                     <td style="padding:5px;padding-left:2px;">{{$item->kotatujuan}}
                                         @if ($item->labelalamat !== '' && $item->labelalamat !==null)                                        
                                             <br>(<i>{{$item->labelalamat}}</i>)
@@ -198,21 +216,41 @@
                                         </table>    
                                         @endif
                                     </td> 
-                                    <td style="padding:5px;padding-left:2px;">{{$item->qty_kg}}</td> 
-                                    <td style="padding:5px;padding-left:2px;">{{$item->qty_doc}}</td> 
-                                    <td style="padding:5px;padding-left:2px;">{{$item->keterangan}}</td> 
-                                    <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->idr_oa)}}</td> 
-                                    <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td> 
+                                    @if ((int)$invoice->is_agen == 0)
+                                        <td style="padding:5px;padding-left:2px;">{{$item->qty_kg}}</td> 
+                                        <td style="padding:5px;padding-left:2px;">{{$item->qty_doc}}</td> 
+                                        <td style="padding:5px;padding-left:2px;">{{$item->keterangan}}</td> 
+                                        <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->idr_oa)}}</td> 
+                                        <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td>   
+                                    @elseif ((int)$invoice->is_agen == 1)
+                                        <td style="padding:5px;padding-left:2px;">{{$item->keterangan}}</td> 
+                                        <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td>   
+                                        <td style="padding:5px;padding-left:2px; text-align:right;">
+                                            {{number_format(($item->total_harga * (((int)$item->id_kota_transit>0) ?   0.4 : 0.3 )), 0) }}
+                                        </td>   
+                                    @endif 
                                 </tr>   
-                                @endforeach 
+                                @endforeach  
                                 <tr style="padding:0px; background-color:#a1ffbc;"> 
-                                    <td style="padding:5px;padding-left:2px;" colspan='7' class="text-right">Total Bayar</td>   
-                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_koli}}</td>   
-                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_kg}}</td>   
-                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_doc}}</td>   
-                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;"></td>   
-                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_oa, 0) }}</td> 
-                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_harga, 0) }}</td> 
+                                    <td style="padding:5px;padding-left:2px;" colspan='
+                                    @if ((int)$invoice->is_agen == 1)
+                                        8
+                                    @else
+                                        7
+                                    @endif
+                                    ' class="text-right">Total Bayar</td>   
+                                    <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_koli}}</td>    
+                                    @if ((int)$invoice->is_agen == 0)  
+                                        <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_kg}}</td>   
+                                        <td style="padding:5px;padding-left:2px;font-weight:bold !important;">{{$invoice->total_doc}}</td>   
+                                        <td style="padding:5px;padding-left:2px;font-weight:bold !important;"></td>   
+                                        <td style="padding:5px;padding-left:2px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_oa, 0) }}</td> 
+                                        <td style="padding:5px;padding-left:2px;font-weight:bold !important; text-align:right;">{{number_format($invoice->total_harga, 0) }}</td>                            
+                                    @elseif ((int)$invoice->is_agen == 1)
+                                        <td style="padding:5px;font-weight:bold !important;"><h4></h4></td> 
+                                        <th style="width:10%;"></th>  
+                                        <td style="padding:5px;font-weight:bold !important;"><h5>{{number_format($invoice->total_harga, 0) }}</h5></td>                             
+                                    @endif
                                 </tr>     
                             </tbody>
                         </table>
@@ -235,7 +273,7 @@
                         </div> 
                         <div class="col-6 text-center">
                             MENGETAHUI    <br><br><br><br><br>
-                            {{$invoice->namauser}}<br> 
+                             
                         </div> 
                     </div>
                 </div>
