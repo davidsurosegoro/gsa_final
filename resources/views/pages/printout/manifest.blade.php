@@ -9,6 +9,12 @@
         <link rel="stylesheet" href="{{asset('assets/gsa/fa/css/font-awesome.min.css')}}">
         <script type="text/javascript" src="{{asset('assets/gsa/js/jquery.min.js')}}"></script>
         <style>
+            @font-face {
+                font-family: JUDUL__S;
+                /*src: url('font/save/Caviar_Dreams_Bold.otf');  */
+                src: url('{{asset('assets/gsa/css/Roboto2DRAFTCondensed-Light.ttf')}}');  
+
+            }
             table, th, td {
                 border: 1px solid black;
             }
@@ -20,6 +26,9 @@
                 margin: 0;
             }
             @media print {
+                
+                div   { page-break-inside:avoid !important; }
+                span   { page-break-inside:avoid !important; }
                 .no-print,
                 .no-print * {
                     display: none !important;
@@ -35,6 +44,8 @@
                 .showonprint{
                     display: block !important;
                 }
+                .hideprint{display: none !important;}
+                /* tr.page-break  { display: block !important; page-break-after: always !important; } */
                 .page {
                     margin: 0px !important;
                     border: 0px !important;
@@ -44,12 +55,12 @@
                     height: auto !important;
                     box-shadow: initial;
                     background: initial;
-                    page-break-after: always;
+                    page-break-after: always !important;
                     width:100% !important;
                 }
             } 
             body {
-                font-family:sans-serif;
+                font-family:JUDUL__S;
                 background-color: #000;
             }
 
@@ -100,7 +111,7 @@
         </style>
     </head>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
-        <div class="printcontainer d-print-none" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        <div class="printcontainer hideprint" onclick="window.print()">  <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
         </div>
             <div class="card page">
                 <div class="card-header row" style="padding:0px !important;"> 
@@ -114,11 +125,11 @@
                         <p class="col-12" style="font-size:0.18cm;padding:0px; margin:0px;">Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599
                         </p>
                         @if ($manifest->status=='checked')
-                            <h2><button type="button" class=" d-print-none btn btn-default">{{$manifest->status}}</button></h2>                        
+                            <h2><button type="button" class=" hideprint btn btn-default">{{$manifest->status}}</button></h2>                        
                         @elseif ($manifest->status=='delivering')
-                            <h2><button type="button" class=" d-print-none btn btn-primary">{{$manifest->status}}</button></h2>                        
+                            <h2><button type="button" class=" hideprint btn btn-primary">{{$manifest->status}}</button></h2>                        
                         @elseif ($manifest->status=='arrived')
-                            <h2><button type="button" class=" d-print-none btn btn-success">{{$manifest->status}}</button></h2>
+                            <h2><button type="button" class=" hideprint btn btn-success">{{$manifest->status}}</button></h2>
                         @endif
                         
                     </div> 
@@ -183,7 +194,7 @@
                                     <td class="text-center">{{$manifest->jumlah_kg}}</td>
                                     <td class="text-center">{{$manifest->jumlah_doc}}</td>
                                 </tr> 
-                                @for ($i = 0; $i < 3; $i++)
+                                @for ($i = 0; $i < 50; $i++)
                                     
                                 @foreach ($awb as $item)
                                 <?php
@@ -201,8 +212,7 @@
                                 <tr style="padding:0px;">
                                     <td class='text-center' style="padding:2px;">{{ $loop->index+1 }}</td>   
                                     <td style="padding:2px;">
-                                        <a href="{{ url('t/'.$item['noawb'].'/t/0')}}" target="_blank" class="d-print-none">{{$item->noawb}}</a>
-                                        <span class="showonprint">{{$item->noawb}}</span>
+                                        <a href="{{ url('t/'.$item['noawb'].'/t/0')}}" target="_blank" class="hideprint">{{$item->noawb}}</a>  
                                     </td> 
                                     <td style="padding:2px;" class='text-left'>{{$item->namacust}}</td> 
                                     <td style="padding:2px;" class='text-left'>{{$item->nama_penerima}}</td> 
@@ -220,7 +230,7 @@
                                     <td style="padding:2px;position:relative !important;">
                                         {{$item->keterangan}}{{$item->qtyloaded}}
                                         
-                                            <div class="d-print-none totalbarangmasuk" 
+                                            <div class="hideprint totalbarangmasuk" 
                                                 @if ($qty_umum - $item->qtyloaded == 0)                                            
                                                     style="background-color: #27ae60;"
                                                 @else
