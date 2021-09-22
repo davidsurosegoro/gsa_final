@@ -257,7 +257,7 @@ endif;
                   <h4 class="modal-title text-left">Ganti Password</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form" method="POST" action="{{url('master/users/gantipassword')}}">  
+                    <form class="form" method="POST" action="{{url('master/gantipassword')}}">  
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label>Username:</label>

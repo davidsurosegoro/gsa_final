@@ -65,8 +65,6 @@ Route::prefix('master')->group(function(){
 			Route::post('/delete' 		,'Master\ManifestController@delete');
 			Route::get('/datatables' 	,'Master\ManifestController@datatables');
 			Route::post('/updatestatus'	,'Master\ManifestController@updatestatus');
-			Route::post('/gantipassword','Master\ManifestController@gantipassword');
-			Route::get('/checkusername'	,'Master\ManifestController@checkusername');
 			Route::get('/edit/{kotaasal}/{kotatujuan}/{agentujuan}','Master\ManifestController@edit');
 
 		});
@@ -78,8 +76,6 @@ Route::prefix('master')->group(function(){
 			Route::post('/save'			,'Master\AlamatController@save');
 			Route::post('/delete' 		,'Master\AlamatController@delete');
 			Route::get('/datatables' 	,'Master\AlamatController@datatables');
-			Route::post('/gantipassword','Master\AlamatController@gantipassword');
-			Route::get('/checkusername'	,'Master\AlamatController@checkusername');
 
 		});
 		Route::middleware(['auth','admin'])->prefix('kecamatan')->group(function(){
@@ -90,8 +86,6 @@ Route::prefix('master')->group(function(){
 			Route::post('/save'			,'Master\KecamatanController@save');
 			Route::post('/delete' 		,'Master\KecamatanController@delete');
 			Route::get('/datatables' 	,'Master\KecamatanController@datatables');
-			Route::post('/gantipassword','Master\KecamatanController@gantipassword');
-			Route::get('/checkusername'	,'Master\KecamatanController@checkusername');
 
 		});
 		Route::middleware(['auth','admin'])->prefix('kota')->group(function(){
@@ -102,8 +96,6 @@ Route::prefix('master')->group(function(){
 			Route::post('/save'			,'Master\KotaController@save');
 			Route::post('/delete' 		,'Master\KotaController@delete');
 			Route::get('/datatables' 	,'Master\KotaController@datatables');
-			Route::post('/gantipassword','Master\KotaController@gantipassword');
-			Route::get('/checkusername'	,'Master\KotaController@checkusername');
 
 		});
 		Route::middleware(['auth','admin'])->prefix('users')->group(function(){
@@ -114,11 +106,10 @@ Route::prefix('master')->group(function(){
 			Route::post('/save'			,'Master\UsersController@save');
 			Route::post('/delete' 		,'Master\UsersController@delete');
 			Route::get('/datatables' 	,'Master\UsersController@datatables');
-			Route::post('/gantipassword','Master\UsersController@gantipassword');
 			Route::get('/checkusername'	,'Master\UsersController@checkusername');
 
 		});
-
+		Route::post('gantipassword','Master\UsersController@gantipassword')->middleware(['auth']);
 		Route::middleware(['auth','admin'])->prefix('customer')->group(function(){
 			Route::get('/','Master\CustomerController@index');
 			Route::get('/create','Master\CustomerController@create');
