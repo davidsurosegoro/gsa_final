@@ -102,8 +102,8 @@ endif;
                                     <div class="topbar-item">
 										<div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
 											<div class="d-flex flex-column text-right pr-3">
-												<span class="text-success opacity-100 font-weight-bold font-size-sm d-none d-md-inline">{{ $level }}</span>
-												<span class="text-success font-weight-bolder font-size-sm d-none d-md-inline">{{ Auth::user()->username }}</span>
+												<span class="text-success opacity-100 font-weight-normal font-size-sm d-none d-md-inline">{{ $level }}</span>
+												<span class="text-success font-weight-bolder font-size-md d-none d-md-inline">{{ Auth::user()->username }}</span>
 											</div>
 											<span class="symbol symbol-35">
 												<span class="symbol-label font-size-h5 font-weight-bold text-success bg-white-o-30"><i class="fa fa-user text-success"></i></span>
