@@ -196,7 +196,7 @@
                     width:170,
                 },
                 {
-                    caption: "Mengetahui Oleh",
+                    caption: "Dikerjakan Oleh",
                     dataField: "mengetahui_oleh_user",
                     dataType: "string",
                     width:175,
