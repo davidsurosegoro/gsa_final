@@ -47,7 +47,7 @@
                 html,
                 body {
                     width: 210mm;
-                    height: 280m;
+                    height: 280mm;
                 }
                 .showonprint{
                     display: block !important;
@@ -79,6 +79,7 @@
             .card {
                 margin-bottom: 30px;
                 border: none; 
+                    padding-top:10px !important;
             }
 
             .card-header {
@@ -151,7 +152,7 @@
                                                 <table  class=" col-12 "  style="font-size:0.33cm; margin-top:0.4cm; border-right:0px !important; width:98%;">
                                                     <tr>
                                                         <td >NO.</td>
-                                                        <td>&nbsp;{{$manifest->kode}}</td>
+                                                        <td style="letter-spacing: 0.02cm;font-size:0.38cm;">&nbsp;{{$manifest->kode}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td >Asal </td>
