@@ -178,6 +178,16 @@
                 // },
                 {
                     caption: "Kode Invoice",
+                    dataField: "id",
+                    dataType: "string",
+                    width:200,
+                    cellTemplate: function (container, options) {
+                    console.log(options);
+                        $(container).html(`<a href="https://globalserviceasia.com/public/printout/invoice/`+options.data.id+`" target="_blank">`+options.data.kode+`</a>`)
+                    },
+                },
+                {
+                    caption: "Kode Invoice",
                     dataField: "kode",
                     dataType: "string",
                     width:200,

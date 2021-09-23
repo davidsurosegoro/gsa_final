@@ -134,12 +134,20 @@ class CustomerController extends Controller
                 endif;
             })
             ->addColumn('aksi', function ($a) {
+                if($a->id == 26):
                 return '<div class="btn-group" role="group" aria-label="Basic example">
                 <a href="' . url('master/customer/edit/' . $a['id']) . '" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
                     <i class="flaticon-edit-1"></i>
                 </a>
-                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Customer" onClick="deleteCustomer(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>
                 </div>';
+                else:
+                    return  '<div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="' . url('master/customer/edit/' . $a['id']) . '" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
+                        <i class="flaticon-edit-1"></i>
+                    </a>
+                    <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Customer" onClick="deleteCustomer(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>
+                    </div>';
+                endif;
             })
             ->addColumn('details_url', function ($a) {
                 return url('master/customer/data-harga/' . $a->id);

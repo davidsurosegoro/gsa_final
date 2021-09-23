@@ -11,6 +11,10 @@
         </div>
         <div class="card-body">
           <form class="form" id="form">
+            @if((int) Auth::user()->level == 3)
+              <input type="hidden" name="id_agen_asal" value="-">
+              <input type="hidden" name="id_agen_tujuan" value="-">
+            @endif
             {{ csrf_field() }}
             <div class="row">
               <div class="col-lg-3 

@@ -53,7 +53,7 @@ class AwbController extends Controller
 
         $customer    = "";
         $agen_tujuan = "";
-        $kota        = Kota::where('id', '>', 0)->get();
+        $kota        = Kota::where('id', '>', 0)->where('status','aktif')->get();
         if ((int) Auth::user()->level == 2):
             $customer = Customer::where('id', Auth::user()->id_customer)->first();
         elseif ((int) Auth::user()->level == 1):
@@ -82,10 +82,10 @@ class AwbController extends Controller
         }
         $id               = $id;
         $kecamatan_tujuan = Kecamatan::where('idkota', $awb->id_kota_tujuan)->get();
-        $agen_master      = ViewAgenKota::where('id', $awb->id_kota_tujuan)->get();
+        $agen_master      = ViewAgenKota::where('id', $awb->id_kota_tujuan)->where('status','aktif')->get();
         $agen_tujuan      = Agen::find($awb->id_agen_penerima);
         if (empty($agen_tujuan)) {
-            $agen_tujuan = ViewAgenKota::where('id', $awb->id_kota_tujuan)->get();
+            $agen_tujuan = ViewAgenKota::where('id', $awb->id_kota_tujuan)->where('status','aktif')->get();
         }
         $hilang = $hilang;
         return view('pages.awb.create', compact('kota', 'hilang', 'customer', 'awb', 'agen_tujuan', 'agen_master', 'id', 'alamat_pengirim_array', 'kecamatan_tujuan', 'alamat_pengirim', 'alamat_tujuan_array', 'alamat_tujuan', 'master_alamat'));
@@ -159,7 +159,7 @@ class AwbController extends Controller
         $harga_kg_pertama = ($request->harga_kg_pertama == null) ? 0 : str_replace(',', '',$request->harga_kg_pertama);
         $harga_kg_selanjutnya = ($request->harga_kg_selanjutnya == null) ? 0 : str_replace(',', '',$request->harga_kg_selanjutnya);
         if($customer->id == 26){
-            $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya,$charge_oa,$customer);   
+            $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya,$charge_oa,$customer,$request->hilang);   
         }
         if($request->id_kota_asal == 9479):
             $id_agen_asal = 1;
@@ -734,7 +734,7 @@ class AwbController extends Controller
 
     public function filter_kota_agen(Request $request)
     {
-        $kota           = ViewAgenKota::where('id', $request->kota_id)->get();
+        $kota           = ViewAgenKota::where('id', $request->kota_id)->where('status','aktif')->get();
         $kecamatan      = Kecamatan::where('idkota', $request->kota_id)->get();
         $view           = (string) view('pages.awb.ajax.filter_kota_agen', compact('kota'));
         $view_kecamatan = (string) view('pages.awb.ajax.filter_kecamatan', compact('kecamatan'));
@@ -767,9 +767,10 @@ class AwbController extends Controller
         $harga_kg = 0;
         $harga_oa = 0;
         if ($qty_kg > 0):
-            $harga_kg = $customer->harga_kg * 2 + (2000 * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
-        // else:
-            // $harga_kg = $customer->harga_kg * 2;
+                $harga_kg = $customer->harga_kg * 2 + (2000 * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
+        endif;
+        if($qty_kg < 0):
+            $harga_kg = $customer->harga_kg * 2 - (2000 * ((($qty_kg < -2 ) ?$qty_kg : -2 ) + 2));
         endif;
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb) + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
         if ($charge_oa == 1):
@@ -787,17 +788,28 @@ class AwbController extends Controller
         return $tots;
     }
 
-    private function hitungHargaKg($qty_kg,$harga_pertama,$harga_selanjutnya,$charge_oa,$customer){
+    private function hitungHargaKg($qty_kg,$harga_pertama,$harga_selanjutnya,$charge_oa,$customer,$hilang){
         $harga_kg = 0; $harga_oa = 0;
-        if ($qty_kg > 0):
-            $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
-        // else:
-            // $harga_kg = $customer->harga_kg * 2;
+        if($hilang == "hilang"):
+                $harga_kg = $harga_pertama * 2 - ($harga_selanjutnya * ((($qty_kg < -2 ) ?$qty_kg : -2 ) + 2));
+            // else:
+                // $harga_kg = $customer->harga_kg * 2;
+            if ($charge_oa == 1):
+                $harga_oa = $customer->harga_oa;
+            endif;
+            return $harga_kg + $harga_oa;
+        else:
+            $harga_kg = 0; $harga_oa = 0;
+            if ($qty_kg > 0):
+                $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
+            // else:
+                // $harga_kg = $customer->harga_kg * 2;
+            endif;
+            if ($charge_oa == 1):
+                $harga_oa = $customer->harga_oa;
+            endif;
+            return $harga_kg + $harga_oa;
         endif;
-        if ($charge_oa == 1):
-            $harga_oa = $customer->harga_oa;
-        endif;
-        return $harga_kg + $harga_oa;
     }
 
     private function randomChar()

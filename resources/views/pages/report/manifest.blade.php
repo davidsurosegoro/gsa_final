@@ -176,6 +176,16 @@
                 // },
                 {
                     caption: "Kode Manifest",
+                    dataField: "id",
+                    dataType: "string",
+                    width:200,
+                    cellTemplate: function (container, options) {
+                    console.log(options);
+                        $(container).html(`<a href="https://globalserviceasia.com/public/printout/manifest/`+options.data.id+`" target="_blank">`+options.data.kode+`</a>`)
+                    },
+                },
+                {
+                    caption: "Kode Manifest",
                     dataField: "kode",
                     dataType: "string",
                     width:160,

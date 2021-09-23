@@ -152,13 +152,13 @@ Route::middleware(['auth'])->prefix('awb')->group(function () {
 });
 
 Route::middleware(['auth'])->prefix('report')->group(function(){
-	Route::get('awb','ReportController@awb');
+	Route::get('awb','ReportController@awb')->middleware(['admin.agen.customer']);
 	Route::post('awb-grid','ReportController@awb_grid');
-	Route::get('manifest','ReportController@manifest');
+	Route::get('manifest','ReportController@manifest')->middleware(['admin.agen']);
 	Route::post('manifest-grid','ReportController@manifest_grid');
-	Route::get('invoice','ReportController@invoice');
+	Route::get('invoice','ReportController@invoice')->middleware(['admin.customer']);
 	Route::post('invoice-grid','ReportController@invoice_grid');
-	Route::get('bonus','ReportController@bonus');
+	Route::get('bonus','ReportController@bonus')->middleware(['admin.agen']);
 	Route::post('bonus-grid','ReportController@bonus_grid');
 });
 

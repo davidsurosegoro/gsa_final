@@ -205,6 +205,16 @@
                 //     }
                 // },
                 {
+                  caption: "Noawb",
+                  dataField: "id",
+                  dataType: "string",
+                  width:110,
+                  cellTemplate: function (container, options) {
+                    console.log(options);
+                        $(container).html(`<a href="https://globalserviceasia.com/public/t/`+options.data.noawb+`/t/1" target="_blank">`+options.data.noawb+`</a>`)
+                    },
+                },
+                {
                     caption: "Noawb",
                     dataField: "noawb",
                     dataType: "string",

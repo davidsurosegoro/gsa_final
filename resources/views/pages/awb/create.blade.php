@@ -115,7 +115,7 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="font-weight-bold">Qty @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
-                <input type="number" @if ($hilang =="hilang") max='0' @endif  class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." value="0">
+                <input type="number" @if ($hilang =="hilang") max='0' @endif  class="form-control" value="{{ $awb->qty }}" name="qty" placeholder="Input jumlah koli kecil. . ." >
               </div>
             </div>
           </div>
@@ -724,6 +724,7 @@
   <script>
     $('.is_readonly').attr('readonly', true);
     $('option').not(':selected').remove();
+      $("input[name=qty]").removeAttr('max')
   </script>
 @endif
 @if($awb->created_by > 1)

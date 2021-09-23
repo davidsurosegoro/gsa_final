@@ -13,6 +13,7 @@ use App\ViewReportAwb;
 use App\ViewReportManifest;
 use App\ViewReportInvoice;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use Auth;
 
 class ReportController extends Controller
@@ -60,6 +61,7 @@ class ReportController extends Controller
         $collect_awb = new Collection;
         foreach($awbs as $a):
             $collect_awb->push([
+                'id' => $a->id,
                 'noawb' => $a->noawb,
                 'faktur_string' => $a->faktur_string,
                 'pengirim' => $a->pengirim,
@@ -132,6 +134,7 @@ class ReportController extends Controller
         $collect_manifest = new Collection;
         foreach($awbs as $a):
             $collect_manifest->push([
+                'id'    => Crypt::encrypt($a->id),
                 'kode' => $a->kode,
                 'status' => $a->status,
                 'kota_asal' => $a->kota_asal,
