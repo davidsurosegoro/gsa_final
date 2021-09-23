@@ -177,7 +177,7 @@
                 //     }
                 // },
                 {
-                    caption: "Kode Invoice",
+                    caption: "Lihat detail",
                     dataField: "id",
                     dataType: "string",
                     width:200,
