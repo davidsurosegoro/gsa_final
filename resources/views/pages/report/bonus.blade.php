@@ -6,7 +6,7 @@
       <div class="card">
         <div class="card-header border-0" style="padding-bottom:0px; padding-top:10px;">
           <div class="card-title font-weight-bolder">
-            <div class="card-label">Report Bonus</div>
+            <div class="card-label">Report Komisi</div>
           </div>
         </div>
         <div class="card-body">
@@ -246,21 +246,21 @@
                     width:170,
                 },
                 {
-                    caption: "Bonus Agen Asal",
+                    caption: "Komisi Agen Asal",
                     dataField: "bonus_agen_asal",
                     dataType: "number",
                     format:"#,##0",
                     width:170,
                 },
                 {
-                    caption: "Bonus GSA",
+                    caption: "Komisi GSA",
                     dataField: "bonus_gsa",
                     dataType: "number",
                     format:"#,##0",
                     width:170,
                 },
                 {
-                    caption: "Bonus Agen Tujuan",
+                    caption: "Komisi Agen Tujuan",
                     dataField: "bonus_agen_tujuan",
                     dataType: "number",
                     format:"#,##0",
