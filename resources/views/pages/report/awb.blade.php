@@ -205,7 +205,7 @@
                 //     }
                 // },
                 {
-                  caption: "Noawb",
+                  caption: "Lihat detail",
                   dataField: "id",
                   dataType: "string",
                   width:110,

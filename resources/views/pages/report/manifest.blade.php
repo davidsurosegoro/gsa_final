@@ -175,7 +175,7 @@
                 //     }
                 // },
                 {
-                    caption: "Kode Manifest",
+                    caption: "Lihat Detail",
                     dataField: "id",
                     dataType: "string",
                     width:200,
