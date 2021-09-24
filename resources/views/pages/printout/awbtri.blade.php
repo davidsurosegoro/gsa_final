@@ -130,7 +130,7 @@
                             </table>
                         </div>
                         <div class="col-2 text-center" >
-                            {!! QrCode::size(95)->generate(url('/t/'.$awb[0]->noawb.'/t/0')); !!}  
+                            {!! QrCode::size(95)->generate(url('/t/'.$awb[0]->noawb.'/t/notforscan')); !!}  
                         </div>
                         <table class="table-striped table-bordered col-3"  >
                             <thead>

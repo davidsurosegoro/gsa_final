@@ -389,18 +389,21 @@
                     dataType: "string",
                     width:160,
                 },
-                {
-                    caption: "Kode Invoice",
-                    dataField: "kode_invoice",
-                    dataType: "string",
-                    width:160,
-                },
-                {
-                    caption: "Status Pembayaran",
-                    dataField: "status_pembayaran", 
-                    dataType: "string",
-                    width:150, 
-                },
+                @if((int) Auth::user()->level == 1 ||(int) Auth::user()->level == 2)
+
+                  {
+                      caption: "Kode Invoice",
+                      dataField: "kode_invoice",
+                      dataType: "string",
+                      width:160,
+                  },
+                  {
+                      caption: "Status Pembayaran",
+                      dataField: "status_pembayaran", 
+                      dataType: "string",
+                      width:150, 
+                  },
+                @endif
                 
             ],
         }).dxDataGrid("instance");

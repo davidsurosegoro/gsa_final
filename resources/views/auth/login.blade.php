@@ -54,7 +54,7 @@
                                                 @if(count($errors) > 0)
 
                                                     <div class="alert alert-danger alert-dismissable">
-                                                        <i class="zmdi zmdi-block pr-15 pull-left"></i><p class="pull-left"> <strong> X </strong> Login Gagal! Password atau username salah.</p>
+                                                        <i class="zmdi zmdi-block pr-15 pull-left"></i><p class=" "> <strong> X </strong> Login Gagal! Password atau username salah.</p>
                                                     </div>
                                                 @endif
                                 <div class="form-group">

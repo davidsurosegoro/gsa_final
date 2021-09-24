@@ -170,7 +170,7 @@
             xs.play();   
             scanner.stop();
             var codeonly = result.split("/t/") 
-            if(!codeonly[1] || !codeonly[2]){
+            if(!codeonly[1] || !codeonly[2] || codeonly[2] == 'notforscan'){
                 toastr.warning("kode AWB tidak valid!!") 
                 
                 
