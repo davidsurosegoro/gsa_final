@@ -37,6 +37,9 @@
   @endif
   <div class="card-body">
     <div class="row">
+        <div class="col-12 text-center alert alert-warning bg-warning" role="alert" style="background-color:rgb(255, 244, 96) !important;color :black;"> 
+          **Inputan AWB diatas jam <b>{{App\Applicationsetting::getJamMinim()}} : 00</b>, akan dikirimkan besok hari**
+        </div>
         <div class="card-body mb-5">
           <h6 class="panel-title txt-dark" style="border-bottom:1px solid #EBEDF3;"><i class="flaticon-profile-1"> </i> Data Umum Pengiriman</h6>
           <div class="row">

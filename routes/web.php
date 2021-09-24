@@ -22,8 +22,8 @@ Route::prefix('popup')->group(function () {
 
 Route::get('/',  						'HomeController@index');
 Route::get('/t/{kode}/{t}/{qty}',		'TrackingController@index');
-Route::get('scannerawb/{status}',  	   	'ScannerController@awb')->middleware(['admin.agen.kurir']);
-Route::get('scannermanifest/{status}', 	'ScannerController@manifest');
+Route::get('scannerawb/{status}',  	   	'ScannerController@awb') 		->middleware(['auth','admin.agen.kurir']);
+Route::get('scannermanifest/{status}', 	'ScannerController@manifest') 	->middleware(['auth','admin.agen.kurir']);;
 
 Route::prefix('log')->group(function () {
 

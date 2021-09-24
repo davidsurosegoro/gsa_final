@@ -569,12 +569,12 @@ class AwbController extends Controller
                             </a>';   
         
         $btn_hilang      = '';
-        if($a->qty > 0):
-            $btn_hilang  = '
-            <a href=' . url('awb/edit/' . $a->id . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
-            <i class="flaticon-exclamation" ></i>
-            </a>';
-        endif;                                  
+        // if($a->qty > 0):
+        //     $btn_hilang  = '
+        //     <a href=' . url('awb/edit/' . $a->id . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
+        //     <i class="flaticon-exclamation" ></i>
+        //     </a>';
+        // endif;                                  
         if (
                 ((int)$a->qty_kecil <= 0 && (int)$a->qty_sedang <= 0 && (int)$a->qty_besar <= 0 && (int)$a->qty_besarbanget <= 0 && (int)$a->qty_doc <= 0 && $a->qty_kg <= 0 && $a->is_agen == 0) 
                 || ((int)$a->qty<= 0 )

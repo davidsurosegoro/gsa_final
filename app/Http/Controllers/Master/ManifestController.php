@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Agen;
 use App\Manifest;
 use App\Awb;
+use App\Applicationsetting;
 use Carbon\Carbon;
 use Auth;
 use App\Kota;
@@ -132,7 +133,8 @@ class ManifestController extends Controller
         // return response()->json(array('success' => 'success'));
     }
     public function save(Request $request)
-    {    
+    {   
+                  
         if($request->id == 0){
             $manifest = new Manifest();  
         }else{            
@@ -165,8 +167,8 @@ class ManifestController extends Controller
                     ->where ("awb.id_agen_penerima",    '=' , $manifest['agen_tujuan'])//--------------------BARU 
                     ->where (function($query)
                                 {
-                                    $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0));
-                                            // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
+                                    $query  ->where('awb.created_at', '<=', Carbon::now()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
+                                            // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
                                 })
                     ->get(); 
         foreach ($data['awb'] as $item){  
@@ -206,6 +208,7 @@ class ManifestController extends Controller
     public function edit($kotaasal,$kotatujuan,$agentujuan)
     {
         
+        
         if((int) Auth::user()->id==1){
             $data['manifest']   = Manifest::find(0); 
             $data['kotaasal']   = Kota::where('id','=',$kotaasal)->get(); 
@@ -227,8 +230,8 @@ class ManifestController extends Controller
                             ->where ("awb.id_agen_penerima",'=' , $agentujuan)//--------------------BARU
                             ->where (function($query)
                                         {
-                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0));
-                                                    // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
+                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
+                                                    // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
                                         })
                             ->orderBy("awb.id_customer" , "desc")                                    
                             ->get(); 
@@ -242,6 +245,7 @@ class ManifestController extends Controller
     }
     public function grouping()
     {   
+          
         if((int) Auth::user()->id==1){
             $data['awb'] =  Awb::select(DB::raw("
                                 kotaasal.id as idkotaasal, 
@@ -258,8 +262,8 @@ class ManifestController extends Controller
                             ->where ("awb.id_manifest",     '=' , 0)
                             ->where (function($query)
                                         {
-                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(16)->minute(0)->second(0));
-                                                    // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(16)->minute(0)->second(0));
+                                            $query  ->where('awb.created_at', '<=', Carbon::now()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
+                                                    // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
                                         })
                             ->groupBy("kotaasal.kode" , "kotatujuan.kode","kotaasal.id" , "kotatujuan.id" , "agentujuan.kode" , "agentujuan.id")
                             ->get(); 

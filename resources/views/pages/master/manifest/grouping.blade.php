@@ -8,12 +8,18 @@
         &nbsp;
         <span onclick="location.reload();" class="col- btn btn-default  text-center">
         <i class="fa fa-refresh text-center"></i></span>
+       
     </h3>
     
 </div>
   
 <div class="card-body">
-    <div class="row">
+    <div class="row"> 
+        <div class="col-12 alert alert-warning bg-warning" role="alert">
+            -Pastikan qty detail di awb sudah terisi<br>
+            -Pastikan agen di awb sudah terpilih <br>
+            -AWB yang masuk di manifest, adalah awb dibawah jam <b>{{App\Applicationsetting::getJamMinim()}} : 00</b>, dan AWB-AWB di hari sebelum hari ini
+        </div>
         @foreach ($awb as $item)
         <div class="col-2" style="margin-top:10px;">
             <div class="card col-12 bg-light" style="padding:0px;">

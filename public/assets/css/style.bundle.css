@@ -44,7 +44,6 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -413,6 +412,9 @@ h6, .h6 {
   font-size: 1.175rem;
 }
 
+.redsoftbg{
+  background-color:#ffe4e4 !important;
+}
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
