@@ -348,6 +348,12 @@
                 $('#noawb_koli').html(data.awb.noawb).number(true)
                 $('.total_harga').number(true)
                 $('.total_oa').number(true)
+                if(data.awb.qty < 0){
+                  $('.minus_harga').html('-')
+                }
+                else{
+                  $('.minus_harga').html('')
+                }
               } 
             })
     }

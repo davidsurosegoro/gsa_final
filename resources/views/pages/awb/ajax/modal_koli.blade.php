@@ -40,7 +40,10 @@
             @endif
             <tr>
               <td>Total Harga </td>
-              <th><strong class="total_harga"></strong></th>
+              <th>
+                <strong class="minus_harga"></strong>
+                <strong class="total_harga"></strong>
+              </th>
             </tr>
             <tr>
               <td>Total OA </td>
@@ -54,7 +57,9 @@
             </tr>
             <tr>
               <td>Total Harga </td>
-              <th><strong class="total_harga"></strong></th>
+              <th>
+                <strong class="minus_harga"></strong>
+                <strong class="total_harga"></strong></th>
             </tr>
             <tr>
               <td>Total OA </td>

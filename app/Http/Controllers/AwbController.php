@@ -148,9 +148,6 @@ class AwbController extends Controller
                 return redirect('awb')->with('failed_customer',$customer->nama);
             endif;
         endif;
-        if ($request->hilang == "hilang"):
-            $total_harga['oa'] = 0;
-        endif;
         $labelalamat = "";
         if($request->labelalamat !== "manual"):
             $masteralamat   = Alamat::where('alamat',$request->labelalamat)->first();
@@ -163,6 +160,10 @@ class AwbController extends Controller
         }
         if($request->id_kota_asal == 9479):
             $id_agen_asal = 1;
+        endif;
+        if ($request->hilang == "hilang"):
+            $total_harga['oa'] = 0;
+            $total_harga['total'] = -1 * $total_harga['total'];
         endif;
         if ($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
             $awb = Awb::create([
@@ -569,12 +570,12 @@ class AwbController extends Controller
                             </a>';   
         
         $btn_hilang      = '';
-        // if($a->qty > 0):
-        //     $btn_hilang  = '
-        //     <a href=' . url('awb/edit/' . $a->id . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
-        //     <i class="flaticon-exclamation" ></i>
-        //     </a>';
-        // endif;                                  
+        if($a->qty > 0):
+            $btn_hilang  = '
+            <a href=' . url('awb/edit/' . $a->id . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
+            <i class="flaticon-exclamation" ></i>
+            </a>';
+        endif;                                  
         if (
                 ((int)$a->qty_kecil <= 0 && (int)$a->qty_sedang <= 0 && (int)$a->qty_besar <= 0 && (int)$a->qty_besarbanget <= 0 && (int)$a->qty_doc <= 0 && $a->qty_kg <= 0 && $a->is_agen == 0) 
                 || ((int)$a->qty<= 0 )
