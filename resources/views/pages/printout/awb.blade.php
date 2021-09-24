@@ -36,7 +36,7 @@
                 html,
                 body {
                     width: 100mm;
-                    height: 149mm;
+                    height: 139mm;
                 }
                 .page {
                     margin: 0px !important;
