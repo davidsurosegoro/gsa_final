@@ -92,6 +92,9 @@
             {{$awb[0]->status_tracking}}
         </div> 
         </div>
+            <div  class="d-print-none" style="position:fixed; top:5px; left:5px;border:1px solid black;padding:5px;border-radius:5px;background-color:rgb(205, 255, 104);">
+                Isi nama marketing : <input type="text" id='marketingchange'>
+            </div>
             <div class="card page">
                 @for ($i = 0; $i < 3; $i++)
                 <div class="height33">                        
@@ -248,9 +251,12 @@
                                         {{-- <th colspan='5'>Quantity:</th> --}}
                                     </tr>
                                     <tr class="text-center">
-                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">MARKETING<br>(David suro)</th> 
-                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">CUSTOMER<br>(<i>{{ $awb[0]->nama_pengirim }}</i>)</th> 
-                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">PENERIMA<br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</th>  
+                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">
+                                            MARKETING<br>
+                                             <i>&nbsp;<span class="namamarketing"></span></i>
+                                        </th> 
+                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">CUSTOMER<br><i>{{ $awb[0]->nama_pengirim }}</i></th> 
+                                        <th width='33.3%' style="padding-top:2.5cm; font-size:0.3cm;border:1px solid black;">PENERIMA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>  
                                     </tr>  
                                 </table>
                             </div> 
@@ -266,6 +272,10 @@
                 if(e.ctrlKey && e.keyCode == 80){
                     return false;
                 }
+            });
+            $(document).on('keyup', '#marketingchange', function() {
+            // Does some stuff and logs the event to the consol
+                $('.namamarketing').html($(this).val())
             });
             function updatetomanifest(){
                 $.ajax({

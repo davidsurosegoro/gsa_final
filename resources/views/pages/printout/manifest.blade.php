@@ -231,17 +231,17 @@
                                     <td style="padding:2px;" class='text-left'>{{$item->nama_penerima}}</td> 
                                     <td style="padding:2px;">{{$item->kotatujuan}}</td> 
                                     <td style="padding:2px;" class='text-center'>
-                                        @if ($item->qty > 0 && $item->qtykoli == 0)
-                                            {{$item->qty}}
+                                        @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0)
+                                            {{((int)$item->qty > 0) ? $item->qty : ''}}
                                         @else
-                                            {{$item->qtykoli}}   
+                                            {{((int)$item->qtykoli > 0) ? $item->qtykoli : ''}}   
                                         @endif
                                     </td> 
-                                    <td style="padding:2px;" class='text-center'>{{$item->qty_kg}}</td> 
-                                    <td style="padding:2px;" class='text-center'>{{$item->qty_doc}}</td> 
+                                    <td style="padding:2px;" class='text-center'>{{((int)$item->qty_kg > 0)  ? $item->qty_kg : ''}}</td> 
+                                    <td style="padding:2px;" class='text-center'>{{((int)$item->qty_doc > 0)  ? $item->qty_doc : ''}}</td> 
                                     {{-- <td style="padding:2px;">{{$item->nama_penerima}} </td>   --}}
                                     <td style="padding:2px;position:relative !important;">
-                                        {{$item->keterangan}}{{$item->qtyloaded}}
+                                        {{$item->keterangan}} 
                                         
                                             <div class="hideprint totalbarangmasuk" 
                                                 @if ($qty_umum - $item->qtyloaded == 0)                                            
