@@ -101,7 +101,7 @@
 <script type="text/javascript">  
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
-    var allowscan       = 1;  
+    var allowscan       = true;  
     var xs      		= document.getElementById("myAudio");  
     const video         = document.getElementById('qr-video');
     const camHasCamera  = document.getElementById('cam-has-camera');
@@ -113,6 +113,7 @@
 
     // ####### Web Cam Scanning #######
 
+    $( document ).ready(function() {
     const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
         camQrResult.textContent = error;
         camQrResult.style.color = 'inherit';
@@ -194,8 +195,8 @@
         $('#loading').addClass('d-none')
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
-        if(allowscan == 1){
-            allowscan==0;
+        if(allowscan){
+            allowscan==false;
             $.ajax({
                 method  :'POST',
                 url     :'{{ url('awb/updateawb') }}',
@@ -227,7 +228,7 @@
                         
                         setTimeout(function(){ 
                             scanner.start() 
-                            allowscan==1;
+                            allowscan==true;
                         }, 800);
                     } 
                 }
@@ -253,6 +254,7 @@
             }
         }) 
     }
+});
 	
 </script> 
 @endsection 
