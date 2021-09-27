@@ -114,6 +114,8 @@
     // ####### Web Cam Scanning #######
 
     $( document ).ready(function() {
+            scanner.stop();
+                            scanner.start() 
         alert('camera ready');
     const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
         camQrResult.textContent = error;
