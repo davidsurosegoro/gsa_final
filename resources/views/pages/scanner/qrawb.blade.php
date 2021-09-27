@@ -162,6 +162,7 @@
     });
     
     function setResult(label, result) {
+        alert('allowscan'+allowscan)
         label.textContent = result; 
         label.style.color = 'teal';
         clearTimeout(label.highlightTimeout);
