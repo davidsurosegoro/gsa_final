@@ -113,7 +113,6 @@
 
     // ####### Web Cam Scanning #######
 
-    $( document ).ready(function() {
     const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
         camQrResult.textContent = error;
         camQrResult.style.color = 'inherit';
@@ -254,7 +253,6 @@
             }
         }) 
     }
-});
 	
 </script> 
 @endsection 
