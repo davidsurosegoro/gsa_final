@@ -166,7 +166,7 @@
         label.style.color = 'teal';
         clearTimeout(label.highlightTimeout);
         label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100); 
-        if(result && allowscan){
+        if(result){
             xs.play();   
             scanner.stop();
             var codeonly = result.split("/t/") 
