@@ -101,7 +101,7 @@
 <script type="text/javascript">  
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
-    var allowscan       = true;  
+    let allowscan       = 1;  
     var xs      		= document.getElementById("myAudio");  
     const video         = document.getElementById('qr-video');
     const camHasCamera  = document.getElementById('cam-has-camera');
@@ -194,8 +194,8 @@
         $('#loading').addClass('d-none')
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
-        if(allowscan){
-            allowscan==false;
+        if(allowscan == 1){
+            allowscan==0;
             $.ajax({
                 method  :'POST',
                 url     :'{{ url('awb/updateawb') }}',
@@ -227,7 +227,7 @@
                         
                         setTimeout(function(){ 
                             scanner.start() 
-                            allowscan==true;
+                            allowscan==1;
                         }, 800);
                     } 
                 }
