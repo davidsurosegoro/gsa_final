@@ -1,7 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="card card-custom gutter-b example example-compact">
+<div class="card card-custom gutter-b example example-compact" style="position: relative;">
+  
+  @if ((int) Carbon\Carbon::now()->addHours(7)->format('H') >= 16 && (int)Auth::user()->level == 2)   
+  <div style="position: absolute;width:100%; height:100%; z-index:2; background-color:rgba(0,0,0,0.8); text-align:center; padding-top:200px; color:white; font-size:25px;">
+    <i class="fa fa-clock-o" style="font-size:50px;" aria-hidden="true"></i><br>
+    Input maximal jam 16:00<br>
+  </div>
+  @endif
   <div class="card-header"
     @if ($hilang =="hilang")
         style="background-color:#f64e60;"        
@@ -37,9 +44,6 @@
   @endif
   <div class="card-body">
     <div class="row">
-        <div class="col-12 text-center alert alert-warning bg-warning" role="alert" style="background-color:rgb(255, 244, 96) !important;color :black;"> 
-          **Inputan AWB diatas jam <b>{{App\Applicationsetting::getJamMinim()}} : 00</b>, akan dikirimkan besok hari**
-        </div>
         <div class="card-body mb-5">
           <h6 class="panel-title txt-dark" style="border-bottom:1px solid #EBEDF3;"><i class="flaticon-profile-1"> </i> Data Umum Pengiriman</h6>
           <div class="row">
@@ -71,7 +75,7 @@
                 <div class="form-group">
                   <label class="font-weight-bold">Tanggal:</label>
                   <div class="input-group date" style="position: relative;">
-                    <div style="width:100%; height:100%; position: absolute;  top:0px; left:0px;z-index:200;"></div>
+                    <div style="width:100%; height:100%; position: absolute;  top:0px; left:0px;z-index:2;"></div>
                     @if($id == 0)
                     <input name="tanggal_awb"  type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y') }}" placeholder="Select date">
                     @else

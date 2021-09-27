@@ -93,7 +93,10 @@ class AwbController extends Controller
     }
 
     public function save(Request $request)
-    {
+    {   if ((int) Carbon::now()->addHours(7)->format('H') >= 16 && (int)Auth::user()->level == 2)   { 
+            return redirect('awb')->with('outoftime', 'booking sudah melebihi jam input');
+        } 
+
         $ada_faktur = 0;
         if ($request->ada_faktur == "on"):
             $ada_faktur = 1;
