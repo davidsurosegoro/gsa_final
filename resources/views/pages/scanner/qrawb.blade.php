@@ -101,8 +101,8 @@
 <script type="text/javascript">  
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
-    const allowscan       = true;  
-    const xs      		= document.getElementById("myAudio");  
+    var allowscan       = true;  
+    var xs      		= document.getElementById("myAudio");  
     const video         = document.getElementById('qr-video');
     const camHasCamera  = document.getElementById('cam-has-camera');
     const camList       = document.getElementById('cam-list');
