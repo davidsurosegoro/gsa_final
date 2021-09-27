@@ -471,7 +471,7 @@
 @endsection
 @section('script')
 <script>
-  
+  var _kecamatan_id_ = 0;
   $('form').submit(function(){
       $('body').find('button[type=submit]').prop('disabled', true);
   });
@@ -503,7 +503,9 @@
       success:function(data){
         console.log(data);
         $('#agen_tujuan').html(data.view);
-        $('#kecamatan_tujuan').html(data.view_kecamatan);
+        $('#kecamatan_tujuan').html(data.view_kecamatan);        
+        $('#kecamatan_tujuan').val(_kecamatan_id_).trigger('change')
+        _kecamatan_id_ = 0;
       }
     })
   })
@@ -655,11 +657,13 @@
           '_token': $('input[name=_token]').val()
         },
         success:function(data){
+          console.log('data')
           console.log(data)
           $('#nama_penerima').val(data.customer.nama_penerima)
           $('#notelp_penerima').val(data.customer.no_hp)
           $('#kodepos_penerima').val(data.customer.kodepos)
           $('#kota_tujuan').val(data.customer.idkota).trigger('change')
+          _kecamatan_id_ = data.customer.id_kecamatan;
         }
 
       });

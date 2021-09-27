@@ -10,7 +10,7 @@
       <div onclick="datatable.ajax.reload();" class="btn btn-default  text-center">
       <i class="fa fa-refresh text-center"></i></div>
       &nbsp;
-      @if ((int) Carbon\Carbon::now()->addHours(7)->format('H') < 16)    
+      @if (((int) Carbon\Carbon::now()->addHours(7)->format('H') < 16  && (int)Auth::user()->level == 2) || (int)Auth::user()->level == 1)    
         <a href="{{ url('awb/edit/0/0') }}" class="btn btn-primary font-weight-bolder">
         <i class="la la-plus"></i>Buat AWB Baru </a>
         &nbsp;

@@ -94,11 +94,15 @@ class AlamatController extends Controller
         }else{            
             $alamat = Alamat::where('id',$request['id'])->first(); 
         }
+        $kecamatan_  = kecamatan::where('id',$request->kecamatan)->first();
+        
+
         $alamat->Pelanggan_id     =  ((int)Auth::user()->level !==1) ? Auth::user()->id_customer : $request->pelanggan_id; 
         $alamat->alamat           = ($request->alamat)        ? $request->alamat        : ''; 
         $alamat->kodepos          = ($request->kodepos)       ? $request->kodepos       : ''; 
         $alamat->labelalamat      = ($request->labelalamat)   ? $request->labelalamat   : ''; 
-        $alamat->kecamatan        = ($request->kecamatan)     ? $request->kecamatan     : ''; 
+        $alamat->kecamatan        = $kecamatan_['nama']; 
+        $alamat->id_kecamatan     = ($request->kecamatan)     ? $request->kecamatan     : 0; 
         $alamat->oa               = ($request->oa)            ? $request->oa            : 0; 
         $alamat->updated_by       = Auth::user()->id; 
         $alamat->idkota           = ($request->idkota)        ? $request->idkota        : 0; 
