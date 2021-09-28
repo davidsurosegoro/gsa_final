@@ -10,6 +10,7 @@
     <div class="container">
        
         <div class="row">
+            <div style="background-color: aqua; padding:10px;" id='allow'>1</div>
             <audio id="myAudio">
                 <source src="{{asset('assets/gsa/scanner/beep-06.mp3')}}" type="audio/ogg"> 
                 Your browser does not support the audio element.
@@ -99,8 +100,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="{{asset('assets/gsa/scanner2/qr-scanner.umd.min.js')}}"></script>
 <script type="text/javascript">  
-    
+    // setTimeout(function(){ update_div() }, 3);
+    function update_div(){
+        if(allowscan==false){
+            console.log('masuk')
+            console.log(allowscan)
+        }
+        $('#allow').html(allowscan)
+    }
     $( document ).ready(function() {
+        // setInterval(update_div(), 200)
+        setInterval(function(){ update_div()}, 1000);
         // scanner.stop();
         // scanner.start();
     });
@@ -200,7 +210,7 @@
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
         if(allowscan){
-            allowscan==false;
+            allowscan=false;
             $.ajax({
                 method  :'POST',
                 url     :'{{ url('awb/updateawb') }}',
@@ -233,7 +243,7 @@
                         //     allowscan==true;
                         setTimeout(function(){ 
                             scanner.start() 
-                            allowscan==true;
+                            allowscan=true;
                         }, 1500);
                     } 
                 }

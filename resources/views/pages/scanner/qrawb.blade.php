@@ -195,7 +195,7 @@
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
         if(allowscan){
-            allowscan==false;
+            allowscan=false;
             $.ajax({
                 method  :'POST',
                 url     :'{{ url('awb/updateawb') }}',
@@ -227,7 +227,7 @@
                         
                         setTimeout(function(){ 
                             scanner.start() 
-                            allowscan==true;
+                            allowscan=true;
                         }, 1200);
                     } 
                 }
