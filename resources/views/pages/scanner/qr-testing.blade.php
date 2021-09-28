@@ -99,6 +99,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="{{asset('assets/gsa/scanner2/qr-scanner.umd.min.js')}}"></script>
 <script type="text/javascript">  
+    
+    $( document ).ready(function() {
+        console.log( "ready!" );
+    });
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
     var allowscan       = true;  
@@ -125,19 +129,19 @@
         });
     };
 
-    scanner.start().then(() => {
-        updateFlashAvailability();
-        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-        // start the scanner earlier.
-        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-            const option = document.createElement('option');
-            option.value = camera.id;
-            option.text = camera.label;
-            camList.add(option);
-        }));
-    });
+    // scanner.start().then(() => {
+    //     updateFlashAvailability();
+    //     // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+    //     // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+    //     // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+    //     // start the scanner earlier.
+    //     QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+    //         const option = document.createElement('option');
+    //         option.value = camera.id;
+    //         option.text = camera.label;
+    //         camList.add(option);
+    //     }));
+    // });
 
     QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
