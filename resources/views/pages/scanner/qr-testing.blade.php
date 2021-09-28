@@ -128,9 +128,13 @@
 
     // ####### Web Cam Scanning #######
 
-    const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
-        camQrResult.textContent = error;
-        camQrResult.style.color = 'inherit';
+    // const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
+    //     camQrResult.textContent = error;
+    //     camQrResult.style.color = 'inherit';
+    // });
+    const scanner = new QrScanner(video, result=> {
+        console.log('decoded QR code: ' + result);
+        scanner.stop();
     });
 
     const updateFlashAvailability = () => {
