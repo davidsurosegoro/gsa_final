@@ -134,6 +134,19 @@
     // });
     const scanner = new QrScanner(video, result=> {
         console.log('decoded QR code: ' + result);
+        if(result){
+            xs.play();   
+            scanner.stop();
+            var codeonly = result.split("/t/") 
+            if(!codeonly[1] || !codeonly[2] || codeonly[2] == 'notforscan'){
+                toastr.warning("kode AWB tidak valid!!") 
+                
+                
+                    setTimeout(function(){ scanner.start() }, 800);
+            }else{
+                scan_update_status(codeonly[1],codeonly[2]);
+            }
+        }
         scanner.stop();
     });
 
