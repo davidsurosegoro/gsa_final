@@ -226,9 +226,9 @@
                         
                         
                         setTimeout(function(){ 
-                            // scanner.start() 
+                            scanner.start() 
                             allowscan==true;
-                        }, 800);
+                        }, 1200);
                     } 
                 }
             }) 
