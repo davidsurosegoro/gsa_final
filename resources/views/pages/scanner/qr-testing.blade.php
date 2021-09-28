@@ -261,7 +261,7 @@
                         setTimeout(function(){ 
                             scanner.start() 
                             allowscan=true;
-                        }, 5000);
+                        }, 2500);
                     } 
                 }
             }) 
