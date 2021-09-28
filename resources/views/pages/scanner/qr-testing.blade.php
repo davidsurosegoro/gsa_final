@@ -101,19 +101,8 @@
 <script type="text/javascript">  
     
     $( document ).ready(function() {
-           scanner.start().then(() => {
-                updateFlashAvailability();
-                // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-                // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-                // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-                // start the scanner earlier.
-                QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-                    const option = document.createElement('option');
-                    option.value = camera.id;
-                    option.text = camera.label;
-                    camList.add(option);
-                }));
-            });
+        scanner.stop();
+        scanner.start();
     });
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
@@ -141,7 +130,19 @@
         });
     };
 
- 
+    scanner.start().then(() => {
+        updateFlashAvailability();
+        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+        // start the scanner earlier.
+        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+            const option = document.createElement('option');
+            option.value = camera.id;
+            option.text = camera.label;
+            camList.add(option);
+        }));
+    });
 
     QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
