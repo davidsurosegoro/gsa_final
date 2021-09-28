@@ -1,7 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-
+<div class="row mb-2">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header border-0" style="padding-bottom:0px; padding-top:10px;">
+        <div class="card-title font-weight-bolder">
+          <div class="card-label">Log Aktivitas</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <form class="form" id="form">
+          {{ csrf_field() }}
+            <div class="col-lg-6">
+              <label class="font-weight-bold mt-5">Tanggal Awal - Akhir:</label><br>
+              <input type="text" class="form-control" name="tanggal" id="tanggal" required>
+            </div>
+          <div class="row mt-2">
+            <div class="col-lg-3">
+              <button type="button" class="btn btn-lg btn-outline-primary btn-success" id="btnproses"><i class="flaticon-search"></i> Cari</button>
+              
+            <div onclick="datatable.ajax.reload();" class="btn btn-default  text-center">
+              <i class="fa fa-refresh text-center"></i></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
     <div class="row justify-content-center">
     	<div class="col-md-12 col-xl-12">
             <div class="card card-custom">
@@ -37,7 +64,7 @@
                   <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" id="update-res">
                 
               </div>
               <div class="modal-footer">
@@ -58,7 +85,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                
+                <div class="row">
+                  <div class="col-md-12" id="data">
+
+                  </div>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Tutup</button>
@@ -69,8 +100,7 @@
 @endsection
 @section('script')
 <script type="text/javascript">
-	 $(function() {
-        $('#datatables').DataTable({
+        var datatable = $('#datatables').DataTable({
             processing: true,
             serverSide: false,
             paging:true,
@@ -92,16 +122,16 @@
             },
             ]
         });
-    });
     function modalNew(id){
         $.ajax({
         method:'POST',
-        url:'{{ url("log/modal/new") }}',
+        url:'{{ url("log/modal-new") }}',
         data:{
           id: id,
           '_token': $('input[name=_token]').val()
         },
         success:function(data){
+          $('#data').html(data.view);
         }
 
       });
@@ -115,10 +145,20 @@
           '_token': $('input[name=_token]').val()
         },
         success:function(data){
-            
+            $('#update-res').html(data.view)
         }
 
       });
     }
+    $('#tanggal').daterangepicker({
+            locale: {
+                format: "DD/MM/YYYY",
+            }
+        });
+        $("#btnproses").on('click',function(){
+        if($("#tanggal").val() != ''){
+          datatable.ajax.reload()
+        }
+    })
 </script>
 @endsection

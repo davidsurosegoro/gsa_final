@@ -29,6 +29,8 @@ Route::prefix('log')->group(function () {
 
 	Route::get('/', 'LogController@index');
 	Route::get('datatables', 'LogController@datatables');
+	Route::post('modal-new', 'LogController@modalNew');
+	Route::post('modal-update', 'LogController@modalUpdate');
 });
 Route::get('qr-code-g', function () {
     QrCode::size(500)->format('png')->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
