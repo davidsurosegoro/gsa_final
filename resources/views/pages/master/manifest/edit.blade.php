@@ -11,7 +11,7 @@
 @foreach ($awb as $item) 
     @php($total_kg     += $item['qty_kg'])
     @php($total_doc    += $item['qty_doc'])
-    @if ($item->qty > 0 && $item->qtykoli == 0)
+    @if ($item->qty > 0 && $item->qty_kg == 0 && $item->qty_doc == 0)
         @php($total_koli += $item->qty)
     @else
         @php($total_koli +=$item->qtykoli)
@@ -46,7 +46,7 @@
             <label>Tanggal:</label>
             <h3>{{ Carbon\Carbon::now()->addHours(7)->toDateString()}}</h3>
         </div> 
-        <div class="form-group col-lg-3">
+        {{-- <div class="form-group col-lg-3">
             <label>Total:</label>
             <table class="table  table-bordered">
                 <tr>
@@ -60,7 +60,7 @@
                     <td>{{$total_doc}}</td>
                 <tr>
             </table>
-        </div>
+        </div> --}}
         <div class="form-group col-lg-3">
             <label>Dibawa oleh:</label>
             <input type="text" required class="form-control" name="supir" value="{{ (old('supir') && old('supir') !='') ?old('supir'): $manifest->supir  }}" />        
@@ -73,17 +73,21 @@
             <table class="table table-striped table-bordered"  >
                 <thead>
                     <tr>
-                        <th class='text-center' style="width:10px;">NO</th> 
-                        <th style="width:1cm;">AWB</th> 
-                        <th style="width:150px;">PENGIRIM</th> 
-                        <th style="width:1cm;">PENERIMA</th> 
-                        <th style="width:1cm;">TUJUAN</th> 
-                        <th style="width:1cm;">KL</th> 
-                        <th style="width:1cm;">KG</th> 
-                        <th style="width:1cm;">doc</th> 
-                        <th style="width:1cm;">D/P</th>  
-                        <th style="width:1cm;">KET</th> 
+                        <th  rowspan="2" class='text-center' style="width:10px;">NO</th> 
+                        <th  rowspan="2" style="width:1cm;">AWB</th> 
+                        <th  rowspan="2" style="width:150px;">PENGIRIM</th> 
+                        <th  rowspan="2" style="width:1cm;">PENERIMA</th> 
+                        <th  rowspan="2" style="width:1cm;">TUJUAN</th> 
+                        <th  style="width:1cm;">KL</th> 
+                        <th  style="width:1cm;">KG</th> 
+                        <th  style="width:1cm;">doc</th>  
+                        <th  rowspan="2" style="width:1cm;">KET</th> 
                     </tr>
+                    <tr>
+                        <td class="text-center">{{$total_koli}}</td>
+                        <td class="text-center">{{$total_kg}}</td>
+                        <td class="text-center">{{$total_doc}}</td>
+                    </tr> 
                 </thead>
                 <tbody>
                     @foreach ($awb as $item)
@@ -94,15 +98,14 @@
                         <td style="padding:5px;" class='text-left'>{{$item->nama_penerima}}</td> 
                         <td style="padding:5px;">{{$item->kotatujuan}}</td> 
                         <td style="padding:5px;" class='text-center'>
-                            @if ($item->qty > 0 && $item->qtykoli == 0)
+                            @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0)
                                 {{$item->qty}}
                             @else
                                 {{$item->qtykoli}}   
                             @endif
                         </td> 
                         <td style="padding:5px;" class='text-center'>{{$item->qty_kg}}</td> 
-                        <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td> 
-                        <td style="padding:5px;"></td>  
+                        <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td>  
                         <td style="padding:5px;">{{$item->keterangan}}</td> 
                     </tr>   
                     @endforeach   

@@ -1,27 +1,27 @@
-@extends('layouts.app')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="card card-custom gutter-b example example-compact">
 <div class="card-header">
-    <h3 class="card-title">SCANNER AWB <br>ke status -> {{Crypt::decrypt($status)}} </h3>
+    <h3 class="card-title">SCANNER AWB <br>ke status -> <?php echo e(Crypt::decrypt($status)); ?> </h3>
     
 </div> 
-<input type='hidden' id='statusawb' value='{{$status}}' > 
+<input type='hidden' id='statusawb' value='<?php echo e($status); ?>' > 
 <div class=" ">
     <div class="container">
        
         <div class="row">
             <audio id="myAudio">
-                <source src="{{asset('assets/gsa/scanner/beep-06.mp3')}}" type="audio/ogg"> 
+                <source src="<?php echo e(asset('assets/gsa/scanner/beep-06.mp3')); ?>" type="audio/ogg"> 
                 Your browser does not support the audio element.
             </audio>
             <div class="col-sm-2" style="padding:1px;"> </div>
             <div class="col-md-8 col-sm-12 border" style=" position:relative;"> 
                 
                 
-                @include('camera')
+                <?php echo $__env->make('camera', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                
                 <video id="qr-video"  class="col-sm-12"></video>
-                <img src="{{asset('assets/gsa/img/face-loader.gif')}}" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:50%;">
+                <img src="<?php echo e(asset('assets/gsa/img/face-loader.gif')); ?>" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:50%;">
                 <select id="cam-list" class="form-control col-12 col-sm-5"  style="position: absolute;z-index:10; top:0;  right:0; margin:auto; ">
                     <option value="environment" selected>Pilih Kamera (default)</option>
                     <option value="user">User Facing</option>
@@ -92,14 +92,18 @@
     </div>
 </div> 
  
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-<script src="{{asset('assets/gsa/scanner2/qr-scanner.umd.min.js')}}"></script>
+<script src="<?php echo e(asset('assets/gsa/scanner2/qr-scanner.umd.min.js')); ?>"></script>
 <script type="text/javascript">  
-    QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
+    
+    $( document ).ready(function() {
+        console.log( "ready!" );
+    });
+    QrScanner.WORKER_PATH = "<?php echo e(asset('assets/gsa/scanner2/qr-scanner-worker.min.js')); ?>"  ;
     
     var allowscan       = true;  
     var xs      		= document.getElementById("myAudio");  
@@ -125,19 +129,19 @@
         });
     };
 
-    scanner.start().then(() => {
-        updateFlashAvailability();
-        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-        // start the scanner earlier.
-        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-            const option = document.createElement('option');
-            option.value = camera.id;
-            option.text = camera.label;
-            camList.add(option);
-        }));
-    });
+    // scanner.start().then(() => {
+    //     updateFlashAvailability();
+    //     // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+    //     // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+    //     // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+    //     // start the scanner earlier.
+    //     QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+    //         const option = document.createElement('option');
+    //         option.value = camera.id;
+    //         option.text = camera.label;
+    //         camList.add(option);
+    //     }));
+    // });
 
     QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
@@ -195,15 +199,15 @@
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
         if(allowscan){
-            allowscan=false;
+            allowscan==false;
             $.ajax({
                 method  :'POST',
-                url     :'{{ url('awb/updateawb') }}',
+                url     :'<?php echo e(url('awb/updateawb')); ?>',
                 data    :{
                     kode        : kode_awb_or_manifest,
                     qty         : qty,
                     status      : $('#statusawb').val(),
-                    '_token'    : "{{ csrf_token() }}" 
+                    '_token'    : "<?php echo e(csrf_token()); ?>" 
                 },
                 success:function(data){
                     $('#kode_awb').val('')
@@ -227,8 +231,8 @@
                         
                         setTimeout(function(){ 
                             scanner.start() 
-                            allowscan=true;
-                        }, 2500);
+                            allowscan==true;
+                        }, 1200);
                     } 
                 }
             }) 
@@ -237,11 +241,11 @@
     function updatepenerima(){
         $.ajax({
             method  :'POST',
-            url     :'{{ url('awb/updatediterima') }}',
+            url     :'<?php echo e(url('awb/updatediterima')); ?>',
             data    :{
                 kode            : $('#kodeawb_penerima').val(),
                 diterima_oleh   : $('#diterima_oleh').val(),
-                '_token'        : "{{ csrf_token() }}" 
+                '_token'        : "<?php echo e(csrf_token()); ?>" 
             },
             success:function(data){ 
                 if(data.statussuccess)  {
@@ -255,4 +259,5 @@
     }
 	
 </script> 
-@endsection 
+<?php $__env->stopSection(); ?> 
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\GSA\gsa_final\resources\views/pages/scanner/qr-testing.blade.php ENDPATH**/ ?>

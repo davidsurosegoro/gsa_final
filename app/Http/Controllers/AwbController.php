@@ -13,6 +13,7 @@ use App\Manifest;
 use App\ViewAgenKota;
 use App\Historyscanawb;
 use App\Detailqtyscanned;
+use App\Applicationsetting;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class AwbController extends Controller
 
     public function edit($id, $hilang)
     {
-
+        
         $customer    = "";
         $agen_tujuan = "";
         $kota        = Kota::where('id', '>', 0)->where('status','aktif')->get();
@@ -92,7 +93,10 @@ class AwbController extends Controller
     }
 
     public function save(Request $request)
-    {
+    {   if ((int) Carbon::now()->addHours(7)->format('H') >= 16 && (int)Auth::user()->level == 2)   { 
+            return redirect('awb')->with('outoftime', 'booking sudah melebihi jam input');
+        } 
+        
         $ada_faktur = 0;
         if ($request->ada_faktur == "on"):
             $ada_faktur = 1;
@@ -552,7 +556,7 @@ class AwbController extends Controller
     }
 
     public function datatables()
-    {
+    {   $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
         $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
         if ((int) Auth::user()->level !== 1):
             //dd(Auth::user()->level);
@@ -570,7 +574,7 @@ class AwbController extends Controller
                             </a>';   
         
         $btn_hilang      = '';
-        if($a->qty > 0):
+        if($a->qty > 0 && $showbtnhilang == 1):
             $btn_hilang  = '
             <a href=' . url('awb/edit/' . $a->id . '/hilang') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-danger btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Input Barang Hilang">
             <i class="flaticon-exclamation" ></i>
@@ -641,7 +645,7 @@ class AwbController extends Controller
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
                         <i class="fas fa-map-marked-alt" ></i>
                         </a>
-                        '.$a['btn_hilang'].'
+                        '.(($a['status_tracking']=='complete')?$a['btn_hilang'] : '').'
                         </div>';
                 endif;
             })

@@ -170,7 +170,7 @@
     function scan_update_status(kode_manifest){
         
         if(allowscan){
-            allowscan==false;
+            allowscan=false;
             $.ajax({
                 method  :'POST',
                 url     :'{{ url('awb/updatemanifestqr') }}',
@@ -195,8 +195,8 @@
                     
                     setTimeout(function(){ 
                         scanner.start() 
-                        allowscan==true;
-                    }, 800);
+                        allowscan=true;
+                    }, 2500);
                  
                 }
             }) 

@@ -35,8 +35,8 @@
                 }
                 html,
                 body {
-                    width: 100mm;
-                    height: 149mm;
+                    width: 95mm;
+                    height: 150mm;
                 }
                 .page {
                     margin: 0px !important;

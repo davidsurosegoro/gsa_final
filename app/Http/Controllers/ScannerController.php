@@ -34,6 +34,12 @@ class ScannerController extends Controller
         // echo Crypt::decrypt($status);
         return view('pages.scanner.qrawb',$data); 
     }
+    
+    public function awbtest($status)
+    {   $data['status']=$status;
+        // echo Crypt::decrypt($status);
+        return view('pages.scanner.qr-testing',$data); 
+    }
     public function manifest($status)
     {   $data['status']=$status;
         // echo Crypt::decrypt($status);

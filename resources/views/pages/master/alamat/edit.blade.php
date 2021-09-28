@@ -64,9 +64,9 @@
                 <option class=" " value="" selected>Pilih - Kecamatan </option>
                 @foreach($kecamatan as $k)
                     @if($k->nama == $alamat->kecamatan )
-                        <option oa = "{{$k->oa}}" class="kotashow kota_{{$k->idkota}}" value="{{ $k->nama }}" selected>{{ $k->nama }} </option>
+                        <option oa = "{{$k->oa}}" class="kotashow kota_{{$k->idkota}}" value="{{ $k->id }}" selected>{{ $k->nama }} </option>
                     @else
-                        <option oa = "{{$k->oa}}" class="kotashow kota_{{$k->idkota}}" value="{{ $k->nama }}">{{ $k->nama }} </option>
+                        <option oa = "{{$k->oa}}" class="kotashow kota_{{$k->idkota}}" value="{{ $k->id }}">{{ $k->nama }} </option>
                    @endif
                 @endforeach
               </select>

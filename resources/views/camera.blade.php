@@ -1,5 +1,5 @@
 @if (!Browser::isChrome() ) 
-    <div class="alert alert-alert row col-12" style="
+    <div class="alert alert-alert row col-12 d-none" style="
     color: #856404;
     background-color: #fff3cd;
     border-color: #ffeeba;margin-top:10px;position: absolute;bottom:0px; z-index:2000;">

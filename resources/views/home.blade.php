@@ -23,7 +23,8 @@
                         <div class="alert alert-alert row" style="
                             color: #856404;
                             background-color: #fff3cd;
-                            border-color: #ffeeba;">
+                            border-color: #ffeeba;
+                            height: 100px;">
                             <img src="{{ asset('assets/gsa/img/chrome.png') }}" class="col-2"
                                 style="object-fit: contain;">
                             <div class="col-10">
@@ -62,7 +63,8 @@
                         <div class="alert alert-alert row" style="
                             color: #856404;
                             background-color: #fff3cd;
-                            border-color: #ffeeba;">
+                            border-color: #ffeeba;
+                            height: 100px;">
                             <img src="{{ asset('assets/gsa/img/chrome.png') }}" class="col-2"
                                 style="object-fit: contain;">
                             <div class="col-10">

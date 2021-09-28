@@ -13,4 +13,10 @@ class Applicationsetting extends Model
         $jamminim = (int)(Applicationsetting::where('kode','jam-manifest')->first())->value;
         return  $jamminim;
     }
+    public static function checkappsetting($kode)
+    {
+        // $res = DB::table('manifest')->count(); 
+        $value = (int)(Applicationsetting::where('kode',$kode)->first())->value;
+        return  $value;
+    }
 }
