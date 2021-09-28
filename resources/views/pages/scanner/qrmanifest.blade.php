@@ -196,7 +196,7 @@
                     setTimeout(function(){ 
                         scanner.start() 
                         allowscan=true;
-                    }, 800);
+                    }, 1500);
                  
                 }
             }) 
