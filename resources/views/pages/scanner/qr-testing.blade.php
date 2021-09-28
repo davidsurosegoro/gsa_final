@@ -134,7 +134,7 @@
     // });
     const scanner = new QrScanner(video, result=> {
         console.log('decoded QR code: ' + result);
-        if(result){
+        if(result && allowscan){
             xs.play();   
             scanner.stop();
             var codeonly = result.split("/t/") 
