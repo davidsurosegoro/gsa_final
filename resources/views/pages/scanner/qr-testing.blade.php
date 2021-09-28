@@ -101,8 +101,8 @@
 <script type="text/javascript">  
     
     $( document ).ready(function() {
-        scanner.stop();
-        scanner.start();
+        // scanner.stop();
+        // scanner.start();
     });
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
@@ -229,11 +229,12 @@
                         $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
                     }else{
                         
-                        
+                        // scanner.start() 
+                        //     allowscan==true;
                         setTimeout(function(){ 
                             scanner.start() 
                             allowscan==true;
-                        }, 1200);
+                        }, 1500);
                     } 
                 }
             }) 
