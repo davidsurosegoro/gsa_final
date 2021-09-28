@@ -53,7 +53,7 @@
           {data: 'aktifnonaktif', name:'Status'},
           {data: 'aksi',          name:'aksi'},
       ],
-	   "order": [[ 1, "asc" ]],
+	   "order": [],
     });
 
     var detailRows = [];

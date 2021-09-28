@@ -53,6 +53,7 @@
                 <select class="custom-select" required  name="level" id="level">
                     <option value='' >Choose...</option>                    
                     <option value='1' @if($users->level == 1)selected @endif>Admin GSA</option>                    
+                    <option value='5' @if($users->level == 5)selected @endif>Driver</option>                    
                     <option value='2' @if($users->level == 2)selected @endif>Customer </option>                    
                     <option value='3' @if($users->level == 3)selected @endif>Kantor Agen</option>                    
                     <option value='4' @if($users->level == 4)selected @endif>Kurir Delivery Agen</option>                    
@@ -120,7 +121,7 @@
 
             $('#groupcustomer'  ).removeClass('d-none')
             $('#groupagen'      ).removeClass('d-none')
-            if($('#level').val()==1 || $('#level').val()==0 ){
+            if($('#level').val()==5 ||$('#level').val()==1 || $('#level').val()==0 ){
                 $('#groupcustomer').addClass('d-none')
                 $('#groupagen'    ).addClass('d-none')
             }

@@ -27,7 +27,7 @@ class UsersController extends Controller
 
     public function datatables()
     {
-        $users = User::where('id' ,'>', '0');
+        $users = User::where('id' ,'>', '0')->orderBy('id','desc');
         return Datatables::of($users)
         ->addColumn('aksi', function ($a) {
             $status='nonaktif';
@@ -45,6 +45,7 @@ class UsersController extends Controller
             if($a['level']==2){$jenis='<p><i class="fa fa-address-card" aria-hidden="true"></i>&nbsp;Customer</p>';}
             if($a['level']==3){$jenis='<p><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Kantor Agen</p>';}
             if($a['level']==4){$jenis='<p><i class="fa fa-motorcycle" aria-hidden="true"></i>&nbsp;Delivery Kurir</p>';}
+            if($a['level']==5){$jenis='<p><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;Supir(driver)</p>';}
             return $jenis;
         })       
         ->addColumn('aktifnonaktif', function ($a) {

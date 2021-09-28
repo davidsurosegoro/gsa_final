@@ -42,13 +42,13 @@ class ManifestController extends Controller
                 ->leftjoin("agen  as agen",     'agen.id',         '=', 'manifest.agen_tujuan')
                 ->where('manifest.id' ,'>', '0')
                 ->orderBy('manifest.id' , 'desc');
-        if($level_user!=1){
+        if($level_user!=1 && $level_user!=5){
             $manifest= $manifest->where('manifest.agen_tujuan' ,'=', (int) Auth::user()->id_agen);
         }
         $manifest->get();
         return Datatables::of($manifest)
         ->addColumn('aksi', function ($a) { 
-            $edit = ($a['status']=='arrived') ? '': '
+            $edit = ($a['status']=='arrived' || (int) Auth::user()->level != 1) ? '': '
             <button 
                 type            = "button" 
                 class           = "btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success openstatus"   

@@ -10,7 +10,7 @@
       <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
       <i class="fa fa-refresh text-center"></i></div>
       &nbsp;
-      @if ((int)Auth::user()->id ==1)          
+      @if ((int)Auth::user()->level ==1)          
         <a href="{{url('master/manifest/grouping') }}" class="btn btn-primary font-weight-bolder">
         <i class="la la-plus"></i>Tambah Data manifest</a>
       @endif
