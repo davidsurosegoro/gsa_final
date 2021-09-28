@@ -4,7 +4,11 @@
   <div class="card-header flex-wrap border-0 pt-6 pb-0">
     <div class="card-title">
       <h3 class="card-label">Data AWB
-      <span class="d-block text-muted pt-2 font-size-sm">Data AWB yang tampil adalah data 2 bulan terakhir, untuk lebih lengkap dapat melihat data di report AWB</span></h3>
+        <span class="d-block text-muted pt-2 font-size-sm">Data AWB yang tampil adalah data 2 bulan terakhir, untuk lebih lengkap dapat melihat data di report AWB</span>
+        @if (((int) Carbon\Carbon::now()->addHours(7)->format('H') >= 16  && (int)Auth::user()->level == 2)  )    
+          <span class="d-block text-muted pt-2 font-size-sm" style="color:red !important;background-color:rgb(255, 255, 137);padding:5px;">Batas maksimal order jam 16.00</span>
+        @endif
+      </h3>
     </div>
     <div class="card-toolbar">
       <div onclick="datatable.ajax.reload();" class="btn btn-default  text-center">
