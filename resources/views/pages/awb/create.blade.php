@@ -192,7 +192,7 @@
                 </div>
                 <div class="col-lg-3" id="div-kg-pertama">
                   <div class="form-group">
-                    <label class="font-weight-bold">Harga 2 Kg Pertama</label>
+                    <label class="font-weight-bold">Harga 5 Kg Pertama</label>
                     <input type="text" class="form-control rupiah" id="harga_kg_pertama" value="{{ $awb->harga_kg_pertama }}"  name="harga_kg_pertama" placeholder="Input harga 2 kg pertama. . ." value="0">
                   </div>
                 </div>
