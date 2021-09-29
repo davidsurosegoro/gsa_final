@@ -209,7 +209,7 @@ class ManifestController extends Controller
     {
         
         
-        if((int) Auth::user()->id==1){
+        if((int) Auth::user()->level==1){
             $data['manifest']   = Manifest::find(0); 
             $data['kotaasal']   = Kota::where('id','=',$kotaasal)->get(); 
             $data['kotatujuan'] = Kota::where('id','=',$kotatujuan)->get(); 
@@ -246,7 +246,7 @@ class ManifestController extends Controller
     public function grouping()
     {   
           
-        if((int) Auth::user()->id==1){
+        if((int) Auth::user()->level==1){
             $data['awb'] =  Awb::select(DB::raw("
                                 kotaasal.id as idkotaasal, 
                                 kotatujuan.id as idkotatujuan,
