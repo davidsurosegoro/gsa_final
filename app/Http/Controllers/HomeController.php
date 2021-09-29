@@ -275,6 +275,17 @@ class HomeController extends Controller
                 $modalawb['delivkurir'],$modalawb['complete']
             );           
         } 
+        elseif((int) Auth::user()->level == 5){            
+            array_push($data['page'], 
+                $page['manifest'], $page['awbscan'],$page['manifestscan'] 
+            );  
+            array_push($data['modalawb'], 
+                $modalawb['loaded'] 
+            );     
+            array_push($data['modalmanifest'], 
+                $modalmanifest['delivering'] 
+            );      
+        } 
         return view("home",$data);
     }
 
