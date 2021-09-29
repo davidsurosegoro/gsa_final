@@ -21,7 +21,7 @@
 		<!--begin::Main-->
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Error-->
-			<div class="error error-3 d-flex flex-row-fluid bgi-size-cover bgi-position-center" style="background-image: url(assets/media/error/bg3.jpg);">
+			<div class="error error-3 d-flex flex-row-fluid bgi-size-cover bgi-position-center" style="background-image: url({{ asset('assets/media/error/bg3.jpg') }});">
 				<!--begin::Content-->
 				<div class="px-10 px-md-30 py-10 py-md-0 d-flex flex-column justify-content-md-center">
 					<h1 class="error-title text-stroke text-transparent"> @yield('code') </h1>

@@ -59,7 +59,7 @@ Route::prefix('master')->group(function(){
 			Route::get('/edit/{idcust} ','Master\InvoiceController@edit');
 
 		});
-		Route::middleware(['auth'])->prefix('manifest')->group(function(){
+		Route::middleware(['auth','admin.agen.driver'])->prefix('manifest')->group(function(){
 			Route::get('/' 				,'Master\ManifestController@index');
 			Route::get('/create' 		,'Master\ManifestController@create');
 			Route::get('/grouping'  	,'Master\ManifestController@grouping');

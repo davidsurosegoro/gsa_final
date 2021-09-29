@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'admin.customer' => \App\Http\Middleware\OnlyAdminCustomer::class,
         'admin.agen' => \App\Http\Middleware\OnlyAdminAgen::class,
         'admin.agen.kurir' => \App\Http\Middleware\OnlyAdminAgenKurir::class,
+        'admin.agen.driver' => \App\Http\Middleware\OnlyAdminAgenDriver::class,
         'admin.driver' => \App\Http\Middleware\OnlyAdminAgenKurir::class,
         'admin.agen.customer' => \App\Http\Middleware\OnlyAdminAgenCustomer::class,
         'booked' => \App\Http\Middleware\OnlyBooked::class,
