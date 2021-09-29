@@ -37,7 +37,7 @@ Route::get('qr-code-g', function () {
     QrCode::size(500)->format('png')->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
     return view('qrCode');    
 });
-Route::middleware(['auth','admin'])->prefix('printout')->group(function(){ 
+Route::middleware(['auth','admin.agen.driver'])->prefix('printout')->group(function(){ 
 	Route::get('/invoice/{id}'  ,'PrintoutController@invoice');
 	Route::get('/manifest/{id}' ,'PrintoutController@manifest');
 	Route::get('/awb/{id}'  	,'PrintoutController@awb');
