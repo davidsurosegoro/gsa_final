@@ -46,7 +46,7 @@
 
               <div class="col-lg-3
                 
-                @if((int) Auth::user()->level == 3)
+                @if((int) Auth::user()->level == 3 || (int) Auth::user()->level == 2)
                 d-none
                 @endif
                 ">
@@ -61,7 +61,7 @@
 
                 <div class="col-lg-3
                 
-                @if((int) Auth::user()->level == 3)
+                @if((int) Auth::user()->level == 3 || (int) Auth::user()->level == 2)
                 d-none
                 @endif
                 ">
