@@ -20,7 +20,7 @@
             <div class="col-lg-3">
               <button type="button" class="btn btn-lg btn-outline-primary btn-success" id="btnproses"><i class="flaticon-search"></i> Cari</button>
               
-            <div onclick="datatable.ajax.reload();" class="btn btn-default  text-center">
+            <div id="reloaddatatable" class="btn btn-default  text-center">
               <i class="fa fa-refresh text-center"></i></div>
             </div>
           </div>
@@ -99,29 +99,48 @@
       </div>
 @endsection
 @section('script')
-<script type="text/javascript">
-        var datatable = $('#datatables').DataTable({
-            processing: true,
-            serverSide: false,
-            paging:true,
-            ajax: '{{ url('log/datatables') }}',
-             columns: [
-            {data: 'dates', name:'dates'},
-            {data: 'user', name:'user'},
-            {data: 'description', name:'description'},
-            {data: 'tanggal', name:'tanggal'},
-            {data: 'keterangan', name:'keterangan'},
-            {data: 'aksi', name:'aksi'}
+<script type="text/javascript"> 
+
+$( document ).ready(function() {
+   
+    var datatable = $('#datatables').DataTable({
+        processing: true,
+        serverSide: false,
+        paging:true,
+         // ajax: '{{ url('log/datatables') }}',
+        ajax:  {
+            "url": '{{ url('log/datatables') }}',
+            data: function(d){
+                d.tanggal = $('#tanggal').val();
+            }
+        },
+         columns: [
+        {data: 'dates', name:'dates'},
+        {data: 'user', name:'user'},
+        {data: 'description', name:'description'},
+        {data: 'tanggal', name:'tanggal'},
+        {data: 'keterangan', name:'keterangan'},
+        {data: 'aksi', name:'aksi'}
         ],
-         "order": [[ 0, "desc" ]],
-         "columnDefs": [
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [
             {
                 "targets": [ 0 ],
                 "visible": false,
                 "searchable": false
             },
-            ]
-        });
+        ]
+    }); 
+    $('#reloaddatatable').click(function(){
+        datatable.ajax.reload();
+    })
+    $("#btnproses").on('click',function(){
+        if($("#tanggal").val() != ''){
+            console.log($('#tanggal').val())
+            datatable.ajax.reload()
+        }
+    })
+}); 
     function modalNew(id){
         $.ajax({
         method:'POST',
@@ -151,14 +170,9 @@
       });
     }
     $('#tanggal').daterangepicker({
-            locale: {
-                format: "DD/MM/YYYY",
-            }
-        });
-        $("#btnproses").on('click',function(){
-        if($("#tanggal").val() != ''){
-          datatable.ajax.reload()
+        locale: {
+            format: "DD/MM/YYYY",
         }
-    })
+    });
 </script>
 @endsection

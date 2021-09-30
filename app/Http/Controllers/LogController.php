@@ -22,9 +22,11 @@ class LogController extends Controller
     }
 
     public function datatables(Request $request)
-    {
+    {   
+        $period   = explode(" - ", $request->tanggal);
+        $periode  = [Carbon::createFromFormat('d/m/Y', $period[0])->toDateString(), Carbon::createFromFormat('d/m/Y', $period[1])->toDateString()];
         $custom   = new Collection;
-        $activity = Activity::orderBy('created_at', 'desc')->take(500)->get();
+        $activity = Activity::orderBy('created_at', 'desc')->whereDate('created_at','>=',$periode[0])->whereDate('created_at','<=',$periode[1])->get();
         foreach ($activity as $a):
 
             $user       = 'Tidak ada';

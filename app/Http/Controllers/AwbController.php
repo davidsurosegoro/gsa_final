@@ -555,12 +555,14 @@ class AwbController extends Controller
         return response()->json(array('customer' => $customer));
     }
 
-    public function datatables()
-    {   $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
-        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
+    public function datatables(Request $request)
+    {   
+        $completecondition = ($request->status_complete == '-')  ? 'status_tracking <> \'complete\' and' : '' ;
+        $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
+        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
         if ((int) Auth::user()->level !== 1):
             //dd(Auth::user()->level);
-            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
+            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
         endif;
         $awbs = new Collection;
         // dd($awb);
@@ -772,10 +774,10 @@ class AwbController extends Controller
         $harga_kg = 0;
         $harga_oa = 0;
         if ($qty_kg > 0):
-                $harga_kg = $customer->harga_kg * 2 + (2000 * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
+                $harga_kg = $customer->harga_kg * 5 + (3000 * ((($qty_kg > 5 ) ?$qty_kg : 5 ) - 5));
         endif;
         if($qty_kg < 0):
-            $harga_kg = $customer->harga_kg * 2 - (2000 * ((($qty_kg < -2 ) ?$qty_kg : -2 ) + 2));
+            $harga_kg = $customer->harga_kg * 5 - (3000 * ((($qty_kg < -5 ) ?$qty_kg : -5 ) + 5));
         endif;
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb) + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
         if ($charge_oa == 1):
@@ -796,9 +798,9 @@ class AwbController extends Controller
     private function hitungHargaKg($qty_kg,$harga_pertama,$harga_selanjutnya,$charge_oa,$customer,$hilang){
         $harga_kg = 0; $harga_oa = 0;
         if($hilang == "hilang"):
-                $harga_kg = $harga_pertama * 2 - ($harga_selanjutnya * ((($qty_kg < -2 ) ?$qty_kg : -2 ) + 2));
+                $harga_kg = $harga_pertama * 5 - ($harga_selanjutnya * ((($qty_kg < -5 ) ?$qty_kg : -5 ) + 5));
             // else:
-                // $harga_kg = $customer->harga_kg * 2;
+                // $harga_kg = $customer->harga_kg * 5;
             if ($charge_oa == 1):
                 $harga_oa = $customer->harga_oa;
             endif;
@@ -806,9 +808,9 @@ class AwbController extends Controller
         else:
             $harga_kg = 0; $harga_oa = 0;
             if ($qty_kg > 0):
-                $harga_kg = $harga_pertama * 2 + ($harga_selanjutnya * ((($qty_kg > 2 ) ?$qty_kg : 2 ) - 2));
+                $harga_kg = $harga_pertama * 5 + ($harga_selanjutnya * ((($qty_kg > 5 ) ?$qty_kg : 5 ) - 5));
             // else:
-                // $harga_kg = $customer->harga_kg * 2;
+                // $harga_kg = $customer->harga_kg * 5;
             endif;
             if ($charge_oa == 1):
                 $harga_oa = $customer->harga_oa;
