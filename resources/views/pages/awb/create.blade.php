@@ -744,4 +744,9 @@
     $('#customer option').not(':selected').remove();
   </script>
 @endif
+@if((int) Auth::user()->level == 2)
+<script>
+  $('#kota_asal option').not(':selected').remove();
+</script>
+@endif
 @endsection
