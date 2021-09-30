@@ -7,8 +7,13 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data manifest yang tersedia</span></h3>
     </div>
     <div class="card-toolbar">
-      <a href="<?php echo e(url('master/manifest/grouping')); ?>" class="btn btn-primary font-weight-bolder">
-      <i class="la la-plus"></i>Tambah Data manifest</a>
+      <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
+      <i class="fa fa-refresh text-center"></i></div>
+      &nbsp;
+      <?php if((int)Auth::user()->level ==1): ?>          
+        <a href="<?php echo e(url('master/manifest/grouping')); ?>" class="btn btn-primary font-weight-bolder">
+        <i class="la la-plus"></i>Tambah Data manifest</a>
+      <?php endif; ?>
     </div>
   </div>
   <div class="card-body">
@@ -19,6 +24,7 @@
               <th>Kode</th>
               <th>Asal</th>
               <th>Tujuan</th>
+              <th>AgenTujuan</th>
               <th>Tanggal</th>
               <th>Dibuat Oleh</th>
               <th>Koli</th>
@@ -43,7 +49,7 @@
         </button>
       </div>
       <div class="modal-body row" > 
-        <form class="col-12 bg-light" style="padding-bottom:10px;" id="formmanifest_" method="post" action="<?php echo e(url('master/manifest/updatestatus')); ?>">
+        <form class="col-12 bg-light" style="padding-bottom:10px;" id="formmanifest_" >
           <?php echo e(csrf_field()); ?>
 
           <div class="form-group">
@@ -64,13 +70,14 @@
             </table>
             
             <input type="text" name="idmanifest" id="idmanifest" class="d-none"  > 
+            <input type="text" name="kodemanifest" id="kodemanifest" class="d-none"  > 
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect2">Status</label>
             <select class="form-control" id="status" name="status">
-              <option value='checked'>checked</option>
-              <option value='delivering'>delivering</option>
-              <option value='arrived'>arrived</option>
+              <option class='options_' id='checked'    value='checked'   >checked</option>
+              <option class='options_' id='delivering' value='delivering'>delivering (load ke truck)</option>
+              <option class='options_' id='arrived'    value='arrived'   >arrived</option>
             </select>
           </div>
           <div class="form-group" > 
@@ -86,6 +93,15 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
 <script type="text/javascript"> 
+
+ 
+$(document) .ajaxStart(function () {
+    $('#loading').removeClass('d-none')
+    console.log('start')
+})          .ajaxStop(function () {
+    $('#loading').addClass('d-none')
+    console.log('stop')
+}); 
     $(document).on("click",".openstatus",function() {
       $('#Kotaasal'           ).html($(this).attr('kodekotaasal'))
       $('#kotatujuan'         ).html($(this).attr('kodekotatujuan'))
@@ -93,34 +109,67 @@
       $('#kodemanifest_'      ).html($(this).attr('kodemanifest'))
 
       $('#idmanifest'         ).val($(this).attr('idmanifest')) 
+      $('#kodemanifest'       ).val($(this).attr('kodemanifest')) 
       $("#status").val($(this).attr('status'));
+
+      $('.options_').removeClass('d-none')
+      if($(this).attr('status') == 'delivering'){
+        $('#checked').addClass('d-none')
+      }
+      else if($(this).attr('status') == 'arrived'){
+        $('#checked'   ).addClass('d-none')
+        $('#delivering').addClass('d-none')
+      }
     })
     $(document).on("click","#simpanbutton",function() {
         var btnsave = $(this);
         $(this).prop('disabled', true);
-        $.ajax({
-            type      : "POST",
-            url       : "<?php echo e(url('master/manifest/updatestatus')); ?>",
-            dataType  : "json",
-            data      : $('#formmanifest_').serialize(),
-            success : function(response) {
-                console.log(response)
-                if(response && response.success && response.success=='success'){
-                  toastr.success("Status Manifest berhasil dirubah!");                  
-                  dt.ajax.reload();
-                  $('.bd-example-modal-lg').modal('toggle');
-                }
-                $(btnsave).prop('disabled', false);
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                alert(errorThrown)
+        
+        Swal.fire({   
+            title               : "Anda Yakin?",   
+            text                : "Merubah status menjadi ("+$('#status').val()+") status yang sudah dirubah, tidak bisa dikembalikan lagi",   
+            icon                : "warning",   
+            showCancelButton    : true,   
+            confirmButtonColor  : "#e6b034",   
+            confirmButtonText   : "Ya, Rubah status ke - " +$('#status').val()                  
+            }).then((result) => {
+            console.log(result)
+            if (result.value) {
+                scan_update_status($('#kodemanifest').val()); 
+            } else{
+                $(btnsave).prop('disabled', false); 
             }
         });
     })
+    function scan_update_status(kode_manifest){
+        $.ajax({
+            method  :'POST',
+            url     :'<?php echo e(url('awb/updatemanifestqr')); ?>',
+            data    :{
+                kode                : kode_manifest,
+                status_nonencrypt   : $('#status').val(),
+                '_token'            : "<?php echo e(csrf_token()); ?>" 
+            },
+            success:function(data){
+                $('#simpanbutton').prop('disabled', false);
+                $('#kode_manifest').val('')
+                dt.ajax.reload();
+                $('.bd-example-modal-lg').modal('toggle');
+                if(data.statuserror)    {toastr.error( data.statuserror)}
+                if(data.statuswarning)  { 
+                    toastr.warning( data.statuswarning) 
+                }
+                if(data.statussuccess)  {
+                    toastr.success( data.statussuccess) 
+                }                   
+            }
+        }) 
+    } 
     var dt = $('#datatables').DataTable({
 	     processing : true,
 	     serverSide : false,
 	     paging     : true,
+       pageLength : 100,
 	     ajax       :'<?php echo e(url('master/manifest/datatables')); ?>',
 	     columns    : [
          
@@ -128,6 +177,7 @@
           {data: 'kode',              name:'kode'}, 
           {data: 'kodekotaasal',      name:'Asal'}, 
           {data: 'kodekotatujuan',    name:'Tujuan'}, 
+          {data: 'kodeagen',          name:'AgenTujuan'}, 
           {data: 'tanggal_manifest',  name:'Tujuan'}, 
           {data: 'namauser',          name:'Dicek Oleh'}, 
           {data: 'jumlah_koli',       name:'Koli'}, 
@@ -137,7 +187,7 @@
           {data: 'status_info',       name:'Status'},
           {data: 'aksi',              name:'aksi'},
       ],
-	  //  "order": [[ 1, "asc" ]],
+	   "order": [[ 0, "desc" ]],
     });
 
     var detailRows = [];

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="<?php echo e(asset('assets/login/font/flaticon.css')); ?>">
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/gsa/fa/css/font-awesome.min.css')); ?>">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/login/style.css')); ?>">
 </head>
@@ -30,11 +31,12 @@
     <section class="fxt-template-animation fxt-template-layout29">
         <div class="container-fluid">
             <div class="row">
-                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "<?php echo e(asset('assets/GSA/img/1.jpg')); ?>"},{"src": "<?php echo e(asset('assets/GSA/img/2.jpg')); ?>"}   ]}'>
+                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "<?php echo e(asset('assets/gsa/img/1.jpg')); ?>"},{"src": "<?php echo e(asset('assets/gsa/img/2.jpg')); ?>"}   ]}'>
                     <div class="fxt-page-switcher">
                         <a href="login-29.html" class="switcher-text1 active">Login</a>
                     </div>
                 </div>
+                
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">
                         <div class="fxt-header">
@@ -53,7 +55,7 @@
                                                 <?php if(count($errors) > 0): ?>
 
                                                     <div class="alert alert-danger alert-dismissable">
-                                                        <i class="zmdi zmdi-block pr-15 pull-left"></i><p class="pull-left"> <strong> X </strong> Login Gagal! Password atau username salah.</p>
+                                                        <i class="zmdi zmdi-block pr-15 pull-left"></i><p class=" "> <strong> X </strong> Login Gagal! Password atau username salah.</p>
                                                     </div>
                                                 <?php endif; ?>
                                 <div class="form-group">
@@ -71,7 +73,8 @@
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-6">
                                         <div class="fxt-content-between">
-                                            <button type="submit" class="fxt-btn-fill">Log in</button>
+                                            <button type="submit" class="btn btn-warning">LOG IN</button>
+                                            <a href="<?php echo e(url('/t/cek/t/2')); ?>" target="blank" type="submit" class="btn pull-right btn-success"> <span> Track AWB</span></a>
                                         </div>
                                     </div>
                                 </div>

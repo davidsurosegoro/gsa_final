@@ -7,6 +7,9 @@
       <span class="d-block text-muted pt-2 font-size-sm">Data invoice yang tersedia</span></h3>
     </div>
     <div class="card-toolbar">
+      <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
+      <i class="fa fa-refresh text-center"></i></div>
+      &nbsp;
       <a href="<?php echo e(url('master/invoice/grouping')); ?>" class="btn btn-primary font-weight-bolder">
       <i class="la la-plus"></i>Tambah Data invoice</a>
     </div>
@@ -27,6 +30,7 @@
               <th>Total Harga</th> 
               <th>Keterangan</th>  
               <th width='5%'>Status</th> 
+              <th width='5%'>Pembayaran</th> 
               <th width='5%'>Aksi</th>
             </tr>
           </thead>
@@ -62,13 +66,21 @@
               </tr>
             </table>
             
-            <input type="text" name="idinvoice" id="idinvoice" class="d-none"  > 
+            <input type="text" name="idinvoice" id="idinvoice" class="d-none"  >  
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect2">Status</label>
             <select class="form-control" id="status" name="status">
-              <option value='paid'>paid</option>
-              <option value='unpaid'>unpaid</option> 
+              <option class='options_'  id='paid' value='paid'>paid</option>
+              <option class='options_'  id='unpaid' value='unpaid'>unpaid</option> 
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect2">Dibayarkan melalui</label>
+            <select class="form-control" id="metodepembayaran" name="metodepembayaran">
+              <option value=''>Pilih Metode Pembayaran</option>
+              <option    id='tunai' value='tunai'>tunai</option>
+              <option   id='transfer' value='transfer'>transfer</option> 
             </select>
           </div>
           <div class="form-group" > 
@@ -80,37 +92,66 @@
     </div>
   </div>
 </div>
-
+ 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
 <script type="text/javascript"> 
+ 
+$(document) .ajaxStart(function () {
+    $('#loading').removeClass('d-none')
+    console.log('start')
+})          .ajaxStop(function () {
+    $('#loading').addClass('d-none')
+    console.log('stop')
+}); 
     $(document).on("click",".openstatus",function() {
       $('#customer_name'     ).html($(this).attr('namacustomer')) 
       $('#tanggalinvoice_'   ).html($(this).attr('tanggalinvoice'))
       $('#kodeinvoice_'      ).html($(this).attr('kodeinvoice'))
 
       $('#idinvoice'         ).val($(this).attr('idinvoice')) 
+      $('#metodepembayaran'  ).val($(this).attr('metodepembayaran')) 
       $("#status").val($(this).attr('status'));
+
+      $('.options_').removeClass('d-none')
+      if($(this).attr('status') == 'paid'){
+        $('#unpaid').addClass('d-none')
+      } 
     })
     $(document).on("click","#simpanbutton",function() {
         var btnsave = $(this);
         $(this).prop('disabled', true);
-        $.ajax({
-            type      : "POST",
-            url       : "<?php echo e(url('master/invoice/updatestatus')); ?>",
-            dataType  : "json",
-            data      : $('#forminvoice_').serialize(),
-            success : function(response) { 
-                if(response && response.success && response.success=='success'){
-                  toastr.success("Status Invoice berhasil dirubah!");                  
-                  dt.ajax.reload();
-                  $('.bd-example-modal-lg').modal('toggle');
+        Swal.fire({   
+            title               : "Anda Yakin?",   
+            text                : "Merubah status menjadi ("+$('#status').val()+") status yang sudah dirubah, tidak bisa dikembalikan lagi",   
+            icon                : "warning",   
+            showCancelButton    : true,   
+            confirmButtonColor  : "#e6b034",   
+            confirmButtonText   : "Ya, Rubah status ke - " +$('#status').val()                  
+          }).then((result) => {
+            console.log(result)
+          if (result.value) {
+            $.ajax({
+                type      : "POST",
+                url       : "<?php echo e(url('master/invoice/updatestatus')); ?>",
+                dataType  : "json",
+                data      : $('#forminvoice_').serialize(),
+                success : function(response) { 
+                    if(response && response.success && response.success=='success'){
+                      toastr.success("Status Invoice berhasil dirubah!");                  
+                      dt.ajax.reload();
+                      $('.bd-example-modal-lg').modal('toggle');
+                    }
+                    $(btnsave).prop('disabled', false);
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown)
                 }
-                $(btnsave).prop('disabled', false);
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                alert(errorThrown)
-            }
+            });
+          } else{
+            $(btnsave).prop('disabled', false);
+
+          }
         });
     })
     var dt = $('#datatables').DataTable({
@@ -122,7 +163,7 @@
          
       
           {data: 'kode',              name:'kode'},  
-          {data: 'namacustomer',      name:'namacustomer'},  
+          {data: 'nama_pengirim_link',name:'nama_pengirim_link'},  
           {data: 'tanggal_invoice',   name:'tanggal_invoice'},  
           {data: 'namauser',          name:'namauser'},  
           {data: 'total_koli',        name:'total_koli'},  
@@ -132,9 +173,10 @@
           {data: 'total_harga',       name:'total_harga'},  
           {data: 'keterangan',        name:'keterangan'},  
           {data: 'status_info',       name:'Status'},
+          {data: 'metodepembayaran',  name:'metodepembayaran'},
           {data: 'aksi',              name:'aksi'},
       ],
-	   "order": [[ 1, "asc" ]],
+	   "order": [[ 0, "desc" ]],
     });
 
     var detailRows = [];

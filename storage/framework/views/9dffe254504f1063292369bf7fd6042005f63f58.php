@@ -6,6 +6,7 @@
         <title>AWB</title>
         <link href="<?php echo e(asset('assets/gsa/css/boots.css')); ?>" rel="stylesheet" />
         <link href="" rel="stylesheet" />
+        <link rel="stylesheet" href="<?php echo e(asset('assets/gsa/fa/css/font-awesome.min.css')); ?>">
         <script type="text/javascript" src="<?php echo e(asset('assets/gsa/js/jquery.min.js')); ?>"></script>
         <style>
             @font-face {
@@ -34,7 +35,7 @@
                 }
                 html,
                 body {
-                    width: 99mm;
+                    width: 100mm;
                     height: 149mm;
                 }
                 .page {
@@ -106,53 +107,91 @@
         </style>
     </head>
     <body oncontextmenu="return false" class="snippet-body" style="background-color:white;">
-        <?php for($i = 1; $i <= $awb[0]->qty; $i++): ?>
+        <div class="printcontainer d-print-none" 
+            <?php if($awb[0]->status_tracking==='booked'): ?>
+                onclick="updatetomanifest()"
+            <?php else: ?>
+                onclick="window.print()"                
+            <?php endif; ?>    
+        >
+            <i class="fa fa-print" aria-hidden="true"></i>&nbsp;PRINT 
+        </div>
+        <div class="statuscontainer d-print-none" > Status =
+            <?php echo e($awb[0]->status_tracking); ?>
+
+        </div> 
+        <?php
+            $qty_umum = $awb[0]->qty;
+            if($awb[0]->qty_kecil > 0 || $awb[0]->qty_sedang > 0 || $awb[0]->qty_besar > 0 || $awb[0]->qty_besarbanget > 0){
+                $qty_umum = $awb[0]->qty_kecil + $awb[0]->qty_sedang + $awb[0]->qty_besar + $awb[0]->qty_besarbanget;
+            }
+            if($awb[0]->qty_kg > 0){
+                $qty_umum = 1;
+            }
+            if($awb[0]->qty_doc > 0){
+                $qty_umum = $awb[0]->qty_doc;
+            } 
+        ?>
+        <?php for($i = 1; $i <= $qty_umum; $i++): ?>
             <div class="card page">
                 <div class="card-header  " style="padding:0px !important; display: flex;">  
-                    <div class="col-7 text-center" style=" padding:1px;">
+                    <div class="col-7 text-center" style=" padding:1px;position:relative;">
+                        <?php if($awb[0]->ada_faktur == 1): ?>                                            
+                        <span style="border:1px solid black; letter-spacing:0.01cm;width:1.6cm; position:absolute; top:0px; left:0px;" class="col-">Faktur</span>
+                        <?php endif; ?>
                         <img src='<?php echo e(asset('assets/gsa/logo.jpg')); ?>' style="width:1.5cm;" class="col-">
                         <p class="col-12 font-weight-bold" style="font-size:0.2cm;padding:0px; margin:0px;">GLOBAL SERVICE ASIA</p>
-                        <p class="col-12" style="font-size:0.2cm;padding:0px; margin:0px;">Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)</p>                        
+                        <p class="col-12" style="font-size: 0.24cm;padding: 0px;margin: 0px;line-height: 0.32cm;">
+                            Komplek Ruko Pasar Wisata Bandara Juanda C 10 -11 (Pabean - Sedati Sidoarjo, Telp. 031-8680799 / Fax. 031-8680599)
+                        </p>                        
                         <table  class=" col-12 table-bordered"  style="font-size:0.4cm; border-right:0px !important;">
                             <tr>
-                                <td class="couture" style="font-size:0.55cm;" colspan='2'><b>No. </b><?php echo e($awb[0]->noawb); ?></td> 
+                                <td class="couture" style="letter-spacing: 0.03cm;font-size:0.55cm;line-height: 6mm;" colspan='2'><?php echo e($awb[0]->noawb); ?></td> 
                             </tr> 
-                            <tr>
-                                <td>Driver</td>
-                                <td><?php echo e(date('d F Y',strtotime($awb[0]->tanggal_awb))); ?></td>
+                            <tr> 
+                                <td style="letter-spacing: 0.05cm;padding-bottom:0px;"><?php echo e(date('d F Y',strtotime($awb[0]->tanggal_awb))); ?></td>
                             </tr> 
                         </table>
                     </div>  
                     <div class="col-sm-5" style="padding:5px; padding-top:0.3cm;">
-                        <?php echo QrCode::size(142)->generate($awb[0]->noawb);; ?> 
+                        <?php echo QrCode::size(140)->generate(url('/t/'.$awb[0]->noawb.'/t/'.$i));; ?> 
                     </div>
                 </div>
                 <div class="card " > 
-                    <div class="table-responsive-sm row" style="position: relative; margin:0px;">
+                    <div class=" row" style="position: relative; margin:0px;">
                         <div class=" text-right" style="padding:0px;position:absolute; bottom:-10px; right:0px;font-size:0.7cm;">
-                            <?php echo e($i); ?>/<?php echo e($awb[0]->qty); ?>
+                            <?php echo e($i); ?>/<?php echo e($qty_umum); ?>
 
                         </div>
                         <table  class="couture col-12 table-bordered font-weight-bold"  style="font-size:0.35cm; margin-top:0.1cm;border-right:0px !important;">
                             <tr>
                                 
                             </tr>
-                            <tr class="text-center">
-                                <th width='16.6%'>K</th> 
-                                <th width='16.6%'>S</th> 
-                                <th width='16.6%'>B</th> 
-                                <th width='16.6%'>BB</th> 
-                                <th width='16.6%'>Kg</th> 
-                                <th width='16.6%'>Doc</th> 
-                            </tr> 
-                            <tr class="text-center">
-                                <td><?php echo e($awb[0]->qty_kecil); ?></td> 
-                                <td><?php echo e($awb[0]->qty_sedang); ?></td> 
-                                <td><?php echo e($awb[0]->qty_besar); ?></td> 
-                                <td><?php echo e($awb[0]->qty_besarbanget); ?></td> 
-                                <td><?php echo e($awb[0]->qty_kg); ?></td> 
-                                <td><?php echo e($awb[0]->qty_doc); ?></td> 
-                            </tr> 
+                            <?php if($awb[0]->is_agen == 1): ?>
+                                <tr class="text-center">
+                                    <th> QTY</th>
+                                </tr>
+                                <tr class="text-center">
+                                    <td><?php echo e($awb[0]->qty); ?></td>
+                                </tr>
+                            <?php else: ?>
+                                <tr class="text-center">
+                                    <th width='16.6%'>K</th> 
+                                    <th width='16.6%'>S</th> 
+                                    <th width='16.6%'>B</th> 
+                                    <th width='16.6%'>BB</th> 
+                                    <th width='16.6%'>Kg</th> 
+                                    <th width='16.6%'>Doc</th> 
+                                </tr> 
+                                <tr class="text-center">
+                                    <td><?php echo e($awb[0]->qty_kecil); ?></td> 
+                                    <td><?php echo e($awb[0]->qty_sedang); ?></td> 
+                                    <td><?php echo e($awb[0]->qty_besar); ?></td> 
+                                    <td><?php echo e($awb[0]->qty_besarbanget); ?></td> 
+                                    <td><?php echo e($awb[0]->qty_kg); ?></td> 
+                                    <td><?php echo e($awb[0]->qty_doc); ?></td> 
+                                </tr>
+                            <?php endif; ?>
                         </table>
                         <table class=" table-bordered" style="font-size:0.3cm; width:100%;margin-bottom:0.1cm;margin-top:0.1cm;">
                             <tr>
@@ -168,53 +207,75 @@
                         </table>
                         <table class="table-striped table-bordered" style="font-size:0.25cm; width:100%;">
                             <thead>
-                                <tr>
-                                    <th style="width:50%;">SHIPPER</th>  
-                                    <th style="width:50%;">CONSIGNEE</th>  
-                                </tr>
+                                
                                 <tr style="height: 3cm; font-size:0.25cm;">
                                     <td style="width:50%;padding:0.1cm;">
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">NAMA PENGIRIM:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->nama_pengirim); ?><br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->alamat_pengirim); ?><br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">KODEPOS:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->kodepos_pengirim); ?><br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">NO HP:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->notelp_pengirim); ?> </span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">NAMA PENGIRIM:</span><br>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->nama_pengirim); ?><br></span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">ALAMAT:</span> 
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->alamat_pengirim); ?><br></span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">KODEPOS:</span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->kodepos_pengirim); ?><br></span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">NO HP:</span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->notelp_pengirim); ?> </span>
                                             
                                         
                                     </td>   
-                                    <td style="width:50%;padding:0.1cm;">
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">NAMA PENERIMA:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->nama_penerima); ?><br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">ALAMAT:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->alamat_tujuan); ?><br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">KODEPOS:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->kodepos_penerima); ?><br></span>
-                                        <span class="font-weight-bold" style="font-size:0.25cm;">NO HP:</span><br>
-                                            <span style="font-size:0.4cm;"><?php echo e($awb[0]->notelp_penerima); ?> </span>
+                                    <td style="width:50%; padding:0.1cm;">
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">NAMA PENERIMA:</span><br>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->nama_penerima); ?><br></span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">ALAMAT:</span> 
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->alamat_tujuan); ?><br></span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">KODEPOS:</span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->kodepos_penerima); ?><br></span>
+                                        <span class="font-weight-bold" style="font-size:0.25cm;letter-spacing:0.03cm;">NO HP:</span>
+                                            <span style="font-size:0.4cm; letter-spacing:0.2mm;"><?php echo e($awb[0]->notelp_penerima); ?> </span>
                                     </td>    
                                 </tr>
                             </thead> 
                         </table> 
-                        <table class="table-striped table-bordered col-10" style='margin-top:0.1cm;'>
-                            <thead>
-                                <tr> 
-                                    <td class='text-left' style="font-size:0.3cm;">
-                                        <span style="font-weight:bold;">Keterangan</span><br>
-                                        <?php echo e($awb[0]->keterangan); ?>
-
-                                    </td>
-                                </tr>
-                            </thead>
-                        </table> 
+                        <?php if($awb[0]->keterangan): ?>
+                            <table class="table-striped table-bordered col-" style='margin-top:0.1cm; width:87%;'>
+                                <thead>
+                                    <tr> 
+                                        <td class='text-left' style="font-size:0.25cm;position:relative;">
+                                            <span style="position:absolute; padding-left:2px;right:0px; top:0px;font-weight:bold;border-left:1px solid black;border-bottom:1px solid black;">Keterangan</span>
+                                            <span style="padding-left:0.1cm;font-size:0.6cm;letter-spacing:0.01cm;"><?php echo e($awb[0]->keterangan); ?></span>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table> 
+                        <?php endif; ?>
+                        
                     </div> 
                 </div> 
             </div> 
-            <?php endfor; ?>
+            <?php endfor; ?> 
         <script type="text/javascript" src="<?php echo e(asset('assets/gsa/js/bootstrap.bundle.min.js')); ?>"></script>
-        <script type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery(document).bind("keyup keydown", function(e){
+                if(e.ctrlKey && e.keyCode == 80){
+                    return false;
+                }
+            });
+            function updatetomanifest(){
+                $.ajax({
+                    method  :'POST',
+                    url     :'<?php echo e(url('awb/updatetomanifest')); ?>',
+                    data    :{
+                        id              : "<?php echo e($awb[0]->id); ?>",
+                        '_token'        : "<?php echo e(csrf_token()); ?>" 
+                    },
+                    success:function(data){  
+                        if(data.status != ''){
+
+                            alert(data.status)
+                        }
+                        window.print();       
+                    }
+                }) 
+            }
+        </script>
     </body>
 </html>
 <?php /**PATH C:\xampp\htdocs\GSA\gsa_final\resources\views/pages/printout/awb.blade.php ENDPATH**/ ?>

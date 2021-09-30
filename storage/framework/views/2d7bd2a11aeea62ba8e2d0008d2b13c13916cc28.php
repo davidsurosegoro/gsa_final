@@ -2,155 +2,111 @@
 
 <?php $__env->startSection('content'); ?>
     <div class="row justify-content-center">
-        <div class="col-6 col-lg-3 col-xl-3 mb-5">
-                                        <!--begin::Iconbox-->
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/agen')); ?>">
-                                                        <span class="svg-icon svg-icon-primary svg-icon-6x">
-                                                            <i class="icon-6x text-info mb-10 mt-10 fa fa-user-circle-o" aria-hidden="true"></i>
-                                                        </span>
-                                                        </a>
-                                                        <br>
-                                                        <a href="<?php echo e(url('master/agen')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Master Agen</a>
-                                            </div>
-                                        </div>
-                                        <!--end::Iconbox-->
-                                        <!--begin::Code example-->
-                                        <!--end::Code example-->
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5">
-                                        <!--begin::Iconbox-->
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/customer')); ?>">
-                                                        <span class="svg-icon svg-icon-primary svg-icon-6x">
-                                                            <i class="icon-6x text-info mb-10 mt-10 fa fa-users" aria-hidden="true"></i>
-                                                        </span>
-                                                        </a>
-                                                        <br>
-                                                        <a href="<?php echo e(url('master/customer')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Master Customer</a>
-                                            </div>
-                                        </div>
-                                        <!--end::Iconbox-->
-                                        <!--begin::Code example-->
-                                        <!--end::Code example-->
-                                    </div>
-                                    
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5">
-                                        <!--begin::Iconbox-->
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('awb')); ?>">
-                                                        <span class="svg-icon svg-icon-primary svg-icon-6x">
-                                                            <i class="icon-6x text-info mb-10 mt-10 fa fa-truck" aria-hidden="true"></i>
-                                                        </span>
-                                                        </a>
-                                                        <br>
-                                                        <a href="<?php echo e(url('awb')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">AWB</a>
-                                            </div>
-                                        </div>
-                                        <!--end::Iconbox-->
-                                        <!--begin::Code example-->
-                                        <!--end::Code example-->
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/users')); ?>">
-                                                    <span class="svg-icon svg-icon-primary svg-icon-6x">
-                                                        <i class="icon-6x text-info mb-10 mt-10 fa  fa-id-card-o" aria-hidden="true"></i>
-                                                    </span>
-                                                    </a>
-                                                    <br>
-                                                    <a href="<?php echo e(url('master/users')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Users</a>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/manifest')); ?>">
-                                                    <span class="svg-icon svg-icon-primary svg-icon-6x"> 
-                                                        <i class="icon-6x text-info mb-10 mt-10 fa fa-file-text-o" aria-hidden="true"></i>
-                                                    </span>
-                                                    </a>
-                                                    <br>
-                                                    <a href="<?php echo e(url('master/manifest')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Manifest</a>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/invoice')); ?>">
-                                                    <span class="svg-icon svg-icon-primary svg-icon-6x"> 
-                                                        <i class="icon-6x text-info mb-10 mt-10 fa fa-usd" aria-hidden="true"></i>
-                                                    </span>
-                                                    </a>
-                                                    <br>
-                                                    <a href="<?php echo e(url('master/invoice')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Invoice</a>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/kota')); ?>">
-                                                    <span class="svg-icon svg-icon-primary svg-icon-6x">
-                                                        
-                                                        <i class="icon-6x text-info mb-10 mt-10 fa fa-industry" aria-hidden="true"></i>
-                                                    </span>
-                                                    </a>
-                                                    <br>
-                                                    <a href="<?php echo e(url('master/kota')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Kota</a>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5"> 
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center">
-                                                <a href="<?php echo e(url('master/alamat')); ?>">
-                                                    <span class="svg-icon svg-icon-primary svg-icon-6x">
-                                                        
-                                                        <i class="icon-6x text-info mb-10 mt-10 fa fa-home" aria-hidden="true"></i>
-                                                    </span>
-                                                    </a>
-                                                    <br>
-                                                    <a href="<?php echo e(url('master/alamat')); ?>" class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Alamat</a>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-6 col-lg-3 col-xl-3 mb-5" data-toggle="modal" data-target="#modalscanner" style="cursor: pointer;"> 
-                                        <div class="card card-custom wave wave-animate-fast wave-primary">
-                                            <div class="card-body text-center"> 
-                                                <span class="svg-icon svg-icon-primary svg-icon-6x"> 
-                                                    <i class="icon-6x text-info mb-10 mt-10 fa fa-qrcode" aria-hidden="true"></i>
-                                                </span> 
-                                                <br>
-                                                <div class="text-dark text-hover-primary font-weight-bold font-size-h4 mb-3">Scanner AWB</div>
-                                            </div>
-                                        </div> 
-                                    </div>
+        <?php $__currentLoopData = $page; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php echo $item; ?>
+
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 
-    <div class="modal fade" id="modalscanner" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalscanner" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Pilih Jenis Scan</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Pilih Jenis Scan AWB</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a  href="<?php echo e(url('scannerawb/'.Crypt::encrypt('at-manifest').'')); ?>"            class="btn btn-primary btn-lg btn-block"><i class="fa fa-building-o" aria-hidden="true"></i>&nbsp;Scan tiba di-manifest</a> 
-                    <a  href="<?php echo e(url('scannerawb/'.Crypt::encrypt('loaded').'')); ?>"                 class="btn btn-primary btn-lg btn-block"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;Scan Loading ke truck</a> 
-                    <a  href="<?php echo e(url('scannerawb/'.Crypt::encrypt('delivery-by-courier').'')); ?>"    class="btn btn-primary btn-lg btn-block"><i class="fa fa-motorcycle" aria-hidden="true"></i> &nbsp;Scan pengantaran ke tujuan</a> 
-                    <a  href="<?php echo e(url('scannerawb/'.Crypt::encrypt('complete').'')); ?>"               class="btn btn-primary btn-lg btn-block"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Scan sudah tiba di tujuan</a> 
+
+                    <?php if(!Browser::isChrome()): ?>
+                        <div class="alert alert-alert row" style="
+                            color: #856404;
+                            background-color: #fff3cd;
+                            border-color: #ffeeba;
+                            height: 100px;">
+                            <img src="<?php echo e(asset('assets/gsa/img/chrome.png')); ?>" class="col-2"
+                                style="object-fit: contain;">
+                            <div class="col-10">
+                                Untuk kelancaran scan QR, Gunakan browser google chrome
+                                <a
+                                    href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
+                                    click disini untuk download chrome
+                                </a> atau download pada playstore/appstore
+                            </div>
+                        </div>
+                    <?php endif; ?>
+ 
+                    <?php $__currentLoopData = $modalawb; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php echo $item; ?>
+
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> 
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalscannermanifest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pilih Jenis Scan Manifest</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <?php if(!Browser::isChrome()): ?>
+                        <div class="alert alert-alert row" style="
+                            color: #856404;
+                            background-color: #fff3cd;
+                            border-color: #ffeeba;
+                            height: 100px;">
+                            <img src="<?php echo e(asset('assets/gsa/img/chrome.png')); ?>" class="col-2"
+                                style="object-fit: contain;">
+                            <div class="col-10">
+                                Untuk kelancaran scan QR, Gunakan browser google chrome
+                                <a
+                                    href="https://www.google.com/chrome/?brand=CHBD&gclid=CjwKCAjw7fuJBhBdEiwA2lLMYXmsMZsuOvkh0CG2ld2zkAV2WnWiVakTdwrk5F-g2BPEY1yQjqNLGhoCqsoQAvD_BwE&gclsrc=aw.ds">
+                                    click disini untuk download chrome
+                                </a> atau download pada playstore/appstore
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php $__currentLoopData = $modalmanifest; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php echo $item; ?>
+
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalreport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pilih Halaman Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php $__currentLoopData = $modalreport; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php echo $item; ?>
+
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

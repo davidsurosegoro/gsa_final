@@ -15,20 +15,24 @@
 
             <div class="row">
               <div class="col-lg-3">
-                <label>Customer:</label>
+                <label class="font-weight-bold mt-5">Customer:</label><br>
                 <select class="form-control select2" name="id_customer" id="id_customer">
+                  <?php if((int) Auth::user()->level == 1 ||(int) Auth::user()->level == 3): ?>
                   <option value="-">--Tampil Semua--</option>
                   <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option value="<?php echo e($c->id); ?>"><?php echo e($c->nama); ?></option>
                   <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  <?php elseif((int) Auth::user()->level == 2): ?>
+                    <option value="<?php echo e($customer->id); ?>"><?php echo e($customer->nama); ?> </option>
+                  <?php endif; ?>
                 </select>
               </div>
               <div class="col-lg-6">
-                <label>Tanggal Awal - Akhir:</label>
+                <label class="font-weight-bold mt-5">Tanggal Awal - Akhir:</label><br>
                 <input type="text" id="txtPeriod" class="form-control" name="tanggal" id="tanggal" required>
               </div>
               <div class="col-lg-3">
-                <label>Status Tracking</label>
+                <label class="font-weight-bold mt-5">Status Tracking</label><br>
                 <select class="form-control select2" name="status_tracking" id="status_tracking">
                   <option value="-">--Tampil Semua--</option>
                   <option value="booked">booked</option>
@@ -40,23 +44,45 @@
                   <option value="cancel">cancel</option>
                 </select>
               </div>
+
+              <div class="col-lg-3
+                
+                <?php if((int) Auth::user()->level == 3 || (int) Auth::user()->level == 2): ?>
+                d-none
+                <?php endif; ?>
+                ">
+                  <label class="font-weight-bold mt-5">Agen Asal</label><br>
+                  <select class="form-control select2" name="id_agen_asal" id="id_agen_asal">
+                    <option value="-">--Tampil Semua--</option>
+                    <?php $__currentLoopData = $agen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $a): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="<?php echo e($a->id); ?>"><?php echo e($a->nama); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                </div>
+
+                <div class="col-lg-3
+                
+                <?php if((int) Auth::user()->level == 3 || (int) Auth::user()->level == 2): ?>
+                d-none
+                <?php endif; ?>
+                ">
+                  <label class="font-weight-bold mt-5">Agen Tujuan</label><br>
+                  <select class="form-control select2" name="id_agen_penerima" id="id_agen_penerima">
+                    <option value="-">--Tampil Semua--</option>
+                    <?php $__currentLoopData = $agen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $a): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <option value="<?php echo e($a->id); ?>"><?php echo e($a->nama); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </select>
+                </div>
+                
               <div class="col-lg-3">
-                <label>Agen Tujuan</label>
-                <select class="form-control select2" name="id_agen_penerima" id="id_agen_penerima">
-                  <option value="-">--Tampil Semua--</option>
-                  <?php $__currentLoopData = $agen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $a): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <option value="<?php echo e($a->id); ?>"><?php echo e($a->nama); ?></option>
-                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </select>
-              </div>
-              <div class="col-lg-3">
-                <label>Kode Awb </label>
+                <label class="font-weight-bold mt-5">Kode Awb </label><br>
                 <input type="text" name="noawb" id="noawb" class="form-control">
               </div>
             </div>
             <div class="row mt-2">
               <div class="col-lg-3">
-                <button type="button" class="btn btn-lg btn-outline-primary" id="btnproses"><i class="flaticon-search"></i> Cari</button>
+                <button type="button" class="btn btn-lg btn-outline-primary btn-success" id="btnproses"><i class="flaticon-search"></i> Cari</button>
               </div>
             </div>
           </form>
@@ -78,7 +104,7 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
 <script>
-  
+
   $(document).on({
       ajaxStart: function() { loadPanel.show(); },
       ajaxStop: function() { loadPanel.hide(); }    
@@ -116,16 +142,16 @@
   function show_grid(data){
     var dataGrid = $("#awb").dxDataGrid({
             dataSource: data,
-            height:470,
+            height:570,
             paging: {
-                pageSize: 10,
+                pageSize: 1000,
             },
             pager: {
                 visible: true,
                 showNavigationButtons: true,
                 showInfo: true,
                 showPageSizeSelector: true,
-                allowedPageSizes: [10, 25, 50, 100]
+                allowedPageSizes: [100, 250, 500, 1000]
             },
             filterRow: {
                 visible: true,
@@ -159,7 +185,7 @@
                         icon: 'export',
                         // text: 'Export to Excel',
                         onClick: function () {
-                            e.component.exportToExcel(true);
+                            e.component.exportToExcel(false);
                         }
                     },
                     location: 'after'
@@ -180,25 +206,26 @@
                 //     }
                 // },
                 {
+                  caption: "Lihat detail",
+                  dataField: "id",
+                  dataType: "string",
+                  width:110,
+                  cellTemplate: function (container, options) {
+                    console.log(options);
+                        $(container).html(`<a href="https://globalserviceasia.com/public/t/`+options.data.noawb+`/t/1" target="_blank">`+options.data.noawb+`</a>`)
+                    },
+                },
+                {
                     caption: "Noawb",
                     dataField: "noawb",
                     dataType: "string",
-                    width:200,
+                    width:110,
                 },
                 {
-                    caption: "Ada Faktur",
-                    dataField: "ada_faktur",
-                    dataType: "string",
-                    cellTemplate: function (container, options) {
-                      console.log(options.data.ada_faktur)
-                      if(options.data.ada_faktur == 0){
-                        $(container).html(`<span class="badge badge-danger">Tidak Ada</span>`)
-                      }
-                      else{
-                        $(container).html(`<span class="badge badge-success">Ada</span>`)
-                      }
-                    },
-                    width:150,
+                    caption: "Faktur",
+                    dataField: "faktur_string",
+                    dataType: "string", 
+                    width:90,
                 },
                 {
                     caption: "Pengirim",
@@ -208,8 +235,8 @@
                 },
                 {
                     caption: "Tanggal",
-                    dataField: "tanggal_awb",
-                    dataType: "datetime",
+                    dataField: "created_at",
+                    dataType: "date",
                     format:"shortDateShortTime",
                     width:170,
                 },
@@ -221,38 +248,38 @@
                 {
                     caption: "Kota Transit",
                     dataField: "kota_transit",
-                    dataType: "string",
-                    width:175,
+                    dataType: "string", 
                 },
                 {
                     caption: "Kota Tujuan",
                     dataField: "kota_tujuan",
-                    dataType: "string",
-                    width:175,
+                    dataType: "string", 
+                },
+                
+                {
+                    caption: "Agen Asal",
+                    dataField: "agen_asal",
+                    dataType: "string", 
                 },
                 {
                     caption: "Agen Tujuan",
                     dataField: "agen_tujuan",
-                    dataType: "string",
-                    width:175,
+                    dataType: "string", 
                 },
                 {
                     caption: "Nama Penerima",
                     dataField: "nama_penerima",
-                    dataType: "string",
-                    width:170,
+                    dataType: "string", 
                 },
                 {
                     caption: "Label Alamat",
                     dataField: "labelalamat",
-                    dataType: "string",
-                    width:170,
+                    dataType: "string", 
                 },
                 {
                     caption: "Kodepos Penerima",
                     dataField: "kodepos_penerima",
-                    dataType: "string",
-                    width:170,
+                    dataType: "string", 
                 },
                 {
                     caption: "Alamat Penerima",
@@ -262,15 +289,13 @@
                 },
                 {
                     caption: "Kecamatan",
-                    dataField: "kecamatan",
-                    dataType: "string",
-                    width:170,
+                    dataField: "kecamatan_tujuan",
+                    dataType: "string", 
                 },
                 {
                     caption: "No Hp Penerima",
                     dataField: "notelp_penerima",
-                    dataType: "string",
-                    width:170,
+                    dataType: "string", 
                 },
                 {
                     caption: "Tanggal Diterima",
@@ -292,46 +317,65 @@
                     width:170,
                 },
                 {
+                    caption: "OA/tidak",
+                    dataField: "oa_string",  
+                    dataType: "string",
+                    width:100,
+                },
+                {
                     caption: "QTY",
                     dataField: "qty",
                     dataType: "number",
-                    width:170,
+                    width:90,
                 },
                 {
                     caption: "koli kecil",
                     dataField: "qty_kecil",
                     dataType: "number",
-                    width:150,
+                    width:90,
                 },
                 {
                     caption: "koli sedang",
                     dataField: "qty_sedang",
                     dataType: "number",
-                    width:150,
+                    width:90,
                 },
                 {
                     caption: "koli besar",
                     dataField: "qty_besar",
                     dataType: "number",
-                    width:150,
+                    width:90,
                 },
                 {
                     caption: "koli bb",
                     dataField: "qty_besarbanget",
                     dataType: "number",
-                    width:150,
+                    width:90,
                 },
                 {
                     caption: "koli kg",
                     dataField: "qty_kg",
                     dataType: "number",
-                    width:150,
+                    width:90,
                 },
                 {
                     caption: "koli doc",
                     dataField: "qty_doc",
                     dataType: "number",
-                    width:150,
+                    width:90,
+                },
+                {
+                    caption: "OA desc",
+                    dataField: "oa_desc",
+                    dataType: "string",
+                    width:180,
+                },
+                {
+                    caption: "Total OA",
+                    dataField: "idr_oa",
+                    dataType: "number",
+                    format:"#,##0", 
+                    width:180,
                 },
                 {
                     caption: "Total Harga",
@@ -343,15 +387,24 @@
                 {
                     caption: "Kode Manifest",
                     dataField: "kode_manifest",
-                    dataType: "number",
-                    width:150,
+                    dataType: "string",
+                    width:160,
                 },
-                {
-                    caption: "Kode Invoice",
-                    dataField: "kode_invoice",
-                    dataType: "number",
-                    width:150,
-                },
+                <?php if((int) Auth::user()->level == 1 ||(int) Auth::user()->level == 2): ?>
+
+                  {
+                      caption: "Kode Invoice",
+                      dataField: "kode_invoice",
+                      dataType: "string",
+                      width:160,
+                  },
+                  {
+                      caption: "Status Pembayaran",
+                      dataField: "status_pembayaran", 
+                      dataType: "string",
+                      width:150, 
+                  },
+                <?php endif; ?>
                 
             ],
         }).dxDataGrid("instance");

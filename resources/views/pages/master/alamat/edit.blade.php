@@ -2,7 +2,7 @@
 @section('content')
 <div class="card card-custom gutter-b example example-compact">
 <div class="card-header">
-    <h3 class="card-title">FORM UBAH DATA KOTA </h3>
+    <h3 class="card-title">FORM ALAMAT </h3>
 </div>
 <form class="form" method="POST" action="{{url('master/alamat/save')}}" 
 >      

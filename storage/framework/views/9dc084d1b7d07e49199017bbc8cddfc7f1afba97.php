@@ -16,6 +16,7 @@
         <table id="datatables" class="table table-striped table-hover table-bordered">
           <thead>
             <tr>  
+              <th>Alamat milik customer</th>
               <th>Label</th>
               <th>nama Penerima</th>    
               <th>Alamat</th> 
@@ -40,6 +41,7 @@
 	     paging     : true,
 	     ajax       :'<?php echo e(url('master/alamat/datatables')); ?>',
 	     columns    : [ 
+          {data: 'namacustomer',      name:'namacustomer'}, 
           {data: 'labelalamat',       name:'label'}, 
           {data: 'nama_penerima',     name:'nama_penerima'}, 
           {data: 'alamat',            name:'alamat'}, 
@@ -50,7 +52,7 @@
           {data: 'aksi',              name:'aksi'},
       ],
      
-	   "order": [[ 3, "desc" ]],
+	   "order": [[ 0, "desc" ]],
     });
 
     var detailRows = [];

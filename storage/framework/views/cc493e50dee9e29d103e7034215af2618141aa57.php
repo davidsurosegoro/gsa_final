@@ -54,6 +54,7 @@
                 <select class="custom-select" required  name="level" id="level">
                     <option value='' >Choose...</option>                    
                     <option value='1' <?php if($users->level == 1): ?>selected <?php endif; ?>>Admin GSA</option>                    
+                    <option value='5' <?php if($users->level == 5): ?>selected <?php endif; ?>>Driver</option>                    
                     <option value='2' <?php if($users->level == 2): ?>selected <?php endif; ?>>Customer </option>                    
                     <option value='3' <?php if($users->level == 3): ?>selected <?php endif; ?>>Kantor Agen</option>                    
                     <option value='4' <?php if($users->level == 4): ?>selected <?php endif; ?>>Kurir Delivery Agen</option>                    
@@ -100,9 +101,15 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script'); ?>
+<script src="<?php echo e(asset('assets/gsa/js/jquery-key-restrictions.js')); ?>"></script> 
 <script type="text/javascript">
     $(document).ready(function() {
+
         checkhidden(0)
+        $(function(){
+            $("#username").alphaNumericOnly();
+        });
+
         function checkhidden(resetval){
             if(resetval==1){
                 console.log('masuk  ')
@@ -115,7 +122,7 @@
 
             $('#groupcustomer'  ).removeClass('d-none')
             $('#groupagen'      ).removeClass('d-none')
-            if($('#level').val()==1 || $('#level').val()==0 ){
+            if($('#level').val()==5 ||$('#level').val()==1 || $('#level').val()==0 ){
                 $('#groupcustomer').addClass('d-none')
                 $('#groupagen'    ).addClass('d-none')
             }

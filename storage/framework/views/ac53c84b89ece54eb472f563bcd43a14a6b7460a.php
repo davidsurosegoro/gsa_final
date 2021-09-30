@@ -41,6 +41,16 @@ tr.details td.details-control {
             }
         </style>
     </head>
+<?php
+$level = 'admin';
+if(Auth::user()->level == 2):
+    $level = 'customer';
+elseif(Auth::user()->level == 3):
+    $level = 'agen';
+elseif(Auth::user()->level == 4):
+    $level = 'kurir';
+endif;
+?>
     <!--end::Head-->
     <!--begin::Body-->
     <body id="kt_body" class="header-fixed header-mobile-fixed page-loading">
@@ -51,6 +61,17 @@ tr.details td.details-control {
             <a href="<?php echo e(url('/')); ?>">
                 <img alt="Logo" src="<?php echo e(asset('assets/img/sigis.png')); ?>" class="max-h-40px" />
             </a>
+            <div class="topbar-item">
+                <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                    <div class="d-flex flex-column text-right pr-3">
+                        <span class="text-white opacity-100 font-weight-bold font-size-xs d-md-inline"><?php echo e($level); ?></span>
+                        <span class="text-white font-weight-bolder font-size-xs d-md-inline"><?php echo e(Auth::user()->username); ?></span>
+                    </div>
+                    <span class="symbol symbol-35">
+                        <span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30"><i class="fa fa-user text-white"></i></span>
+                    </span>
+                </div>
+            </div>
             <!--end::Logo-->
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center">
@@ -69,11 +90,25 @@ tr.details td.details-control {
                     <!--begin::Header-->
                     <div id="kt_header" class="header flex-column header-fixed">
                         <!--begin::Top-->
-                        <div class="header-top" style="background-color: white;">
+                        <div class="header-top" style="background-color:white;">
                             <!--begin::Container-->
                             <div class="container">
+                                
                                 <!--begin::Left-->
                                 <div class="d-none d-lg-flex align-items-center mr-3">
+                                    
+                                    
+                                    <div class="topbar-item">
+										<div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+											<div class="d-flex flex-column text-right pr-3">
+												<span class="text-success opacity-100 font-weight-normal font-size-sm d-none d-md-inline"><?php echo e($level); ?></span>
+												<span class="text-success font-weight-bolder font-size-md d-none d-md-inline"><?php echo e(Auth::user()->username); ?></span>
+											</div>
+											<span class="symbol symbol-35">
+												<span class="symbol-label font-size-h5 font-weight-bold text-success bg-white-o-30"><i class="fa fa-user text-success"></i></span>
+											</span>
+										</div>
+									</div>
                                     <!--begin::Logo-->
                                     <a href="<?php echo e(url('/')); ?>" class="mr-20">
                                         
@@ -222,7 +257,7 @@ tr.details td.details-control {
                   <h4 class="modal-title text-left">Ganti Password</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form" method="POST" action="<?php echo e(url('master/users/gantipassword')); ?>">  
+                    <form class="form" method="POST" action="<?php echo e(url('master/gantipassword')); ?>">  
                         <?php echo e(csrf_field()); ?>
 
                         <div class="form-group">
@@ -264,6 +299,10 @@ tr.details td.details-control {
                 <!--end::Svg Icon-->
             </span>
         </div>
+        
+        <div style="position: fixed; width:100%;height:100%; top:0px; left:0px;z-index:200000;background-color:rgba(0,0,0,0.6);" class="d-none" id="loading">
+            <img src="<?php echo e(asset('assets/gsa/img/loading.gif')); ?>" style="position: absolute;z-index:10; top:0; bottom:0;left:0;right:0; margin:auto; width:5%;">
+        </div>
         <!--end::Scrolltop-->
         <!--begin::Sticky Toolbar-->
         <!--end::Sticky Toolbar-->
@@ -284,11 +323,15 @@ tr.details td.details-control {
         <script src="<?php echo e(asset('assets/js/pages/features/miscellaneous/toastr.js')); ?>"></script>
         <!--end::Page Vendors-->
         <!--begin::Page Scripts(used by this page)-->
-        <script src=<?php echo e(asset('assets/js/pages/autoNumeric.js')); ?>></script>
+        <script src=<?php echo e(asset('assets/js/pages/jquery.number.js')); ?>></script>
         <script src="<?php echo e(asset('assets/js/pages/widgets.js')); ?>"></script>
         <script src="<?php echo e(asset('assets/plugins/devex/js/jszip.min.js')); ?>"></script>
         <script src="<?php echo e(asset('assets/plugins/devex/js/dx.all.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/gsa/js/custom_ajax.js')); ?>"></script>
         <script type="text/javascript">
+            $('form').submit(function(){
+                $('body').find('button[type=submit]').prop('disabled', true);
+            });
             function checkpassword() {  
                 var password    = $('#password'  ).val();
                 var repassword  = $('#repassword').val();
@@ -332,8 +375,8 @@ tr.details td.details-control {
               "onclick": null,
               "showDuration": "300",
               "hideDuration": "1000",
-              "timeOut": "3000",
-              "extendedTimeOut": "1000",
+              "timeOut": "5000",
+              "extendedTimeOut": "2000",
               "showEasing": "swing",
               "hideEasing": "linear",
               "showMethod": "fadeIn",
@@ -342,13 +385,7 @@ tr.details td.details-control {
             $('.select2').select2({
         });
             var base_url = '<?php echo e(env('APP_URL').'/'); ?>';
-            $('.rupiah').autoNumeric({
-                allowDecimalPadding: false,
-                alwaysAllowDecimalCharacter: true,
-                decimalCharacterAlternative: ".",
-                decimalPlaces: 0,
-                outputFormat:'number'
-            })
+            $('.rupiah').number(true)
             
 var loadPanel = $(".loadpanel").dxLoadPanel({
         shadingColor: "rgba(0,0,0,0.4)",
@@ -371,9 +408,26 @@ var loadPanel = $(".loadpanel").dxLoadPanel({
                todayHighlight: true,
                orientation: "bottom left",
               });
+    $('.datepicker_readonly').datepicker({
+               rtl: KTUtil.isRTL(),
+               todayHighlight: true,
+               orientation: "bottom left",
+               minDate: 0,
+               maxDate:0,
+              }).attr('readonly','readonly'); 
         </script>
         <?php echo $__env->yieldContent('script'); ?>
         <!--end::Page Scripts-->
+        <script type="text/javascript">
+
+            $(document) .ajaxStart(function () {
+                $('#loading').removeClass('d-none')
+                console.log('start')
+            })          .ajaxStop(function () {
+                $('#loading').addClass('d-none')
+                console.log('stop')
+            }); 
+        </script>
     </body>
     
 <?php if(Session::get('message') == "Password Updated"): ?>

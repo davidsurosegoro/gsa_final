@@ -21,9 +21,7 @@
               <th>Kode</th>
               <th>Alamat</th>
               <th>No Telp</th>
-              <th>Nomor Rekening</th>
-              <th>Atas Nama (a/n)</th>
-              <th>Bank</th>
+              
               <th>Akses Satuan</th>
               <th>Aksi</th>
             </tr>
@@ -86,9 +84,9 @@
 	     {data: 'kode', name:'kode'},
 	     {data: 'alamat', name:'alamat'},
 	     {data: 'notelp', name:'notelp'},
-	     {data: 'rekening', name:'rekening'},
-	     {data: 'rekeningatasnama', name:'rekeningatasnama'},
-	     {data: 'bank', name:'bank'},
+	    //  {data: 'rekening', name:'rekening'},
+	    //  {data: 'rekeningatasnama', name:'rekeningatasnama'},
+	    //  {data: 'bank', name:'bank'},
 	     {data: 'akses_satuan', name:'akses_satuan'},
 	     {data: 'aksi', name:'aksi'},
 	 ],
@@ -168,6 +166,11 @@
 <?php if(Session::get('message') == "updated"): ?>
     <script type="text/javascript">
         toastr.success("Data Customer Berhasil diubah!");
+    </script>
+<?php endif; ?>
+<?php if(Session::get('failed') !== null): ?>
+    <script type="text/javascript">
+        toastr.error("Gagal! Agen <?php echo e(Session::get('failed')); ?> Telah Dimiliki/Belongs to customer lain");
     </script>
 <?php endif; ?>
 <?php $__env->stopSection(); ?>

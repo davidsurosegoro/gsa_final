@@ -10,6 +10,7 @@
     <div class="container">
        
         <div class="row">
+            <div style="background-color: aqua; padding:10px;" id='allow'>1</div>
             <audio id="myAudio">
                 <source src="<?php echo e(asset('assets/gsa/scanner/beep-06.mp3')); ?>" type="audio/ogg"> 
                 Your browser does not support the audio element.
@@ -99,9 +100,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="<?php echo e(asset('assets/gsa/scanner2/qr-scanner.umd.min.js')); ?>"></script>
 <script type="text/javascript">  
-    
+    // setTimeout(function(){ update_div() }, 3);
+    function update_div(){
+        if(allowscan==false){
+            console.log('masuk')
+            console.log(allowscan)
+        }
+        $('#allow').html(allowscan)
+    }
     $( document ).ready(function() {
-        console.log( "ready!" );
+        // setInterval(update_div(), 200)
+        setInterval(function(){ update_div()}, 1000);
+        // scanner.stop();
+        // scanner.start();
     });
     QrScanner.WORKER_PATH = "<?php echo e(asset('assets/gsa/scanner2/qr-scanner-worker.min.js')); ?>"  ;
     
@@ -117,9 +128,26 @@
 
     // ####### Web Cam Scanning #######
 
-    const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
-        camQrResult.textContent = error;
-        camQrResult.style.color = 'inherit';
+    // const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
+    //     camQrResult.textContent = error;
+    //     camQrResult.style.color = 'inherit';
+    // });
+    const scanner = new QrScanner(video, result=> {
+        console.log('decoded QR code: ' + result);
+        if(result && allowscan){
+            xs.play();   
+            scanner.stop();
+            var codeonly = result.split("/t/") 
+            if(!codeonly[1] || !codeonly[2] || codeonly[2] == 'notforscan'){
+                toastr.warning("kode AWB tidak valid!!") 
+                
+                
+                    setTimeout(function(){ scanner.start() }, 800);
+            }else{
+                scan_update_status(codeonly[1],codeonly[2]);
+            }
+        }
+        scanner.stop();
     });
 
     const updateFlashAvailability = () => {
@@ -129,19 +157,19 @@
         });
     };
 
-    // scanner.start().then(() => {
-    //     updateFlashAvailability();
-    //     // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-    //     // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-    //     // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-    //     // start the scanner earlier.
-    //     QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-    //         const option = document.createElement('option');
-    //         option.value = camera.id;
-    //         option.text = camera.label;
-    //         camList.add(option);
-    //     }));
-    // });
+    scanner.start().then(() => {
+        updateFlashAvailability();
+        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+        // start the scanner earlier.
+        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+            const option = document.createElement('option');
+            option.value = camera.id;
+            option.text = camera.label;
+            camList.add(option);
+        }));
+    });
 
     QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
@@ -199,7 +227,7 @@
     }); 
     function scan_update_status(kode_awb_or_manifest, qty){
         if(allowscan){
-            allowscan==false;
+            allowscan=false;
             $.ajax({
                 method  :'POST',
                 url     :'<?php echo e(url('awb/updateawb')); ?>',
@@ -228,11 +256,12 @@
                         $('#diterima_oleh'      ).val(data.awb.diterima_oleh)
                     }else{
                         
-                        
+                        // scanner.start() 
+                        //     allowscan==true;
                         setTimeout(function(){ 
                             scanner.start() 
-                            allowscan==true;
-                        }, 1200);
+                            allowscan=true;
+                        }, 1500);
                     } 
                 }
             }) 

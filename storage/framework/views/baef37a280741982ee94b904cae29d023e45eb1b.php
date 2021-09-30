@@ -2,7 +2,7 @@
 <?php $__env->startSection('content'); ?>
 <div class="card card-custom gutter-b example example-compact">
 <div class="card-header">
-    <h3 class="card-title">FORM UBAH DATA KOTA </h3>
+    <h3 class="card-title">FORM ALAMAT </h3>
 </div>
 <form class="form" method="POST" action="<?php echo e(url('master/alamat/save')); ?>" 
 >      
@@ -32,6 +32,21 @@
             <label>kodepos:</label>
             <input type="text" required class="form-control" name="kodepos" value="<?php echo e((old('kodepos') && old('kodepos') !='') ?old('kodepos'): $alamat->kodepos); ?>" />        
         </div> 
+        <?php if(((int)Auth::user()->level==1)): ?>
+            <div class="form-group col-lg-6" id='groupcustomer'>
+                <label>Belongs to Customer:</label>
+                <select class="custom-select"  name="pelanggan_id" id="pelanggan_id">
+                    <option value='' >Choose...</option>
+                    <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option 
+                            <?php if($item->id == $alamat->pelanggan_id): ?>
+                                selected
+                            <?php endif; ?>
+                            value="<?php echo e($item->id); ?>"><?php echo e($item->kode); ?> - <?php echo e($item->nama); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>        
+            </div>     
+        <?php endif; ?>        
         <div class="form-group col-lg-6">
             <label>Kota:</label>
             <select type="text" required class="form-control select2 required" id='kota' name="idkota" >
@@ -50,9 +65,9 @@
                 <option class=" " value="" selected>Pilih - Kecamatan </option>
                 <?php $__currentLoopData = $kecamatan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php if($k->nama == $alamat->kecamatan ): ?>
-                        <option oa = "<?php echo e($k->oa); ?>" class="kotashow kota_<?php echo e($k->idkota); ?>" value="<?php echo e($k->nama); ?>" selected><?php echo e($k->nama); ?> </option>
+                        <option oa = "<?php echo e($k->oa); ?>" class="kotashow kota_<?php echo e($k->idkota); ?>" value="<?php echo e($k->id); ?>" selected><?php echo e($k->nama); ?> </option>
                     <?php else: ?>
-                        <option oa = "<?php echo e($k->oa); ?>" class="kotashow kota_<?php echo e($k->idkota); ?>" value="<?php echo e($k->nama); ?>"><?php echo e($k->nama); ?> </option>
+                        <option oa = "<?php echo e($k->oa); ?>" class="kotashow kota_<?php echo e($k->idkota); ?>" value="<?php echo e($k->id); ?>"><?php echo e($k->nama); ?> </option>
                    <?php endif; ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </select>

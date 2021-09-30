@@ -8,10 +8,13 @@
 <div class="card-body">
     <div class="row">
         <?php $__currentLoopData = $awb; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <div class="col-3">
+        <div class="col-3" style="margin-top:10px;">
             <div class="card col-12 bg-light" style="padding:0px;">
-                <div class="card-body"  style="padding:10px;">
+                <div class="card-body"  style="padding:10px; position:relative;">
                     <span class="badge badge-warning"> <?php echo e($item->total); ?> AWB belum ditagihkan</span><br><br>
+                    <?php if((int)$item->is_agen == 1): ?>                        
+                    <span style="position: absolute; top:0px;right:0px; z-index:10;" class="badge badge-info">  AGEN</span><br><br>
+                    <?php endif; ?>
                     <h1  >
                         <?php echo e($item->kodecustomer); ?>
 

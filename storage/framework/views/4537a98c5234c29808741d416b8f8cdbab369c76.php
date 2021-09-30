@@ -11,7 +11,7 @@
 <?php $__currentLoopData = $awb; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
     <?php ($total_kg     += $item['qty_kg']); ?>
     <?php ($total_doc    += $item['qty_doc']); ?>
-    <?php if($item->qty > 0 && $item->qtykoli == 0): ?>
+    <?php if($item->qty > 0 && $item->qty_kg == 0 && $item->qty_doc == 0): ?>
         <?php ($total_koli += $item->qty); ?>
     <?php else: ?>
         <?php ($total_koli +=$item->qtykoli); ?>
@@ -19,12 +19,13 @@
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <input type="hidden" name="id" value="<?php echo e($manifest->id); ?>">
 <div class="d-none ">
-    tujuan:       <input type='text' name='id_kota_tujuan'          value='<?php echo e($kotatujuan[0]['id']); ?>'>
-    asal:     <input type='text' name='id_kota_asal'          value='<?php echo e($kotaasal[0]['id']); ?>'>
-    dibuat:     <input type='text' name='dibuat_oleh'           value='<?php echo e(Auth::user()->id); ?>'> 
-    kg:         <input type='text' name='jumlah_kg'             value='<?php echo e($total_kg); ?>'> 
-    koli:       <input type='text' name='jumlah_koli'           value='<?php echo e($total_koli); ?>'> 
-    doc:        <input type='text' name='jumlah_doc'            value='<?php echo e($total_doc); ?>'>  
+    tujuan:         <input type='text' name='id_kota_tujuan'        value='<?php echo e($kotatujuan[0]['id']); ?>'>
+    asal:           <input type='text' name='id_kota_asal'          value='<?php echo e($kotaasal[0]['id']); ?>'> 
+    agentujuan:     <input type='text' name='agen_tujuan'           value='<?php echo e($agentujuan[0]['id']); ?>'>
+    dibuat:         <input type='text' name='dibuat_oleh'           value='<?php echo e(Auth::user()->id); ?>'> 
+    kg:             <input type='text' name='jumlah_kg'             value='<?php echo e($total_kg); ?>'> 
+    koli:           <input type='text' name='jumlah_koli'           value='<?php echo e($total_koli); ?>'> 
+    doc:            <input type='text' name='jumlah_doc'            value='<?php echo e($total_doc); ?>'>  
 </div>
 <?php echo e(csrf_field()); ?>
 
@@ -46,21 +47,7 @@
             <label>Tanggal:</label>
             <h3><?php echo e(Carbon\Carbon::now()->addHours(7)->toDateString()); ?></h3>
         </div> 
-        <div class="form-group col-lg-3">
-            <label>Total:</label>
-            <table class="table  table-bordered">
-                <tr>
-                    <th>koli</th>
-                    <th>kg</th>
-                    <th>doc</th>
-                <tr>
-                <tr>
-                    <td><?php echo e($total_koli); ?></td>
-                    <td><?php echo e($total_kg); ?></td>
-                    <td><?php echo e($total_doc); ?></td>
-                <tr>
-            </table>
-        </div>
+        
         <div class="form-group col-lg-3">
             <label>Dibawa oleh:</label>
             <input type="text" required class="form-control" name="supir" value="<?php echo e((old('supir') && old('supir') !='') ?old('supir'): $manifest->supir); ?>" />        
@@ -73,17 +60,21 @@
             <table class="table table-striped table-bordered"  >
                 <thead>
                     <tr>
-                        <th class='text-center' style="width:10px;">NO</th> 
-                        <th style="width:1cm;">AWB</th> 
-                        <th style="width:150px;">PENGIRIM</th> 
-                        <th style="width:1cm;">PENERIMA</th> 
-                        <th style="width:1cm;">TUJUAN</th> 
-                        <th style="width:1cm;">KL</th> 
-                        <th style="width:1cm;">KG</th> 
-                        <th style="width:1cm;">doc</th> 
-                        <th style="width:1cm;">D/P</th>  
-                        <th style="width:1cm;">KET</th> 
+                        <th  rowspan="2" class='text-center' style="width:10px;">NO</th> 
+                        <th  rowspan="2" style="width:1cm;">AWB</th> 
+                        <th  rowspan="2" style="width:150px;">PENGIRIM</th> 
+                        <th  rowspan="2" style="width:1cm;">PENERIMA</th> 
+                        <th  rowspan="2" style="width:1cm;">TUJUAN</th> 
+                        <th  style="width:1cm;">KL</th> 
+                        <th  style="width:1cm;">KG</th> 
+                        <th  style="width:1cm;">doc</th>  
+                        <th  rowspan="2" style="width:1cm;">KET</th> 
                     </tr>
+                    <tr>
+                        <td class="text-center"><?php echo e($total_koli); ?></td>
+                        <td class="text-center"><?php echo e($total_kg); ?></td>
+                        <td class="text-center"><?php echo e($total_doc); ?></td>
+                    </tr> 
                 </thead>
                 <tbody>
                     <?php $__currentLoopData = $awb; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -94,7 +85,7 @@
                         <td style="padding:5px;" class='text-left'><?php echo e($item->nama_penerima); ?></td> 
                         <td style="padding:5px;"><?php echo e($item->kotatujuan); ?></td> 
                         <td style="padding:5px;" class='text-center'>
-                            <?php if($item->qty > 0 && $item->qtykoli == 0): ?>
+                            <?php if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0): ?>
                                 <?php echo e($item->qty); ?>
 
                             <?php else: ?>
@@ -102,8 +93,7 @@
                             <?php endif; ?>
                         </td> 
                         <td style="padding:5px;" class='text-center'><?php echo e($item->qty_kg); ?></td> 
-                        <td style="padding:5px;" class='text-center'><?php echo e($item->qty_doc); ?></td> 
-                        <td style="padding:5px;"></td>  
+                        <td style="padding:5px;" class='text-center'><?php echo e($item->qty_doc); ?></td>  
                         <td style="padding:5px;"><?php echo e($item->keterangan); ?></td> 
                     </tr>   
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>   
