@@ -45,7 +45,6 @@ class ReportController extends Controller
         ->when(request('status_tracking') !== '-', function ($q) {
             return $q->where('status_tracking', '=',request('status_tracking'));
         })
-        
         ->when((int) Auth::user()->level == 3 , function ($q) {
             return  //$q->where('id_agen_penerima', '=',request('id_agen_penerima'));
                 $q->where (function($query)
