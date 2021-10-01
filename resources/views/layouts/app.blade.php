@@ -171,7 +171,15 @@ endif;
                                                 <div class="scroll scroll-push" data-scroll="true" data-height="250" data-mobile-height="200">
                                                    {{--  <div class="separator separator-solid"></div> --}}
                                                    <div class="p-8">
-                                                    <div class="d-flex align-items-center justify-content-between mb-7">
+                                                    <div class="
+                                                    
+                                                    @if((int) Auth::user()->level !== 1)
+                                                    d-none
+                                                    @else
+                                                    d-flex
+                                                    align-items-center justify-content-between mb-7
+                                                    
+                                                    @endif">
                                                         <a href="{{ url('/log') }}" class="text-right"> Logs Aktivitas</a>
                                                     </div>
                                                     <div class="d-flex align-items-center justify-content-between mb-7">

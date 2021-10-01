@@ -189,10 +189,27 @@
                 //     }
                 // },
                 {
+                    caption: "Lihat detail",
+                    dataField: "id",
+                    dataType: "string",
+                    width:200,
+                    cellTemplate: function (container, options) {
+                    console.log(options);
+                        $(container).html(`<a href="https://globalserviceasia.com/public/t/`+options.data.noawb+`/t/1" target="_blank">`+options.data.noawb+`</a>`)
+                    },
+                },
+                {
                     caption: "Kode AWB",
                     dataField: "noawb",
                     dataType: "string",
                     width:200,
+                },
+                {
+                    caption: "Tanggal",
+                    dataField: "created_at",
+                    dataType: "date",
+                    format:"shortDateShortTime",
+                    width:170,
                 },
                 {
                     caption: "Kota Asal",

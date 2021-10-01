@@ -238,6 +238,7 @@ class ReportController extends Controller
                 'status_tracking' => $a->status_tracking,
                 'agen_tujuan' => $a->agen_tujuan,
                 'kota_transit' => $is_transit,
+                'created_at' => $a->created_at,
                 'is_agen' => $a->is_agen
             ]);
         endforeach;

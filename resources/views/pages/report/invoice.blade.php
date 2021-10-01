@@ -252,6 +252,7 @@
                     caption: "Total Harga",
                     dataField: "total_harga",
                     dataType: "number",
+                    format:"#,##0",
                     width:170,
                 },
                 {
