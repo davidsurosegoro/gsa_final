@@ -116,8 +116,8 @@
      </div>
 
     <div class="form-group">
-      <label>Harga per Kg:</label>
-       <input type="text" class="form-control rupiah" name="harga_kg" placeholder="Input harga per Kg. . ." required/>
+      <label>Harga per 5 Kg Pertama:</label>
+       <input type="text" class="form-control rupiah" name="harga_kg" placeholder="Input harga per 5 Kg Pertama. . ." required/>
      </div>
 
     <div class="form-group">
