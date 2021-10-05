@@ -594,6 +594,7 @@ class AwbController extends Controller
                 'noawb'           => $a->noawb,
                 'nama_pengirim'   => $a->nama_pengirim,
                 'id_customer'     => $a->id_customer,
+                'id_manifest'     => $a->id_manifest,
                 'id_agen_tujuan'  => $a->id_agen_penerima,
                 'kota_asal'       => $a->kota_asal,
                 'kota_tujuan'     => $a->kota_tujuan,
@@ -615,6 +616,13 @@ class AwbController extends Controller
         endforeach;
         return Datatables::of($awbs)
             ->addColumn('aksi', function ($a) {
+                $tombolhapus= '';
+                if(($a['status_tracking'] == 'booked' || $a['status_tracking'] == 'at-manifest')&& (int)$a['id_manifest'] == 0){
+                    $tombolhapus= '<button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus AWB" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> 
+                                    <i class="flaticon-delete"></i> 
+                                </button>';
+                }
+
                 if ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level !== 1):
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         <button  type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="modal" data-target="#modal-show" onClick="detail(' . $a['id'] . ',`' . $a['noawb'] . '`)" data-placement="bottom" title="Lihat Data"><i class="flaticon-eye"> </i></button>
@@ -629,7 +637,7 @@ class AwbController extends Controller
                         </a>                       
                         '.$a['print_awb_biasa'].'
                         '.$a['print_awb_tri'].'
-                        <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus AWB" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button>
+                        '.$tombolhapus.'
 
                         </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int) Auth::user()->level == 2):
@@ -638,12 +646,13 @@ class AwbController extends Controller
                             <i class="flaticon-edit-1" ></i>
                         </a>
 
-                        <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus AWB" onClick="deleteAwb(' . $a['id'] . ',`' . $a['noawb'] . '`)"> <i class="flaticon-delete"></i> </button></div>';
+                        '.$tombolhapus.'</div>';
                 elseif ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level == 1):
-
+ 
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         '.$a['print_awb_biasa'].'
                         '.$a['print_awb_tri'].'
+                        '.$tombolhapus.'
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
                         <i class="fas fa-map-marked-alt" ></i>
                         </a>

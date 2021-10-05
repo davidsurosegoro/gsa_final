@@ -11,7 +11,7 @@
       </h3>
       <select id='status_complete' class="form-control col-xs-12 col-md-3 " id="exampleFormControlSelect1">
         <option value='-'>Sembunyikan complete</option>
-        <option value="complete">Tampilkan complete</option>
+        <option value="complete">Tampilkan complete</option> 
       </select> 
     </div>
     <div class="card-toolbar">  
