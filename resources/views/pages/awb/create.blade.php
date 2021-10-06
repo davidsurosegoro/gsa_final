@@ -374,7 +374,7 @@
             </div> --}}
             <div class="form-group">
               <label class="font-weight-bold">Transit</label>
-              <select style="width:95%" class="select2 select_readonly form-control" name="id_kota_transit" >
+              <select style="width:95%" class="form-control" name="id_kota_transit" id="id_kota_transit" >
                 <option value="">--Pilih Kota Transit--</option>
                   @if($awb->id_kota_transit)
                     <option value="9479" selected>SURABAYA  </option>
@@ -546,12 +546,14 @@
         //   $('#alamat_pengirim').hide()
         // }
         if(data.data.is_agen == 1){
+          console.log(data.kota_asal)
           $('#customer-biasa').show()
           $('#qty-detail').hide()
           $("#harga_total").attr("required", "true");
           $("#qty_biasa").attr("required", "true");
           $('#row-jenis-koli').hide()
           $("#jenis_koli").removeAttr("required");
+          $('#kota_asal').html(data.kota_asal).trigger('change');
         }
         else{
           $('#customer-biasa').hide()
@@ -674,6 +676,9 @@
   })
   
   $(document).ready(function(){
+    if($('#kota_asal').val() == 9479){
+      $('#id_kota_transit').html('<option value="">--Pilih Kota Transit--</option>');
+    }
     if($('#customer').val() == 26){
       $('#div-kg-pertama').show()
       $('#div-kg-selanjutnya').show()
@@ -694,8 +699,18 @@
           $("#qty_biasa").attr("required", "true");
           $('#row-jenis-koli').hide()
           $("#jenis_koli").removeAttr("required");
+          $.ajax({
+                  method:'POST',
+                  url:'{{ url("awb/filter-customer") }}',
+                  data:{
+                    customer_id: $('#customer').val(),
+                    '_token': $('input[name=_token]').val()
+                  },
+      success:function(data){
+        $('#kota_asal').html(data.kota_asal).trigger('change');
+      }
+    })
     }
-
     if($('#jenis_koli').val() == "koli"){
       $('#qty_koli_k').show();
       $('#qty_koli_s').show();
@@ -727,6 +742,15 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').hide();
+    }
+  })
+  $('#kota_asal').on('change',function(){
+    console.log($(this).val())
+    if($(this).val() == 9479){
+      $('#id_kota_transit').html('<option value="">--Pilih Kota Transit--</option>')
+    }
+    else{
+      $('#id_kota_transit').html('<option value="9479">SURABAYA</option>')
     }
   })
 </script>
