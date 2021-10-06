@@ -761,9 +761,13 @@ class AwbController extends Controller
     {
         $customer   = Customer::find($request->customer_id);
         $alamat     = Alamat::where('pelanggan_id', $request->customer_id)->orderBy('id', 'asc')->get();
-        $kota       = ViewAgenKota::where('agen_id', $customer->id_agen)->where('status','aktif')->get();
+        if($customer->is_agen == 0):
+            $kota       = Kota::orderBy('nama','asc')->get();
+        else:
+            $kota       = ViewAgenKota::where('agen_id', $customer->id_agen)->where('status','aktif')->get();
+        endif;
         $cbo_alamat = (string) view('pages.awb.ajax.cbo_alamat', compact('alamat'));
-        $cbo_asal   = (string) view('pages.awb.ajax.cbo_kota_asal', compact('kota'));
+        $cbo_asal   = (string) view('pages.awb.ajax.cbo_kota_asal', compact('kota','customer'));
         return response()->json(array('data' => $customer, 'alamat' => $cbo_alamat, 'kota_asal' => $cbo_asal, 'count_alamat' => count($alamat)));
     }
 

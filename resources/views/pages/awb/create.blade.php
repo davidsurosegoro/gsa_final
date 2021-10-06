@@ -562,6 +562,7 @@
           $("#qty_biasa").removeAttr("required");
           $('#row-jenis-koli').show()
           $("#jenis_koli").attr("required", "true");
+          $('#kota_asal').html(data.kota_asal).trigger('change');
           if(data.data.id == 26){
             $('#jenis_koli').val('kg').change();
             $('#div-kg-pertama').show();
