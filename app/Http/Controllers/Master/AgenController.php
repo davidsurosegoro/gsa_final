@@ -85,7 +85,7 @@ class AgenController extends Controller
 
     public function datatables()
     {
-        $agen    = DB::SELECT('SELECT a.* FROM agen a WHERE a.deleted_at IS NULL AND id > 1');
+        $agen    = DB::SELECT('SELECT a.* FROM agen a WHERE a.deleted_at IS NULL  ');
         $agens   = new Collection;
         $strings = "";
         foreach ($agen as $a):
@@ -110,11 +110,13 @@ class AgenController extends Controller
                 return $a['presentase'] . " % ";
             })
             ->addColumn('aksi', function ($a) {
+                $btnhapus = '<button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus " onClick="deleteAgen(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>';
+
                 return '<div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Agen">
                     <i class="flaticon-edit-1"  data-toggle="modal" data-target="#modal-edit-agen" onClick="editAgen(' . $a['id'] . ')"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Peta" onClick="deleteAgen(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>
+                '.(($a['id']>1) ? $btnhapus : '').'
                 </div>';
             })
             ->rawColumns(['coverage', 'aksi', 'presentase'])

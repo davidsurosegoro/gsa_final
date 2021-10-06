@@ -3232,6 +3232,9 @@ textarea.form-control {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+.calculate_abs{
+  position: absolute;z-index:5; top:0px; left:0px;background-color:aquamarine;height:100%;width:100%;padding-top:10px;border-radius:5px;
+}
 .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
 }

@@ -75,7 +75,7 @@
                 <div class="form-group">
                   <label class="font-weight-bold">Tanggal:</label>
                   <div class="input-group date" style="position: relative;">
-                    <div style="width:100%; height:100%; position: absolute;  top:0px; left:0px;z-index:2;"></div>
+                    <div style="width:100%; height:100%; position: absolute;  top:0px; left:0px;z-index:1;"></div>
                     @if($id == 0)
                     <input name="tanggal_awb"  type="text" class="form-control datepicker_readonly" value="{{ date('m/d/Y') }}" placeholder="Select date">
                     @else
@@ -190,16 +190,30 @@
                     <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
                   </div>
                 </div>
-                <div class="col-lg-3" id="div-kg-pertama">
+                <div class="col-lg-3 showcalculating" id="div-kg-pertama" style="position: relative;">
+                  <div class="text-center d-none calculate_abs" >
+                    <img src="{{asset('assets/gsa/img/loading.gif')}}" width='50px;'>
+                  </div>
                   <div class="form-group">
                     <label class="font-weight-bold">Harga 5 Kg Pertama</label>
                     <input type="text" class="form-control rupiah" id="harga_kg_pertama" value="{{ $awb->harga_kg_pertama }}"  name="harga_kg_pertama" placeholder="Input harga 2 kg pertama. . ." value="0">
                   </div>
                 </div>
-                <div class="col-lg-3" id="div-kg-selanjutnya">
+                <div class="col-lg-3 showcalculating" id="div-kg-selanjutnya" style="position: relative;">
                   <div class="form-group">
                     <label class="font-weight-bold">Harga Kg Selanjutnya</label>
                     <input type="text" class="form-control rupiah" id="harga_kg_selanjutnya" value="{{ $awb->harga_kg_selanjutnya }}"  name="harga_kg_selanjutnya" placeholder="Input harga kg selanjutnya. . ." value="0">
+                  </div>
+                </div><div class="col-lg-3" id="div-bypass" style="position: relative;background-color: aquamarine; border-radius:5px;">
+                  <div class="text-center d-none calculate_abs" >
+                    <img src="{{asset('assets/gsa/img/loading.gif')}}" width='50px;'>
+                  </div>
+                  <label class="font-weight-bold">Harga Bypass (only calculate)</label>
+                  <div class="input-group ">
+                    <input type="text" class="form-control rupiah" id="harga_bypass" value=""  name="harga_bypass" placeholder="Input harga bypass. . ." >
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary btn-warning" type="button" id="btnhitung_bypass">Hitung</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -472,12 +486,34 @@
 @section('script')
 <script>
   var _kecamatan_id_ = 0;
+  var _showcalculate = 0;
   $('form').submit(function(){
       $('body').find('button[type=submit]').prop('disabled', true);
   });
+  $('#btnhitung_bypass').click(function(){
+    console.log(parseInt($('#harga_bypass').val()))
+    if(parseInt($('#harga_bypass').val())>0){
+      var total_bypass = $('#harga_bypass').val() / 5;
+      clearTimeout(timertyping); 
+      if(_showcalculate==0){
+        _showcalculate=1;
+        $('.calculate_abs').removeClass('d-none');
+      }
+      timertyping = setTimeout(
+        function(){
+          $('.calculate_abs').addClass('d-none');
+          $('#harga_kg_pertama').val(total_bypass)
+          $('#harga_bypass').val(0)
+          _showcalculate=0;
+        }
+        , 1000)
+    }
+    
+  })
   $('#customer-biasa').hide();
   $('#div-kg-pertama').hide();
   $('#div-kg-selanjutnya').hide();
+  $('#div-bypass').hide();
   // $('#kota_asal').on('change',function(){
   //   $.ajax({
   //     method:'POST',
@@ -567,6 +603,7 @@
             $('#jenis_koli').val('kg').change();
             $('#div-kg-pertama').show();
             $('#div-kg-selanjutnya').show();
+            $('#div-bypass').show();
             $("#jenis_koli").attr("readonly", "true");
             // $('#harga_kg_pertama').val(data.data.harga_kg)
             // $('#harga_kg_selanjutnya').val(data.data.harga_kg)
@@ -574,6 +611,7 @@
           else{
             $('#div-kg-pertama').hide();
             $('#div-kg-selanjutnya').hide();
+            $('#div-bypass').hide();
             $("#jenis_koli").attr("readonly", "false");
           }
         }
@@ -683,6 +721,7 @@
     if($('#customer').val() == 26){
       $('#div-kg-pertama').show()
       $('#div-kg-selanjutnya').show()
+      $('#div-bypass').show()
     }
     if($('#check_alamat_tujuan').val() == 0){
       // $('#alamat_tujuan').show()

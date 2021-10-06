@@ -35,10 +35,10 @@ class KotaController extends Controller
             if($a['status']=='nonaktif'){$status='aktif';}
             return '
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="'.url('master/kota/edit/'.$a['id']).'" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Customer">
+                <a href="'.url('master/kota/edit/'.$a['id']).'" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Kota">
                     <i class="flaticon-edit-1"></i>
                 </a>
-                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Customer" onClick="deleteCustomer(\''.$status.'\',' . $a['id'] . ',\'' . $a['nama'] . '\')"> <i class="flaticon-delete"></i> </button>
+                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Kota" onClick="deleteCustomer(\''.$status.'\',' . $a['id'] . ',\'' . $a['nama'] . '\')"> <i class="flaticon-delete"></i> </button>
             </div>';
         })         
         ->addColumn('aktifnonaktif', function ($a) {

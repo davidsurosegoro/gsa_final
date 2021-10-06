@@ -297,10 +297,17 @@
                               '_token': $('input[name=_token]').val()
                             },
                             success:function(data){
+                              if(data.status=='success'){
                                 Swal.fire({title:"Terhapus!", text:"Awb "+data.awb.noawb+" berhasil terhapus dari sistem", icon:"success"}
                                 ).then((result) => {
                                     location.reload()
                                 })
+                              }else{
+                                Swal.fire({title:"GAGAL!", text: data.message, icon:"error"}
+                                ).then((result) => {
+                                    location.reload()
+                                })
+                              }
                             }
                           }) 
             } 

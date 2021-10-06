@@ -96,11 +96,11 @@ class AwbController extends Controller
     {   if ((int) Carbon::now()->addHours(7)->format('H') >= 16 && (int)Auth::user()->level == 2)   { 
             return redirect('awb')->with('outoftime', 'booking sudah melebihi jam input');
         } 
-        
         $ada_faktur = 0;
         if ($request->ada_faktur == "on"):
             $ada_faktur = 1;
         endif;
+        $id_sby      = (int)ApplicationSetting::checkappsetting('id-surabaya'); 
         $noawb       = Awb::getNoAwb();
         $noawb      .= $this->randomChar();
         $kecamatan   = Kecamatan::find($request->id_kecamatan_tujuan);
@@ -162,7 +162,7 @@ class AwbController extends Controller
         if($customer->id == 26){
             $total_harga['total'] = $this->hitungHargaKg($request->qty_kg,$harga_kg_pertama,$harga_kg_selanjutnya,$charge_oa,$customer,$request->hilang);   
         }
-        if($request->id_kota_asal == 9479):
+        if($request->id_kota_asal == $id_sby):
             $id_agen_asal = 1;
         endif;
         if ($request->hilang == "hilang"):
@@ -269,12 +269,16 @@ class AwbController extends Controller
     }
 
     public function delete(Request $request)
-    {
+    {   
         $awb = DB::table('awb')->where('id', $request->id)->first();
-        DB::table('awb')
-            ->where('id', $request->id)
-            ->update(['status_tracking' => 'cancel']);
-        return response()->json(array('awb' => $awb));
+        if((int)$awb->id_manifest==0 && ($awb->status_tracking=='booked' || $awb->status_tracking=='at-manifest')){
+            DB::table('awb')
+                ->where('id', $request->id)
+                ->update(['status_tracking' => 'cancel']);
+            return response()->json(array('awb' => $awb,'status'=>'success'));
+        }else{
+            return response()->json(array('awb' => $awb,'status'=>'failed','message'=>'AWB gagal di cancel (AWB sudah dibuatkan manifest)'));
+        }
     }
 
     public function updatemanifestqr(Request $request)
@@ -758,11 +762,17 @@ class AwbController extends Controller
     }
 
     public function filter_customer(Request $request)
-    {
-        $customer   = Customer::find($request->customer_id);
-        $alamat     = Alamat::where('pelanggan_id', $request->customer_id)->orderBy('id', 'asc')->get();
+    {   
+        $customer       = Customer::find($request->customer_id);
+        $alamat         = Alamat::where('pelanggan_id', $request->customer_id)->orderBy('id', 'asc')->get();
         if($customer->is_agen == 0):
-            $kota       = Kota::orderBy('nama','asc')->get();
+            $kota       = Kota::
+                            orderBy('nama','asc') 
+                            ->where (function($query)
+                                        {   $id_sby         = (int)ApplicationSetting::checkappsetting('id-surabaya'); 
+                                            $query  ->where('id',$id_sby); 
+                                        })
+                            ->get();
         else:
             $kota       = ViewAgenKota::where('agen_id', $customer->id_agen)->where('status','aktif')->get();
         endif;
