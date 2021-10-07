@@ -27,44 +27,61 @@ class AgenController extends Controller
     public function save(Request $request)
     {
         $agen = Agen::create([
-            'nama'       => $request->nama,
-            'kode'       => $request->kode,
-            'alamat'     => $request->alamat,
-            'no_telp'    => $request->no_telp,
-            'presentase' => $request->presentase,
-            'idkota1'    => $request->idkota1,
-            'idkota2'    => $request->idkota2,
-            'idkota3'    => $request->idkota3,
-            'idkota4'    => $request->idkota4,
-            'idkota5'    => $request->idkota5,
-            'idkota6'    => $request->idkota6,
-            'idkota7'    => $request->idkota7,
-            'idkota8'    => $request->idkota8,
-            'idkota9'    => $request->idkota9,
-            'idkota10'   => $request->idkota10,
+            'nama'                      => $request->nama,
+            'kode'                      => $request->kode,
+            'alamat'                    => $request->alamat,
+            'no_telp'                   => $request->no_telp,
+            'presentase'                => $request->presentase,
+            'idkota1'                   => $request->idkota1,
+            'idkota2'                   => $request->idkota2,
+            'idkota3'                   => $request->idkota3,
+            'idkota4'                   => $request->idkota4,
+            'idkota5'                   => $request->idkota5,
+            'idkota6'                   => $request->idkota6,
+            'idkota7'                   => $request->idkota7,
+            'idkota8'                   => $request->idkota8,
+            'idkota9'                   => $request->idkota9,
+            'idkota10'                  => $request->idkota10,
+            'has_harga_khusus'          => $request->has_harga_khusus,
+            'harga_doc'                 => $request->harga_doc,
+            'harga_kg'                  => $request->harga_kg,
+            'harga_kg_selanjutnya'      => $request->harga_kg_selanjutnya,
+            'harga_koli_b'              => $request->harga_koli_b,
+            'harga_koli_bb'             => $request->harga_koli_bb,
+            'harga_koli_k'              => $request->harga_koli_k,
+            'harga_koli_s'              => $request->harga_koli_s,
         ]);
 
         return redirect('master/agen')->with('message', 'created');
     }
 
     public function update(Request $request)
-    {
+    {   
+        // dd($request);
         $agen = Agen::find($request->id)->update([
-            'nama'       => $request->nama,
-            'kode'       => $request->kode,
-            'alamat'     => $request->alamat,
-            'no_telp'    => $request->no_telp,
-            'presentase' => $request->presentase,
-            'idkota1'    => $request->idkota1,
-            'idkota2'    => $request->idkota2,
-            'idkota3'    => $request->idkota3,
-            'idkota4'    => $request->idkota4,
-            'idkota5'    => $request->idkota5,
-            'idkota6'    => $request->idkota6,
-            'idkota7'    => $request->idkota7,
-            'idkota8'    => $request->idkota8,
-            'idkota9'    => $request->idkota9,
-            'idkota10'   => $request->idkota10,
+            'nama'                      => $request->nama,
+            'kode'                      => $request->kode,
+            'alamat'                    => $request->alamat,
+            'no_telp'                   => $request->no_telp,
+            'presentase'                => $request->presentase,
+            'idkota1'                   => $request->idkota1,
+            'idkota2'                   => $request->idkota2,
+            'idkota3'                   => $request->idkota3,
+            'idkota4'                   => $request->idkota4,
+            'idkota5'                   => $request->idkota5,
+            'idkota6'                   => $request->idkota6,
+            'idkota7'                   => $request->idkota7,
+            'idkota8'                   => $request->idkota8,
+            'idkota9'                   => $request->idkota9,
+            'idkota10'                  => $request->idkota10,
+            'has_harga_khusus'          => $request->has_harga_khusus,
+            'harga_doc'                 => $request->harga_doc,
+            'harga_kg'                  => $request->harga_kg,
+            'harga_kg_selanjutnya'      => $request->harga_kg_selanjutnya,
+            'harga_koli_b'              => $request->harga_koli_b,
+            'harga_koli_bb'             => $request->harga_koli_bb,
+            'harga_koli_k'              => $request->harga_koli_k,
+            'harga_koli_s'              => $request->harga_koli_s,
         ]);
         return redirect('master/agen')->with('message', 'updated');
     }
@@ -95,23 +112,24 @@ class AgenController extends Controller
                 $strings .= '<span class="label label-lg label-dark label-inline mr-2">' . $k->nama . '</span>';
             endforeach;
             $agens->push([
-                'id'          => $a->id,
-                'kode'        => $a->kode,
-                'nama_agen'   => $a->nama,
-                'alamat_agen' => $a->alamat,
-                'no_telp'     => $a->no_telp,
-                'presentase'  => $a->presentase,
-                'coverage'    => $strings,
+                'id'                => $a->id,
+                'kode'              => $a->kode,
+                'nama_agen'         => $a->nama,
+                'alamat_agen'       => $a->alamat,
+                'no_telp'           => $a->no_telp,
+                'presentase'        => $a->presentase,
+                'coverage'          => $strings,
+                'has_harga_khusus'  => $a->has_harga_khusus,
             ]);
             $strings = '';
-        endforeach;
+        endforeach; 
         return Datatables::of($agens)
             ->editColumn('presentase', function ($a) {
                 return $a['presentase'] . " % ";
             })
             ->addColumn('aksi', function ($a) {
                 $btnhapus = '<button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus " onClick="deleteAgen(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>';
-
+                
                 return '<div class="btn-group" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Agen">
                     <i class="flaticon-edit-1"  data-toggle="modal" data-target="#modal-edit-agen" onClick="editAgen(' . $a['id'] . ')"></i>
@@ -119,7 +137,14 @@ class AgenController extends Controller
                 '.(($a['id']>1) ? $btnhapus : '').'
                 </div>';
             })
-            ->rawColumns(['coverage', 'aksi', 'presentase'])
+            ->addColumn('hargakhusus', function ($a) {  
+                if ((int)$a['has_harga_khusus'] == 1):
+                    return '<span class="label label-lg label-success label-inline mr-2">ya</span>';
+                else:
+                    return '<span class="label label-lg label-danger label-inline mr-2">Tidak</span>';
+                endif;
+            })
+            ->rawColumns(['coverage', 'aksi', 'presentase', 'hargakhusus'])
             ->make(true);
     }
 }

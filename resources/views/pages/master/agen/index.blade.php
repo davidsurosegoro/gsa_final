@@ -16,11 +16,12 @@
         <table id="datatables" class="table table-striped table-hover table-bordered">
           <thead>
             <tr>
-              <th>Kode</th>
+              <th width='5%'>Kode</th>
               <th>Nama Agen</th>
-              <th>Alamat</th>
-              <th>Nomor Telpon</th>
-              <th>Presentase</th>
+              <th width='20%'>Alamat</th>
+              <th width='10%'>Nomor Telpon</th>
+              <th width='10%'>Presentase</th>
+              <th>harga khusus</th>
               <th>Coverage Kota Agen</th>
               <th>Aksi</th>
             </tr>
@@ -47,6 +48,7 @@
 	    {data: 'alamat_agen', name:'alamat_agen'},
 	    {data: 'no_telp', name:'no_telp'},
 	    {data: 'presentase', name:'presentase'},
+	    {data: 'hargakhusus', name:'hargakhusus'},
 	    {data: 'coverage', name:'coverage'},
 	    {data: 'aksi', name:'aksi'},
 	],
@@ -119,6 +121,14 @@
                               $('#alamat').val(data.agen.alamat)
                               $('#no_telp').val(data.agen.no_telp)
                               $('#presentase').val(data.agen.presentase)
+                              $('#has_harga_khusus').val(data.agen.has_harga_khusus)
+                              $('#harga_doc').val(data.agen.harga_doc)
+                              $('#harga_kg').val(data.agen.harga_kg)
+                              $('#harga_kg_selanjutnya').val(data.agen.harga_kg_selanjutnya)
+                              $('#harga_koli_b').val(data.agen.harga_koli_b)
+                              $('#harga_koli_bb').val(data.agen.harga_koli_bb)
+                              $('#harga_koli_k').val(data.agen.harga_koli_k)
+                              $('#harga_koli_s').val(data.agen.harga_koli_s)
                             }
                           }) 
     }

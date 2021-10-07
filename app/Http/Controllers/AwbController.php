@@ -135,14 +135,17 @@ class AwbController extends Controller
         endif;
         $id_agen_asal = 0;
         if ($customer->is_agen == 0):
-            if ((int) Auth::user()->level == 1):
-                $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
-                $qty         = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
+            if ((int) Auth::user()->level == 1 || ((int) Auth::user()->level == 2 && $customer->can_access_satuan == 1)):
+                $agen_tujuan    = Agen::where('id',$request->id_agen_penerima)->first(); 
+                
+                $harga_agen_or_customer = ($agen_tujuan->has_harga_khusus == 1) ? $agen_tujuan : $customer;
+                $total_harga    = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $harga_agen_or_customer, $charge_oa);
+                $qty            = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
             endif;
-            if ((int) Auth::user()->level == 2 && $customer->can_access_satuan == 1):
-                $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
-                $qty         = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
-            endif;
+            // if ((int) Auth::user()->level == 2 && $customer->can_access_satuan == 1):
+            //     $total_harga = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $customer, $charge_oa);
+            //     $qty         = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
+            // endif;
         else:
             if ((int) Auth::user()->level == 1):
                 $total_harga['total'] = str_replace(',', '', $request->harga_total);
@@ -152,6 +155,7 @@ class AwbController extends Controller
                 return redirect('awb')->with('failed_customer',$customer->nama);
             endif;
         endif;
+        // dd($total_harga);
         $labelalamat = "";
         if($request->labelalamat !== "manual"):
             $masteralamat   = Alamat::where('alamat',$request->labelalamat)->first();
@@ -786,23 +790,17 @@ class AwbController extends Controller
         $alamat = Alamat::find($request->alamat_id);
         return response()->json(array('data' => $alamat));
     }
-
-    public function updateHarga($id)
-    {
-        $customer = Customer::find($awb->id_customer);
-        //dd($customer);
-        $total = $this->hitungHargaTotal($awb->qty_kecil, $awb->qty_sedang, $awb->qty_besar, $awb->qty_besarbanget, $awb->qty_kg, $awb->qty_doc, $customer, $awb->charge_oa);
-    }
+ 
 
     private function hitungHargaTotal($qty_kecil, $qty_sedang, $qty_besar, $qty_besar_banget, $qty_kg, $qty_dokumen, $customer, $charge_oa)
     {
         $harga_kg = 0;
         $harga_oa = 0;
         if ($qty_kg > 0):
-                $harga_kg = $customer->harga_kg * 5 + (3000 * ((($qty_kg > 5 ) ?$qty_kg : 5 ) - 5));
+                $harga_kg = $customer->harga_kg * 5 + ($customer->harga_kg_selanjutnya * ((($qty_kg > 5 ) ?$qty_kg : 5 ) - 5));
         endif;
         if($qty_kg < 0):
-            $harga_kg = $customer->harga_kg * 5 - (3000 * ((($qty_kg < -5 ) ?$qty_kg : -5 ) + 5));
+            $harga_kg = $customer->harga_kg * 5 - ($customer->harga_kg_selanjutnya * ((($qty_kg < -5 ) ?$qty_kg : -5 ) + 5));
         endif;
         $harga_total = ($qty_kecil * $customer->harga_koli_k) + ($qty_sedang * $customer->harga_koli_s) + ($qty_besar * $customer->harga_koli_b) + ($qty_besar_banget * $customer->harga_koli_bb) + ($qty_dokumen * $customer->harga_doc) + $harga_kg;
         if ($charge_oa == 1):

@@ -12,7 +12,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-12 col-lg-12">
+            <div class="col-xs-12 col-md-6">
               <div class="form-group">
                 <label>Nama Agen:</label>
                 <input type="text" name="nama" class="form-control form-control-solid" placeholder="Inpur Nama Agen" required>
@@ -33,6 +33,44 @@
               <div class="form-group">
                 <label>Presentase Bagi Hasil :</label>
                 <input type="number" name="presentase" class="form-control form-control-solid" placeholder="Input Presentase Bagi Hasil. . ." required>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 "> 
+              <div class="form-group">
+                <label>memiliki harga khusus?</label>
+                {{-- <input type="number" name="has_harga_khusus" id="has_harga_khusus" class="form-control form-control-solid" placeholder="has_harga_khusus" > --}}
+                <select class="form-control  form-control-solid form-select" name="has_harga_khusus"  aria-label="Default select example">
+                  <option value="0">tidak</option>
+                  <option value="1">ya</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>harga dokumen</label>
+                <input type="number" name="harga_doc"  class="form-control form-control-solid" placeholder="harga_doc" >
+              </div>
+              <div class="form-group">
+                <label>harga kg(untuk 5 kg pertama)</label>
+                <input type="number" name="harga_kg"  class="form-control form-control-solid" placeholder="harga_kg" >
+              </div>
+              <div class="form-group">
+                <label>harga kg selanjutnya</label>
+                <input type="number" name="harga_kg_selanjutnya"  class="form-control form-control-solid" placeholder="harga_kg_selanjutnya" >
+              </div>
+              <div class="form-group">
+                <label>harga koli kecil</label>
+                <input type="number" name="harga_koli_k"  class="form-control form-control-solid" placeholder="harga_koli_k" >
+              </div>
+              <div class="form-group">
+                <label>harga koli sedang</label>
+                <input type="number" name="harga_koli_s"  class="form-control form-control-solid" placeholder="harga_koli_s" >
+              </div>
+              <div class="form-group">
+                <label>harga koli besar</label>
+                <input type="number" name="harga_koli_b"  class="form-control form-control-solid" placeholder="harga_koli_b" >
+              </div>
+              <div class="form-group">
+                <label>harga koli besar banget</label>
+                <input type="number" name="harga_koli_bb"  class="form-control form-control-solid" placeholder="harga_koli_bb" >
               </div>
             </div>
           </div>
