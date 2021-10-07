@@ -200,7 +200,7 @@
                                     <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">KG</th> 
                                     <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">Doc</th> 
                                     {{-- <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">NM.PENERIMA</th>   --}}
-                                    <th rowspan="2" style="width:2cm;padding:0.1cm;font-weight:normal;">KET</th> 
+                                    <th rowspan="2" style="width:2cm;padding:0.1cm;font-weight:normal;">Harga</th> 
                                 </tr>
                                 <tr>
                                     <td class="text-center">{{$manifest->jumlah_koli}}</td>
@@ -241,7 +241,9 @@
                                     <td style="padding:2px;" class='text-center'>{{((int)$item->qty_doc > 0)  ? $item->qty_doc : ''}}</td> 
                                     {{-- <td style="padding:2px;">{{$item->nama_penerima}} </td>   --}}
                                     <td style="padding:2px;position:relative !important;">
-                                        {{$item->keterangan}} 
+                                        @if( (int)$item->id_kota_transit>0)
+                                            Rp.{{number_format($awb[0]->total_harga, 0)}} 
+                                        @endif
                                         
                                             <div class="hideprint totalbarangmasuk" 
                                                 @if ($qty_umum - $item->qtyloaded == 0)                                            
