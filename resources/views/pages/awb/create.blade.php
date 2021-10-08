@@ -219,6 +219,7 @@
                 </div>
               </div>
             </div>
+            @if((int)Auth::user()->level == 1)
             <div class="col-md-12">
               <div class="row mt-0">
                 
@@ -231,6 +232,7 @@
                 </div>
               </div>
             </div>
+            @endif
             <div class="col-md-12">
               <div class="row mb-0">
                 <div class="col-lg-2">
