@@ -384,6 +384,13 @@
                     width:150,
                 },
                 {
+                    caption: "Harga Charge",
+                    dataField: "harga_charge",
+                    dataType: "number",
+                    format:"#,##0",
+                    width:150,
+                },
+                {
                     caption: "Kode Manifest",
                     dataField: "kode_manifest",
                     dataType: "string",

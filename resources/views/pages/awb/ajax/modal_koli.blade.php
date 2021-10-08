@@ -46,6 +46,13 @@
               </th>
             </tr>
             <tr>
+              <td>Harga Charge</td>
+              <th>
+                <strong class="minus_harga"></strong>
+                <strong class="harga_charge"></strong>
+              </th>
+            </tr>
+            <tr>
               <td>Total OA </td>
               <th><strong class="total_oa"></strong></th>
             </tr>

@@ -124,6 +124,11 @@
       <label>Harga Per Dokumen:</label>
        <input type="text" class="form-control rupiah" name="harga_doc" placeholder="Input harga per dokumen. . ." required/>
      </div>
+
+     <div class="form-group">
+       <label>Harga Kg Selanjutnya:</label>
+        <input type="text" class="form-control rupiah" name="harga_kg_selanjutnya" placeholder="Input harga kg selanjutnya. . ." required/>
+      </div>
      
    
    <div class="form-group">

@@ -93,6 +93,7 @@ class ReportController extends Controller
                 'kode_invoice' => $a->kode_invoice,
                 'status_pembayaran' => $a->status_pembayaran,
                 'status_tracking' => $a->status_tracking,
+                'harga_charge' => $a->harga_charge,
         ]);
         endforeach;
         $data['data']= $collect_awb;

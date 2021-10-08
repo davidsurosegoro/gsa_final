@@ -373,6 +373,7 @@
                 $('#kg').html(data.awb.qty_kg)
                 $('#qty').html(data.awb.qty)
                 $('.total_harga').html(data.awb.total_harga)
+                $('.harga_charge').html(data.awb.harga_charge).number(true)
                 $('.total_oa').html(data.awb.idr_oa).number(true)
                 $('#noawb_koli').html(data.awb.noawb).number(true)
                 $('.total_harga').number(true)

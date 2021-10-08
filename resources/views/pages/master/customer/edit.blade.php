@@ -156,6 +156,11 @@
       <label>Harga per Dokumen:</label>
        <input type="text" class="form-control rupiah"  value="{{ $customer->harga_doc }}" name="harga_doc" placeholder="Input harga_doc. . ." required/>
      </div>
+
+     <div class="form-group">
+       <label>Harga Kg Selanjutnya:</label>
+        <input type="text" class="form-control rupiah"  value="{{ $customer->harga_kg_selanjutnya }}" name="harga_kg_selanjutnya" placeholder="Input harga kg selanjutnya. . ." required/>
+      </div>
     
     <div class="form-group">
       <label>Customer ini adalah agen</label>

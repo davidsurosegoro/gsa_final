@@ -134,12 +134,13 @@ class AwbController extends Controller
             $request->qty_kg           = 0;
         endif;
         $id_agen_asal = 0;
+        $harga_charge = ($request->harga_charge == null) ? 0 : str_replace(',', '',$request->harga_charge);
         if ($customer->is_agen == 0):
             if ((int) Auth::user()->level == 1 || ((int) Auth::user()->level == 2 && $customer->can_access_satuan == 1)):
                 $agen_tujuan    = Agen::where('id',$request->id_agen_penerima)->first(); 
                 
                 $harga_agen_or_customer = ($agen_tujuan->has_harga_khusus == 1) ? $agen_tujuan : $customer;
-                $total_harga    = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $harga_agen_or_customer, $charge_oa);
+                $total_harga    = $this->hitungHargaTotal($request->qty_kecil, $request->qty_sedang, $request->qty_besar, $request->qty_besar_banget, $request->qty_kg, $request->qty_doc, $harga_agen_or_customer, $charge_oa,$harga_charge);
                 $qty            = $request->qty_kecil + $request->qty_sedang + $request->qty_besar + $request->qty_besar_banget + $request->qty_kg + $request->qty_doc;
             endif;
             // if ((int) Auth::user()->level == 2 && $customer->can_access_satuan == 1):
@@ -218,7 +219,8 @@ class AwbController extends Controller
                 'labelalamat'         => $labelalamat,
                 'harga_kg_pertama'    => $harga_kg_pertama,
                 'harga_kg_selanjutnya'=> $harga_kg_selanjutnya,
-                'jenis_oa'            => $customer->jenis_out_area
+                'jenis_oa'            => $customer->jenis_out_area,
+                'harga_charge'        => $harga_charge
             ]);
             $this->inserthistoryscan($awb->id,(($request->referensi == null) ? 'booked' : 'complete'),0);
             return redirect('awb')->with('message', 'created');
@@ -266,7 +268,8 @@ class AwbController extends Controller
                 'labelalamat'         => $labelalamat,
                 'harga_kg_pertama'    => $harga_kg_pertama,
                 'harga_kg_selanjutnya'=> $harga_kg_selanjutnya,
-                'jenis_oa'            => $customer->jenis_out_area
+                'jenis_oa'            => $customer->jenis_out_area,
+                'harga_charge'        => $harga_charge
             ]);
             return redirect('awb')->with('message', 'updated');
         endif;
@@ -792,7 +795,7 @@ class AwbController extends Controller
     }
  
 
-    private function hitungHargaTotal($qty_kecil, $qty_sedang, $qty_besar, $qty_besar_banget, $qty_kg, $qty_dokumen, $customer, $charge_oa)
+    private function hitungHargaTotal($qty_kecil, $qty_sedang, $qty_besar, $qty_besar_banget, $qty_kg, $qty_dokumen, $customer, $charge_oa,$harga_charge)
     {
         $harga_kg = 0;
         $harga_oa = 0;
@@ -813,7 +816,7 @@ class AwbController extends Controller
                 $harga_oa = ($qty_kecil + $qty_sedang + $qty_besar + $qty_besar_banget + $qty_dokumen + $oa_kg) * $customer->harga_oa;
             endif;
         endif;
-        $harga_total = $harga_total + $harga_oa;
+        $harga_total = $harga_total + $harga_oa + $harga_charge;
         $tots        = array('total' => $harga_total, 'oa' => $harga_oa);
         return $tots;
     }

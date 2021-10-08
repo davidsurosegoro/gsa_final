@@ -204,7 +204,8 @@
                     <label class="font-weight-bold">Harga Kg Selanjutnya</label>
                     <input type="text" class="form-control rupiah" id="harga_kg_selanjutnya" value="{{ $awb->harga_kg_selanjutnya }}"  name="harga_kg_selanjutnya" placeholder="Input harga kg selanjutnya. . ." value="0">
                   </div>
-                </div><div class="col-lg-3" id="div-bypass" style="position: relative;background-color: aquamarine; border-radius:5px;">
+                </div>
+                <div class="col-lg-3" id="div-bypass" style="position: relative;background-color: aquamarine; border-radius:5px;">
                   <div class="text-center d-none calculate_abs" >
                     <img src="{{asset('assets/gsa/img/loading.gif')}}" width='50px;'>
                   </div>
@@ -214,6 +215,18 @@
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary btn-warning" type="button" id="btnhitung_bypass">Hitung</button>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="row mt-0">
+                
+                <div class="col-lg-3" style="position: relative;background-color: aquamarine; border-radius:5px; padding-bottom:10px;">
+                  <label class="font-weight-bold">Harga Charge Kelebihan Beban (Rp.)</label>
+                  <div class="input-group ">
+                    <input type="text" class="form-control rupiah" id="harga_charge" value="0"  name="harga_charge" placeholder="Input harga bypass. . ." >
+                   
                   </div>
                 </div>
               </div>
