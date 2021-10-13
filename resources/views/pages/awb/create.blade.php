@@ -219,6 +219,17 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-12">
+              <div class="row mb-0">
+                <div class="col-lg-2">
+                  <div class="form-group" id="qty_koli_doc" >
+                    <label class="font-weight-bold">Qty Koli Dokumen @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             @if((int)Auth::user()->level == 1)
             <div class="col-md-12">
               <div class="row mt-0">
@@ -233,16 +244,6 @@
               </div>
             </div>
             @endif
-            <div class="col-md-12">
-              <div class="row mb-0">
-                <div class="col-lg-2">
-                  <div class="form-group" id="qty_koli_doc" >
-                    <label class="font-weight-bold">Qty Koli Dokumen @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
-                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="row" id="customer-biasa">
               
