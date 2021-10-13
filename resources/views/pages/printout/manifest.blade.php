@@ -242,7 +242,7 @@
                                     {{-- <td style="padding:2px;">{{$item->nama_penerima}} </td>   --}}
                                     <td style="padding:2px;position:relative !important;">
                                         @if( (int)$item->id_kota_transit>0)
-                                            Rp.{{number_format($awb[0]->total_harga, 0)}} 
+                                            Rp.{{number_format($item->total_harga, 0)}} 
                                         @endif
                                         
                                             <div class="hideprint totalbarangmasuk" 

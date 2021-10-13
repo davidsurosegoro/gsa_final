@@ -81,7 +81,7 @@
                         <th  style="width:1cm;">KL</th> 
                         <th  style="width:1cm;">KG</th> 
                         <th  style="width:1cm;">doc</th>  
-                        <th  rowspan="2" style="width:1cm;">KET</th> 
+                        <th  rowspan="2" style="width:1cm;">HARGA</th> 
                     </tr>
                     <tr>
                         <td class="text-center">{{$total_koli}}</td>
@@ -106,7 +106,11 @@
                         </td> 
                         <td style="padding:5px;" class='text-center'>{{$item->qty_kg}}</td> 
                         <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td>  
-                        <td style="padding:5px;">{{$item->keterangan}}</td> 
+                        <td style="padding:5px;">
+                            @if( (int)$item->id_kota_transit>0)
+                                Rp.{{number_format($item->total_harga, 0)}} 
+                            @endif    
+                        </td> 
                     </tr>   
                     @endforeach   
                 </tbody>

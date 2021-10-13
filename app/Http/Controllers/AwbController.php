@@ -610,7 +610,7 @@ class AwbController extends Controller
                 'kota_asal'       => $a->kota_asal,
                 'kota_tujuan'     => $a->kota_tujuan,
                 'kota_transit'    => $a->kota_transit,
-                'tanggal_awb'     => date("d F Y (h:i)", strtotime($a->created_at)),
+                'tanggal_awb'     => date("d F Y (H:i)", strtotime($a->created_at)),
                 'status_tracking' => $a->status_tracking,
                 'qty'             => $a->qty,
                 'kecil'           => $a->qty_kecil,
