@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Agen;
 use App\Kota;
+use App\Applicationsetting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -32,14 +33,21 @@ class KotaController extends Controller
         return Datatables::of($kota)
         ->addColumn('aksi', function ($a) {
             $status='nonaktif';
+            $id_sby         = (int)ApplicationSetting::checkappsetting('id-surabaya'); 
             if($a['status']=='nonaktif'){$status='aktif';}
-            return '
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="'.url('master/kota/edit/'.$a['id']).'" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Kota">
-                    <i class="flaticon-edit-1"></i>
-                </a>
-                <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus Kota" onClick="deleteCustomer(\''.$status.'\',' . $a['id'] . ',\'' . $a['nama'] . '\')"> <i class="flaticon-delete"></i> </button>
-            </div>';
+            if($id_sby == $a['id']){
+                return '';
+            }else{
+                $tombolaktif = ($a['status'] == 'aktif') ? '<i class="fa fa-trash-o" aria-hidden="true"></i>' : '<i class="fa fa-check" aria-hidden="true"></i>';
+                return '
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="'.url('master/kota/edit/'.$a['id']).'" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit Kota">
+                        <i class="flaticon-edit-1"></i>
+                    </a>
+                    <button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol aktif/nonaktif Kota" onClick="deleteCustomer(\''.$status.'\',' . $a['id'] . ',\'' . $a['nama'] . '\')"> 
+                    '.$tombolaktif.'</button>
+                </div>';
+            }
         })         
         ->addColumn('aktifnonaktif', function ($a) {
             $aktifnonaktif='<div class="text-center alert alert-success m-0 p-1" role="alert">AKTIF</div>';
@@ -147,6 +155,7 @@ class KotaController extends Controller
     public function delete(Request $request){ 
         $kota = Kota::where('id',$request['id'])->first(); 
         $kota->status = $request['status']; 
+        // dd($request['status']);
         $kota->save();
 
         // $kota = Kota::find($request->id)->delete(); 

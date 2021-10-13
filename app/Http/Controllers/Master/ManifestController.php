@@ -34,7 +34,7 @@ class ManifestController extends Controller
     
     public function datatables()
     {   $level_user = (int) Auth::user()->level;
-        $manifest = Manifest::select(DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y') as tanggal_manifest"),"agen.kode as kodeagen","manifest.*" , "kotaasal.kode as kodekotaasal","kotatujuan.kode as kodekotatujuan" ,"users.nama as namauser")
+        $manifest = Manifest::select(DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y (%H:%i)') as tanggal_manifest"),"agen.kode as kodeagen","manifest.*" , "kotaasal.kode as kodekotaasal","kotatujuan.kode as kodekotatujuan" ,"users.nama as namauser")
                 ->join('kota as kotaasal',      'kotaasal.id',     '=', 'manifest.id_kota_asal') 
                 ->join('kota as kotatujuan',    'kotatujuan.id',   '=', 'manifest.id_kota_tujuan') 
                 ->join("users",                 'users.id',        '=', 'manifest.dibuat_oleh')
