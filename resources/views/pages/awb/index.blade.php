@@ -9,9 +9,22 @@
           <span class="d-block text-muted pt-2 font-size-sm" style="color:red !important;background-color:rgb(255, 255, 137);padding:5px;">Batas maksimal order jam 16.00</span>
         @endif
       </h3>
-      <select id='status_complete' class="form-control col-xs-12 col-md-3 " id="exampleFormControlSelect1">
+      <select id='status_complete' class="form-control col-xs-12 col-md-2 mr-2 text-muted pt-2 font-size-sm" onChange="onChangeFilter()">
         <option value='-'>Sembunyikan complete</option>
         <option value="complete">Tampilkan complete</option> 
+      </select> 
+      <input id="tanggal_filter" type="text" class="form-control col-xs-12 col-md-2 mr-2 datepicker" value="-" onChange="onChangeFilter()">
+      <select id='customer' class="select2 form-control col-xs-12 col-md-3 mr-4 " onChange="onChangeFilter()">
+        <option value='-'>Tampilkan Semua Pengirim</option>
+        @foreach($master_customer as $c)
+          <option value="{{ $c->id }}">{{ $c->nama }}</option>
+        @endforeach
+      </select> 
+      <select name="kota" id='kota' class="select2 form-control col-xs-12 col-md-2" onChange="onChangeFilter()">
+        <option value='-'>Semua Tujuan</option>
+        @foreach($kota as $k)
+          <option value="{{ $k->id }}">{{ $k->nama }}</option>
+        @endforeach
       </select> 
     </div>
     <div class="card-toolbar">  
@@ -156,10 +169,14 @@
       //   $('#delivering').addClass('d-none')
       // }
     })
-    $('#status_complete').change(function(){
-      console.log($('#status_complete').val())
+    // $('#status_complete').change(function(){
+    //   console.log($('#status_complete').val())
+    //   datatable.ajax.reload();
+    // })
+    function onChangeFilter(){
+      
       datatable.ajax.reload();
-    })
+    }
   var datatable = $('#datatables').DataTable({
 	    processing    : true,
 	    serverSide    : false,
@@ -170,6 +187,9 @@
             "url": '{{ url('awb/datatables') }}',
             data: function(d){
                 d.status_complete = $('#status_complete').val();
+                d.tanggal         = $('#tanggal_filter').val();
+                d.customer        = $('#customer').val();
+                d.kota            = $('#kota').val();
             }
         },
       "columnDefs": [{
@@ -375,9 +395,11 @@
                 $('.total_harga').html(data.awb.total_harga)
                 $('.harga_charge').html(data.awb.harga_charge).number(true)
                 $('.total_oa').html(data.awb.idr_oa).number(true)
+                $('.harga_gsa').html(data.awb.harga_gsa).number(true)
                 $('#noawb_koli').html(data.awb.noawb).number(true)
                 $('.total_harga').number(true)
                 $('.total_oa').number(true)
+                $('.harga_gsa').number(true)
                 if(data.awb.qty < 0){
                   $('.minus_harga').html('-')
                 }

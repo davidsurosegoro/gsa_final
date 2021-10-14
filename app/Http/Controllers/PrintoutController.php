@@ -152,9 +152,8 @@ class PrintoutController extends Controller
             $noawb .= "0";
         }
         $noawb .= $awb[0]->noawb;
-        $total_penagihan = $awb[0]->total_harga + $awb[0]->harga_gsa;
         // dd($total_penagihan);
-        return view("pages.printout.awbtri",compact('awb','noawb','total_penagihan'));
+        return view("pages.printout.awbtri",compact('awb','noawb'));
     }
 
     /**

@@ -414,6 +414,7 @@ var loadPanel = $(".loadpanel").dxLoadPanel({
                rtl: KTUtil.isRTL(),
                todayHighlight: true,
                orientation: "bottom left",
+               autoclose: true
               });
     $('.datepicker_readonly').datepicker({
                rtl: KTUtil.isRTL(),

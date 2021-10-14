@@ -46,7 +46,9 @@ class AwbController extends Controller
                 $is_akses_qty = "true";
             endif;
         endif;
-        return view('pages.awb.index', compact('is_akses_qty', 'hide_qty'));
+        $master_customer = Customer::all();
+        $kota            = Kota::where('id', '>', 0)->where('status','aktif')->get();
+        return view('pages.awb.index', compact('is_akses_qty', 'hide_qty','master_customer','kota'));
     }
 
     public function edit($id, $hilang)
@@ -574,8 +576,11 @@ class AwbController extends Controller
     public function datatables(Request $request)
     {   
         $completecondition = ($request->status_complete == '-')  ? 'status_tracking <> \'complete\' and status_tracking <> \'cancel\' and' : '' ;
+        $tanggalcondition = ($request->tanggal == '-') ? "" : " AND tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
+        $customercondition = ($request->customer == '-') ? "" : " AND id_customer ='".$request->customer."'";
+        $kotacondition = ($request->kota == '-') ? "" : " AND id_kota_tujuan ='".$request->kota."'";
         $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
-        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
+        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ".$tanggalcondition.$customercondition.$kotacondition." ORDER BY a.id DESC");
         if ((int) Auth::user()->level !== 1):
             //dd(Auth::user()->level);
             $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");

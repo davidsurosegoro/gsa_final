@@ -52,6 +52,12 @@
                 <strong class="harga_charge"></strong>
               </th>
             </tr>
+            @if((int)Auth::user()->level == 1)
+            <tr>
+              <td> <strong class="text-warning">Harga Gsa </strong></td>
+              <th><strong class="harga_gsa text-warning"></strong></th>
+            </tr>
+            @endif
             <tr>
               <td>Total OA </td>
               <th><strong class="total_oa"></strong></th>
