@@ -125,7 +125,7 @@
                 $qty_umum = $awb[0]->qty_kecil + $awb[0]->qty_sedang + $awb[0]->qty_besar + $awb[0]->qty_besarbanget;
             }
             if($awb[0]->qty_kg > 0){
-                $qty_umum = 1;
+                $qty_umum = ($awb[0]->jumlah_koli == 0) ? 1 : $awb[0]->jumlah_koli;
             }
             if($awb[0]->qty_doc > 0){
                 $qty_umum = $awb[0]->qty_doc;

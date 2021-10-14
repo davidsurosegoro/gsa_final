@@ -189,7 +189,13 @@
                     <label class="font-weight-bold">Qty Koli Kg @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
                     <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
                   </div>
+                  
+                  <div class="form-group" id="qty_koli_doc" >
+                    <label class="font-weight-bold">Qty Koli Dokumen @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_doc }}"  name="qty_doc" placeholder="Input jumlah koli dokumen. . ." value="0">
+                  </div>
                 </div>
+                
                 <div class="col-lg-3 showcalculating" id="div-kg-pertama" style="position: relative;">
                   <div class="text-center d-none calculate_abs" >
                     <img src="{{asset('assets/gsa/img/loading.gif')}}" width='50px;'>
@@ -219,7 +225,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
               <div class="row mb-0">
                 <div class="col-lg-2">
                   <div class="form-group" id="qty_koli_doc" >
@@ -228,16 +234,31 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> --}}
             
             @if((int)Auth::user()->level == 1)
             <div class="col-md-12">
               <div class="row mt-0">
                 
-                <div class="col-lg-3" style="position: relative;background-color: aquamarine; border-radius:5px; padding-bottom:10px;">
+                <div id="jumlah_koli_div" class="col-lg-2 mr-2" style="position: relative;background-color: #e5ff7f; border-radius:5px; padding-bottom:10px;">
+                  <label class="font-weight-bold">Jumlah Koli</label>
+                  <div class="input-group ">
+                    <input type="text" class="form-control rupiah" id="jumlah_koli" value="{{ $awb->jumlah_koli }}"  name="jumlah_koli" placeholder="Input jumlah koli. . ." >
+                   
+                  </div>
+                </div>
+
+                <div class="col-lg-3 mr-2" style="position: relative;background-color: aquamarine; border-radius:5px; padding-bottom:10px;">
                   <label class="font-weight-bold">Harga Charge Kelebihan Beban (Rp.)</label>
                   <div class="input-group ">
-                    <input type="text" class="form-control rupiah" id="harga_charge" value="0"  name="harga_charge" placeholder="Input harga bypass. . ." >
+                    <input type="text" class="form-control rupiah" id="harga_charge" value="{{ $awb->harga_charge }}"  name="harga_charge" placeholder="Input harga bypass. . ." >
+                   
+                  </div>
+                </div>
+                <div id="harga_gsa_div" class="col-lg-3" style="position: relative;background-color: #e5ff7f; border-radius:5px; padding-bottom:10px;">
+                  <label class="font-weight-bold">Harga GSA (Rp.)</label>
+                  <div class="input-group ">
+                    <input type="text" class="form-control rupiah" id="harga_gsa" value="{{ $awb->harga_gsa }}"  name="harga_gsa" placeholder="Input harga gsa. . ." >
                    
                   </div>
                 </div>
@@ -501,8 +522,11 @@
 @endsection
 @section('script')
 <script>
+  $('#harga_gsa_div').hide();
+  $('#jumlah_koli_div').hide();
   var _kecamatan_id_ = 0;
   var _showcalculate = 0;
+  var _customer_id_ = 0;
   $('form').submit(function(){
       $('body').find('button[type=submit]').prop('disabled', true);
   });
@@ -571,6 +595,7 @@
         '_token': $('input[name=_token]').val()
       },
       success:function(data){
+        _customer_id_ = data.data.id;
         console.log(data.data);
         $('#nama_pengirim').val(data.data.nama)
         // $('#alamat_pengirim_auto').html(data.alamat)
@@ -620,7 +645,9 @@
             $('#div-kg-pertama').show();
             $('#div-kg-selanjutnya').show();
             $('#div-bypass').show();
+            $('#harga_gsa_div').show();
             $("#jenis_koli").attr("readonly", "true");
+            
             // $('#harga_kg_pertama').val(data.data.harga_kg)
             // $('#harga_kg_selanjutnya').val(data.data.harga_kg)
           }
@@ -628,7 +655,9 @@
             $('#div-kg-pertama').hide();
             $('#div-kg-selanjutnya').hide();
             $('#div-bypass').hide();
+            $('#harga_gsa_div').hide();
             $("#jenis_koli").attr("readonly", "false");
+            $('#jumlah_koli_div').hide();
           }
         }
         if(data.data.id == 26){
@@ -667,6 +696,7 @@
       $('#qty_koli_bb').show();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').hide();
+      $('#jumlah_koli_div').hide();
     }
     else if(value == "dokumen"){
       $('#qty_koli_k').hide();
@@ -675,6 +705,7 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').show();
       $('#qty_koli_kg').hide();
+      $('#jumlah_koli_div').hide();
     }
     else if(value == "kg"){
       $('#qty_koli_k').hide();
@@ -683,6 +714,12 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').show();
+      if(_customer_id_ == 26){
+        $('#jumlah_koli_div').show();
+      }
+      else{
+        $('#jumlah_koli_div').hide();
+      }
     }
     else{
       $('#qty_koli_k').hide();
@@ -691,6 +728,7 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').hide();
+      $('#jumlah_koli_div').hide();
     }
   })
 
@@ -738,6 +776,8 @@
       $('#div-kg-pertama').show()
       $('#div-kg-selanjutnya').show()
       $('#div-bypass').show()
+      $('#harga_gsa_div').show();
+      $("#jenis_koli option[value='koli']").remove();
     }
     if($('#check_alamat_tujuan').val() == 0){
       // $('#alamat_tujuan').show()
@@ -774,6 +814,7 @@
       $('#qty_koli_bb').show();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').hide();
+      $('#jumlah_koli_div').hide()
     }
     else if($('#jenis_koli').val() == "dokumen"){
       $('#qty_koli_k').hide();
@@ -782,6 +823,7 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').show();
       $('#qty_koli_kg').hide();
+        $('#jumlah_koli_div').hide()
     }
     else if($('#jenis_koli').val() == "kg"){
       $('#qty_koli_k').hide();
@@ -790,6 +832,12 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').show();
+      if($('#customer').val() == 26){
+        $('#jumlah_koli_div').show()
+      }
+      else{
+        $('#jumlah_koli_div').hide()
+      }
     }
     else{
       $('#qty_koli_k').hide();
@@ -798,6 +846,7 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').hide();
+      $('#jumlah_koli_div').hide()
     }
   })
   $('#kota_asal').on('change',function(){
