@@ -390,6 +390,15 @@
                     format:"#,##0",
                     width:150,
                 },
+                @if((int) Auth::user()->level == 1 )
+                {
+                    caption: "Harga GSA",
+                    dataField: "harga_gsa",
+                    dataType: "number",
+                    format:"#,##0",
+                    width:150,
+                },
+                @endif
                 {
                     caption: "Kode Manifest",
                     dataField: "kode_manifest",
