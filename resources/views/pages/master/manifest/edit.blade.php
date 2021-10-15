@@ -69,7 +69,7 @@
             <label>Keterangan:
                 
                 <select style="width:90%" class="select2 select_readonly form-control" id="keterangan_combo" >
-                    <option value="">--Pilih Keterangan--</option> 
+                    <option value="">--Pilih Keterangan otomatis--</option> 
                     @foreach($nopol as $c) 
                       <option value="{{ $c->keterangan }}">{{ $c->keterangan }}</option> 
                     @endforeach
