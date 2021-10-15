@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
+use Auth;
 
 class AgenController extends Controller
 {
@@ -19,9 +20,16 @@ class AgenController extends Controller
     }
 
     public function index()
-    {
-        $kota = Kota::orderBy('nama', 'asc')->get();
-        return view('pages.master.agen.index', compact('kota'));
+    {   
+        
+        if((int) Auth::user()->page_agen == 1){
+
+            $kota = Kota::orderBy('nama', 'asc')->get();
+            return view('pages.master.agen.index', compact('kota'));
+        }else{
+            abort(403);
+            
+        }
     }
 
     public function save(Request $request)

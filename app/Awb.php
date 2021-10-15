@@ -6,6 +6,7 @@ use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Auth;
 
 class Awb extends Model
 {
@@ -24,5 +25,18 @@ class Awb extends Model
     {
         $res = DB::table('awb')->count();
         return sprintf("%08s", $res);
+    }
+
+    public static function cek_penerima_kosong()
+    {
+        $data=  DB::SELECT("
+                    select history_scan_awb.iduser,awb.*
+                    from awb
+                    join history_scan_awb on history_scan_awb.idawb = awb.id and history_scan_awb.tipe = 'complete'
+                    where awb.status_tracking='complete'
+                    and history_scan_awb.iduser = ".(int) Auth::user()->id."
+                    and awb.created_at >= '2021-10-15 00:00:00'
+                    and (awb.diterima_oleh = '' or awb.diterima_oleh IS NULL)");
+        return $data;
     }
 }

@@ -245,6 +245,18 @@
                             </thead>
                         </table>     
                         @endif
+                        @if ($awb[0]->keterangan_kendala != '')
+                        <table class="table-striped table-bordered col-12" style='margin-top:0.1cm;background-color:rgb(255, 208, 208);'>
+                            <thead>
+                                <tr> 
+                                    <td class='text-left' style="font-size:0.5cm;">
+                                        <span style="font-weight:bold;">Keterangan kendala</span><br>
+                                        {{ $awb[0]->keterangan_kendala }}
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>     
+                        @endif
                         
                     </div>
                     

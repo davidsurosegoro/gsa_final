@@ -11,12 +11,15 @@ use App\Agen;
 use App\Manifest;
 use App\Awb;
 use Carbon\Carbon;
+use App\Detailqtyscanned;
+use App\Historyscanawb;
 use App\Kota;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
+use Auth;
 
 class ScannerController extends Controller
 {
@@ -30,7 +33,9 @@ class ScannerController extends Controller
         //
     }
     public function awb($status)
-    {   $data['status']=$status;
+    {   $data['status']               = $status;
+        $data['awbbelumditerima']     =  Awb::cek_penerima_kosong(); 
+        
         // echo Crypt::decrypt($status);
         return view('pages.scanner.qrawb',$data); 
     }

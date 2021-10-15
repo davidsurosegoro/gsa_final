@@ -53,25 +53,8 @@
         </div> 
     </div>  
 </div>
-<div class="modal  " id="modalpenerima"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Isi nama Penerima</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"> 
-                <input type="text" required class="form-control" name="diterima_oleh" id="diterima_oleh" value="" placeholder="diterima oleh"/>        
-                <input type="hidden" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="updatepenerima()" class="btn btn-success" >Simpan</button> 
-            </div>
-        </div>
-    </div>
-</div> 
+
+@include('modalpenerima')
 <div class="modal " id="modalkodemanual"    data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -99,6 +82,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 <script src="{{asset('assets/gsa/scanner2/qr-scanner.umd.min.js')}}"></script>
 <script type="text/javascript">  
+     
     QrScanner.WORKER_PATH = "{{asset('assets/gsa/scanner2/qr-scanner-worker.min.js')}}"  ;
     
     var allowscan       = true;  
@@ -124,20 +108,22 @@
             flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
         });
     };
-
-    scanner.start().then(() => {
-        updateFlashAvailability();
-        // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
-        // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
-        // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
-        // start the scanner earlier.
-        QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
-            const option = document.createElement('option');
-            option.value = camera.id;
-            option.text = camera.label;
-            camList.add(option);
-        }));
-    });
+    @isset($awbbelumditerima[0])
+    @else
+        scanner.start().then(() => {
+            updateFlashAvailability();
+            // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+            // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+            // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+            // start the scanner earlier.
+            QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+                const option = document.createElement('option');
+                option.value = camera.id;
+                option.text = camera.label;
+                camList.add(option);
+            }));
+        });
+    @endif
 
     QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
@@ -235,23 +221,34 @@
         }
     }
     function updatepenerima(){
-        $.ajax({
-            method  :'POST',
-            url     :'{{ url('awb/updatediterima') }}',
-            data    :{
-                kode            : $('#kodeawb_penerima').val(),
-                diterima_oleh   : $('#diterima_oleh').val(),
-                '_token'        : "{{ csrf_token() }}" 
-            },
-            success:function(data){ 
-                if(data.statussuccess)  {
-                    toastr.success( data.statussuccess) 
-                    $('#modalpenerima').modal('hide');
-                    $('#diterima_oleh'      ).val('')
-                }   
-                    setTimeout(function(){ scanner.start() }, 800); 
-            }
-        }) 
+        if($('#diterima_oleh').val() == ''){
+            alert('Penerima tidak boleh kosong!')
+        }else{
+            $.ajax({
+                method  :'POST',
+                url     :'{{ url('awb/updatediterima') }}',
+                data    :{
+                    kode                 : $('#kodeawb_penerima').val(), 
+                    diterima_oleh        : $('#diterima_oleh').val(),
+                    keterangan_kendala   : $('#keterangan_kendala').val(),
+                    '_token'             : "{{ csrf_token() }}" 
+                },
+                success:function(data){ 
+                    if(data.statussuccess)  {
+                        toastr.success( data.statussuccess) 
+                        $('#modalpenerima').modal('hide');
+                        $('#diterima_oleh'      ).val('')
+                    }   
+                        
+                        setTimeout(function(){ 
+                            if($('#reload_penerima').val('reload')){
+                                location.reload();
+                            }
+                        }, 800);
+                        setTimeout(function(){ scanner.start() }, 800); 
+                }
+            }) 
+        }
     }
 	
 </script> 

@@ -240,18 +240,18 @@
             <div class="col-md-12">
               <div class="row mt-0">
                 
-                <div id="jumlah_koli_div" class="col-lg-2 mr-2" style="position: relative;background-color: #e5ff7f; border-radius:5px; padding-bottom:10px;">
-                  <label class="font-weight-bold">Jumlah Koli</label>
-                  <div class="input-group ">
-                    <input type="text" class="form-control rupiah" id="jumlah_koli" value="{{ $awb->jumlah_koli }}"  name="jumlah_koli" placeholder="Input jumlah koli. . ." >
-                   
-                  </div>
-                </div>
-
+                
                 <div class="col-lg-3 mr-2" style="position: relative;background-color: aquamarine; border-radius:5px; padding-bottom:10px;">
                   <label class="font-weight-bold">Harga Charge Kelebihan Beban (Rp.)</label>
                   <div class="input-group ">
                     <input type="text" class="form-control rupiah" id="harga_charge" value="{{ $awb->harga_charge }}"  name="harga_charge" placeholder="Input harga bypass. . ." >
+                    
+                  </div>
+                </div>
+                <div id="jumlah_koli_div" class="col-lg-2 mr-2" style="position: relative;background-color: #e5ff7f; border-radius:5px; padding-bottom:10px;">
+                  <label class="font-weight-bold">Jumlah Koli(untuk print)</label>
+                  <div class="input-group ">
+                    <input type="text" class="form-control rupiah" id="jumlah_koli" value="{{ $awb->jumlah_koli }}"  name="jumlah_koli" placeholder="Input jumlah koli. . ." >
                    
                   </div>
                 </div>

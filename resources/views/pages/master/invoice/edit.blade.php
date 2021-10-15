@@ -6,11 +6,13 @@
 </div>
 <form class="form" method="POST"  action="{{url('master/invoice/save')}}" >   
 <?php
-    $total_kg          = 0;
-    $total_koli        = 0;
-    $total_doc         = 0;
-    $total_oa          = 0;
-    $total_bayarall    = 0; 
+    $total_kg               = 0;
+    $total_koli             = 0;
+    $total_doc              = 0;
+    $total_oa               = 0;
+    $total_bayarall         = 0; 
+    $total_komisi_transit   = ((int)App\ApplicationSetting::checkappsetting('komisi_agen_tujuan') + (int)App\ApplicationSetting::checkappsetting('komisi_gsa'))/100;
+    $total_komisi_agentosub = ((int)App\ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))/100;
 ?>
 @foreach ($awb as $item) 
     @php($total_kg     += $item['qty_kg'])
@@ -22,7 +24,7 @@
     @endif
     @php($total_oa          += $item->idr_oa)
     @if ($customer->is_agen == 1)
-        @php($total_bayarall    += $item->total_harga * (((int)$item->id_kota_transit>0) ?   0.4 : 0.3 )    )
+        @php($total_bayarall    += $item->total_harga * (((int)$item->id_kota_transit>0) ?   $total_komisi_transit : $total_komisi_agentosub )    )
     @else
         @php($total_bayarall    += $item->total_harga)
     @endif
@@ -41,7 +43,7 @@
 <div class="card-body">
     <div class="row"> 
         <div class="form-group col-lg-3">
-            <label>Customer: </label>
+            <label>Customer  : </label>
             <h4>{{$customer->nama}}</h4>
         </div> 
         <div class="form-group col-lg-3">
@@ -154,7 +156,7 @@
                             <td style="padding:5px;">{{$item->keterangan}}</td>               
                             <td style="padding:5px;">{{number_format($item->total_harga, 0) }}</td> 
                             <th style="width:10%;">
-                                {{number_format(($item->total_harga * (((int)$item->id_kota_transit>0) ?   0.4 : 0.3 )), 0) }}
+                                {{number_format(($item->total_harga * (((int)$item->id_kota_transit>0) ?   $total_komisi_transit : $total_komisi_agentosub )), 0) }}
                             </th>  
                         @endif
                     </tr>   

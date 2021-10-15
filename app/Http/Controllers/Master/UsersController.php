@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Spatie\Activitylog\Models\Activity;
+use Auth;
 
 class UsersController extends Controller
 {
@@ -21,8 +22,12 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('pages.master.users.index');
+    {   
+        if((int) Auth::user()->page_user == 1){
+            return view('pages.master.users.index');
+        }else{
+            abort(403);
+        }
     }
 
     public function datatables()
@@ -53,7 +58,20 @@ class UsersController extends Controller
             if($a['status']=='nonaktif'){$aktifnonaktif='<div class="alert alert-danger m-0 p-1 text-center" role="alert">NONAKTIF</div>';}
             return $aktifnonaktif;
         })
-        ->rawColumns(['aksi','jenis','aktifnonaktif'])
+        ->addColumn('akseshalaman', function ($a) {
+            $akseshalaman=''; 
+            if((int)$a['page_customer']==1){
+                $akseshalaman=$akseshalaman.'<span class="badge badge-primary" style="margin:2px;">Master Customer</span>'; 
+            }
+            if((int)$a['page_agen']==1){
+                $akseshalaman=$akseshalaman.'<span class="badge badge-primary" style="margin:2px;">Master Agen</span>'; 
+            }
+            if((int)$a['page_user']==1){
+                $akseshalaman=$akseshalaman.'<span class="badge badge-primary" style="margin:2px;">Master User</span>'; 
+            }
+            return $akseshalaman;
+        })
+        ->rawColumns(['aksi','jenis','aktifnonaktif','akseshalaman'])
         ->make(true);
     }
     public function checkusername(Request $request)
@@ -94,14 +112,17 @@ class UsersController extends Controller
     public function save(Request $request)
     {   
         $users = new User(); 
-        $users->nama          = ($request->nama)        ? $request->nama        : '';
-        $users->email         = ($request->email)       ? $request->email       : '';
-        $users->notelp        = ($request->notelp)      ? $request->notelp      : '';
-        $users->alamat        = ($request->alamat)      ? $request->alamat      : '';
-        $users->level         = ($request->level)       ? $request->level       : 0; 
-        $users->id_customer   = ($request->id_customer) ? $request->id_customer : 0; 
-        $users->id_agen       = ($request->id_agen)     ? $request->id_agen     : 0; 
-        $users->username      = ($request->username)    ? strtolower(preg_replace('/\s+/', '_', $request->username))    : '';
+        $users->nama          = ($request->nama)            ? $request->nama            : '';
+        $users->email         = ($request->email)           ? $request->email           : '';
+        $users->notelp        = ($request->notelp)          ? $request->notelp          : '';
+        $users->alamat        = ($request->alamat)          ? $request->alamat          : '';
+        $users->level         = ($request->level)           ? $request->level           : 0; 
+        $users->id_customer   = ($request->id_customer)     ? $request->id_customer     : 0; 
+        $users->id_agen       = ($request->id_agen)         ? $request->id_agen         : 0; 
+        $users->page_customer = ($request->page_customer == "on")   ? 1   : 0; 
+        $users->page_user     = ($request->page_user == "on")       ? 1       : 0; 
+        $users->page_agen     = ($request->page_agen == "on")       ? 1       : 0; 
+        $users->username      = ($request->username)        ? strtolower(preg_replace('/\s+/', '_', $request->username))    : '';
         $users->status        = 'aktif'; 
         $users->password      = '$2y$10$s.aYGxhPXfTPN3/Hf8i1t.UDIWZUFIOdxhUl6c56YcrF7kI0Y3g3W'; 
         $users->save();
@@ -128,13 +149,17 @@ class UsersController extends Controller
     public function edit($id)
     {
         //
-        $data['users']      = User::find($id);
-        $data['customer']   = Customer::get();
-        $data['agen']       = Agen::get();
-        // return view('pages.master.users.edit',compact('users'));
-
-        // $data['action']='ubah'; 
-        return view("pages.master.users.edit",$data);
+        if((int) Auth::user()->page_user == 1){
+            $data['users']      = User::find($id);
+            $data['customer']   = Customer::get();
+            $data['agen']       = Agen::get();
+            // return view('pages.master.users.edit',compact('users'));
+    
+            // $data['action']='ubah'; 
+            return view("pages.master.users.edit",$data);
+        }else{
+            abort(403);
+        }
     }
 
     /**
@@ -146,14 +171,18 @@ class UsersController extends Controller
      */
     public function update(Request $request )
     {   $users = User::where('id',$request['id'])->first(); 
-        $users->nama          = ($request->nama)        ? $request->nama        : '';
-        $users->email         = ($request->email)       ? $request->email       : '';
-        $users->notelp        = ($request->notelp)      ? $request->notelp      : '';
-        $users->alamat        = ($request->alamat)      ? $request->alamat      : '';
-        $users->username      = ($request->username)    ? $request->username    : '';
-        $users->level         = ($request->level)       ? $request->level       : 0; 
-        $users->id_customer   = ($request->id_customer) ? $request->id_customer : 0; 
-        $users->id_agen       = ($request->id_agen)     ? $request->id_agen     : 0; 
+        $users->nama          = ($request->nama)            ? $request->nama            : '';
+        $users->email         = ($request->email)           ? $request->email           : '';
+        $users->notelp        = ($request->notelp)          ? $request->notelp          : '';
+        $users->alamat        = ($request->alamat)          ? $request->alamat          : '';
+        $users->username      = ($request->username)        ? $request->username        : '';
+        $users->level         = ($request->level)           ? $request->level           : 0; 
+        $users->id_customer   = ($request->id_customer)     ? $request->id_customer     : 0; 
+        $users->id_agen       = ($request->id_agen)         ? $request->id_agen         : 0; 
+        $users->page_customer = ($request->page_customer == "on")   ? 1   : 0; 
+        $users->page_user     = ($request->page_user == "on")       ? 1       : 0; 
+        $users->page_agen     = ($request->page_agen == "on")       ? 1       : 0; 
+        // dd($request);
         $users->save();
         return redirect('master/users')->with('message','updated');
     }

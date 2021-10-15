@@ -2,25 +2,29 @@
 @section('content')
 <div class="card card-custom">
   <div class="card-header flex-wrap border-0 pt-6 pb-0">
-    <div class="card-title row">
+    <div class="card-title row col-md-10 col-12">
       <h3 class="card-label col-12" style="margin:0px; padding:0px;margin-bottom:5px;">Data AWB
         <span class="d-block text-muted pt-2 font-size-sm">Data AWB yang tampil adalah data 2 bulan terakhir, untuk lebih lengkap dapat melihat data di report AWB</span>
         @if (((int) Carbon\Carbon::now()->addHours(7)->format('H') >= 16  && (int)Auth::user()->level == 2)  )    
           <span class="d-block text-muted pt-2 font-size-sm" style="color:red !important;background-color:rgb(255, 255, 137);padding:5px;">Batas maksimal order jam 16.00</span>
         @endif
       </h3>
-      <select id='status_complete' class="form-control col-xs-12 col-md-2 mr-2 text-muted pt-2 font-size-sm" onChange="onChangeFilter()">
+
+      <select id='status_complete' class="form-control col-6 col-md-3 select2" onChange="onChangeFilter()">
         <option value='-'>Sembunyikan complete</option>
         <option value="complete">Tampilkan complete</option> 
       </select> 
-      <input id="tanggal_filter" type="text" class="form-control col-xs-12 col-md-2 mr-2 datepicker" value="-" onChange="onChangeFilter()">
-      <select id='customer' class="select2 form-control col-xs-12 col-md-3 mr-4 " onChange="onChangeFilter()">
+
+      <input id="tanggal_filter" type="text" class="form-control col-6 col-md-2  datepicker" value="-" onChange="onChangeFilter()">
+      
+      <select id='customer' class="select2  col-6 col-md-3  " onChange="onChangeFilter()">
         <option value='-'>Tampilkan Semua Pengirim</option>
         @foreach($master_customer as $c)
           <option value="{{ $c->id }}">{{ $c->nama }}</option>
         @endforeach
       </select> 
-      <select name="kota" id='kota' class="select2 form-control col-xs-12 col-md-2" onChange="onChangeFilter()">
+      
+      <select name="kota" id='kota' class="select2 form-control col-6 col-md-3" onChange="onChangeFilter()">
         <option value='-'>Semua Tujuan</option>
         @foreach($kota as $k)
           <option value="{{ $k->id }}">{{ $k->nama }}</option>
@@ -51,9 +55,10 @@
               <th>Pengirim</th>
               <th>Kota Asal</th>
               <th>Kota Tujuan</th>
-              <th>Tanggal</th>
-              <th>Agen Tujuan</th>
-              <th>Qty Detail</th>
+              <th width="15%">Alamat Tujuan</th>
+              <th width="10%">Tanggal</th>
+              <th width="7%">Agen Tujuan</th>
+              <th width="7%">Qty Detail</th>
               <th>Status</th>
               <th>Qty</th>
               @if ((int)Auth::user()->level == 1)                  
@@ -116,25 +121,8 @@
     </div>
   </div>
 </div>
-<div class="modal  " id="modalpenerima"  data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Isi nama Penerima</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"> 
-                <input type="text" required class="form-control" name="diterima_oleh" id="diterima_oleh" value="" placeholder="diterima oleh"/>        
-                <input type="hidden" required class="form-control" name="kodeawb_penerima" id="kodeawb_penerima" value="" placeholder="diterima oleh"/>        
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="updatepenerima()" class="btn btn-success" >Simpan</button> 
-            </div>
-        </div>
-    </div>
-</div> 
+
+@include('modalpenerima')
 
 @include('pages.awb.ajax.modal_koli')
 @include('pages.awb.ajax.modal_view')
@@ -200,16 +188,17 @@
                 }
             }],
 	    columns: [
-	    {data: 'id',              name:'id'},
-	    {data: 'noawb',           name:'noawb'},
-	    {data: 'nama_pengirim_link',   name:'nama_pengirim_link'},
-	    {data: 'kota_asal',       name:'kota_asal'},
-	    {data: 'kota_tujuan',     name:'kota_tujuan'},
-	    {data: 'tanggal_awb',     name:'tanggal_awb'},
-	    {data: 'agen_stat',       name:'agen_stat'},
-	    {data: 'qty_stat',        name:'qty_stat'},
-	    {data: 'status_tracking', name:'status_tracking'},
-	    {data: 'qty',             name:'qty'},
+	    {data: 'id',                name:'id'},
+	    {data: 'noawb',             name:'noawb'},
+	    {data: 'nama_pengirim_link',name:'nama_pengirim_link'},
+	    {data: 'kota_asal',         name:'kota_asal'},
+	    {data: 'kota_tujuan',       name:'kota_tujuan'},
+	    {data: 'alamat_tujuan',     name:'alamat_tujuan'},
+	    {data: 'tanggal_awb',       name:'tanggal_awb'},
+	    {data: 'agen_stat',         name:'agen_stat'},
+	    {data: 'qty_stat',          name:'qty_stat'},
+	    {data: 'status_tracking',   name:'status_tracking'},
+	    {data: 'qty',               name:'qty'},
       
       @if ((int)Auth::user()->level == 1)                  
         {data: 'gantistatus', name:'gantistatus'},
@@ -277,15 +266,19 @@
                 }       
             }
         }) 
-    } 
+    }  
     function updatepenerima(){
+      if($('#diterima_oleh').val() == ''){
+            alert('Penerima tidak boleh kosong!')
+      }else{
         $.ajax({
             method  :'POST',
             url     :'{{ url('awb/updatediterima') }}',
             data    :{
-                kode            : $('#kodeawb_penerima').val(),
-                diterima_oleh   : $('#diterima_oleh').val(),
-                '_token'        : "{{ csrf_token() }}" 
+                kode                 : $('#kodeawb_penerima').val(),
+                diterima_oleh        : $('#diterima_oleh').val(),
+                keterangan_kendala   : $('#keterangan_kendala').val(),
+                '_token'             : "{{ csrf_token() }}" 
             },
             success:function(data){ 
                 datatable.ajax.reload();
@@ -293,9 +286,17 @@
                     toastr.success( data.statussuccess) 
                     $('#modalpenerima').modal('hide');
                     $('#diterima_oleh'      ).val('')
+                    
+                    setTimeout(function(){ 
+                      if($('#reload_penerima').val('reload')){
+                          location.reload();
+                      }
+                    }, 800);
+                    
                 }    
             }
         }) 
+      }
     }
    function deleteAwb(id,noawb)
     {

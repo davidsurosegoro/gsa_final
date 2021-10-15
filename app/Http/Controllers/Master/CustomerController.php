@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Kota;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use Auth;
 
 class CustomerController extends Controller
 {
@@ -17,8 +18,12 @@ class CustomerController extends Controller
     }
 
     public function index()
-    {
-        return view('pages.master.customer.index');
+    {   
+        if((int) Auth::user()->page_customer == 1){
+            return view('pages.master.customer.index');
+        }else{
+            abort(403);
+        }
     }
 
     public function create()
@@ -29,11 +34,16 @@ class CustomerController extends Controller
     }
 
     public function edit($id)
-    {
-        $kota     = Kota::where('id', '>', 0)->get();
-        $customer = Customer::find($id);
-        $agen = Agen::orderBy('nama','ASC')->get();
-        return view('pages.master.customer.edit', compact('customer', 'kota','agen'));
+    {   
+        if((int) Auth::user()->page_customer == 1){
+            $kota     = Kota::where('id', '>', 0)->get();
+            $customer = Customer::find($id);
+            $agen = Agen::orderBy('nama','ASC')->get();
+            return view('pages.master.customer.edit', compact('customer', 'kota','agen'));
+        }else{
+            abort(403);
+        }
+       
     }
 
     public function delete(Request $request)

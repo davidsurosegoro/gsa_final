@@ -216,7 +216,7 @@
                                         $qty_umum = $item->qty_kecil + $item->qty_sedang + $item->qty_besar + $item->qty_besarbanget;
                                     }
                                     if($item->qty_kg > 0){
-                                        $qty_umum = 1;
+                                        $qty_umum = ($item->jumlah_koli == 0) ? 1 : $item->jumlah_koli;
                                     }
                                     if($item->qty_doc > 0){
                                         $qty_umum = $item->qty_doc;
@@ -246,7 +246,7 @@
                                         @endif
                                         
                                             <div class="hideprint totalbarangmasuk" 
-                                                @if ($qty_umum - $item->qtyloaded == 0)                                            
+                                                @if ($qty_umum - $item->qtyloaded <= 0)                                            
                                                     style="background-color: #27ae60;"
                                                 @else
                                                     style="background-color: #d02626;"

@@ -22,6 +22,7 @@
               <th>Alamat</th>
               <th>No Telp</th>
               <th>Email</th>
+              <th width='15%'>Hak akses halaman</th> 
               <th width='5%'>Status</th> 
               <th width='5%'>Aksi</th>
             </tr>
@@ -50,6 +51,7 @@
           {data: 'alamat',        name:'alamat'},
           {data: 'notelp',        name:'notelp'},
           {data: 'email',         name:'email'},
+          {data: 'akseshalaman',  name:'akseshalaman'},
           {data: 'aktifnonaktif', name:'Status'},
           {data: 'aksi',          name:'aksi'},
       ],

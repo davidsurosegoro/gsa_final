@@ -66,8 +66,16 @@
             <input type="text" required class="form-control" name="supir" value="{{ (old('supir') && old('supir') !='') ?old('supir'): $manifest->supir  }}" />        
         </div>
         <div class="form-group col-lg-3">
-            <label>Keterangan:</label>
-            <textarea   class="form-control" name="keterangan" value="{{ $manifest->keterangan}}" />{{ (old('keterangan') && old('keterangan') !='') ?old('keterangan'): $manifest->keterangan  }}</textarea>
+            <label>Keterangan:
+                
+                <select style="width:90%" class="select2 select_readonly form-control" id="keterangan_combo" >
+                    <option value="">--Pilih Keterangan--</option> 
+                    @foreach($nopol as $c) 
+                      <option value="{{ $c->keterangan }}">{{ $c->keterangan }}</option> 
+                    @endforeach
+                </select>
+            </label>
+            <textarea id='keterangan_manifest'  class="form-control" name="keterangan" value="{{ $manifest->keterangan}}" />{{ (old('keterangan') && old('keterangan') !='') ?old('keterangan'): $manifest->keterangan  }}</textarea>
         </div>
         <div class="table-responsive-sm col-12">
             <table class="table table-striped table-bordered"  >
@@ -130,9 +138,15 @@
 </div>
 @endsection
 @section('script')
-<script type="text/javascript"> </script>
+<script type="text/javascript">
+    $('#keterangan_combo').on('change',function(){
+        // console.log($(this).val())
+        $('#keterangan_manifest').val($(this).val())
+    })
+ </script>
 @if(Session::get('message') == "kodesudahada")
 <script type="text/javascript">
+    
     toastr.error("Kode manifest sudah ada!");
 </script>
 @endif

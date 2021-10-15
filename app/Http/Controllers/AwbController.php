@@ -48,7 +48,8 @@ class AwbController extends Controller
         endif;
         $master_customer = Customer::all();
         $kota            = Kota::where('id', '>', 0)->where('status','aktif')->get();
-        return view('pages.awb.index', compact('is_akses_qty', 'hide_qty','master_customer','kota'));
+        $data['awbbelumditerima']     =  Awb::cek_penerima_kosong(); 
+        return view('pages.awb.index', compact('is_akses_qty', 'hide_qty','master_customer','kota'),$data);
     }
 
     public function edit($id, $hilang)
@@ -417,7 +418,7 @@ class AwbController extends Controller
                 $qty_umum = $awb->qty_kecil + $awb->qty_sedang + $awb->qty_besar + $awb->qty_besarbanget;
             }
             if($awb->qty_kg > 0){
-                $qty_umum = 1;
+                $qty_umum = ( $awb->jumlah_koli == 0) ? 1 :  $awb->jumlah_koli;
             }
             if($awb->qty_doc > 0){
                 $qty_umum = $awb->qty_doc;
@@ -527,12 +528,13 @@ class AwbController extends Controller
 
     public function updatediterima(Request $request)
     {
-        $returnmessage      = 'Data penerima berhasil disimpan';
-        $typereturn         = 'statussuccess';
-        $kode               = $request->kode;
-        $awb                = Awb::where('noawb', $request->kode)->first();
-        $awb->diterima_oleh = $request->diterima_oleh;
-
+        $returnmessage           = 'Data penerima berhasil disimpan';
+        $typereturn              = 'statussuccess';
+        $kode                    = $request->kode;
+        $awb                     = Awb::where('noawb', $request->kode)->first();
+        $awb->diterima_oleh      = $request->diterima_oleh;
+        $awb->keterangan_kendala = ($request->keterangan_kendala) ? $request->keterangan_kendala : '';
+        // dd($awb);
         $awb->save();
 
         return response()->json(array($typereturn => $returnmessage));
@@ -610,16 +612,18 @@ class AwbController extends Controller
                 $print_awb_biasa = '';
                 $print_awb_tri   = '';
         endif;
+            $label_customerbiasa =  ($a->id_customer==26) ? '(Customer biasa)' : '';
             $awbs->push([
                 'id'              => $a->id,
                 'noawb'           => $a->noawb,
-                'nama_pengirim'   => $a->nama_pengirim,
+                'nama_pengirim'   => $a->nama_pengirim.'<BR><b style="color:orange;">'.$label_customerbiasa.'</b>',
                 'id_customer'     => $a->id_customer,
                 'id_manifest'     => $a->id_manifest,
                 'id_agen_tujuan'  => $a->id_agen_penerima,
                 'kota_asal'       => $a->kota_asal,
                 'kota_tujuan'     => $a->kota_tujuan,
                 'kota_transit'    => $a->kota_transit,
+                'alamat_tujuan'   => $a->alamat_tujuan,
                 'tanggal_awb'     => date("d F Y (H:i)", strtotime($a->created_at)),
                 'status_tracking' => $a->status_tracking,
                 'qty'             => $a->qty,

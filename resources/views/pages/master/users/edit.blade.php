@@ -85,6 +85,24 @@
                     @endforeach
                 </select>        
             </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" @if($users->page_customer==1)checked="checked" @endif name="page_customer">
+                <label class="form-check-label" for="page_customer">
+                    Beri hak akses buka master Customer
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" @if($users->page_user==1)checked="checked" @endif name="page_user">
+                <label class="form-check-label" for="page_user">
+                    Beri hak akses buka master User
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" @if($users->page_agen==1)checked="checked" @endif name="page_agen">
+                <label class="form-check-label" for="page_agen">
+                    Beri hak akses buka master Agen
+                </label>
+            </div>
         </div>   
     </div>
   <div class="card-footer">

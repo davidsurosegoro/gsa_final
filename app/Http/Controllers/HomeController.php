@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $page['agen'] =         '<div class="col-6 col-lg-3 col-xl-3 mb-5"> 
+        $page['agen'] =         '<div class="col-6 col-lg-6 col-xl-6 mb-5"> 
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/agen') .'">
@@ -42,7 +42,7 @@ class HomeController extends Controller
                                     </div> 
                                 </div>';
         
-        $page['customer'] =     '<div class="col-6 col-lg-3 col-xl-3 mb-5"> 
+        $page['customer'] =     '<div class="col-6 col-lg-6 col-xl-6 mb-5"> 
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/customer').'">
@@ -57,7 +57,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
  
-        $page['awb'] =          '<div class="col-6 col-lg-3 col-xl-3 mb-5"> 
+        $page['awb'] =          '<div class="col-6 col-lg-6 col-xl-6 mb-5"> 
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('awb').'">
@@ -73,7 +73,7 @@ class HomeController extends Controller
                                 </div>';
 
 
-        $page['users'] =        '<div class="col-6 col-lg-3 col-xl-3 mb-5">
+        $page['users'] =        '<div class="col-6 col-lg-6 col-xl-6 mb-5">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/users').'">
@@ -88,7 +88,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
                      
-        $page['manifest'] =     '<div class="col-6 col-lg-3 col-xl-3 mb-5">
+        $page['manifest'] =     '<div class="col-6 col-lg-6 col-xl-6 mb-5">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/manifest').'">
@@ -103,7 +103,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';     
 
-        $page['invoice'] =      '<div class="col-6 col-lg-3 col-xl-3 mb-5">
+        $page['invoice'] =      '<div class="col-6 col-lg-6 col-xl-6 mb-5">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/invoice').'">
@@ -118,7 +118,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
         
-        $page['kota'] =         '<div class="col-6 col-lg-3 col-xl-3 mb-5">
+        $page['kota'] =         '<div class="col-6 col-lg-6 col-xl-6 mb-5">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/kota').'">
@@ -133,7 +133,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
 
-        $page['alamat'] =       '<div class="col-6 col-lg-3 col-xl-3 mb-5">
+        $page['alamat'] =       '<div class="col-6 col-lg-6 col-xl-6 mb-5">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <a href="'.url('master/alamat').'">
@@ -148,7 +148,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
 
-        $page['awbscan'] =      '<div class="col-6 col-lg-3 col-xl-3 mb-5" data-toggle="modal" data-target="#modalscanner" style="cursor: pointer;">
+        $page['awbscan'] =      '<div class="col-6 col-lg-6 col-xl-6 mb-5" data-toggle="modal" data-target="#modalscanner" style="cursor: pointer;">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <span class="svg-icon svg-icon-primary svg-icon-6x">
@@ -160,7 +160,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
         
-        $page['manifestscan']=  '<div class="col-6 col-lg-3 col-xl-3 mb-5" data-toggle="modal" data-target="#modalscannermanifest" style="cursor: pointer;">
+        $page['manifestscan']=  '<div class="col-6 col-lg-6 col-xl-6 mb-5" data-toggle="modal" data-target="#modalscannermanifest" style="cursor: pointer;">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <span class="svg-icon svg-icon-primary svg-icon-6x">
@@ -172,7 +172,7 @@ class HomeController extends Controller
                                     </div>
                                 </div>';
 
-        $page['report'] =       '<div class="col-6 col-lg-3 col-xl-3 mb-5" data-toggle="modal" data-target="#modalreport" style="cursor: pointer;">
+        $page['report'] =       '<div class="col-6 col-lg-6 col-xl-6 mb-5" data-toggle="modal" data-target="#modalreport" style="cursor: pointer;">
                                     <div class="card card-custom wave wave-animate-fast wave-primary">
                                         <div class="card-body text-center">
                                             <span class="svg-icon svg-icon-primary svg-icon-6x">
@@ -233,7 +233,7 @@ class HomeController extends Controller
         $data['modalreport']   = [];
         if((int) Auth::user()->level == 1){            
             array_push($data['page'], 
-                $page['agen'],$page['customer'],$page['awb'],$page['users'],$page['manifest'],$page['invoice'],$page['kota'],$page['alamat'],$page['awbscan'],$page['manifestscan'],$page['report']
+                $page['awb'],$page['manifest'],$page['awbscan'],$page['manifestscan'],$page['invoice'],$page['report'],$page['kota'],$page['alamat'],$page['agen'],$page['customer'],$page['users']
             );  
             array_push($data['modalawb'], 
                 $modalawb['loaded'],$modalawb['delivkurir'],$modalawb['complete']

@@ -435,6 +435,12 @@ var loadPanel = $(".loadpanel").dxLoadPanel({
                 $('#loading').addClass('d-none')
                 console.log('stop')
             }); 
+            
+            $( document ).ready(function() {
+                @isset($awbbelumditerima[0])
+                    $('#modalpenerima').modal('show'); 
+                @endif
+            });
         </script>
     </body>
     

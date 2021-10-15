@@ -13,7 +13,7 @@ class User extends Authenticatable
     use Notifiable;
     use SoftDeletes;
 	use LogsActivity;
-    protected static $logAttributes = ['username','password','remember_token','level','notelp','alamat','email','status','id_customer','nama','id_agen'];
+    protected static $logAttributes = ['username','password','remember_token','level','notelp','alamat','email','status','id_customer','nama','id_agen','page_customer','page_user','page_agen'];
     /**
      * The attributes that are mass assignable.
      *

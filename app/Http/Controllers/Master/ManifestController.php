@@ -211,6 +211,7 @@ class ManifestController extends Controller
         
         if((int) Auth::user()->level==1){
             $data['manifest']   = Manifest::find(0); 
+            $data['nopol']      = DB::SELECT("select distinct(keterangan) from manifest order by keterangan asc");
             $data['kotaasal']   = Kota::where('id','=',$kotaasal)->get(); 
             $data['kotatujuan'] = Kota::where('id','=',$kotatujuan)->get(); 
             $data['agentujuan'] = Agen::where('id','=',$agentujuan)->get(); 

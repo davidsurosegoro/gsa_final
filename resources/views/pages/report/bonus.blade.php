@@ -157,7 +157,7 @@
             columnAutoWidth: true,
             export: {
                 enabled: false,
-                fileName: "Laporan Invoice",
+                fileName: "Laporan Komisi",
                 allowExportSelectedData: true
             },
             onToolbarPreparing: function (e) {
@@ -168,7 +168,7 @@
                         icon: 'export',
                         // text: 'Export to Excel',
                         onClick: function () {
-                            e.component.exportToExcel(true);
+                            e.component.exportToExcel(false);
                         }
                     },
                     location: 'after'
