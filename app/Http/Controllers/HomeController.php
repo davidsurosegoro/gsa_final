@@ -250,7 +250,7 @@ class HomeController extends Controller
                  $page['awb'],$page['alamat'],$page['report']
             );    
             array_push($data['modalreport'], 
-                $report['awb'],$report['invoice']
+                $report['awb'] 
             );          
         }
         elseif((int) Auth::user()->level == 3){            
@@ -264,7 +264,7 @@ class HomeController extends Controller
                 $modalmanifest['arrived']
             );      
             array_push($data['modalreport'], 
-                $report['awb'],$report['manifest'],$report['komisi']
+                $report['awb'],$report['manifest'] 
             );          
         }
         elseif((int) Auth::user()->level == 4){            

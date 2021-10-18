@@ -11,7 +11,7 @@
     $total_doc              = 0;
     $total_oa               = 0;
     $total_bayarall         = 0; 
-    $total_komisi_transit   = ((int)App\ApplicationSetting::checkappsetting('komisi_agen_tujuan') + (int)App\ApplicationSetting::checkappsetting('komisi_gsa'))/100;
+    $total_komisi_transit   = (100 - (int)App\ApplicationSetting::checkappsetting('komisi_agen_asal') )/100;
     $total_komisi_agentosub = ((int)App\ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))/100;
 ?>
 @foreach ($awb as $item) 

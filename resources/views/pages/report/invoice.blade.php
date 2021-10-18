@@ -6,7 +6,7 @@
       <div class="card">
         <div class="card-header border-0" style="padding-bottom:0px; padding-top:10px;">
           <div class="card-title font-weight-bolder">
-            <div class="card-label">Report Manifest</div>
+            <div class="card-label">Report Invoice</div>
           </div>
         </div>
         <div class="card-body">

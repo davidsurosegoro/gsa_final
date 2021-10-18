@@ -161,9 +161,9 @@ Route::middleware(['auth'])->prefix('report')->group(function(){
 	Route::post('awb-grid','ReportController@awb_grid');
 	Route::get('manifest','ReportController@manifest')->middleware(['admin.agen']);
 	Route::post('manifest-grid','ReportController@manifest_grid');
-	Route::get('invoice','ReportController@invoice')->middleware(['admin.customer']);
+	Route::get('invoice','ReportController@invoice')->middleware(['admin']);
 	Route::post('invoice-grid','ReportController@invoice_grid');
-	Route::get('bonus','ReportController@bonus')->middleware(['admin.agen']);
+	Route::get('bonus','ReportController@bonus')->middleware(['admin']);
 	Route::post('bonus-grid','ReportController@bonus_grid');
 });
 

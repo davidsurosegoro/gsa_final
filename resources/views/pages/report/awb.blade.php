@@ -315,12 +315,12 @@
                     dataType: "string",
                     width:170,
                 },
-                {
-                    caption: "OA/tidak",
-                    dataField: "oa_string",  
-                    dataType: "string",
-                    width:100,
-                },
+                // {
+                //     caption: "OA/tidak",
+                //     dataField: "oa_string",  
+                //     dataType: "string",
+                //     width:100,
+                // },
                 {
                     caption: "QTY",
                     dataField: "qty",
@@ -363,6 +363,7 @@
                     dataType: "number",
                     width:90,
                 },
+                @if((int) Auth::user()->level == 1 )
                 {
                     caption: "OA desc",
                     dataField: "oa_desc",
@@ -390,7 +391,6 @@
                     format:"#,##0",
                     width:150,
                 },
-                @if((int) Auth::user()->level == 1 )
                 {
                     caption: "Harga GSA",
                     dataField: "harga_gsa",
@@ -405,20 +405,22 @@
                     dataType: "string",
                     width:160,
                 },
-                @if((int) Auth::user()->level == 1 ||(int) Auth::user()->level == 2)
 
+                @if((int) Auth::user()->level == 1 )
                   {
                       caption: "Kode Invoice",
                       dataField: "kode_invoice",
                       dataType: "string",
                       width:160,
                   },
-                  {
-                      caption: "Status Pembayaran",
-                      dataField: "status_pembayaran", 
-                      dataType: "string",
-                      width:150, 
-                  },
+                @endif
+                @if((int) Auth::user()->level == 1 ||(int) Auth::user()->level == 2)
+                {
+                    caption: "Status Pembayaran",
+                    dataField: "status_pembayaran", 
+                    dataType: "string",
+                    width:150, 
+                },
                 @endif
                 
             ],

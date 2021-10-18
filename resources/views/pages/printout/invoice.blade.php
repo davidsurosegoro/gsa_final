@@ -223,10 +223,14 @@
                                         <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->idr_oa)}}</td> 
                                         <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td>   
                                     @elseif ((int)$invoice->is_agen == 1)
+                                        <?php 
+                                            $total_komisi_transit   = (100 - (int)App\ApplicationSetting::checkappsetting('komisi_agen_asal') )/100;
+                                            $total_komisi_agentosub = ((int)App\ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))/100;
+                                        ?>
                                         <td style="padding:5px;padding-left:2px;">{{$item->keterangan}}</td> 
                                         <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td>   
                                         <td style="padding:5px;padding-left:2px; text-align:right;">
-                                            {{number_format(($item->total_harga * (((int)$item->id_kota_transit>0) ?   0.4 : 0.3 )), 0) }}
+                                            {{number_format(($item->total_harga * (((int)$item->id_kota_transit>0) ?  $total_komisi_transit : $total_komisi_agentosub )), 0) }}
                                         </td>   
                                     @endif 
                                 </tr>   

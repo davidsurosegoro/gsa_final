@@ -251,22 +251,25 @@ class ReportController extends Controller
 
     private function hitungBonus($awb){
         $array = array();
-        $komisi_agen_asal       = (int)ApplicationSetting::checkappsetting('komisi_agen_asal')          /100; 
-        $komisi_gsa             = (int)ApplicationSetting::checkappsetting('komisi_gsa')                /100; 
-        $komisi_agen_tujuan     = (int)ApplicationSetting::checkappsetting('komisi_agen_tujuan')        /100; 
+        
+        $komisi_agen_asal       = (int)ApplicationSetting::checkappsetting('komisi_agen_asal')           ; 
+        $komisi_gsa             = (int)ApplicationSetting::checkappsetting('komisi_gsa')                 ; 
+        $komisi_agen_tujuan     = (int)ApplicationSetting::checkappsetting('komisi_agen_tujuan')         ;
+
         $agentosub_komisi_agen  = ((int)ApplicationSetting::checkappsetting('agentosub_komisi_agen'))   /100;
         $agentosub_komisi_gsa   = ((int)ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))    /100;
+        
         $bonus_gsa = 0; $bonus_agen_asal = 0; $bonus_agen_tujuan = 0;
+        $agen      = Agen::find($awb->id_agen_penerima);
         if($awb->is_agen == 0){
-            $agen = Agen::find($awb->id_agen_penerima);
             $bonus_agen_tujuan = $agen->presentase/100 * $awb->total_harga;
-            $bonus_gsa = (100 - $agen->presentase)/100 * $awb->total_harga;
+            $bonus_gsa         = (100 - $agen->presentase)/100 * $awb->total_harga;
         }
         else{
             if(strtolower($awb->kota_asal) !== 'surabaya' && strtolower($awb->kota_tujuan) !== 'surabaya'){
-                $bonus_agen_asal    = ($komisi_agen_asal)   * $awb->total_harga;
-                $bonus_gsa          = ($komisi_gsa)         * $awb->total_harga;
-                $bonus_agen_tujuan  = ($komisi_agen_tujuan) * $awb->total_harga;
+                $bonus_agen_asal    = ($komisi_agen_asal/100)                               * $awb->total_harga;
+                $bonus_gsa          = ((100 - $agen->presentase - $komisi_agen_asal)/100)   * $awb->total_harga;
+                $bonus_agen_tujuan  = ($agen->presentase/100)                               * $awb->total_harga;
             }
             else{
                 $bonus_gsa          = $agentosub_komisi_gsa     * $awb->total_harga;
