@@ -262,16 +262,20 @@ class ReportController extends Controller
         $bonus_gsa = 0; $bonus_agen_asal = 0; $bonus_agen_tujuan = 0;
         $agen      = Agen::find($awb->id_agen_penerima);
         if($awb->is_agen == 0){
-            $bonus_agen_tujuan = $agen->presentase/100 * $awb->total_harga;
-            $bonus_gsa         = (100 - $agen->presentase)/100 * $awb->total_harga;
+            // SURABAYA KE AGEN---------------------------------
+            $bonus_agen_tujuan = $agen->presentase/100          * $awb->total_harga;
+            $bonus_gsa         = (100 - $agen->presentase)/100  * $awb->total_harga;
         }
         else{
             if(strtolower($awb->kota_asal) !== 'surabaya' && strtolower($awb->kota_tujuan) !== 'surabaya'){
-                $bonus_agen_asal    = ($komisi_agen_asal/100)                               * $awb->total_harga;
-                $bonus_gsa          = ((100 - $agen->presentase - $komisi_agen_asal)/100)   * $awb->total_harga;
-                $bonus_agen_tujuan  = ($agen->presentase/100)                               * $awb->total_harga;
+                // AGEN KE AGEN---------------------------------
+                // TRANSIT---------------------------------
+                $bonus_agen_asal    = ($komisi_agen_asal/100)    * $awb->total_harga;
+                $bonus_gsa          = ($komisi_gsa/100)          * $awb->total_harga;
+                $bonus_agen_tujuan  = ($komisi_agen_tujuan/100)  * $awb->total_harga;
             }
             else{
+                // AGEN KE SURABAYA---------------------------------
                 $bonus_gsa          = $agentosub_komisi_gsa     * $awb->total_harga;
                 $bonus_agen_asal    = $agentosub_komisi_agen    * $awb->total_harga;
             }
