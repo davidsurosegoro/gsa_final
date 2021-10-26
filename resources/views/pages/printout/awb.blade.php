@@ -86,7 +86,17 @@
                 margin: 0px 0px 15px 0px;
                 font-family: "Circular Std Medium";
             }
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
 
+            /* Firefox */
+            input[type=number] {
+            -moz-appearance: textfield;
+            }
             .text-dark {
                 color: #3d405c !important;
             }
@@ -186,7 +196,13 @@
                                     <td>{{ $awb[0]->qty_sedang }}</td> 
                                     <td>{{ $awb[0]->qty_besar }}</td> 
                                     <td>{{ $awb[0]->qty_besarbanget }}</td> 
-                                    <td>{{ $awb[0]->qty_kg }}</td> 
+                                    <td>
+                                        @if($awb[0]->id_customer==26 && $awb[0]->jumlah_koli>1)
+                                            <input type='number' value="{{ $awb[0]->qty_kg }}" style="width:100%;text-align:center;border:0px;">
+                                        @else
+                                            {{ $awb[0]->qty_kg }}
+                                        @endif
+                                    </td> 
                                     <td>{{ $awb[0]->qty_doc }}</td> 
                                 </tr>
                             @endif

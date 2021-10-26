@@ -236,8 +236,19 @@
                                         @else
                                             {{((int)$item->qtykoli > 0) ? $item->qtykoli : ''}}   
                                         @endif
+
+                                        @if((int)$item->jumlah_koli > 1)
+                                            {{$item->jumlah_koli}}
+                                        
+                                        @endif
                                     </td> 
-                                    <td style="padding:2px;" class='text-center'>{{((int)$item->qty_kg > 0)  ? $item->qty_kg : ''}}</td> 
+                                    <td style="padding:2px;" class='text-center'>
+                                        @if((int)$item->id_customer==26 &&(int)$item->jumlah_koli > 1)
+                                            
+                                        @else 
+                                            {{((int)$item->qty_kg > 0)  ? $item->qty_kg : ''}}
+                                        @endif
+                                    </td> 
                                     <td style="padding:2px;" class='text-center'>{{((int)$item->qty_doc > 0)  ? $item->qty_doc : ''}}</td> 
                                     {{-- <td style="padding:2px;">{{$item->nama_penerima}} </td>   --}}
                                     <td style="padding:2px;position:relative !important;">

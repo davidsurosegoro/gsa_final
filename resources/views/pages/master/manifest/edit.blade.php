@@ -9,12 +9,15 @@
 @php($total_koli    = 0)   
 @php($total_doc     = 0)   
 @foreach ($awb as $item) 
-    @php($total_kg     += $item['qty_kg'])
+    @php($total_kg     += ($item->jumlah_koli <= 1) ? $item['qty_kg'] : 0)
     @php($total_doc    += $item['qty_doc'])
     @if ($item->qty > 0 && $item->qty_kg == 0 && $item->qty_doc == 0)
         @php($total_koli += $item->qty)
     @else
         @php($total_koli +=$item->qtykoli)
+    @endif
+    @if ((int)$item->id_customer==26 &&(int)$item->jumlah_koli > 1)
+        @php($total_koli += $item->jumlah_koli)
     @endif
 @endforeach
 <input type="hidden" name="id" value="{{ $manifest->id }}">
@@ -107,12 +110,23 @@
                         <td style="padding:5px;">{{$item->kotatujuan}}</td> 
                         <td style="padding:5px;" class='text-center'>
                             @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0)
-                                {{$item->qty}}
+                                {{($item->qty > 0 ) ? $item->qty : ''}}
                             @else
-                                {{$item->qtykoli}}   
+                                {{($item->qtykoli > 0 ) ? $item->qtykoli : ''}}   
+                            @endif
+                            
+                            @if((int)$item->jumlah_koli > 1)
+                                {{$item->jumlah_koli}}
+                            
                             @endif
                         </td> 
-                        <td style="padding:5px;" class='text-center'>{{$item->qty_kg}}</td> 
+                        <td style="padding:5px;" class='text-center'>
+                            @if((int)$item->id_customer==26 &&(int)$item->jumlah_koli > 1)
+                                            
+                            @else 
+                                {{((int)$item->qty_kg > 0)  ? $item->qty_kg : ''}}
+                            @endif
+                        </td> 
                         <td style="padding:5px;" class='text-center'>{{$item->qty_doc}}</td>  
                         <td style="padding:5px;">
                             @if( (int)$item->id_kota_transit>0)
