@@ -28,11 +28,12 @@ class ManifestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('pages.master.manifest.index');
+    {   
+        $kota            = Kota::where('id', '>', 0)->where('status','aktif')->get();
+        return view('pages.master.manifest.index', compact('kota'));
     }
     
-    public function datatables()
+    public function datatables(Request $request)
     {   $level_user = (int) Auth::user()->level;
         $manifest = Manifest::select(DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y (%H:%i)') as tanggal_manifest"),"agen.kode as kodeagen","manifest.*" , "kotaasal.kode as kodekotaasal","kotatujuan.kode as kodekotatujuan" ,"users.nama as namauser")
                 ->join('kota as kotaasal',      'kotaasal.id',     '=', 'manifest.id_kota_asal') 
@@ -44,6 +45,12 @@ class ManifestController extends Controller
                 ->orderBy('manifest.id' , 'desc');
         if($level_user!=1 && $level_user!=5){
             $manifest= $manifest->where('manifest.agen_tujuan' ,'=', (int) Auth::user()->id_agen);
+        } 
+        if($request->tanggal !== '-')    {
+            $manifest= $manifest-> where('manifest.tanggal_pengiriman' ,'=', date("Y-m-d", strtotime($request->tanggal))); 
+        }
+        if($request->kota !== '-'){
+            $manifest= $manifest-> where('manifest.id_kota_tujuan' ,'=', $request->kota); 
         }
         $manifest->get();
         return Datatables::of($manifest)

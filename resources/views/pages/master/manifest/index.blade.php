@@ -2,9 +2,21 @@
 @section('content')
 <div class="card card-custom">
   <div class="card-header flex-wrap border-0 pt-6 pb-0">
-    <div class="card-title">
-      <h3 class="card-label">Master manifest
+    <div class="card-title row col-md-10 col-12">
+      <h3 class="card-label col-12">Master manifest
       <span class="d-block text-muted pt-2 font-size-sm">Data manifest yang tersedia</span></h3>
+       
+
+      <input id="tanggal_filter" type="text" class="form-control col-6 col-md-2  datepicker" value="-" onChange="onChangeFilter()">
+       
+      
+      <select name="kota" id='kota' class="select2 form-control col-6 col-md-3" onChange="onChangeFilter()">
+        <option value='-'>Semua Tujuan</option>
+        @foreach($kota as $k)
+          <option value="{{ $k->id }}">{{ $k->nama }}</option>
+        @endforeach
+        
+      </select> 
     </div>
     <div class="card-toolbar">
       <div onclick="dt.ajax.reload();" class="btn btn-default  text-center">
@@ -12,7 +24,7 @@
       &nbsp;
       @if ((int)Auth::user()->level ==1)          
         <a href="{{url('master/manifest/grouping') }}" class="btn btn-primary font-weight-bolder">
-        <i class="la la-plus"></i>Tambah Data manifest</a>
+        <i class="la la-plus"></i>Tambah manifest</a>
       @endif
     </div>
   </div>
@@ -169,7 +181,14 @@ $(document) .ajaxStart(function () {
 	     serverSide : false,
 	     paging     : true,
        pageLength : 100,
-	     ajax       :'{{ url('master/manifest/datatables') }}',
+ 
+       ajax:  {
+            "url": '{{ url('master/manifest/datatables') }}',
+            data: function(d){ 
+                d.tanggal         = $('#tanggal_filter').val(); 
+                d.kota            = $('#kota').val();
+            }
+        },
 	     columns    : [
          
       
@@ -221,7 +240,10 @@ $(document) .ajaxStart(function () {
             } 
          });
     }
-
+    function onChangeFilter(){
+      
+      dt.ajax.reload();
+    }
   </script>
   
 @if(Session::get('message') == "created")

@@ -582,10 +582,10 @@ class AwbController extends Controller
         $customercondition = ($request->customer == '-') ? "" : " AND id_customer ='".$request->customer."'";
         $kotacondition = ($request->kota == '-') ? "" : " AND id_kota_tujuan ='".$request->kota."'";
         $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
-        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ".$tanggalcondition.$customercondition.$kotacondition." ORDER BY a.id DESC");
+        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest FROM awb a LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ".$tanggalcondition.$customercondition.$kotacondition." ORDER BY a.id DESC");
         if ((int) Auth::user()->level !== 1):
             //dd(Auth::user()->level);
-            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit FROM awb a INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
+            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest FROM awb a LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ORDER BY a.id DESC");
         endif;
         $awbs = new Collection;
         // dd($awb);
@@ -619,6 +619,7 @@ class AwbController extends Controller
                 'nama_pengirim'   => $a->nama_pengirim.'<BR><b style="color:orange;">'.$label_customerbiasa.'</b>',
                 'id_customer'     => $a->id_customer,
                 'id_manifest'     => $a->id_manifest,
+                'kodemanifest'    => $a->kodemanifest,
                 'id_agen_tujuan'  => $a->id_agen_penerima,
                 'kota_asal'       => $a->kota_asal,
                 'kota_tujuan'     => $a->kota_tujuan,
@@ -715,20 +716,24 @@ class AwbController extends Controller
                 return '<a target="blank" href="'.url('master/customer/edit/'.$a['id_customer']).'"> ' . $a['nama_pengirim'] . '</a>';
             })
             ->editColumn('status_tracking', function ($a) {
+                $kodemanifest='<span class="badge badge-default" style="background-color: #d9d9d9;
+                font-weight: bold;
+                margin-top: 5px;
+                border: 2px solid black;"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;' . $a['kodemanifest'] . '</span>';
                 if ($a['status_tracking'] == 'booked'):
-                    return '<span class="badge badge-info"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-info"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'at-manifest'):
-                    return '<span class="badge badge-dark"><i class="fa fa-truck"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-dark"><i class="fa fa-truck"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'loaded'):
-                    return '<span class="badge badge-primary"><i class="fas fa-truck-loading"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-primary"><i class="fas fa-truck-loading"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'at-agen'):
-                    return '<span class="badge badge-dark"><i class="fas fa-user-friends"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-dark"><i class="fas fa-user-friends"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'delivery-by-courier'):
-                    return '<span class="badge badge-warning"><i class="fa fa-motorcycle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-warning"><i class="fa fa-motorcycle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'complete'):
-                    return '<span class="badge badge-success"><i class="fa fa-check-circle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-success"><i class="fa fa-check-circle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'cancel'):
-                    return '<span class="badge badge-danger"><i class="fa fa-times-circle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>';
+                    return '<span class="badge badge-danger"><i class="fa fa-times-circle"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 endif;
             })
             ->addColumn('gantistatus', function ($a) { 
