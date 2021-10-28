@@ -716,10 +716,12 @@ class AwbController extends Controller
                 return '<a target="blank" href="'.url('master/customer/edit/'.$a['id_customer']).'"> ' . $a['nama_pengirim'] . '</a>';
             })
             ->editColumn('status_tracking', function ($a) {
-                $kodemanifest=($a['kodemanifest']!=='0') ?  '<span class="badge badge-default" style="background-color: #d9d9d9;
+                $kodemanifest=($a['kodemanifest']!=='0') ?  '<a 
+                href="'.url('printout/manifest/'.Crypt::encrypt($a['id_manifest'])).'" target="blank" 
+                class="badge badge-default" style="background-color: #d9d9d9;
                 font-weight: bold;
                 margin-top: 5px;
-                border: 2px solid black;"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;' . $a['kodemanifest'] . '</span>' : '';
+                border: 2px solid black;"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;' . $a['kodemanifest'] . '</a>' : '';
                 if ($a['status_tracking'] == 'booked'):
                     return '<span class="badge badge-info"><i class="fas fa-clipboard-list"  style="color:white;"></i>&nbsp;' . $a['status_tracking'] . '</span>'.$kodemanifest;
                 elseif ($a['status_tracking'] == 'at-manifest'):
