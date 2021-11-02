@@ -514,7 +514,7 @@
     </div>
   </div>
   <div class="card-footer d-flex justify-content-between">
-    <button type="submit" class="btn btn-primary mr-2">SIMPAN</button>
+    <button type="submit" class="btn btn-primary mr-2 simpan-awb">SIMPAN</button>
   </div>
 </form>
 </div>
@@ -769,6 +769,46 @@
   })
   
   $(document).ready(function(){
+    $('.form').on('submit',function(e){
+      if($('#customer').val() == 26){
+        if($('#harga_kg_pertama').val() == 0){
+        Swal.fire({   
+          title               : "Gagal Menyimpan",   
+          text                : "Harga 5 Kg Pertama Belum terisi",   
+          icon                : "warning",   
+          showCancelButton    : false,                 
+        })
+        e.preventDefault();
+        
+        $(".simpan-awb").prop('disabled', false);
+      }
+      
+      if($('#harga_gsa').val() == 0){
+        Swal.fire({   
+          title               : "Gagal Menyimpan",   
+          text                : "Harga GSA Belum terisi",   
+          icon                : "warning",   
+          showCancelButton    : false,                 
+        })
+        e.preventDefault();
+        
+        $(".simpan-awb").prop('disabled', false);
+      }
+
+      if($('#jumlah_koli').val() == 0){
+        Swal.fire({   
+          title               : "Gagal Menyimpan",   
+          text                : "Jumlah Koli Untuk Print Belum terisi",   
+          icon                : "warning",   
+          showCancelButton    : false,                 
+        })
+        e.preventDefault();
+        
+        $(".simpan-awb").prop('disabled', false);
+      }
+      }
+      
+    })
     if($('#kota_asal').val() == 9479){
       $('#id_kota_transit').html('<option value="">--Pilih Kota Transit--</option>');
     }
