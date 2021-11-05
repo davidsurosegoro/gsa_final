@@ -577,10 +577,10 @@ class AwbController extends Controller
 
     public function datatables(Request $request)
     {   
-        $completecondition = ($request->status_complete == '-')  ? 'status_tracking <> \'complete\' and status_tracking <> \'cancel\' and' : '' ;
-        $tanggalcondition = ($request->tanggal == '-') ? "" : " AND tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
-        $customercondition = ($request->customer == '-') ? "" : " AND id_customer ='".$request->customer."'";
-        $kotacondition = ($request->kota == '-') ? "" : " AND id_kota_tujuan ='".$request->kota."'";
+        $completecondition = ($request->status_complete == '-')  ? 'a.status_tracking <> \'complete\' and a.status_tracking <> \'cancel\' and' : '' ;
+        $tanggalcondition = ($request->tanggal == '-') ? "" : " AND a.tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
+        $customercondition = ($request->customer == '-') ? "" : " AND a.id_customer ='".$request->customer."'";
+        $kotacondition = ($request->kota == '-') ? "" : " AND a.id_kota_tujuan ='".$request->kota."'";
         $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
         $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest FROM awb a LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL AND EXTRACT(MONTH FROM tanggal_awb) BETWEEN (EXTRACT(MONTH FROM CURRENT_DATE)-1) AND  EXTRACT(MONTH FROM CURRENT_DATE) ".$tanggalcondition.$customercondition.$kotacondition." ORDER BY a.id DESC");
         if ((int) Auth::user()->level !== 1):
