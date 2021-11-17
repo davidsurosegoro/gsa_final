@@ -25,8 +25,9 @@ Route::get('/home',function(){
 Route::get('/',  						'HomeController@index');
 Route::get('/t/{kode}/{t}/{qty}',		'TrackingController@index');
 Route::get('scannerawb/{status}',  	   	'ScannerController@awb') 		->middleware(['auth','admin.agen.kurir']);
-Route::get('scannerawb-test/{status}',  'ScannerController@awbtest') 		->middleware(['auth','admin.agen.kurir']);
+Route::get('scannerawb-test/{status}',  'ScannerController@awbtest') 	->middleware(['auth','admin.agen.kurir']);
 Route::get('scannermanifest/{status}', 	'ScannerController@manifest') 	->middleware(['auth','admin.agen.kurir']);;
+Route::get('uploadform', 			 	'ScannerController@uploadform') ->middleware(['auth','admin.agen.kurir']);;
 
 Route::prefix('log')->group(function () {
 
@@ -46,7 +47,7 @@ Route::middleware(['auth'])->prefix('printout')->group(function(){
 	Route::get('/awbtri/{id}'  	,'PrintoutController@awbtri');
 });
 
-Route::prefix('master')->group(function(){ 
+Route::prefix('master')->group(function(){  
 		Route::middleware(['auth','admin'])->prefix('invoice')->group(function(){
 			Route::get('/' 				,'Master\InvoiceController@index');
 			Route::get('/create' 		,'Master\InvoiceController@create');

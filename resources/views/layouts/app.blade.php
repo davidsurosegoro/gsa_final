@@ -340,6 +340,7 @@ endif;
         <script src="{{ asset('assets/plugins/devex/js/jszip.min.js')}}"></script>
         <script src="{{ asset('assets/plugins/devex/js/dx.all.js')}}"></script>
         <script src="{{ asset('assets/gsa/js/custom_ajax.js')}}"></script>
+        {{-- <script type="text/javascript" src="{{ asset('assets/gsa/js/webcam.min.js')}}"></script> --}}
         <script type="text/javascript">
             $('form').submit(function(){
                 $('body').find('button[type=submit]').prop('disabled', true);

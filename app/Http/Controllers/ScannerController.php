@@ -32,6 +32,12 @@ class ScannerController extends Controller
     {
         //
     }
+    public function uploadform()
+    {
+        //
+        return view('pages.scanner.upload'); 
+    }
+    
     public function awb($status)
     {   $data['status']               = $status;
         $data['awbbelumditerima']     =  Awb::cek_penerima_kosong(); 
