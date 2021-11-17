@@ -49,6 +49,7 @@ Route::middleware(['auth'])->prefix('printout')->group(function(){
 
 Route::prefix('master')->group(function(){  
 		Route::middleware(['auth','admin'])->prefix('invoice')->group(function(){
+			Route::get('/uploadform'	,'ScannerController@uploadform');
 			Route::get('/' 				,'Master\InvoiceController@index');
 			Route::get('/create' 		,'Master\InvoiceController@create');
 			Route::get('/grouping'  	,'Master\InvoiceController@grouping');
