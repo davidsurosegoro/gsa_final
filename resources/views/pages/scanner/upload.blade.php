@@ -19,8 +19,8 @@
     <!-- Configure a few settings and attach camera -->
     <script language="JavaScript">
       Webcam.set({
-        width: 520,
-        height: 1000,
+        width: 800,
+        height: 1200,
         image_format: 'jpeg',
         jpeg_quality: 90,
         facingMode: "environment"
