@@ -300,7 +300,8 @@ var Webcam = {
 					mandatory: {
 						minWidth: this.params.dest_width,
 						minHeight: this.params.dest_height
-					}
+					},
+					facingMode: {exact: 'environment'}
 				}
 			})
 			.then( function(stream) {
