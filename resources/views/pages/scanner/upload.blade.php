@@ -20,7 +20,7 @@
     <script language="JavaScript">
       Webcam.set({
         width: 320,
-        height: 'auto',
+        height: 100,
         image_format: 'jpeg',
         jpeg_quality: 90,
         facingMode: "environment"
