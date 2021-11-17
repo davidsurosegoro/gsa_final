@@ -24,7 +24,7 @@
               <th>Email</th>
               <th width='15%'>Hak akses halaman</th> 
               <th width='5%'>Status</th> 
-              <th width='5%'>Aksi</th>
+              <th width='5%'>Aksi.</th>
             </tr>
           </thead>
         </table>
