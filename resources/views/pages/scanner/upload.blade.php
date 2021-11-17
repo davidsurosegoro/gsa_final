@@ -20,9 +20,10 @@
     <script language="JavaScript">
       Webcam.set({
         width: 320,
-        height: 240,
+        height: 'auto',
         image_format: 'jpeg',
-        jpeg_quality: 90
+        jpeg_quality: 90,
+        facingMode: "environment"
       });
       Webcam.attach( '#my_camera' );
     </script>
