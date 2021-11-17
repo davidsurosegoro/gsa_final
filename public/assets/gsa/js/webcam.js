@@ -296,13 +296,10 @@ var Webcam = {
 			var self = this;
 			this.mediaDevices.getUserMedia({
 				"audio": false,
-				"video": this.params.constraints || {
-					mandatory: {
-						minWidth: this.params.dest_width,
-						minHeight: this.params.dest_height
-					},
-					facingMode: {exact: 'environment'}
-				}
+				"video": { facingMode: "environment" } 
+					// ,
+					// facingMode: {exact: 'environment'}
+				
 			})
 			.then( function(stream) {
 				// got access, attach stream to video

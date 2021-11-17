@@ -13,7 +13,7 @@
     <div id="my_camera"></div>
     
     <!-- First, include the Webcam.js JavaScript Library -->
-        <script type="text/javascript" src="{{ asset('assets/gsa/js/webcam.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('assets/gsa/js/webcam.js')}}"></script>
     {{-- <script type="text/javascript" src="../webcam.min.js"></script> --}}
     
     <!-- Configure a few settings and attach camera -->
