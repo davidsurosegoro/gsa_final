@@ -540,6 +540,19 @@ class AwbController extends Controller
         return response()->json(array($typereturn => $returnmessage));
     }
 
+    public function updatefotopenerima(Request $request)
+    {
+        $returnmessage           = 'Foto penerima berhasil disimpan';
+        $typereturn              = 'statussuccess';
+        $kode                    = $request->kode;
+        $awb                     = Awb::where('noawb', $request->kode)->first();
+        $awb->referensi          = $request->fotopenerima; 
+        // dd($awb);
+        $awb->save();
+
+        return response()->json(array($typereturn => $returnmessage));
+    }
+
     public function updatetomanifest(Request $request)
     {
         $returnmessage = '';

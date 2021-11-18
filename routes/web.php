@@ -155,6 +155,7 @@ Route::middleware(['auth'])->prefix('awb')->group(function () {
 	Route::middleware(['admin.agen.kurir'])->post('/updatetomanifest','AwbController@updatetomanifest');
 	Route::middleware(['admin.agen.kurir'])->post('/updateawb','AwbController@updateawb');
 	Route::middleware(['admin.agen.kurir'])->post('/updatediterima','AwbController@updatediterima');
+	Route::middleware(['admin.agen.kurir'])->post('/updatefotopenerima','AwbController@updatefotopenerima');
 	Route::middleware(['admin.agen.kurir'])->post('/updatemanifestqr','AwbController@updatemanifestqr');
 });
 

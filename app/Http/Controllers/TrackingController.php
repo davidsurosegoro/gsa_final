@@ -53,6 +53,7 @@ class TrackingController extends Controller
                         LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
                         LEFT JOIN kota k2 ON a.id_kota_asal = k2.id
                         WHERE a.noawb = '".$kode."' ");
+            // dd($data['awb']);
             if($data['awb']){
 
                 $data['Detailqtyscanned']   = Detailqtyscanned::select('*')

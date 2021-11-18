@@ -129,11 +129,16 @@
                                                 @endforeach
                                             @elseif ($item->tipe == 'complete')
                                                 Barang telah diterima Oleh <b>{{$item->diterima_oleh}}</b>
+                                                @if ($awb[0]->referensi != null || $awb[0]->referensi != '')
+                                                    
+                                                    <img src='{{$awb[0]->referensi}}' width="100%">
+                                                @endif
                                                 @foreach ($Detailqtyscanned as $detail)
                                                     @if ($item->tipe == $detail->status)
                                                     <br><span style="font-style: italic;">&nbsp;&nbsp;**koli ke-{{$detail->qty_ke}} = checked </span>
                                                         
                                                     @endif
+                                                    
                                                 @endforeach
                                             @endif
                                         </td>

@@ -68,7 +68,23 @@
             $.ajax(settings).done(function (response) {
                 console.log(response);
                 var jx = JSON.parse(response);
-                console.log(jx.data.url);
+                if(jx.data.url){
+                    $.ajax({
+                        method  :'POST',
+                        url     :'{{ url('awb/updatefotopenerima') }}',
+                        data    :{
+                            kode                 : '00000022BFH', 
+                            fotopenerima         : jx.data.url, 
+                            '_token'             : "{{ csrf_token() }}" 
+                        },
+                        success:function(data){ 
+                            if(data.statussuccess)  {
+                                toastr.success( data.statussuccess)
+                            }   
+                        }
+                    }) 
+                }
+
             });
         }) 
 
@@ -99,7 +115,7 @@
       // display results in page
       document.getElementById('results').innerHTML = 
         '<h2>Here is your image:</h2>' + 
-        '<img id="testimg" src="'+data_uri+'"/>';
+        '<img id="testimg" src="'+data_uri+'" style="width:50%; height:auto;"/>';
       
       // swap buttons back
       document.getElementById('pre_take_buttons').style.display = '';
