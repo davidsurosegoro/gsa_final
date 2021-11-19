@@ -177,7 +177,8 @@ class AwbController extends Controller
             $total_harga['oa'] = 0;
             $total_harga['total'] = -1 * $total_harga['total'];
         endif;
-        $harga_gsa = str_replace(',', '', $request->harga_gsa);
+        $harga_gsa = str_replace(',', '', (($request->harga_gsa)?$request->harga_gsa:0));
+        // dd($harga_gsa);
         if ($request->idawb == 0 || ($request->referensi !== "" && $request->referensi !== null)):
             $awb = Awb::create([
                 'noawb'               => $noawb,
