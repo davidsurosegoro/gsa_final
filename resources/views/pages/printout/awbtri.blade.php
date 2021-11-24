@@ -80,7 +80,7 @@
     </head>
     <body  class="snippet-body" style="background-color:white;">
         <div class="printcontainer d-print-none" 
-            @if($awb[0]->status_tracking==='booked')
+            @if($awb[0]->status_tracking==='booked' && ((int)Auth::user()->level == 1))
                 onclick="updatetomanifest()"
             @else
                 onclick="window.print()"                
@@ -92,9 +92,11 @@
             {{$awb[0]->status_tracking}}
         </div> 
         </div>
-            <div  class="d-print-none" style="position:fixed; top:5px; left:5px;border:1px solid black;padding:5px;border-radius:5px;background-color:rgb(205, 255, 104);">
-                Isi nama marketing : <input type="text" id='marketingchange'>
-            </div>
+            @if(((int)Auth::user()->level == 1))
+                <div  class="d-print-none" style="position:fixed; top:5px; left:5px;border:1px solid black;padding:5px;border-radius:5px;background-color:rgb(205, 255, 104);">
+                    Isi nama marketing : <input type="text" id='marketingchange'>
+                </div>
+            @endif
             <div class="card page">
                 @for ($i = 0; $i < 3; $i++)
                 <div class="height33">                        

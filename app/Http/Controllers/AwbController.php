@@ -669,6 +669,8 @@ class AwbController extends Controller
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
                         <i class="fas fa-map-marked-alt" ></i>
                         </a>
+                        
+                        '.$a['print_awb_tri'].'
                         </div>';
                 elseif ($a['status_tracking'] == 'booked' && (int) Auth::user()->level == 1):
                     return '<div class="btn-group" role="group" aria-label="Basic example">
@@ -685,7 +687,8 @@ class AwbController extends Controller
                         <a href=' . url('awb/edit/' . $a['id'] . '/edit') . ' class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Edit AWB">
                             <i class="flaticon-edit-1" ></i>
                         </a>
-
+                        
+                        '.$a['print_awb_tri'].'
                         '.$tombolhapus.'</div>';
                 elseif ($a['status_tracking'] !== 'booked' && (int) Auth::user()->level == 1):
  
