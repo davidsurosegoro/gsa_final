@@ -190,15 +190,22 @@
                                         </tr>
                                     </thead> 
                                 </table> 
+
+
+                                
+                                {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
+                                {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
+                                {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
+                                {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
                                 @if((int)$awb[0]->id_customer==26 || (int)$awb[0]->id_kota_transit>0)
                                     @if($i == 0)
                                         @if($awb[0]->harga_gsa == 0)
-                                            <b style="padding-left:5px;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
+                                            <b style="padding-left:5px;display:none;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
                                         @else
-                                            <b style="padding-left:5px;">Total Harga : Rp.{{number_format($awb[0]->harga_gsa, 0)}}</b>
+                                            <b style="padding-left:5px;display:none;">Total Harga : Rp.{{number_format($awb[0]->harga_gsa, 0)}}</b>
                                         @endif
                                     @else
-                                    <b style="padding-left:5px;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
+                                    <b style="padding-left:5px;display:none;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
                                     @endif
                                 @endif
                             </div>
