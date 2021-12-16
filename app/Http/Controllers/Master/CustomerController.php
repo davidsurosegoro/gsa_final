@@ -103,7 +103,7 @@ class CustomerController extends Controller
         if ($request->is_agen == "on") {
             $is_agen = true;
             $id_agen    = $request->id_agen;
-            $agen_check = Customer::where('id_agen',$id_agen)->first();
+            $agen_check = Customer::where('id_agen',$id_agen)->where('id','<>',$request->id)->first();
             if($agen_check !== null):
                 return redirect('master/customer')->with('failed', $agen_check->nama);
             endif;
