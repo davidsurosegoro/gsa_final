@@ -288,6 +288,7 @@ class AwbController extends Controller
     {   
         $awb = DB::table('awb')->where('id', $request->id)->first();
         if((int)$awb->id_manifest==0 && ($awb->status_tracking=='booked' || $awb->status_tracking=='at-manifest')){
+            $this->inserthistoryscan($request->id,'Cancel',0);
             DB::table('awb')
                 ->where('id', $request->id)
                 ->update(['status_tracking' => 'cancel']);

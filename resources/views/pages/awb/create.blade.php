@@ -186,7 +186,7 @@
               <div class="row mb-0">
                 <div class="col-lg-3">
                   <div class="form-group" id="qty_koli_kg" >
-                    <label class="font-weight-bold">Qty Koli Kg @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
+                    <label class="font-weight-bold">Kg (berat aktual) @if ($hilang =="hilang")<span style="color:red;"> (barang hilang harus minus)</span> @endif</label>
                     <input type="number" @if ($hilang =="hilang") max='0' @endif class="form-control" value="{{ $awb->qty_kg }}"  name="qty_kg" placeholder="Input jumlah koli kg. . ." value="0">
                   </div>
                   

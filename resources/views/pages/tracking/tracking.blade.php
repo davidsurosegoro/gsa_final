@@ -101,12 +101,18 @@
                                                 <div type="button" class="btn btn-success">
                                                     <i class="fa fa-check" aria-hidden="true"></i>&nbsp;Complete
                                                 </div> 
+                                            @elseif ($item->tipe == 'Cancel')
+                                                <div type="button" class="btn btn-danger">
+                                                    <i class="fa fa-remove" aria-hidden="true"></i>&nbsp;cancel
+                                                </div> 
                                             @endif
                                         </td>
                                         <td> 
 
                                             @if ($item->tipe == 'booked')
                                                 Order AWB dengan kode <b>{{$item->kodeawb}} </b>telah dibuat oleh <b>{{$item->namapembuat}}</b>
+                                            @elseif ($item->tipe == 'Cancel')
+                                                AWB telah dicancel oleh  <b>{{$item->namauser}}</b>
                                             @elseif ($item->tipe == 'at-manifest')
                                                 Barang telah diterima di gudang pusat
                                             @elseif ($item->tipe == 'loaded')

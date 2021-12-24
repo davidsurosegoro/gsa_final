@@ -41,7 +41,7 @@ class TrackingController extends Controller
             ->join("users", 'users.id', '=', 'awb.created_by')
             ->join("kota",  'kota.id',  '=', 'awb.id_kota_tujuan')
             ->where('awb.noawb', $kode)
-            ->orderByRaw('FIELD(history_scan_awb.tipe, "booked", "at-manifest", "loaded","at-agen","delivery-by-courier", "complete")')
+            ->orderByRaw('FIELD(history_scan_awb.tipe, "booked", "at-manifest", "loaded","at-agen","delivery-by-courier", "complete", "cancel")')
             ->orderBy('history_scan_awb.id','asc')
             ->get();
             $data['awb']                = DB::SELECT("SELECT

@@ -147,7 +147,7 @@
                                 </tr>
                                 @endif 
                                 <tr> 
-                                    <td class='text-left' style="font-size:0.24cm;"> 
+                                    <td class='text-left' style="font-size:0.45cm;"> 
                                         <span style="font-weight:bold;">Keterangan</span><br>
                                         {{ $awb[0]->keterangan }}
                                     </td>
@@ -197,28 +197,39 @@
                                 {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
                                 {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
                                 {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
-                                @if((int)$awb[0]->id_customer==26 || (int)$awb[0]->id_kota_transit>0)
-                                    @if($i == 0)
+                                @if(((int)$awb[0]->id_customer==26 || (int)$awb[0]->id_kota_transit>0)&& $i == 2)
                                         @if($awb[0]->harga_gsa == 0)
-                                            <b style="padding-left:5px;display:none;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
+                                            <b style="padding-left:5px;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
                                         @else
-                                            <b style="padding-left:5px;display:none;">Total Harga : Rp.{{number_format($awb[0]->harga_gsa, 0)}}</b>
+                                            <b style="padding-left:5px;">Total Harga : Rp.{{number_format($awb[0]->harga_gsa, 0)}}</b>
                                         @endif
-                                    @else
-                                    <b style="padding-left:5px;display:none;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
-                                    @endif
+                                    
                                 @endif
                             </div>
                             
                             <div class="col-6" style="padding:0px;">
                                 <table  class="col-12 table-bordered"  style="font-size:0.35cm; border-right:0px !important;">
                                     <tr>
-                                        <th colspan='6' style="font-style:italic;font-weight:bold;text-align:center;">
+                                        <th 
+                                            
+                                        @if($awb[0]->id_customer==26 && $awb[0]->jumlah_koli>1)
+                                            colspan='7' 
+                                        @else
+                                            colspan='6' 
+                                        @endif
+                                        style="font-style:italic;font-weight:bold;text-align:center;">
                                             ** QR CODE TIDAK UNTUK DISCAN MERUBAH STATUS**
                                         </th>
                                     </tr>
                                     <tr>
-                                        <th colspan='6' style="font-style:italic;font-weight:bold;text-align:center;
+                                        <th 
+                                        
+                                        @if($awb[0]->id_customer==26 && $awb[0]->jumlah_koli>1)
+                                            colspan='7' 
+                                        @else
+                                            colspan='6' 
+                                        @endif
+                                        style="font-style:italic;font-weight:bold;text-align:center;
                                             @if ($i==0)
                                                 background-color:#c5ffe1;
                                                 @elseif ($i==1)
@@ -242,12 +253,15 @@
                                         @if($awb[0]->is_agen == 1)
                                             <th width='100%'>QTY</th> 
                                         @else
-                                            <th width='16.6%'>K</th> 
-                                            <th width='16.6%'>S</th> 
-                                            <th width='16.6%'>B</th> 
-                                            <th width='16.6%'>BB</th> 
-                                            <th width='16.6%'>Kg</th> 
-                                            <th width='16.6%'>Doc</th>
+                                            <th width='14%'>K</th> 
+                                            <th width='14%'>S</th> 
+                                            <th width='14%'>B</th> 
+                                            <th width='14%'>BB</th> 
+                                            <th width='14%'>Kg</th> 
+                                            @if($awb[0]->id_customer==26 && $awb[0]->jumlah_koli>1)
+                                                <th width='14%'>koli</th> 
+                                            @endif
+                                            <th width='14%'>Doc</th>
                                         @endif 
                                     </tr> 
                                     <tr class="text-center">
@@ -259,6 +273,10 @@
                                         <td>{{ $awb[0]->qty_besar }}</td> 
                                         <td>{{ $awb[0]->qty_besarbanget }}</td> 
                                         <td>{{ $awb[0]->qty_kg }}</td> 
+                                        @if($awb[0]->id_customer==26 && $awb[0]->jumlah_koli>1)
+                                            <td>{{ $awb[0]->jumlah_koli }}</td> 
+                                        @endif
+                                        
                                         <td>{{ $awb[0]->qty_doc }}</td> 
                                         @endif
                                     </tr> 
