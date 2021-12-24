@@ -11,8 +11,8 @@
     $total_doc              = 0;
     $total_oa               = 0;
     $total_bayarall         = 0; 
-    $total_komisi_transit   = (100 - (int)app\ApplicationSetting::checkappsetting('komisi_agen_asal') )/100;
-    $total_komisi_agentosub = ((int)app\ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))/100;
+    $total_komisi_transit   = (100 - (int)App\Applicationsetting::checkappsetting('komisi_agen_asal') )/100;
+    $total_komisi_agentosub = ((int)App\Applicationsetting::checkappsetting('agentosub_komisi_gsa'))/100;
 ?>
 @foreach ($awb as $item) 
     @php($total_kg     += $item['qty_kg'])
@@ -171,7 +171,7 @@
                         @endif
                         ' class="text-right"><h4>TOTAL <br>
                         
-                            <span class="font-weight-bold text-uppercase font-italic">({{app\Invoice::terbilang($total_bayarall)}} Rupiah)</span></h4></td>   
+                            <span class="font-weight-bold text-uppercase font-italic">({{App\Invoice::terbilang($total_bayarall)}} Rupiah)</span></h4></td>   
                         <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_koli}}</h4></td>   
                         @if ((int)$customer->is_agen == 0)
                             <td style="padding:5px;font-weight:bold !important;"><h4>{{$total_kg}}</h4></td>   

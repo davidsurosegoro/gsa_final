@@ -224,8 +224,8 @@
                                         <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td>   
                                     @elseif ((int)$invoice->is_agen == 1)
                                         <?php 
-                                            $total_komisi_transit   = (100 - (int)app\ApplicationSetting::checkappsetting('komisi_agen_asal') )/100;
-                                            $total_komisi_agentosub = ((int)app\ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))/100;
+                                            $total_komisi_transit   = (100 - (int)App\Applicationsetting::checkappsetting('komisi_agen_asal') )/100;
+                                            $total_komisi_agentosub = ((int)App\Applicationsetting::checkappsetting('agentosub_komisi_gsa'))/100;
                                         ?>
                                         <td style="padding:5px;padding-left:2px;">{{$item->keterangan}}</td> 
                                         <td style="padding:5px;padding-left:2px; text-align:right;">{{number_format($item->total_harga, 0) }}</td>   
@@ -263,7 +263,7 @@
                                 <tr> 
                                     <td class='text-center' style="font-size:0.35cm;">TERBILANG : 
                                         <span style="font-weight:bold; text-transform:uppercase;"> 
-                                            {{app\Invoice::terbilang($invoice->total_harga)}} Rupiah
+                                            {{App\Invoice::terbilang($invoice->total_harga)}} Rupiah
                                         </span>
                                     </td>
                                 </tr>
