@@ -612,7 +612,12 @@ class AwbController extends Controller
         $print_awb_tri   =  '<a href=' . url('printout/awbtri/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
                                 <i class="fas fa-print" ></i>
                             </a>';   
-        
+        $print_awb_inv   = ($a->id_customer==26 && $a->status_tracking != 'cancel') ? 
+                            '<a href=' . url('printout/awbinv/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print invoice">
+                                <i class="fas fa-dollar" ></i>
+                            </a>' 
+                            :'';   
+
         $btn_hilang      = '';
         if($a->qty > 0 && $showbtnhilang == 1):
             $btn_hilang  = '
@@ -652,6 +657,7 @@ class AwbController extends Controller
                 'is_agen'         => $a->is_agen,
                 'print_awb_biasa' => $print_awb_biasa,
                 'print_awb_tri'   => $print_awb_tri,
+                'print_awb_inv'   => $print_awb_inv,
                 'btn_hilang'      => $btn_hilang,
             ]);
         endforeach;
@@ -680,6 +686,7 @@ class AwbController extends Controller
                         </a>                       
                         '.$a['print_awb_biasa'].'
                         '.$a['print_awb_tri'].'
+                        '.$a['print_awb_inv'].'
                         '.$tombolhapus.'
 
                         </div>';
@@ -696,6 +703,7 @@ class AwbController extends Controller
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         '.$a['print_awb_biasa'].'
                         '.$a['print_awb_tri'].'
+                        '.$a['print_awb_inv'].'
                         '.$tombolhapus.'
                         <a href=' . url('t/'.$a['noawb'].'/t/1') . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="TRACKING">
                         <i class="fas fa-map-marked-alt" ></i>

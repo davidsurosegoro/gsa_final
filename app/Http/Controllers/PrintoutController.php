@@ -135,6 +135,24 @@ class PrintoutController extends Controller
         // $noawb .= $awb[0]->noawb;
         return view("pages.printout.awb",compact('awb' ));
     }
+    public function awbinv($id)
+    {   $id = Crypt::decrypt($id);
+        $data['awb']  = DB::SELECT("SELECT
+                            a.*,
+                            m.kode  AS kodemanifest,
+                            k1.kode AS kotatujuan,
+                            k2.kode AS kotaasal
+                            FROM
+                                awb a
+                            LEFT JOIN kota k1 ON a.id_kota_tujuan = k1.id
+                            LEFT JOIN kota k2 ON a.id_kota_asal = k2.id 
+                            LEFT JOIN manifest m on m.id = a.id_manifest
+                            WHERE a.id = ".$id." ");
+                            
+        $data['kodeinvawb']=((int)preg_replace("/[^0-9]/", "", $data['awb'][0]->noawb )).'/INV/GS/'.Carbon::parse($data['awb'][0]->created_at)->month.'/'.Carbon::parse($data['awb'][0]->created_at)->year; 
+        
+        return view("pages.printout.awbinv",$data);
+    }
     public function awbtri($id)
     {   $id = Crypt::decrypt($id);
         $awb = DB::SELECT("SELECT

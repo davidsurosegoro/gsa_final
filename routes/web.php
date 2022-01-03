@@ -45,6 +45,7 @@ Route::middleware(['auth'])->prefix('printout')->group(function(){
 	Route::get('/manifest/{id}' ,'PrintoutController@manifest');
 	Route::get('/awb/{id}'  	,'PrintoutController@awb');
 	Route::get('/awbtri/{id}'  	,'PrintoutController@awbtri');
+	Route::get('/awbinv/{id}'  	,'PrintoutController@awbinv');
 });
 
 Route::prefix('master')->group(function(){  
