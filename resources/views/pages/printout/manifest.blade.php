@@ -128,7 +128,13 @@
                         <table class="print-friendly" style="font-size:0.4cm;width:100%;"> 
                             <thead>
                                 <tr>
-                                    <th colspan="9" style="border:0px !important; ">
+                                    <th 
+                                    @if ($id_sby==$manifest->id_kota_asal) 
+                                        colspan="9"
+                                    @else
+                                        colspan="10"    
+                                    @endif
+                                    style="border:0px !important; ">
                                         <div class="card-header row" style="padding:0px !important; "> 
                                             <div class="col-12 text-center font-weight-bold">
                                                 DAFTAR BARANG<br> 
@@ -156,7 +162,12 @@
                                                     </tr>
                                                     <tr>
                                                         <td >Asal </td>
-                                                        <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
+                                                        @if ($id_sby==$manifest->id_kota_asal) 
+                                                            <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
+                                                        @else
+                                                            <td>&nbsp;(Gabungan Kota)</td>
+                                                            
+                                                        @endif
                                                     </tr>
                                                     <tr>
                                                         <td >Tujuan </td>
@@ -192,9 +203,12 @@
                                 </tr>
                                 <tr>
                                     <th rowspan="2" style="width:0.5cm;padding:0.1cm;font-weight:normal;">NO</th> 
-                                    <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">AWB</th> 
-                                    <th rowspan="2" style="width:2cm;padding:0.1cm;font-weight:normal;">PENGIRIM</th> 
+                                    <th rowspan="2" style="width:0.7cm;padding:0.1cm;font-weight:normal;">AWB</th> 
+                                    <th rowspan="2" style="width:2.3cm;padding:0.1cm;font-weight:normal;">PENGIRIM</th> 
                                     <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">PENERIMA</th> 
+                                    @if ($id_sby!=$manifest->id_kota_asal) 
+                                        <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">ASAL</th> 
+                                    @endif
                                     <th rowspan="2" style="width:1cm;padding:0.1cm;font-weight:normal;">TUJUAN</th> 
                                     <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">KL</th> 
                                     <th  style="width:0.5cm;padding:0.1cm;font-weight:normal;">KG</th> 
@@ -229,6 +243,9 @@
                                     </td> 
                                     <td style="padding:2px;" class='text-left'>{{$item->namacust}}</td> 
                                     <td style="padding:2px;" class='text-left'>{{$item->nama_penerima}}</td> 
+                                    @if ($id_sby!=$manifest->id_kota_asal)  
+                                        <td style="padding:2px;">{{$item->kotaasal}}</td> 
+                                    @endif
                                     <td style="padding:2px;">{{$item->kotatujuan}}</td> 
                                     <td style="padding:2px;" class='text-center'>
                                         @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0)

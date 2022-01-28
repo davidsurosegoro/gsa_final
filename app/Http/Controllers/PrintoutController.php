@@ -13,6 +13,7 @@ use App\Manifest;
 use App\Awb;
 use App\Invoice;
 use Carbon\Carbon;
+use App\Applicationsetting;
 use App\Kota;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
@@ -81,6 +82,7 @@ class PrintoutController extends Controller
      */
     public function manifest($id)
     {   $id = Crypt::decrypt($id);
+        $data['id_sby']     = (int)ApplicationSetting::checkappsetting('id-surabaya'); 
         $data['manifest']   = Manifest::select(
                                 DB::raw("DATE_FORMAT(manifest.created_at,'%d-%M-%Y') as tanggal_manifest"),
                                 "manifest.*" , 
@@ -99,13 +101,15 @@ class PrintoutController extends Controller
 
         $data['awb'] =  Awb::select(
                                 'awb.*',
-                                'customer.nama as namacust',
-                                'kotatujuan.nama as kotatujuan', 
+                                'customer.nama      as namacust',
+                                'kotatujuan.kode    as kotatujuan', 
+                                'kotaasal.kode      as kotaasal', 
                                 DB::raw('(awb.qty_kecil + awb.qty_sedang + awb.qty_besar + awb.qty_besarbanget) as qtykoli'),
                                 DB::raw('(select count(*) from detail_qty_scanned where idawb=awb.id and status="loaded") as qtyloaded')
                             )
                         ->join  ("customer",            'customer.id',      '=', 'awb.id_customer')
                         ->join  ("kota as kotatujuan",  'kotatujuan.id',    '=', 'awb.id_kota_tujuan') 
+                        ->join  ("kota as kotaasal"  ,  'kotaasal.id',      '=', 'awb.id_kota_asal') 
                         ->where ("awb.id_manifest",     '=' , $id)  
                         ->get(); 
                          
@@ -171,7 +175,7 @@ class PrintoutController extends Controller
         }
         $noawb .= $awb[0]->noawb;
         // dd($total_penagihan);
-        return view("pages.printout.awbtri",compact('awb','noawb'));
+        return view("pages.printout.awbtrinew",compact('awb','noawb'));
     }
 
     /**

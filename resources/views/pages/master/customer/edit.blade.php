@@ -148,7 +148,7 @@
      </div>
 
     <div class="form-group">
-      <label>Harga per 5 Kg Pertama:</label>
+      <label>Harga per Kg :</label>
        <input type="text" class="form-control rupiah"  value="{{ $customer->harga_kg }}" name="harga_kg" placeholder="Input harga per 5 Kg Pertama. . ." required/>
      </div>
 
@@ -157,7 +157,7 @@
        <input type="text" class="form-control rupiah"  value="{{ $customer->harga_doc }}" name="harga_doc" placeholder="Input harga_doc. . ." required/>
      </div>
 
-     <div class="form-group">
+     <div class="form-group d-none">
        <label>Harga Kg Selanjutnya:</label>
         <input type="text" class="form-control rupiah"  value="{{ $customer->harga_kg_selanjutnya }}" name="harga_kg_selanjutnya" placeholder="Input harga kg selanjutnya. . ." required/>
       </div>

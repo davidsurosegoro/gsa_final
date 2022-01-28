@@ -71,7 +71,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="form-group">
                   <label class="font-weight-bold">Tanggal:</label>
                   <div class="input-group date" style="position: relative;">
@@ -93,7 +93,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-2">
                 <div class="form-group">
                   <label class="font-weight-bold">Ada Faktur</label>
                   <label class="checkbox checkbox-primary" >
@@ -104,6 +104,12 @@
                     @endif
                     <span></span> &nbsp;Faktur Tersedia</label>
                     <span class="form-text text-muted"></span>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label class="font-weight-bold">No Referensi</label>
+                  <input type="text" id="noref" class="form-control is_readonly" value="{{ $awb->noref }}" name="noref" placeholder="Input No Referensi . ." >
                 </div>
               </div>
           </div>
@@ -524,9 +530,10 @@
 <script>
   $('#harga_gsa_div').hide();
   $('#jumlah_koli_div').hide();
-  var _kecamatan_id_ = 0;
-  var _showcalculate = 0;
-  var _customer_id_ = 0;
+  var _kecamatan_id_  = 0;
+  var _showcalculate  = 0;
+  var _customer_id_   = 0;
+  var _is_agen_       = 0;
   $('form').submit(function(){
       $('body').find('button[type=submit]').prop('disabled', true);
   });
@@ -585,7 +592,22 @@
       }
     })
   })
-
+  function resetqtyall(){
+    
+    $("input[name=qty_kecil]").val(0)
+    $("input[name=qty_sedang]").val(0)
+    $("input[name=qty_besar]").val(0)
+    $("input[name=qty_besar_banget]").val(0)
+    $("input[name=qty_kg]").val(0)
+    $("input[name=qty_doc]").val(0)
+    $("input[name=harga_kg_pertama]").val(0)
+    $("input[name=harga_kg_selanjutnya]").val(0)
+    
+    $("input[name=jumlah_koli]").val(0)
+    $("input[name=harga_total]").val(0)
+    $("input[name=qty]").val(0)
+    $("input[name=harga_charge]").val(0)
+  }
   $('#customer').on('change',function(){
     $.ajax({
       method:'POST',
@@ -596,6 +618,8 @@
       },
       success:function(data){
         _customer_id_ = data.data.id;
+        _is_agen_     = (data.data.is_agen) ? data.data.is_agen : 0;
+        console.log(_is_agen_)
         console.log(data.data);
         $('#nama_pengirim').val(data.data.nama)
         // $('#alamat_pengirim_auto').html(data.alamat)
@@ -608,14 +632,7 @@
         $('#alamat_pengirim').val(data.data.alamat)
         $('#kodepos_pengirim').val(data.data.kodepos)
         $('#notelp_pengirim').val(data.data.notelp)
-        $("input[name=qty_kecil]").val(0)
-        $("input[name=qty_sedang]").val(0)
-        $("input[name=qty_besar]").val(0)
-        $("input[name=qty_besar_banget]").val(0)
-        $("input[name=qty_kg]").val(0)
-        $("input[name=qty_doc]").val(0)
-        $("input[name=harga_kg_pertama]").val(0)
-        $("input[name=harga_kg_selanjutnya]").val(0)
+        resetqtyall();
         // if(data.count_alamat == 0){
         //   $('#alamat_pengirim').show()
         // }
@@ -669,6 +686,7 @@
             $("#jenis_koli").append('<option value="koli">Koli</option>');
           }
         }
+        gantijeniskoli();
       }
     })
   })
@@ -686,8 +704,9 @@
     }
   })
 
-  $('#jenis_koli').on('change',function(){
-    var value = $(this).val()
+  function gantijeniskoli(){
+    
+    var value = $('#jenis_koli').val()
     console.log(value)
     if(value == "koli"){
       $('#qty_koli_k').show();
@@ -714,7 +733,7 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').show();
-      if(_customer_id_ == 26){
+      if(_is_agen_ == 0){
         $('#jumlah_koli_div').show();
       }
       else{
@@ -730,6 +749,11 @@
       $('#qty_koli_kg').hide();
       $('#jumlah_koli_div').hide();
     }
+  }
+
+  $('#jenis_koli').on('change',function(){
+    gantijeniskoli();
+    resetqtyall();
   })
 
   $('#alamat_tujuan_auto').on('change',function(){
@@ -872,7 +896,7 @@
       $('#qty_koli_bb').hide();
       $('#qty_koli_doc').hide();
       $('#qty_koli_kg').show();
-      if($('#customer').val() == 26){
+      if($('#is_agen').val() != 1 ){
         $('#jumlah_koli_div').show()
       }
       else{

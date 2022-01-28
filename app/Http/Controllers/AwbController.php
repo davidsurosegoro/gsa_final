@@ -220,6 +220,7 @@ class AwbController extends Controller
                 'is_agen'             => $customer->is_agen,
                 'ada_faktur'          => $ada_faktur,
                 'referensi'           => $request->referensi,
+                'noref'               => $request->noref,
                 'jenis_koli'          => $request->jenis_koli,
                 'labelalamat'         => $labelalamat,
                 'harga_kg_pertama'    => $harga_kg_pertama,
@@ -250,6 +251,7 @@ class AwbController extends Controller
                 'kodepos_pengirim'    => $request->kodepos_pengirim,
                 'notelp_pengirim'     => $request->notelp_pengirim,
                 'keterangan'          => $request->keterangan,
+                'noref'               => $request->noref,
                 'total_harga'         => ($total_harga['total'] == null) ? 0 : $total_harga['total'],
                 'tanggal_awb'         => $before_update->tanggal_awb,
                 'status_invoice'      => 0,
@@ -847,7 +849,8 @@ class AwbController extends Controller
         $harga_kg = 0;
         $harga_oa = 0;
         if ($qty_kg > 0):
-                $harga_kg = $customer->harga_kg * 5 + ($customer->harga_kg_selanjutnya * ((($qty_kg > 5 ) ?$qty_kg : 5 ) - 5));
+                // $harga_kg = $customer->harga_kg * 5 + ($customer->harga_kg_selanjutnya * ((($qty_kg > 5 ) ?$qty_kg : 5 ) - 5));
+                $harga_kg = $customer->harga_kg * $qty_kg;
         endif;
         if($qty_kg < 0):
             $harga_kg = $customer->harga_kg * 5 - ($customer->harga_kg_selanjutnya * ((($qty_kg < -5 ) ?$qty_kg : -5 ) + 5));

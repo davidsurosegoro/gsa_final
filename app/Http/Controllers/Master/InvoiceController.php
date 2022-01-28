@@ -145,6 +145,12 @@ class InvoiceController extends Controller
         }else{            
             $invoice = Invoice::where('id',$request['id'])->first(); 
         }
+
+        
+        $servis = $request->servis;
+
+        // dd($request);
+
         $invoice->kode                 = Invoice::getNoInvoice();
         $invoice->id_customer          = ($request->id_customer)            ? $request->id_customer         : 0; 
         $invoice->mengetahui_oleh      = ($request->mengetahui_oleh)        ? $request->mengetahui_oleh     : 0; 
@@ -159,14 +165,21 @@ class InvoiceController extends Controller
         $invoice->created_at           = Carbon::now()->addHours(7); 
         $invoice->status               = 'unpaid';  
         $invoice->save(); 
-        DB::table('awb')
-                ->where ("awb.status_tracking", '=' , 'complete') 
-                ->where ("awb.id_customer",     '=' , $invoice['id_customer'])
-                ->where ("awb.id_invoice",      '=' , 0)
-                ->update(
-                        [   'id_invoice'      => $invoice['id']
-                        ]
-                    ); 
+
+        
+        for($z = 0; $z<count($request->servis); $z++)
+        {
+            // echo($request->servis[$z]).'<BR>';
+            DB::table('awb')
+                    ->where ("awb.status_tracking", '=' , 'complete') 
+                    ->where ("awb.id_customer",     '=' , $invoice['id_customer'])
+                    ->where ("awb.id_invoice",      '=' , 0)
+                    ->where ("awb.id",              '=' , $request->servis[$z])                    
+                    ->update(
+                            [   'id_invoice'      => $invoice['id']
+                            ]
+                        ); 
+        }
         return redirect('master/invoice')->with('message','created');
     }
 

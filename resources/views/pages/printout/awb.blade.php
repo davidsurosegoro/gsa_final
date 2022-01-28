@@ -171,7 +171,15 @@
                         <div class=" text-right" style="padding:0px;position:absolute; bottom:-10px; right:0px;font-size:0.7cm;">
                             {{ $i }}/{{$qty_umum }}
                         </div>
-                        <table  class="couture col-12 table-bordered font-weight-bold"  style="font-size:0.35cm; margin-top:0.1cm;border-right:0px !important;">
+                        <table  class="couture 
+                            
+                        @if ($awb[0]->noref)        
+                        col-7 
+                        @else
+                        col-12 
+                        @endif        
+
+                                table-bordered font-weight-bold"  style="font-size:0.35cm; margin-top:0.1cm;border-right:0px !important;">
                             <tr>
                                 {{-- <th colspan='5'>Quantity:</th> --}}
                             </tr>
@@ -207,6 +215,19 @@
                                 </tr>
                             @endif
                         </table>
+                        @if ($awb[0]->noref)
+                            
+                            <table  class="couture col-5 table-bordered font-weight-bold"  style="font-size:0.35cm; margin-top:0.1cm;border-right:0px !important;">
+                                <tr>
+                                    <th class="text-center">
+                                        No Referensi
+                                    </th>
+                                </tr>
+                                <tr class="text-center">
+                                    <td>{{ $awb[0]->noref }}</td> 
+                                </tr>
+                            </table>
+                        @endif
                         <table class=" table-bordered" style="font-size:0.3cm; width:100%;margin-bottom:0.1cm;margin-top:0.1cm;">
                             <tr>
                                 <td style="width:25%; font-size:1.2cm;line-height:1.1cm;position:relative;" class="couture">

@@ -33,9 +33,15 @@
 {{ csrf_field() }}
 <div class="card-body">
     <div class="row"> 
+        
         <div class="form-group col-lg-3">
             <label>Kota asal:</label>
-            <h3>{{$kotaasal[0]['nama']}}</h3>
+            @if ($id_sby==$kotaasal[0]['id']) 
+                <h3>{{$kotaasal[0]['nama']}}</h3>           
+            @else
+                <h3>(Gabungan Agen)</h3>           
+                
+            @endif
         </div> 
         <div class="form-group col-lg-3">
             <label>Kota tujuan:</label>
@@ -88,6 +94,9 @@
                         <th  rowspan="2" style="width:1cm;">AWB</th> 
                         <th  rowspan="2" style="width:150px;">PENGIRIM</th> 
                         <th  rowspan="2" style="width:1cm;">PENERIMA</th> 
+                        @if ($id_sby!=$kotaasal[0]['id'])
+                            <th  rowspan="2" style="width:1cm;">ASAL</th> 
+                        @endif
                         <th  rowspan="2" style="width:1cm;">TUJUAN</th> 
                         <th  style="width:1cm;">KL</th> 
                         <th  style="width:1cm;">KG</th> 
@@ -107,6 +116,9 @@
                         <td style="padding:5px;">{{$item->noawb}}</td> 
                         <td style="padding:5px;" class='text-left'>{{$item->namacust}}</td> 
                         <td style="padding:5px;" class='text-left'>{{$item->nama_penerima}}</td> 
+                        @if ($id_sby!=$kotaasal[0]['id']) 
+                            <td style="padding:5px;">{{$item->kotaasal}}</td> 
+                        @endif
                         <td style="padding:5px;">{{$item->kotatujuan}}</td> 
                         <td style="padding:5px;" class='text-center'>
                             @if(($item->qty_kecil == 0 && $item->qty_sedang == 0 && $item->qty_besar == 0 && $item->qty_besarbanget==0 && $item->qty_kg==0 && $item->qty_doc==0) && $item->qty>0)
