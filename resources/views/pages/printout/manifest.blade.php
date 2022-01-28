@@ -165,7 +165,7 @@
                                                         @if ($id_sby==$manifest->id_kota_asal) 
                                                             <td>&nbsp;{{$manifest->namakotaasal}}-({{$manifest->kodekotaasal}})</td>
                                                         @else
-                                                            <td>&nbsp;Transit SUB</td>
+                                                            <td>&nbsp;(Gabungan Agen)<br>Transit SUB</td>
                                                             
                                                         @endif
                                                     </tr>

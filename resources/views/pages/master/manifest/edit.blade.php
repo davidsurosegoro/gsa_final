@@ -39,7 +39,7 @@
             @if ($id_sby==$kotaasal[0]['id']) 
                 <h3>{{$kotaasal[0]['nama']}}</h3>           
             @else
-                <h3>Transit SUB</h3>           
+                <h3>(Gabungan Agen)<br>Transit SUB</h3>           
                 
             @endif
         </div> 
