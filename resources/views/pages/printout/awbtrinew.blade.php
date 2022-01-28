@@ -171,7 +171,7 @@
                                         </tr>
                                         <tr style="height: 3cm; font-size:0.25cm;">
                                             <td 
-                                                @if ($i==2)
+                                                @if ($i==3)
                                                     
                                                 @endif
                                                 style="width:50%;    height: 3.7cm;"
@@ -189,7 +189,7 @@
                                                 
                                             </td>   
                                             <td 
-                                                @if ($i==2)
+                                                @if ($i==3)
                                                     style="width:50%;    height: 3.7cm;"
                                                 @else    
                                                     style="width:50%;    height: 4.3cm;"
@@ -215,7 +215,7 @@
                                 {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
                                 {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
                                 {{-- UNTUK MENAMPILKAN TOTAL HARGA , HAPUS DISPLAY NONE --}}
-                                @if(((int)$awb[0]->id_customer==26 || (int)$awb[0]->id_kota_transit>0)&& $i == 2)
+                                @if(((int)$awb[0]->id_customer==26 || (int)$awb[0]->id_kota_transit>0)&& $i == 3)
                                         @if($awb[0]->harga_gsa == 0)
                                             <b style="padding-left:5px; font-size:0.3cm;">Total Harga : Rp.{{number_format($awb[0]->total_harga, 0)}}</b>
                                         @else
