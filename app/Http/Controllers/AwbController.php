@@ -595,7 +595,7 @@ class AwbController extends Controller
     public function datatables(Request $request)
     {   
         $completecondition = ($request->status_complete == '-')  ? 'a.status_tracking <> \'complete\' and a.status_tracking <> \'cancel\' and' : '' ;
-        $tanggalcondition = ($request->tanggal == '-') ? "AND (a.tanggal_awb>= '".Carbon::now()->subDays(1000)->format('Y-m-d')."' AND a.tanggal_awb<='".Carbon::now()->subDays(0)->format('Y-m-d')."')" : " AND a.tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
+        $tanggalcondition = ($request->tanggal == '-') ? "AND (a.tanggal_awb>= '".Carbon::now()->subDays(31)->format('Y-m-d')."' AND a.tanggal_awb<='".Carbon::now()->subDays(0)->format('Y-m-d')."')" : " AND a.tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
         $customercondition = ($request->customer == '-') ? "" : " AND a.id_customer ='".$request->customer."'";
         $kotacondition = ($request->kota == '-') ? "" : " AND a.id_kota_tujuan ='".$request->kota."'";
         $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
