@@ -48,6 +48,8 @@ class ManifestController extends Controller
         } 
         if($request->tanggal !== '-')    {
             $manifest= $manifest-> where('manifest.tanggal_pengiriman' ,'=', date("Y-m-d", strtotime($request->tanggal))); 
+        }else{
+            $manifest= $manifest-> where('manifest.tanggal_pengiriman' ,'>=', Carbon::now()->subDays(31)->format('Y-m-d')); 
         }
         if($request->kota !== '-'){
             $manifest= $manifest-> where('manifest.id_kota_tujuan' ,'=', $request->kota); 
