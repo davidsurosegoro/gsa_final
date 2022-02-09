@@ -595,14 +595,26 @@ class AwbController extends Controller
     public function datatables(Request $request)
     {   
         $completecondition = ($request->status_complete == '-')  ? 'a.status_tracking <> \'complete\' and a.status_tracking <> \'cancel\' and' : '' ;
-        $tanggalcondition = ($request->tanggal == '-') ? "" : " AND a.tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
+        $tanggalcondition = ($request->tanggal == '-') ? "AND (a.tanggal_awb>= '".Carbon::now()->subDays(1000)->format('Y-m-d')."' AND a.tanggal_awb<='".Carbon::now()->subDays(0)->format('Y-m-d')."')" : " AND a.tanggal_awb ='".date("Y-m-d", strtotime($request->tanggal))."'";
         $customercondition = ($request->customer == '-') ? "" : " AND a.id_customer ='".$request->customer."'";
         $kotacondition = ($request->kota == '-') ? "" : " AND a.id_kota_tujuan ='".$request->kota."'";
         $showbtnhilang = (int)ApplicationSetting::checkappsetting('show-btnhilang');
-        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest FROM awb a LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL  ".$tanggalcondition.$customercondition.$kotacondition." ORDER BY a.id DESC");
+        $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest 
+                            FROM awb a 
+                            LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) 
+                            INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) 
+                            INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) 
+                            LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) 
+                            WHERE ".$completecondition." a.id > 0 AND a.deleted_at IS NULL  ".$tanggalcondition.$customercondition.$kotacondition." ORDER BY a.id DESC");
         if ((int) Auth::user()->level !== 1):
             //dd(Auth::user()->level);
-            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest FROM awb a LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) WHERE ".$completecondition." a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL  ORDER BY a.id DESC");
+            $awb = DB::SELECT("SELECT a.*, ka.nama AS kota_asal,kt.nama AS kota_tujuan,ktt.nama AS kota_transit,mnfst.kode as kodemanifest 
+                                FROM awb a 
+                                LEFT JOIN manifest mnfst ON (a.id_manifest = mnfst.id ) 
+                                INNER JOIN kota ka ON (a.id_kota_asal = ka.id ) 
+                                INNER JOIN kota kt ON (a.id_kota_tujuan = kt.id) 
+                                LEFT JOIN kota ktt ON (a.id_kota_transit = ktt.id) 
+                                WHERE ".$completecondition." a.id_customer = " . Auth::user()->id_customer . " AND a.deleted_at IS NULL  ORDER BY a.id DESC");
         endif;
         $awbs = new Collection;
         // dd($awb);

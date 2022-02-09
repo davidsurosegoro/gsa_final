@@ -191,9 +191,9 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     { 
-        $data['customer']   = Customer::find($id);  
-        $data['invoice']    = Invoice::find(0);  
-        $data['awb']        = Awb::select(
+        $data['customer']       = Customer::find($id);  
+        $data['invoice']        = Invoice::find(0);   
+        $data['awb']            = Awb::select(
                                         'awb.*',
                                         'customer.nama      as namacust',
                                         'kotatujuan.nama    as kotatujuan', 
@@ -214,8 +214,10 @@ class InvoiceController extends Controller
                                     ->orderBy("id_manifest", "desc")
                                     ->orderBy("charge_oa", "desc")
                                     ->get(); 
+            $data['agenpenerima']   = Agen::find($data['awb'][0]->id_agen_penerima);
+            $data['agenasal']       = Agen::find($data['awb'][0]->id_agen_asal);
         // echo $data['awb'];
-        return view("pages.master.invoice.edit",$data);
+        return view("pages.master.invoice.editnew",$data);
     }
 
     /**

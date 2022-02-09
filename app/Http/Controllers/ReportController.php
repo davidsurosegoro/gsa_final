@@ -259,25 +259,26 @@ class ReportController extends Controller
         $agentosub_komisi_agen  = ((int)ApplicationSetting::checkappsetting('agentosub_komisi_agen'))   /100;
         $agentosub_komisi_gsa   = ((int)ApplicationSetting::checkappsetting('agentosub_komisi_gsa'))    /100;
         
-        $bonus_gsa = 0; $bonus_agen_asal = 0; $bonus_agen_tujuan = 0;
-        $agen      = Agen::find($awb->id_agen_penerima);
+        $bonus_gsa          = 0; $bonus_agen_asal = 0; $bonus_agen_tujuan = 0;
+        $agenpenerima       = Agen::find($awb->id_agen_penerima);
+        $agenasal           = Agen::find($awb->id_agen_asal);
         if($awb->is_agen == 0){
             // SURABAYA KE AGEN---------------------------------
-            $bonus_agen_tujuan = $agen->presentase/100          * $awb->total_harga;
-            $bonus_gsa         = (100 - $agen->presentase)/100  * $awb->total_harga;
+            $bonus_agen_tujuan = $agenpenerima->presentase/100          * $awb->total_harga;
+            $bonus_gsa         = (100 - $agenpenerima->presentase)/100  * $awb->total_harga;
         }
         else{
             if(strtolower($awb->kota_asal) !== 'surabaya' && strtolower($awb->kota_tujuan) !== 'surabaya'){
                 // AGEN KE AGEN---------------------------------
                 // TRANSIT---------------------------------
-                $bonus_agen_asal    = ($komisi_agen_asal/100)    * $awb->total_harga;
-                $bonus_gsa          = ($komisi_gsa/100)          * $awb->total_harga;
-                $bonus_agen_tujuan  = ($komisi_agen_tujuan/100)  * $awb->total_harga;
+                $bonus_agen_asal    = ($agenasal->presentasetransit/100) * $awb->total_harga;
+                $bonus_agen_tujuan  = ($agenpenerima->presentase/100)  * $awb->total_harga;
+                $bonus_gsa          = $awb->total_harga - $bonus_agen_asal - $bonus_agen_tujuan;
             }
             else{
                 // AGEN KE SURABAYA---------------------------------
-                $bonus_gsa          = $agentosub_komisi_gsa     * $awb->total_harga;
-                $bonus_agen_asal    = $agentosub_komisi_agen    * $awb->total_harga;
+                $bonus_agen_asal    = ($agenasal->presentasetransit/100) * $awb->total_harga;
+                $bonus_gsa          = $awb->total_harga - $bonus_agen_asal;
             }
         }
         $array['bonus_gsa'] = $bonus_gsa;

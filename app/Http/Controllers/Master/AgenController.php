@@ -40,6 +40,7 @@ class AgenController extends Controller
             'alamat'                    => $request->alamat,
             'no_telp'                   => $request->no_telp,
             'presentase'                => $request->presentase,
+            'presentasetransit'         => $request->presentasetransit,            
             'idkota1'                   => $request->idkota1,
             'idkota2'                   => $request->idkota2,
             'idkota3'                   => $request->idkota3,
@@ -72,6 +73,7 @@ class AgenController extends Controller
             'alamat'                    => $request->alamat,
             'no_telp'                   => $request->no_telp,
             'presentase'                => $request->presentase,
+            'presentasetransit'         => $request->presentasetransit,
             'idkota1'                   => $request->idkota1,
             'idkota2'                   => $request->idkota2,
             'idkota3'                   => $request->idkota3,
@@ -126,6 +128,7 @@ class AgenController extends Controller
                 'alamat_agen'       => $a->alamat,
                 'no_telp'           => $a->no_telp,
                 'presentase'        => $a->presentase,
+                'presentasetransit' => $a->presentasetransit,
                 'coverage'          => $strings,
                 'has_harga_khusus'  => $a->has_harga_khusus,
             ]);
@@ -134,6 +137,9 @@ class AgenController extends Controller
         return Datatables::of($agens)
             ->editColumn('presentase', function ($a) {
                 return $a['presentase'] . " % ";
+            })
+            ->editColumn('presentasetransit', function ($a) {
+                return $a['presentasetransit'] . " % ";
             })
             ->addColumn('aksi', function ($a) {
                 $btnhapus = '<button type="button" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Hapus " onClick="deleteAgen(' . $a['id'] . ')"> <i class="flaticon-delete"></i> </button>';
@@ -152,7 +158,7 @@ class AgenController extends Controller
                     return '<span class="label label-lg label-danger label-inline mr-2">Tidak</span>';
                 endif;
             })
-            ->rawColumns(['coverage', 'aksi', 'presentase', 'hargakhusus'])
+            ->rawColumns(['coverage', 'aksi', 'presentase','presentasetransit', 'hargakhusus'])
             ->make(true);
     }
 }

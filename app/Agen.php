@@ -13,7 +13,7 @@ class Agen extends Model
     protected $table = 'agen';
 
     
-    protected static $logAttributes = ['nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode','alamat','no_telp','presentase','has_harga_khusus',
+    protected static $logAttributes = ['nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode','alamat','no_telp','presentase','presentasetransit','has_harga_khusus',
     'harga_doc',
     'harga_kg',
     'harga_kg_selanjutnya',
@@ -23,7 +23,7 @@ class Agen extends Model
     'harga_koli_s'];
 
     protected $fillable = [
-        'nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode','alamat','no_telp','presentase','has_harga_khusus',
+        'nama', 'idkota1','idkota2','idkota3','idkota4','idkota5','idkota6','idkota7','idkota8','idkota9','idkota10','kode','alamat','no_telp','presentase','presentasetransit','has_harga_khusus',
         'harga_doc',
         'harga_kg',
         'harga_kg_selanjutnya',

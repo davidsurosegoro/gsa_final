@@ -20,7 +20,8 @@
               <th>Nama Agen</th>
               <th width='20%'>Alamat</th>
               <th width='10%'>Nomor Telpon</th>
-              <th width='10%'>Presentase</th>
+              <th width='10%'>Presentase handling</th>
+              <th width='10%'>Presentase Transit</th>
               <th>harga khusus</th>
               <th>Coverage Kota Agen</th>
               <th>Aksi</th>
@@ -48,6 +49,7 @@
 	    {data: 'alamat_agen', name:'alamat_agen'},
 	    {data: 'no_telp', name:'no_telp'},
 	    {data: 'presentase', name:'presentase'},
+	    {data: 'presentasetransit', name:'presentasetransit'},
 	    {data: 'hargakhusus', name:'hargakhusus'},
 	    {data: 'coverage', name:'coverage'},
 	    {data: 'aksi', name:'aksi'},
@@ -95,6 +97,7 @@
                             },
                             success:function(data){
                               console.log(data);
+                              console.log(data.agen.presentase);
                               $('#idagen').val(data.agen.id)
                               $('#nama').val(data.agen.nama)
                               $('#idkota1').val(data.agen.idkota1)
@@ -120,7 +123,10 @@
                               $('#kode').val(data.agen.kode)
                               $('#alamat').val(data.agen.alamat)
                               $('#no_telp').val(data.agen.no_telp)
-                              $('#presentase').val(data.agen.presentase)
+                              $('#presentase1').val(data.agen.presentase)
+                              $('#testt').html(data.agen.presentase)
+                              
+                              $('#presentasetransit').val(data.agen.presentasetransit)
                               $('#has_harga_khusus').val(data.agen.has_harga_khusus)
                               $('#harga_doc').val(data.agen.harga_doc)
                               $('#harga_kg').val(data.agen.harga_kg)

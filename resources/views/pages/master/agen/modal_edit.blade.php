@@ -34,8 +34,12 @@
                 <input type="text" name="no_telp" id="no_telp" class="form-control form-control-solid" placeholder="Inpur Nomor Telpon Agen" >
               </div>
               <div class="form-group">
-                <label>Presentase Bagi Hasil :</label>
-                <input type="number" name="presentase" id="presentase" class="form-control form-control-solid" placeholder="Input Presentase Bagi Hasil. . ." required>
+                <label>Presentase Handling :</label>
+                <input type="number" name="presentase" id="presentase1" class="form-control form-control-solid" placeholder="Input Presentase Bagi Hasil. . ." required>
+              </div>
+              <div class="form-group">
+                <label>Presentase as Pengirim (transit sub)  :</label>
+                <input type="number" name="presentasetransit" id="presentasetransit" class="form-control form-control-solid" placeholder="Input Presentase Transit sebagai pengirim. . ." required>
               </div>
             </div>
             <div class="col-xs-12 col-md-6 "> 
