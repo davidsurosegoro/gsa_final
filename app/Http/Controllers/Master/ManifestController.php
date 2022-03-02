@@ -282,6 +282,7 @@ class ManifestController extends Controller
     {   
           
         if((int) Auth::user()->level==1){
+            $id_sby             = (int)ApplicationSetting::checkappsetting('id-surabaya'); 
             $data['awb'] =  Awb::select(DB::raw("
                                 kotaasal.id as idkotaasal, 
                                 kotatujuan.id as idkotatujuan,
@@ -295,6 +296,7 @@ class ManifestController extends Controller
                             ->join  ("agen as agentujuan", 'agentujuan.id', '=', 'awb.id_agen_penerima')//-------BARU
                             ->where (function ($query) {$query->where("awb.status_tracking", '=' , 'at-manifest')->orWhere("awb.status_tracking", '=' , 'booked');})
                             ->where ("awb.id_manifest",     '=' , 0)
+                            ->where ("awb.id_kota_asal",    '=' ,$id_sby)
                             ->where (function($query)
                                         {
                                             $query  ->where('awb.created_at', '<=', Carbon::now()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
@@ -303,6 +305,28 @@ class ManifestController extends Controller
                             ->groupBy("kotaasal.kode" , "kotatujuan.kode","kotaasal.id" , "kotatujuan.id" , "agentujuan.kode" , "agentujuan.id")
                             ->orderBy( "kotatujuan.kode")
                             ->get(); 
+                $data['awbnonsby'] =  Awb::select(DB::raw("
+                            0 as idkotaasal, 
+                            kotatujuan.id as idkotatujuan,
+                            'gabungan agen' as kotaasal,
+                            kotatujuan.kode as kotatujuan,
+                            agentujuan.kode as agentujuan,
+                            agentujuan.id as idagentujuan,
+                            count(awb.id) as total"))
+                        ->join  ("kota as kotaasal",   'kotaasal.id',   '=', 'awb.id_kota_asal')
+                        ->join  ("kota as kotatujuan", 'kotatujuan.id', '=', 'awb.id_kota_tujuan')
+                        ->join  ("agen as agentujuan", 'agentujuan.id', '=', 'awb.id_agen_penerima')//-------BARU
+                        ->where (function ($query) {$query->where("awb.status_tracking", '=' , 'at-manifest')->orWhere("awb.status_tracking", '=' , 'booked');})
+                        ->where ("awb.id_manifest",     '=' , 0)
+                        ->where ("awb.id_kota_asal",    '<>' ,$id_sby)
+                        ->where (function($query)
+                                    {
+                                        $query  ->where('awb.created_at', '<=', Carbon::now()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
+                                                // ->where('awb.created_at', '>',  Carbon::yesterday()->hour(ApplicationSetting::getJamMinim())->minute(0)->second(0));
+                                    })
+                        ->groupBy(  "kotatujuan.kode",  "kotatujuan.id" , "agentujuan.kode" , "agentujuan.id")
+                        ->orderBy( "kotatujuan.kode")
+                        ->get(); 
            
             return view("pages.master.manifest.grouping",$data);
         }else{
