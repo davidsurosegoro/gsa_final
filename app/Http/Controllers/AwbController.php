@@ -623,6 +623,10 @@ class AwbController extends Controller
         $print_awb_biasa = '<a href=' . url('printout/awb/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB">
                                 <i class="flaticon2-print" ></i>
                             </a>';
+        $print_awb_kecil = '<a href=' . url('printout/awbkecil/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-success btn-hover-success" style="
+        background-color: #e3f151;" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWB Kecil">
+                            <i class="flaticon2-print" ></i>
+                        </a>';
         $print_awb_tri   =  '<a href=' . url('printout/awbtri/' .Crypt::encrypt($a->id)) . ' target="_blank" class="btn btn-sm btn-icon btn-bg-light btn-icon-primary btn-hover-primary" data-toggle="tooltip" data-placement="bottom" title="Tombol Print AWBTRI">
                                 <i class="fas fa-print" ></i>
                             </a>';   
@@ -644,6 +648,7 @@ class AwbController extends Controller
                 || ((int)$a->qty<= 0 )
             ):
                 $print_awb_biasa = '';
+                $print_awb_kecil = '';
                 $print_awb_tri   = '';
         endif;
             $label_customerbiasa =  ($a->id_customer==26) ? '(Customer biasa)' : '';
@@ -670,6 +675,7 @@ class AwbController extends Controller
                 'kg'              => $a->qty_kg,
                 'is_agen'         => $a->is_agen,
                 'print_awb_biasa' => $print_awb_biasa,
+                'print_awb_kecil' => $print_awb_kecil,
                 'print_awb_tri'   => $print_awb_tri,
                 'print_awb_inv'   => $print_awb_inv,
                 'btn_hilang'      => $btn_hilang,
@@ -699,6 +705,7 @@ class AwbController extends Controller
                             <i class="flaticon-edit-1" ></i>
                         </a>                       
                         '.$a['print_awb_biasa'].'
+                        '.$a['print_awb_kecil'].'
                         '.$a['print_awb_tri'].'
                         '.$a['print_awb_inv'].'
                         '.$tombolhapus.'
@@ -716,6 +723,7 @@ class AwbController extends Controller
  
                     return '<div class="btn-group" role="group" aria-label="Basic example">
                         '.$a['print_awb_biasa'].'
+                        '.$a['print_awb_kecil'].'
                         '.$a['print_awb_tri'].'
                         '.$a['print_awb_inv'].'
                         '.$tombolhapus.'

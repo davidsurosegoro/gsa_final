@@ -43,6 +43,7 @@ Route::get('qr-code-g', function () {
 Route::middleware(['auth'])->prefix('printout')->group(function(){ 
 	Route::get('/invoice/{id}'  ,'PrintoutController@invoice');
 	Route::get('/manifest/{id}' ,'PrintoutController@manifest');
+	Route::get('/awbkecil/{id}'	,'PrintoutController@awbkecil');
 	Route::get('/awb/{id}'  	,'PrintoutController@awb');
 	Route::get('/awbtri/{id}'  	,'PrintoutController@awbtri');
 	Route::get('/awbinv/{id}'  	,'PrintoutController@awbinv');
